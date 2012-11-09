@@ -1,3 +1,10 @@
-<p>View code was rendered in <?php echo __FILE__ ?></p>
-<p><a href="<?php echo $this->urlHelper->url('index/other') ?>">Link to other action</a></p>
-<p>Some value set in controller: <?php echo $this->something ?></p>
+<h1>Welcome to MALgraph!</h1>
+<p>MALgraph is an extension of your <a href="http://myanimelist.net">MyAnimeList</a> profile. It displays more stats than you probably need, including rating distribution, favorite studios and suggestions.</p>
+<p>Not convinced? Give it a try and enter your MAL username below.</p>
+<form action="<?php echo $this->urlHelper->url('/stats/index') ?>" method="post">
+	<div class="control-group input-append">
+		<label for="username">User name:</label>
+		<input type="text" name="username" id="username">
+		<button class="btn" type="submit">Go!</button>
+	</div>
+</form>

@@ -5,13 +5,22 @@
 	<?php echo $this->headHelper->render() ?>
 </head>
 <body>
-	<h1>It works!</h1>
-	<p>Layout code was rendered in <?php echo __FILE__ ?></p>
-	<p>You are browsing <?php echo $_SERVER['REQUEST_URI'] ?></p>
-	<div>
-		<?php echo $this->view->render() ?>
+	<div id="main-wrapper">
+		<div id="header">
+			<h1>
+				<a href="<?php echo $this->urlHelper->url('/') ?>">
+				MALgraph
+				</a>
+			</h1>
+		</div>
+		<div id="content">
+			<?php echo $this->view->render() ?>
+		</div>
+		<div id="footer">
+			<p><a href="<?php echo $this->urlHelper->url('/index/about') ?>">About</a></p>
+			<p><a href="<?php echo $this->urlHelper->url('/index/privacy') ?>">Privacy policy</a></p>
+			<p>Suggestions? Questions? Visit the <a href="http://myanimelist.net/clubs.php?cid=30017">MALgraph club</a> and ask!</p>
+		</div>
 	</div>
-	<p>Current controller: <?php echo $this->config->chibi->runtime->controllerName ?><br>
-	Current action: <?php echo $this->config->chibi->runtime->actionName ?><br>
 </body>
 </html>
