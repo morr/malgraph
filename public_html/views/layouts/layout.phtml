@@ -13,9 +13,43 @@
 				</a>
 			</h1>
 		</div>
-		<div id="content">
-			<?php echo $this->view->render() ?>
+
+		<div id="main">
+			<?php if (!empty($this->view->userName)): ?>
+				<div id="menu">
+					<?php
+						$menu = array(
+							array('controller' => 'stats', 'action' => 'index', 'text' => 'Profile'),
+							array('controller' => 'stats', 'action' => 'list', 'text' => 'List'),
+							array('controller' => 'stats', 'action' => 'scores', 'text' => 'Scores'),
+							array('controller' => 'stats', 'action' => 'history', 'text' => 'History'),
+							array('controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'),
+							array('controller' => 'stats', 'action' => 'misc', 'text' => 'Miscellaneous'),
+							array('controller' => 'stats', 'action' => 'sug', 'text' => 'Suggestions'),
+						);
+					?>
+					<ul>
+						<?php foreach ($menu as $item): ?>
+							<?php if ($this->view->controllerName == $item['controller'] and $this->view->actionName == $item['action']): ?>
+								<li class="active">
+							<?php else: ?>
+								<li>
+							<?php endif ?>
+								<a href="<?php echo $this->urlHelper->url($item['controller'] . '/' . $item['action'], array('user-name' => $this->view->userName)) ?>">
+									<?php echo $item['text'] ?>
+								</a>
+							</li>
+						<?php endforeach ?>
+					</ul>
+				</div>
+			<?php endif ?>
+
+			<div id="content">
+				<?php echo $this->view->render() ?>
+			</div>
+			<div class="clear"></div>
 		</div>
+
 		<div id="footer">
 			<p><a href="<?php echo $this->urlHelper->url('/index/about') ?>">About</a></p>
 			<p><a href="<?php echo $this->urlHelper->url('/index/privacy') ?>">Privacy policy</a></p>

@@ -1,4 +1,14 @@
 <?php
+class HTTPException extends Exception {
+	public function __construct($httpCode, $message) {
+		$this->httpCode = $httpCode;
+		$this->message = $message;
+	}
+	public function getHTTPCode() {
+		return $this->httpCode;
+	}
+}
+
 class AbstractController extends ChibiController {
 	public function init() {
 		$this->view->controllerName = $this->config->chibi->runtime->controllerName;
@@ -26,5 +36,25 @@ class AbstractController extends ChibiController {
 			$this->headHelper->addScript($this->urlHelper->url($p));
 		}
 
+		session_start();
+		if (!empty($_GET['user-name'])) {
+			$this->view->userName = $_GET['user-name'];
+		}
 	}
+
+	public function work() {
+		try {
+			parent::work();
+		} catch (HTTPException $e) {
+			$c = ChibiController::getInstance($this->config->chibi->basic->errorController, $this->config->chibi->basic->errorHttpAction);
+			$c->errorCode = $e->getHTTPCode();
+			$c->message = $e->getMessage();
+			$c->work();
+		} catch (Exception $e) {
+			$c = ChibiController::getInstance($this->config->chibi->basic->errorController, $this->config->chibi->basic->errorHttpAction);
+			$c->message = $e->getMessage();
+			$c->work();
+		}
+	}
+
 }

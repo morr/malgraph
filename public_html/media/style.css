@@ -5,13 +5,14 @@ body {
 	font-family: 'Verdana', 'Dejavu sans', sans-serif;
 	font-size: 9pt;
 }
+.clear { clear: both; }
 
 #main-wrapper {
 	width: 600px;
 	text-align: left;
 	margin: 0 auto;
 }
-	#content {
+	#main {
 		min-height: 400px;
 		padding: 10px 0;
 		margin-top: 10px;
@@ -21,6 +22,35 @@ body {
 	#content *:first-child {
 		margin-top: 0;
 	}
+
+	#menu {
+		width: 100px;
+		float: left;
+		margin-right: 10px;
+	}
+		#menu ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+			#menu li {
+				margin: 0;
+				padding: 0;
+			}
+			#menu ul a {
+				display: block;
+				color: black;
+				padding: 4px 8px;
+				margin-left: -8px;
+			}
+			#menu ul li.active a {
+				background: #f5f5f5;
+				color: #a00;
+			}
+			#menu ul li a:hover {
+				background: #eee;
+				text-decoration: none;
+			}
 
 	#header {
 		position: relative;
