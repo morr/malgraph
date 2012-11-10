@@ -11,4 +11,7 @@ class IndexController extends AbstractController {
 		}
 		$this->forward($this->urlHelper->url('stats/index', array('user-name' => $_POST['username'])));
 	}
+
+	public function wrongUserAction() {
+	}
 }

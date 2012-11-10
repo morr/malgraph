@@ -1,0 +1,55 @@
+.user-pic {
+	max-width: 130px;
+	border: 1px solid gray;
+	margin-right: 10px;
+	float: left;
+}
+div.basic {
+	float: left;
+}
+div.basic ul {
+	margin-top: 15px;
+}
+
+dt {
+	clear: left;
+	float: left;
+	font-weight: bold;
+	width: 10em;
+}
+dt:after {
+	content: ': ';
+}
+dd {
+	margin: 0;
+	padding: 0;
+	float: left;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+	#friends {
+		columns: auto 3;
+		-webkit-columns: auto 3;
+		-moz-columns: auto 3;
+	}
+	#clubs {
+		columns: auto 2;
+		-webkit-columns: auto 2;
+		-moz-columns: auto 2;
+	}
+		#clubs i {
+			position: absolute;
+		}
+		#clubs a {
+			display: inline-block;
+			margin-left: 21px;
+			overflow: hidden;
+		}
+
+#content [class^='icon-'] {
+	margin-right: 5px;
+}

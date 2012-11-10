@@ -47,4 +47,24 @@ class mgHelper extends ChibiHelper {
 		}
 		return '?';
 	}
+
+	public function parseURL($url) {
+		$parts = parse_url($url);
+		if (isset($parts['query'])) {
+			parse_str(urldecode($parts['query']), $parts['query']);
+		}
+		return $parts;
+	}
+
+	public function replaceTokens($input, array $tokens) {
+		$output = $input;
+		foreach ($tokens as $key => $val) {
+			$output = str_replace('{' . $key . '}', $val, $output);
+		}
+		return $output;
+	}
+
+	public function download($url) {
+		return file_get_contents($url);
+	}
 }

@@ -12,21 +12,30 @@
 				MALgraph
 				</a>
 			</h1>
+			<form id="search" action="<?php echo $this->urlHelper->url('/index/search') ?>" method="post">
+				<div class="control-group input-append">
+					<input type="search" name="username">
+					<button title="Search" class="btn" type="submit"><i class="icon-search"></i></button>
+					<button title="Compare" class="btn" type="submit"><i class="icon-compare"></i></button>
+				</div>
+			</form>
+			<div class="clear"></div>
 		</div>
 
 		<div id="main">
-			<?php if (!empty($this->view->userName)): ?>
+			<?php if ($this->view->controllerName == 'stats' and !empty($this->view->userName)): ?>
 				<div id="menu">
 					<?php
-						$menu = array(
-							array('controller' => 'stats', 'action' => 'index', 'text' => 'Profile'),
-							array('controller' => 'stats', 'action' => 'list', 'text' => 'List'),
-							array('controller' => 'stats', 'action' => 'scores', 'text' => 'Scores'),
-							array('controller' => 'stats', 'action' => 'history', 'text' => 'History'),
-							array('controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'),
-							array('controller' => 'stats', 'action' => 'misc', 'text' => 'Miscellaneous'),
-							array('controller' => 'stats', 'action' => 'sug', 'text' => 'Suggestions'),
-						);
+						$menu = [
+							['controller' => 'stats', 'action' => 'index', 'text' => 'Profile'],
+							['controller' => 'stats', 'action' => 'list', 'text' => 'List'],
+							['controller' => 'stats', 'action' => 'scores', 'text' => 'Scores'],
+							['controller' => 'stats', 'action' => 'history', 'text' => 'History'],
+							['controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'],
+							['controller' => 'stats', 'action' => 'misc', 'text' => 'Miscellaneous'],
+							['controller' => 'stats', 'action' => 'sug', 'text' => 'Suggestions'],
+							['controller' => 'stats', 'action' => 'json', 'text' => 'JSON'],
+						];
 					?>
 					<ul>
 						<?php foreach ($menu as $item): ?>
@@ -35,7 +44,7 @@
 							<?php else: ?>
 								<li>
 							<?php endif ?>
-								<a href="<?php echo $this->urlHelper->url($item['controller'] . '/' . $item['action'], array('user-name' => $this->view->userName)) ?>">
+								<a href="<?php echo $this->urlHelper->url($item['controller'] . '/' . $item['action'], ['user-name' => $this->view->userName]) ?>">
 									<?php echo $item['text'] ?>
 								</a>
 							</li>

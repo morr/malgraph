@@ -11,6 +11,8 @@ class HTTPException extends Exception {
 
 class AbstractController extends ChibiController {
 	public function init() {
+		$this->registry->loadModel('user');
+
 		$this->view->controllerName = $this->config->chibi->runtime->controllerName;
 		$this->view->actionName = $this->config->chibi->runtime->actionName;
 
@@ -19,6 +21,7 @@ class AbstractController extends ChibiController {
 		$this->headHelper->addStylesheet($this->urlHelper->url('/media/style.css'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('/media/bootstrap.min.css'));
 		$this->headHelper->addScript($this->urlHelper->url('/media/jquery.min.js'));
+		$this->headHelper->setFavicon($this->urlHelper->url('/media/img/favicon.png'));
 
 		//dynamic css
 		if (file_exists($p = 'media' . DIRECTORY_SEPARATOR . $this->view->controllerName . '.css')) {
@@ -36,9 +39,15 @@ class AbstractController extends ChibiController {
 			$this->headHelper->addScript($this->urlHelper->url($p));
 		}
 
-		session_start();
 		if (!empty($_GET['user-name'])) {
 			$this->view->userName = $_GET['user-name'];
+		}
+
+		if (!empty($_SESSION['am'])) {
+			$this->view->am = $_SESSION['am'];
+		}
+		if ($this->view->am != UserModel::USER_LIST_TYPE_MANGA) {
+			$this->view->am = UserModel::USER_LIST_TYPE_ANIME;
 		}
 	}
 
