@@ -11,6 +11,9 @@ class HTTPException extends Exception {
 
 class AbstractController extends ChibiController {
 	public function init() {
+		if (!session_id()) {
+			session_start();
+		}
 		$this->registry->loadModel('user');
 
 		$this->view->controllerName = $this->config->chibi->runtime->controllerName;

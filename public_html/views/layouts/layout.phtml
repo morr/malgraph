@@ -12,13 +12,16 @@
 	<?php endif ?>
 		<div id="header">
 			<h1>
-				<a href="<?php echo $this->urlHelper->url('/') ?>">
+				<a href="<?php echo $this->urlHelper->url('') ?>">
 					<span>MALgraph</span>
 				</a>
 			</h1>
-			<form class="waitable" id="search" action="<?php echo $this->urlHelper->url('/stats/search') ?>" method="post">
+			<form class="waitable" id="search" action="<?php echo $this->urlHelper->url('stats/search') ?>" method="post">
 				<?php if (!empty($this->view->userNames)): ?>
 					<input type="hidden" name="active-user-name" value="<?php echo reset($this->view->userNames) ?>">
+				<?php endif ?>
+				<?php if (!empty($this->view->am)): ?>
+					<input type="hidden" name="am" value="<?php echo $this->view->am ?>">
 				<?php endif ?>
 				<div class="control-group input-append">
 					<input type="search" name="user-name">
@@ -36,6 +39,19 @@
 		<div id="main">
 			<?php if ($this->view->controllerName == 'stats'): ?>
 				<div id="menu">
+					<ul class="am">
+						<?php foreach ([UserModel::USER_LIST_TYPE_ANIME, UserModel::USER_LIST_TYPE_MANGA] as $type): ?>
+							<?php if ($this->view->am == $type): ?>
+								<li class="active">
+							<?php else: ?>
+								<li>
+							<?php endif ?>
+								<a href="<?php echo $this->urlHelper->url('stats/switch-am', ['am' => $type, 'action' => $this->view->actionName, 'u' => $this->view->userNames]) ?>">
+									<i class="icon-<?php echo $type ?>"></i>
+								</a>
+							</li>
+						<?php endforeach ?>
+					</ul>
 					<?php
 						$menu = [
 							['controller' => 'stats', 'action' => 'profile', 'text' => 'Profile'],
@@ -55,7 +71,7 @@
 							<?php else: ?>
 								<li>
 							<?php endif ?>
-								<a class="waitable" href="<?php echo $this->urlHelper->url($item['controller'] . '/' . $item['action'], ['u' => $this->view->userNames]) ?>">
+								<a class="waitable" href="<?php echo $this->urlHelper->url($item['controller'] . '/' . $item['action'], ['u' => $this->view->userNames, 'am' => $this->view->am]) ?>">
 									<?php echo $item['text'] ?>
 								</a>
 							</li>
@@ -71,8 +87,8 @@
 		</div>
 
 		<div id="footer">
-			<p><a href="<?php echo $this->urlHelper->url('/index/about') ?>">About</a></p>
-			<p><a href="<?php echo $this->urlHelper->url('/index/privacy') ?>">Privacy policy</a></p>
+			<p><a href="<?php echo $this->urlHelper->url('index/about') ?>">About</a></p>
+			<p><a href="<?php echo $this->urlHelper->url('index/privacy') ?>">Privacy policy</a></p>
 			<p>Suggestions? Questions? Visit the <a href="http://myanimelist.net/clubs.php?cid=30017">MALgraph club</a> and ask!</p>
 		</div>
 	</div>

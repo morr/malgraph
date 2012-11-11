@@ -4,12 +4,20 @@
 	margin-right: 10px;
 	float: left;
 }
+	.user-pic.anonymous {
+		background-image: url('img/gfx.png');
+		background-repeat: no-repeat;
+		background-position: -384px 0px;
+		height: 188px;
+		width: 130px;
+	}
+
 div.basic {
 	float: left;
 }
-div.basic ul {
-	margin-top: 15px;
-}
+	div.basic ul {
+		margin-top: 15px;
+	}
 
 dt {
 	clear: left;
@@ -17,39 +25,38 @@ dt {
 	font-weight: bold;
 	width: 10em;
 }
-dt:after {
-	content: ': ';
-}
-dd {
-	margin: 0;
-	padding: 0;
-	float: left;
-}
+	dt:after {
+		content: ': ';
+	}
+	dd {
+		margin: 0;
+		padding: 0;
+		float: left;
+	}
 
 ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
-	#friends {
-		columns: auto 3;
-		-webkit-columns: auto 3;
-		-moz-columns: auto 3;
+	#clubs, #friends {
+		max-height: 200px;
+		overflow: auto;
 	}
-	#clubs {
-		columns: auto 2;
-		-webkit-columns: auto 2;
-		-moz-columns: auto 2;
-	}
-	#clubs a { position: relative; }
-	#clubs i { position: absolute; }
-	#clubs span { display: inline-block; margin-left: 21px; }
+		#friends {
+			columns: auto 3;
+			-webkit-columns: auto 3;
+			-moz-columns: auto 3;
+		}
+		#clubs {
+			columns: auto 2;
+			-webkit-columns: auto 2;
+			-moz-columns: auto 2;
+		}
+			#clubs a { position: relative; }
+			#clubs i { position: absolute; }
+			#clubs span { display: inline-block; margin-left: 21px; }
 
 #content [class^='icon-'] {
 	margin-right: 5px;
-}
-
-#clubs, #friends {
-	max-height: 200px;
-	overflow: auto;
 }

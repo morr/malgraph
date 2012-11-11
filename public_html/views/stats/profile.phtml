@@ -1,12 +1,13 @@
 <?php foreach ($this->users as $user): ?>
 	<div class="user">
 		<?php if (basename($user['profile-picture-url']) == 'na.gif'): ?>
+			<img alt="No profile picture" class="user-pic anonymous" src="<?php echo $this->urlHelper->url('/media/img/pixel.gif') ?>">
 		<?php else: ?>
-			<img class="user-pic" src="<?php echo $user['profile-picture-url'] ?>">
+			<img alt="Profile picture" class="user-pic" src="<?php echo $user['profile-picture-url'] ?>">
 		<?php endif ?>
 		<div class="basic">
 			<h1>
-				<a href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => $user['user-name']]) ?>">
+				<a href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => $user['user-name'], 'am' => $this->am]) ?>">
 					<?php echo $user['user-name'] ?>
 				</a>
 			</h1>
@@ -65,7 +66,7 @@
 				<?php usort($user['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
 				<?php foreach ($user['friends'] as $friend): ?>
 					<li>
-						<a class="waitable" href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => $friend]) ?>">
+						<a class="waitable" href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => [reset($this->userNames), $friend], 'am' => $this->am]) ?>">
 							<i class="icon-mg"></i>
 						</a>
 						<a href="http://myanimelist.net/profile/<?php echo $friend ?>">
