@@ -7,7 +7,7 @@
 		<?php endif ?>
 		<div class="basic">
 			<h1>
-				<a href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => $user['user-name'], 'am' => $this->am]) ?>">
+				<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $user['user-name'], 'am' => $this->am]) ?>">
 					<?php echo $user['user-name'] ?>
 				</a>
 			</h1>

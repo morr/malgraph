@@ -15,6 +15,8 @@ class AbstractController extends ChibiController {
 			session_start();
 		}
 		$this->registry->loadModel('user');
+		$this->registry->loadModel('anime');
+		$this->registry->loadModel('manga');
 
 		$this->view->controllerName = $this->config->chibi->runtime->controllerName;
 		$this->view->actionName = $this->config->chibi->runtime->actionName;

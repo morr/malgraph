@@ -1,0 +1,52 @@
+<?php foreach ($this->users as $i => $user): ?>
+	<div class="user">
+		<h1>
+			<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $user['user-name'], 'am' => $this->am]) ?>">
+				<?php echo $user['user-name'] ?></a>
+			`s <?php echo $this->am ?> list
+		</h1>
+		<div class="table">
+			<table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>
+							<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'title', 'sort-dir' => $this->sortColumn == 'title' ? 1 - $this->sortDir : 0]) ?>">
+								Title
+							</a>
+						</th>
+						<th>
+							<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'score', 'sort-dir' => $this->sortColumn == 'score' ? 1 - $this->sortDir : 0]) ?>">
+								Score
+							</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php $k = 1 ?>
+					<?php foreach ($user[$this->am]['entries'] as $e): ?>
+						<?php if (in_array($e['user']['status'], [UserModel::USER_LIST_STATUS_PLANNED, UserModel::USER_LIST_STATUS_UNKNOWN])) { continue; } ?>
+						<tr>
+							<td><?php echo $k ++ ?></td>
+							<td>
+								<?php if (count($this->users) > 1): ?>
+									<?php if (empty($this->users[1 - $i][$this->am]['entries'][$e['full']['id']])): ?>
+										<i class="icon-plus"></i>
+									<?php else: ?>
+										<i class="icon-dot"></i>
+									<?php endif ?>
+								<?php endif ?>
+								<?php echo $e['full']['title'] ?>
+							</td>
+							<?php if (empty($e['user']['score'])): ?>
+								<td>-</td>
+							<?php else: ?>
+								<td><?php echo $e['user']['score'] ?></td>
+							<?php endif ?>
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+<?php endforeach ?>

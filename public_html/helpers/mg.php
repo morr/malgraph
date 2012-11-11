@@ -70,8 +70,20 @@ class mgHelper extends ChibiHelper {
 	}
 
 	public function download($url) {
-		$context = stream_context_create(['http' => ['header' => 'Connection: close']]);
-		$contents = @file_get_contents($url, false, $context);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, ['Connection: close', 'User-Agent: Mozilla/5.0 (MALgraph crawler)']);
+		//curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+		$contents = curl_exec($ch);
+		curl_close($ch);
+
+		if (curl_errno($ch)) {
+			return null;
+		}
+
 		$contents = html_entity_decode($contents);
 		return $contents;
 	}

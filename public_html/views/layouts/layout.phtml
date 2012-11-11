@@ -17,8 +17,9 @@
 				</a>
 			</h1>
 			<form class="waitable" id="search" action="<?php echo $this->urlHelper->url('stats/search') ?>" method="post">
-				<?php if (!empty($this->view->userNames)): ?>
+				<?php if ($this->view->controllerName == 'stats'): ?>
 					<input type="hidden" name="active-user-name" value="<?php echo reset($this->view->userNames) ?>">
+					<input type="hidden" name="action" value="<?php echo $this->view->actionName ?>">
 				<?php endif ?>
 				<?php if (!empty($this->view->am)): ?>
 					<input type="hidden" name="am" value="<?php echo $this->view->am ?>">

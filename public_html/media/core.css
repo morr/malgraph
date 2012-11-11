@@ -192,6 +192,9 @@ h1 {
 	a:hover .icon-compare { background-position: -64px -16px; }
 	a:hover .icon-anime { background-position: -80px -16px; }
 	a:hover .icon-manga { background-position: -96px -16px; }
+	a:hover .icon-plus { background-position: -112px -16px; }
+	a:hover .icon-minus { background-position: -128px -16px; }
+	a:hover .icon-dot { background-position: -144px -16px; }
 
 	.icon-mg { background-position: 0 0; }
 	.icon-club { background-position: -16px 0; }
@@ -200,4 +203,7 @@ h1 {
 	.icon-compare { background-position: -64px 0; }
 	.icon-anime { background-position: -80px 0; }
 	.icon-manga { background-position: -96px 0; }
+	.icon-plus { background-position: -112px 0; }
+	.icon-minus { background-position: -128px 0; }
+	.icon-dot { background-position: -144px 0; }
 

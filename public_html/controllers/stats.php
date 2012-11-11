@@ -5,6 +5,20 @@ class StatsController extends AbstractController {
 		parent::init();
 	}
 
+	private function sanitizeAM($am) {
+		if ($am != UserModel::USER_LIST_TYPE_MANGA) {
+			$am = UserModel::USER_LIST_TYPE_ANIME;
+		}
+		return $am;
+	}
+
+	private function sanitizeAction($a) {
+		if (!in_array($a, ['profile', 'list', 'score', 'act', 'fav', 'misc', 'sug', 'json'])) {
+			$a = 'profile';
+		}
+		return $a;
+	}
+
 
 	/*
 	 * Redirect to comparison mode from top search field
@@ -22,13 +36,19 @@ class StatsController extends AbstractController {
 			$u = [$_POST['user-name']];
 		}
 
+		$am = null;
 		if (!empty($_POST['am'])) {
 			$am = $_POST['am'];
-		} else {
-			$am = UserModel::USER_LIST_TYPE_ANIME;
 		}
+		$am = $this->sanitizeAM($am);
 
-		$this->forward($this->urlHelper->url('stats/profile', ['u' => $u, 'am' => $am]));
+		$action = null;
+		if (!empty($_POST['action'])) {
+			$action = $_POST['action'];
+		}
+		$action = $this->sanitizeAction($action);
+
+		$this->forward($this->urlHelper->url('stats/' . $action, ['u' => $u, 'am' => $am]));
 	}
 
 
@@ -39,7 +59,7 @@ class StatsController extends AbstractController {
 		if (empty($_REQUEST['am'])) {
 			throw new Exception('Something went wrong.');
 		}
-		$am = $_REQUEST['am'];
+		$am = $this->sanitizeAM($_REQUEST['am']);
 		$this->forward($this->urlHelper->url('stats/' . $_REQUEST['action'], ['u' => $_REQUEST['u'], 'am' => $am]));
 	}
 
@@ -106,18 +126,75 @@ class StatsController extends AbstractController {
 		if (empty($_GET['am'])) {
 			throw new Exception('Something went wrong.');
 		}
-		$am = $_GET['am'];
-		if ($am != UserModel::USER_LIST_TYPE_MANGA and $am != UserModel::USER_LIST_TYPE_ANIME) {
-			throw new Exception('Something went wrong.');
-		}
+		$am = $this->sanitizeAM($_GET['am']);
 		$this->view->am = $am;
 	}
+
+	private function loadEntries() {
+		$models = [];
+		$models[UserModel::USER_LIST_TYPE_ANIME] = new AnimeModel();
+		$models[UserModel::USER_LIST_TYPE_MANGA] = new MangaModel();
+		foreach ($this->view->users as $i => $u) {
+			foreach ($models as $am => $model) {
+				$entries = $u[$am]['entries'];
+				$nentries = [];
+				foreach ($entries as $k => $e) {
+					$key = $e['id'];
+					$e2 = $model->get($key);
+					if (!empty($e2)) {
+						$nentries[$key] = ['user' => $e, 'full' => $e2];
+					}
+				}
+				$this->view->users[$i][$am]['entries'] = $nentries;
+			}
+		}
+	}
+
 
 	public function profileAction() {
 		$this->loadUsers();
 	}
 
+	public function listAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+
+		$sortFuncs = [
+			'score' => function($a, $b) { return $b['user']['score'] - $a['user']['score']; },
+			'title' => function($a, $b) { return strcasecmp($a['full']['title'], $b['full']['title']); },
+		];
+
+		//get sort column
+		$sortColumn = null;
+		if (isset($_GET['sort-column'])) {
+			$sortColumn = $_GET['sort-column'];
+		}
+		if (!isset($sortFuncs[$sortColumn])) {
+			$sortColumn = 'score';
+		}
+		$this->view->sortColumn = $sortColumn;
+
+		//get sort direction
+		$sortDir = 0;
+		if (isset($_GET['sort-dir'])) {
+			$sortDir = intval($_GET['sort-dir']);
+		}
+		$this->view->sortDir = $sortDir;
+
+		//make sort func
+		$sortFunc = $sortFuncs[$sortColumn];
+		if ($sortDir) {
+			$sortFunc = function($a, $b) use ($sortFunc) { return $sortFunc($b, $a); };
+		}
+
+		//do sort
+		foreach ($this->view->users as &$user) {
+			uasort($user[$this->view->am]['entries'], $sortFunc);
+		}
+	}
+
 	public function jsonAction() {
 		$this->loadUsers();
+		$this->loadEntries();
 	}
 }
