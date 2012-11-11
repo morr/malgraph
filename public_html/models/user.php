@@ -1,5 +1,5 @@
 <?php
-require 'db.php';
+require_once 'db.php';
 class UserModel extends JSONDB {
 	const USER_GENDER_FEMALE = 'F';
 	const USER_GENDER_MALE = 'M';
@@ -27,15 +27,13 @@ class UserModel extends JSONDB {
 	const USER_URL_CLUBS = 'http://myanimelist.net/showclubs.php?id={user-id}';
 	const USER_URL_FRIENDS = 'http://myanimelist.net/friends.php?id={user-id}&show={shift}';
 
-	private $freshTime = 600;
-	private $allowUpdate = false;
-
-	public function allowUpdate($a) {
-		$this->allowUpdate = $a;
-	}
-
 	public function __construct() {
 		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'users';
+	}
+
+	private $allowUpdate = false;
+	public function allowUpdate($a) {
+		$this->allowUpdate = $a;
 	}
 
 	public function isFresh($data) {
@@ -45,7 +43,7 @@ class UserModel extends JSONDB {
 		return true;
 	}
 
-	private function fixStatus($malStatus) {
+	protected function fixStatus($malStatus) {
 		switch ($malStatus) {
 			case self::USER_LIST_STATUS_MAL_DROPPED: return self::USER_LIST_STATUS_DROPPED; break;
 			case self::USER_LIST_STATUS_MAL_ONHOLD: return self::USER_LIST_STATUS_ONHOLD; break;
@@ -56,7 +54,7 @@ class UserModel extends JSONDB {
 		return self::USER_LIST_STATUS_UNKNOWN;
 	}
 
-	private function loadLists(array &$user) {
+	protected function loadLists(array &$user) {
 		$urls = [];
 		$urls[self::USER_LIST_TYPE_ANIME] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME, ['user' => $user['user-name']]);
 		$urls[self::USER_LIST_TYPE_MANGA] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA, ['user' => $user['user-name']]);
@@ -77,12 +75,7 @@ class UserModel extends JSONDB {
 				throw new Exception('User doesn\'t exist');
 			}
 
-			$list[self::USER_LIST_STATUS_COMPLETED] = [];
-			$list[self::USER_LIST_STATUS_COMPLETING] = [];
-			$list[self::USER_LIST_STATUS_ONHOLD] = [];
-			$list[self::USER_LIST_STATUS_PLANNED] = [];
-			$list[self::USER_LIST_STATUS_DROPPED] = [];
-
+			$list['entries'] = [];
 			$nodes = $xpath->query('//anime | //manga');
 			foreach ($nodes as $node) {
 				$entry = [];
@@ -98,7 +91,7 @@ class UserModel extends JSONDB {
 					$entry['chapters-completed'] = intval($xpath->query('my_read_chapters', $node)->item(0)->nodeValue);
 					$entry['volumes-completed'] = intval($xpath->query('my_read_volumes', $node)->item(0)->nodeValue);
 				}
-				$list[$entry['status']] []= $entry;
+				$list['entries'] []= $entry;
 			}
 
 			$list['time-spent'] = floatval($xpath->query('//user_days_spent_watching')->item(0)->nodeValue);
@@ -106,7 +99,7 @@ class UserModel extends JSONDB {
 	}
 
 
-	private function loadProfile(array &$user) {
+	protected function loadProfile(array &$user) {
 		$this->mgHelper->suppressErrors();
 		$contents = $this->mgHelper->download($this->mgHelper->replaceTokens(self::USER_URL_PROFILE, ['user' => $user['user-name']]));
 		if (!$contents) {
@@ -145,7 +138,6 @@ class UserModel extends JSONDB {
 		$user['clubs'] = [];
 		if (!empty($node)) {
 			$clubCount = intval(substr($node->nodeValue, 13));
-			//buggy encodings
 			if ($clubCount <= 15) {
 				$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'/club\')]');
 				foreach ($q as $node) {
@@ -177,7 +169,7 @@ class UserModel extends JSONDB {
 	}
 
 
-	private function loadClubs(array &$user) {
+	protected function loadClubs(array &$user) {
 		$user['clubs'] = [];
 
 		$this->mgHelper->suppressErrors();
@@ -198,7 +190,7 @@ class UserModel extends JSONDB {
 		}
 	}
 
-	private function loadFriends(array &$user) {
+	protected function loadFriends(array &$user) {
 		$user['friends'] = [];
 
 		$max = 0;
