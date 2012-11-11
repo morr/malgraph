@@ -5,29 +5,40 @@
 	<?php echo $this->headHelper->render() ?>
 </head>
 <body>
+	<?php if ($this->view->controllerName == 'stats' and count($this->view->userNames) > 1): ?>
+	<div id="main-wrapper" class="compare-mode">
+	<?php else: ?>
 	<div id="main-wrapper">
+	<?php endif ?>
 		<div id="header">
 			<h1>
 				<a href="<?php echo $this->urlHelper->url('/') ?>">
-				MALgraph
+					<span>MALgraph</span>
 				</a>
 			</h1>
-			<form id="search" action="<?php echo $this->urlHelper->url('/index/search') ?>" method="post">
+			<form class="waitable" id="search" action="<?php echo $this->urlHelper->url('/stats/search') ?>" method="post">
+				<?php if (!empty($this->view->userNames)): ?>
+					<input type="hidden" name="active-user-name" value="<?php echo reset($this->view->userNames) ?>">
+				<?php endif ?>
 				<div class="control-group input-append">
-					<input type="search" name="username">
-					<button title="Search" class="btn" type="submit"><i class="icon-search"></i></button>
-					<button title="Compare" class="btn" type="submit"><i class="icon-compare"></i></button>
+					<input type="search" name="user-name">
+					<button title="Search" name="submit" value="search" class="btn" type="submit"><i class="icon-search"></i></button>
+					<?php if ($this->view->controllerName == 'stats'): ?>
+						<button title="Compare" name="submit" value="compare" class="btn" type="submit"><i class="icon-compare"></i></button>
+					<?php else: ?>
+						<button title="Compare" name="submit" value="compare" class="btn disabled" disabled="disabled" type="submit"><i class="icon-compare"></i></button>
+					<?php endif ?>
 				</div>
 			</form>
 			<div class="clear"></div>
 		</div>
 
 		<div id="main">
-			<?php if ($this->view->controllerName == 'stats' and !empty($this->view->userName)): ?>
+			<?php if ($this->view->controllerName == 'stats'): ?>
 				<div id="menu">
 					<?php
 						$menu = [
-							['controller' => 'stats', 'action' => 'index', 'text' => 'Profile'],
+							['controller' => 'stats', 'action' => 'profile', 'text' => 'Profile'],
 							['controller' => 'stats', 'action' => 'list', 'text' => 'List'],
 							['controller' => 'stats', 'action' => 'scores', 'text' => 'Scores'],
 							['controller' => 'stats', 'action' => 'history', 'text' => 'History'],
@@ -44,7 +55,7 @@
 							<?php else: ?>
 								<li>
 							<?php endif ?>
-								<a href="<?php echo $this->urlHelper->url($item['controller'] . '/' . $item['action'], ['user-name' => $this->view->userName]) ?>">
+								<a class="waitable" href="<?php echo $this->urlHelper->url($item['controller'] . '/' . $item['action'], ['u' => $this->view->userNames]) ?>">
 									<?php echo $item['text'] ?>
 								</a>
 							</li>
@@ -63,6 +74,13 @@
 			<p><a href="<?php echo $this->urlHelper->url('/index/about') ?>">About</a></p>
 			<p><a href="<?php echo $this->urlHelper->url('/index/privacy') ?>">Privacy policy</a></p>
 			<p>Suggestions? Questions? Visit the <a href="http://myanimelist.net/clubs.php?cid=30017">MALgraph club</a> and ask!</p>
+		</div>
+	</div>
+
+	<div id="glider">
+		<div>
+			<div class="target"></div>
+			<p></p>
 		</div>
 	</div>
 </body>

@@ -5,13 +5,7 @@ class IndexController extends AbstractController {
 		$this->view->userName = null;
 	}
 
-	public function searchAction() {
-		if (empty($_POST['username'])) {
-			throw new Exception('Empty user name.');
-		}
-		$this->forward($this->urlHelper->url('stats/index', array('user-name' => $_POST['username'])));
-	}
-
 	public function wrongUserAction() {
+		$this->view->userName = @$_GET['user-name'];
 	}
 }

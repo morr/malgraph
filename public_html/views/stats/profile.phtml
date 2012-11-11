@@ -1,0 +1,97 @@
+<?php foreach ($this->users as $user): ?>
+	<div class="user">
+		<?php if (basename($user['profile-picture-url']) == 'na.gif'): ?>
+		<?php else: ?>
+			<img class="user-pic" src="<?php echo $user['profile-picture-url'] ?>">
+		<?php endif ?>
+		<div class="basic">
+			<h1>
+				<a href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => $user['user-name']]) ?>">
+					<?php echo $user['user-name'] ?>
+				</a>
+			</h1>
+			<dl>
+				<?php
+					if (intval($user['join-date']))
+					{
+						list ($year, $month, $day) = explode ('-', $user['join-date']);
+						$time = mktime(0, 0, 0, $month, $day, $year);
+						$diff = time() - $time;
+						$diff /= 3600 * 24;
+						echo '<dt>Time on MAL</dt>';
+						echo '<dd>' . sprintf('%.1f', $diff / 361.25) . ' years</dd>';
+					}
+				?>
+
+				<dt>List views</dt>
+				<dd><?php echo $user[$this->am]['list-views'] ?></dd>
+
+				<dt>Total clubs</dt>
+				<dd><?php echo count($user['clubs']) ?></dd>
+
+				<dt>Total friends</dt>
+				<dd><?php echo count($user['friends']) ?></dd>
+			</dl>
+
+			<div class="clear"></div>
+			<ul>
+				<li>
+					<a href="http://myanimelist.net/profile/<?php echo $user['user-name'] ?>">
+						<i class="icon-pop-out"></i>
+						MAL profile
+					</a>
+				</li>
+				<li>
+					<a href="http://myanimelist.net/animelist/<?php echo $user['user-name'] ?>">
+						<i class="icon-pop-out"></i>
+						MAL anime list
+					</a>
+				</li>
+				<li>
+					<a href="http://myanimelist.net/mangalist/<?php echo $user['user-name'] ?>">
+						<i class="icon-pop-out"></i>
+						MAL manga list
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+
+		<p><strong>Friends:</strong></p>
+		<?php if (empty($user['friends'])): ?>
+			This user has no friends on MAL. :(
+		<?php else: ?>
+			<ul id="friends">
+				<?php usort($user['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
+				<?php foreach ($user['friends'] as $friend): ?>
+					<li>
+						<a class="waitable" href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => $friend]) ?>">
+							<i class="icon-mg"></i>
+						</a>
+						<a href="http://myanimelist.net/profile/<?php echo $friend ?>">
+							<span><?php echo $friend ?></span>
+						</a>
+					</li>
+				<?php endforeach ?>
+			</ul>
+		<?php endif ?>
+
+		<p><strong>Clubs:</strong></p>
+		<?php if (empty($user['clubs'])): ?>
+			<p>This user doesn't belong to any clubs.</p>
+		<?php else: ?>
+			<ul id="clubs">
+				<?php usort($user['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>
+				<?php foreach ($user['clubs'] as $club): ?>
+					<li>
+						<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club['id'] ?>">
+							<i class="icon-club"></i>
+							<span><?php echo $club['name'] ?></span>
+						</a>
+					</li>
+				<?php endforeach ?>
+			</ul>
+		<?php endif ?>
+	</div>
+<?php endforeach ?>
+<div class="clear"></div>

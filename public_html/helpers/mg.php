@@ -9,14 +9,19 @@ class mgHelper extends ChibiHelper {
 		return $subject;
 	}
 
+	public function fixText($str) {
+		$str = utf8_decode($str);
+		return $this->removeSpaces($str);
+	}
+
 	public function fixDate($str) {
 		$str = str_replace('  ', ' ', $str);
 		if($str == '?' or $str == 'Not available')
 			return '?';
-		$monthNames = array (
-			array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'),
-			array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
-		);
+		$monthNames = [
+			['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+			['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+		];
 		$x = explode(' ', $str);
 		if (count($x) == 3) {
 			$month = trim($x[0], ',');
@@ -65,6 +70,17 @@ class mgHelper extends ChibiHelper {
 	}
 
 	public function download($url) {
-		return file_get_contents($url);
+		$context = stream_context_create(['http' => ['header' => 'Connection: close']]);
+		$contents = @file_get_contents($url, false, $context);
+		$contents = html_entity_decode($contents);
+		return $contents;
+	}
+
+	private $errorHandler;
+	public function suppressErrors() {
+		$this->errorHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {});
+	}
+	public function restoreErrors() {
+		set_error_handler($this->errorHandler);
 	}
 }

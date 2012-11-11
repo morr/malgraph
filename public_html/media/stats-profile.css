@@ -41,15 +41,15 @@ ul {
 		-webkit-columns: auto 2;
 		-moz-columns: auto 2;
 	}
-		#clubs i {
-			position: absolute;
-		}
-		#clubs a {
-			display: inline-block;
-			margin-left: 21px;
-			overflow: hidden;
-		}
+	#clubs a { position: relative; }
+	#clubs i { position: absolute; }
+	#clubs span { display: inline-block; margin-left: 21px; }
 
 #content [class^='icon-'] {
 	margin-right: 5px;
+}
+
+#clubs, #friends {
+	max-height: 200px;
+	overflow: auto;
 }

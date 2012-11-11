@@ -30,14 +30,6 @@ class UserModel extends JSONDB {
 	private $freshTime = 600;
 	private $allowUpdate = false;
 
-	private $errorHandler;
-	private function suppressErrors() {
-		$this->errorHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {});
-	}
-	private function restoreErrors() {
-		set_error_handler($this->errorHandler);
-	}
-
 	public function allowUpdate($a) {
 		$this->allowUpdate = $a;
 	}
@@ -74,15 +66,15 @@ class UserModel extends JSONDB {
 
 			$doc = new DOMDocument;
 			$doc->preserveWhiteSpace = false;
-			$this->suppressErrors();
+			$this->mgHelper->suppressErrors();
 			$contents = $this->mgHelper->download($urls[$type]);
 			$doc->loadHTML($contents);
-			$this->restoreErrors();
+			$this->mgHelper->restoreErrors();
 			$xpath = new DOMXPath($doc);
 
 			if ($xpath->query('//myinfo')->length == 0) {
 				//user not found?
-				return null;
+				throw new Exception('User doesn\'t exist');
 			}
 
 			$list[self::USER_LIST_STATUS_COMPLETED] = [];
@@ -115,28 +107,32 @@ class UserModel extends JSONDB {
 
 
 	private function loadProfile(array &$user) {
+		$this->mgHelper->suppressErrors();
 		$contents = $this->mgHelper->download($this->mgHelper->replaceTokens(self::USER_URL_PROFILE, ['user' => $user['user-name']]));
+		if (!$contents) {
+			$this->mgHelper->restoreErrors();
+			throw new Exception('User doesn\'t exist');
+		}
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
-		$this->suppressErrors();
 		$doc->loadHTML($contents);
 		$xpath = new DOMXPath($doc);
 
 		$user[self::USER_LIST_TYPE_ANIME]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Anime List Views\']/following-sibling::td')->item(0)->nodeValue));
 		$user[self::USER_LIST_TYPE_MANGA]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Manga List Views\']/following-sibling::td')->item(0)->nodeValue));
-		$user['user-name'] = $xpath->query('//title')->item(0)->nodeValue;
+		$user['user-name'] = $this->mgHelper->fixText($xpath->query('//title')->item(0)->nodeValue);
 		$user['user-name'] = substr($user['user-name'], 0, strpos($user['user-name'], '\'s Profile'));
 
 		$user['birthday'] = $this->mgHelper->fixDate($xpath->query('//td[text() = \'Birthday\']/following-sibling::td')->item(0)->nodeValue);
-		$user['location'] = $xpath->query('//td[text() = \'Location\']/following-sibling::td')->item(0)->nodeValue;
-		$user['website'] = $xpath->query('//td[text() = \'Website\']/following-sibling::td')->item(0)->nodeValue;
+		$user['location'] = $this->mgHelper->fixText($xpath->query('//td[text() = \'Location\']/following-sibling::td')->item(0)->nodeValue);
+		$user['website'] = $this->mgHelper->fixText($xpath->query('//td[text() = \'Website\']/following-sibling::td')->item(0)->nodeValue);
 		$user['comment-count'] = intval($xpath->query('//td[text() = \'Comments\']/following-sibling::td')->item(0)->nodeValue);
 		$user['post-count'] = intval($xpath->query('//td[text() = \'Forum Posts\']/following-sibling::td')->item(0)->nodeValue);
 		$user['profile-picture-url'] = $xpath->query('//td[@class = \'profile_leftcell\']//img')->item(0)->getAttribute('src');
 		$user['join-date'] = $this->mgHelper->fixDate($xpath->query('//td[text() = \'Join Date\']/following-sibling::td')->item(0)->nodeValue);
 		$url = $this->mgHelper->parseURL($xpath->query('//a[text() = \'All Comments\']')->item(0)->getAttribute('href'));
 		$user['user-id'] = intval($url['query']['id']);
-		$this->restoreErrors();
+		$this->mgHelper->restoreErrors();
 
 		$gender = $xpath->query('//td[text() = \'Gender\']/following-sibling::td')->item(0)->nodeValue;
 		switch($gender) {
@@ -149,13 +145,14 @@ class UserModel extends JSONDB {
 		$user['clubs'] = [];
 		if (!empty($node)) {
 			$clubCount = intval(substr($node->nodeValue, 13));
+			//buggy encodings
 			if ($clubCount <= 15) {
 				$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'/club\')]');
 				foreach ($q as $node) {
 					$url = $this->mgHelper->parseURL($node->getAttribute('href'));
 					$club = [];
 					$club['id'] = intval($url['query']['cid']);
-					$club['name'] = $node->nodeValue;
+					$club['name'] = $this->mgHelper->fixText($node->nodeValue);
 					$user['clubs'] []= $club;
 				}
 			} else {
@@ -170,7 +167,7 @@ class UserModel extends JSONDB {
 			if ($friendCount <= 30) {
 				$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'profile\')]');
 				foreach ($q as $node) {
-					$user['friends'] []= $node->nodeValue;
+					$user['friends'] []= $this->mgHelper->fixText($node->nodeValue);
 				}
 			} else {
 				$this->loadFriends($user);
@@ -181,22 +178,22 @@ class UserModel extends JSONDB {
 
 
 	private function loadClubs(array &$user) {
-		$user['clubs'] = array();
+		$user['clubs'] = [];
 
-		$this->suppressErrors();
+		$this->mgHelper->suppressErrors();
 		$contents = $this->mgHelper->download($this->mgHelper->replaceTokens(self::USER_URL_CLUBS, ['user-id' => $user['user-id']]));
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
 		$doc->loadHTML($contents);
 		$xpath = new DOMXPath($doc);
-		$this->restoreErrors();
+		$this->mgHelper->restoreErrors();
 
 		$nodes = $xpath->query('//ol//li//a');
 		foreach ($nodes as $node) {
 			$url = $this->mgHelper->parseURL($node->getAttribute('href'));
 			$club = [];
 			$club['id'] = intval($url['query']['cid']);
-			$club['name'] = $node->nodeValue;
+			$club['name'] = $this->mgHelper->fixText($node->nodeValue);
 			$user['clubs'] []= $club;
 		}
 	}
@@ -208,20 +205,20 @@ class UserModel extends JSONDB {
 		$shift = 0;
 		$page = 6 * 7;
 		do {
-			$this->suppressErrors();
+			$this->mgHelper->suppressErrors();
 			$contents = $this->mgHelper->download($this->mgHelper->replaceTokens(self::USER_URL_FRIENDS, ['user-id' => $user['user-id'], 'shift' => $shift]));
 			$doc = new DOMDocument;
 			$doc->preserveWhiteSpace = false;
 			$doc->loadHTML($contents);
 			$xpath = new DOMXPath($doc);
-			$this->restoreErrors();
+			$this->mgHelper->restoreErrors();
 
 			preg_match('/ has (\d+) friends/', $contents, $results);
 			$max = intval($results[1]);
 
 			$nodes = $xpath->query('//table//div[contains(@style, \'margin\')]/a[contains(@href, \'profile\')]');
 			foreach ($nodes as $node) {
-				$user['friends'] []= $node->nodeValue;
+				$user['friends'] []= $this->mgHelper->fixText($node->nodeValue);
 			}
 
 			$shift += $page;
@@ -238,8 +235,12 @@ class UserModel extends JSONDB {
 		$user['generated'] = time();
 		$user['expires'] = time() + 3600 * 24;
 
-		$this->loadLists($user);
-		$this->loadProfile($user);
+		try {
+			$this->loadLists($user);
+			$this->loadProfile($user);
+		} catch (Exception $e) {
+			return null;
+		}
 
 		return $user;
 	}

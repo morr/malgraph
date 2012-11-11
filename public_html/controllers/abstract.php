@@ -18,10 +18,11 @@ class AbstractController extends ChibiController {
 
 		//basic settings
 		$this->headHelper->setTitle('MALgraph');
-		$this->headHelper->addStylesheet($this->urlHelper->url('/media/style.css'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('/media/bootstrap.min.css'));
-		$this->headHelper->addScript($this->urlHelper->url('/media/jquery.min.js'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('/media/core.css'));
 		$this->headHelper->setFavicon($this->urlHelper->url('/media/img/favicon.png'));
+		$this->headHelper->addScript($this->urlHelper->url('/media/jquery.min.js'));
+		$this->headHelper->addScript($this->urlHelper->url('/media/core.js'));
 
 		//dynamic css
 		if (file_exists($p = 'media' . DIRECTORY_SEPARATOR . $this->view->controllerName . '.css')) {
@@ -39,16 +40,6 @@ class AbstractController extends ChibiController {
 			$this->headHelper->addScript($this->urlHelper->url($p));
 		}
 
-		if (!empty($_GET['user-name'])) {
-			$this->view->userName = $_GET['user-name'];
-		}
-
-		if (!empty($_SESSION['am'])) {
-			$this->view->am = $_SESSION['am'];
-		}
-		if ($this->view->am != UserModel::USER_LIST_TYPE_MANGA) {
-			$this->view->am = UserModel::USER_LIST_TYPE_ANIME;
-		}
 	}
 
 	public function work() {

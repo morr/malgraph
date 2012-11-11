@@ -1,1 +1,5 @@
-<pre><?php echo json_encode($this->user, JSON_PRETTY_PRINT) ?></pre>
+<?php foreach ($this->users as $user): ?>
+	<div class="user">
+		<pre><?php echo json_encode($user, JSON_PRETTY_PRINT) ?></pre>
+	</div>
+<?php endforeach ?>
