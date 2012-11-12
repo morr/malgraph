@@ -47,7 +47,7 @@
 							<?php else: ?>
 								<li>
 							<?php endif ?>
-								<a href="<?php echo $this->urlHelper->url('stats/switch-am', ['am' => $type, 'action' => $this->view->actionName, 'u' => $this->view->userNames]) ?>">
+								<a title="Switch to <?php echo $type ?> view" href="<?php echo $this->urlHelper->url('stats/switch-am', ['am' => $type, 'action' => $this->view->actionName, 'u' => $this->view->userNames]) ?>">
 									<i class="icon-<?php echo $type ?>"></i>
 								</a>
 							</li>
