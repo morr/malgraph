@@ -155,22 +155,50 @@ class StatsController extends AbstractController {
 		$this->loadUsers();
 	}
 
+
+
 	public function listAction() {
 		$this->loadUsers();
 		$this->loadEntries();
 
-		$sortFuncs = [
-			'score' => function($a, $b) { return $b['user']['score'] - $a['user']['score']; },
-			'title' => function($a, $b) { return strcasecmp($a['full']['title'], $b['full']['title']); },
-		];
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/jquery.jscrollpane.css'));
+		$this->headHelper->addScript($this->urlHelper->url('media/jquery.mousewheel.min.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/jquery.jscrollpane.min.js'));
+
+		foreach ($this->view->users as $i => &$u) {
+			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
+				$e['others'] = [];
+				$e['user']['unique'] = true;
+			}
+		}
+
+		if (count($this->view->users) > 1) {
+			$sortFuncs['unique'] = function($a, $b) { return $a['user']['unique'] - $b['user']['unique']; };
+			foreach ($this->view->users as $i => &$u) {
+				foreach ($this->view->users as $j => &$u2) {
+					if ($i == $j) {
+						continue;
+					}
+					foreach ($u[$this->view->am]['entries'] as $k => &$e) {
+						$key = $e['full']['id'];
+						$l2 = &$u2[$this->view->am]['entries'];
+						if (!empty($l2[$key])) {
+							$e2 = $l2[$key];
+							$e['others'] []= &$e2;
+						}
+					}
+				}
+				foreach ($u[$this->view->am]['entries'] as $k => &$e) {
+					$e['user']['unique'] = empty($e['others']);
+				}
+			}
+		}
+
 
 		//get sort column
 		$sortColumn = null;
 		if (isset($_GET['sort-column'])) {
 			$sortColumn = $_GET['sort-column'];
-		}
-		if (!isset($sortFuncs[$sortColumn])) {
-			$sortColumn = 'score';
 		}
 		$this->view->sortColumn = $sortColumn;
 
@@ -181,17 +209,39 @@ class StatsController extends AbstractController {
 		}
 		$this->view->sortDir = $sortDir;
 
-		//make sort func
-		$sortFunc = $sortFuncs[$sortColumn];
-		if ($sortDir) {
-			$sortFunc = function($a, $b) use ($sortFunc) { return $sortFunc($b, $a); };
-		}
+		//sort statuses like MAL order
+		$statuses = array_flip([
+			UserModel::USER_LIST_STATUS_WATCHING,
+			UserModel::USER_LIST_STATUS_COMPLETED,
+			UserModel::USER_LIST_STATUS_ONHOLD,
+			UserModel::USER_LIST_STATUS_DROPPED,
+			UserModel::USER_LIST_STATUS_PLANNED,
+			UserModel::USER_LIST_STATUS_UNKNOWN,
+		]);
 
 		//do sort
-		foreach ($this->view->users as &$user) {
-			uasort($user[$this->view->am]['entries'], $sortFunc);
+		foreach ($this->view->users as &$u) {
+			$sortDirs = [
+				'status' => 1,
+				'title' => 1,
+				'score' => 0,
+				'unique' => 1
+			];
+			$sort = array_fill_keys($sortDirs, []);
+			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
+				$sort['status'][$k] = $statuses[$e['user']['status']];
+				$sort['score'][$k] = $e['user']['score'];
+				$sort['title'][$k] = $e['full']['title'];
+				$sort['unique'][$k] = $e['user']['unique'];
+			}
+			if (empty($sort[$sortColumn])) {
+				$sortColumn = 'score';
+			}
+			array_multisort($sort[$sortColumn], $sortDirs[$sortColumn] ^ $sortDir ? SORT_ASC : SORT_DESC, $sort['title'], SORT_ASC, $u[$this->view->am]['entries']);
 		}
 	}
+
+
 
 	public function jsonAction() {
 		$this->loadUsers();

@@ -91,8 +91,19 @@
 			<p><a href="<?php echo $this->urlHelper->url('index/about') ?>">About</a></p>
 			<p><a href="<?php echo $this->urlHelper->url('index/privacy') ?>">Privacy policy</a></p>
 			<p>Suggestions? Questions? Visit the <a href="http://myanimelist.net/clubs.php?cid=30017">MALgraph club</a> and ask!</p>
+			<p><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</p>
 		</div>
 	</div>
+
+	<?php if ($this->view->controllerName == 'stats'): ?>
+		<script type="text/javascript">
+			window.setTimeout(function() {
+				var url = <?php echo json_encode($this->urlHelper->url('stats/regenerate')) ?>;
+				var data = <?php echo json_encode(['user-name' => reset($this->view->userNames)]) ?>;
+				$.get(url, data, function(response) { /*alert(response);*/ });
+			}, 1500);
+		</script>
+	<?php endif ?>
 
 	<div id="glider">
 		<div>

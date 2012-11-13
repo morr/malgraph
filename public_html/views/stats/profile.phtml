@@ -5,12 +5,19 @@
 		<?php else: ?>
 			<img alt="Profile picture" class="user-pic" src="<?php echo $user['profile-picture-url'] ?>">
 		<?php endif ?>
+		<h2>
+			<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $user['user-name'], 'am' => $this->am]) ?>">
+				<?php echo $user['user-name'] ?>
+			</a>
+
+			<?php $x = date_default_timezone_get() ?>
+			<?php date_default_timezone_set('UTC') ?>
+			<span class="updated" title="When was this profile last updated">
+				<?php echo date('M d, H:i', $user['generated']) ?> UTC
+			</span>
+			<?php date_default_timezone_set($x) ?>
+		</h2>
 		<div class="basic">
-			<h1>
-				<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $user['user-name'], 'am' => $this->am]) ?>">
-					<?php echo $user['user-name'] ?>
-				</a>
-			</h1>
 			<dl>
 				<?php
 					if (intval($user['join-date']))
@@ -34,7 +41,6 @@
 				<dd><?php echo count($user['friends']) ?></dd>
 			</dl>
 
-			<div class="clear"></div>
 			<ul>
 				<li>
 					<a href="http://myanimelist.net/profile/<?php echo $user['user-name'] ?>">
@@ -58,7 +64,7 @@
 		</div>
 		<div class="clear"></div>
 
-		<p><strong>Friends:</strong></p>
+		<h3>Friends</h3>
 		<?php if (empty($user['friends'])): ?>
 			This user has no friends on MAL. :(
 		<?php else: ?>
@@ -77,7 +83,7 @@
 			</ul>
 		<?php endif ?>
 
-		<p><strong>Clubs:</strong></p>
+		<h3>Clubs</h3>
 		<?php if (empty($user['clubs'])): ?>
 			<p>This user doesn't belong to any clubs.</p>
 		<?php else: ?>

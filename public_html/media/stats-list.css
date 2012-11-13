@@ -1,6 +1,5 @@
 div.table {
 	max-height: 500px;
-	overflow: auto;
 	position: relative;
 }
 	div.table table {
@@ -8,18 +7,20 @@ div.table {
 	}
 		div.table th,
 		div.table td {
-			padding: 2px 8px;
+			padding: 2px 2px;
+			text-align: center;
 		}
-			div.table th:first-child,
-			div.table td:first-child,
-			div.table th:last-child,
-			div.table td:last-child {
-				text-align: center;
+			div.table th.title,
+			div.table td.title {
+				padding: 2px 8px;
+				text-align: left;
 			}
+			/*.compare-mode div.table td.title i { position: absolute; }
+			.compare-mode div.table th.title { padding-left: 29px; }
+			.compare-mode div.table td.title span { display: block; margin-left: 21px; }*/
 
-			.compare-mode div.table th:nth-child(2) { padding-left: 29px; }
-			.compare-mode div.table td:nth-child(2) span { display: block; margin-left: 21px; }
-			div.table td i { position: absolute; }
+		div.table th.ord,
+		div.table td.ord { display: none; }
 
 		div.table td.same-score { color: black; }
 		div.table td.higher-score { color: #0a0; }

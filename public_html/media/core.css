@@ -16,14 +16,17 @@ body {
 	#main {
 		min-height: 450px;
 		padding: 10px 0;
-		border-top: 4px solid #eee;
 		border-bottom: 4px solid #eee;
 	}
-	.compare-mode #content {
-		width: 924px;
-	}
 	#content {
-		width: 550px;
+		width: 670px;
+	}
+	#menu+#content {
+		margin-left: 110px;
+		width: 560px;
+	}
+	.compare-mode #menu+#content {
+		width: 924px;
 	}
 	#content *:first-child {
 		margin-top: 0;
@@ -34,9 +37,6 @@ body {
 		width: 100px;
 		position: absolute;
 	}
-		#menu+#content {
-			margin-left: 110px;
-		}
 		#menu ul {
 			list-style-type: none;
 			margin: 0;
@@ -53,7 +53,7 @@ body {
 			}
 			#menu ul li.active a {
 				background: #f5f5f5;
-				color: #a00;
+				color: #1B6DBF;
 			}
 			#menu ul li a:hover {
 				background: #eee;
@@ -77,31 +77,31 @@ body {
 
 	#header {
 		position: relative;
-		margin: 10px 0 -8px -8px;
+		border-bottom: 4px solid #eee;
 	}
 		#header h1 {
-			margin: 0;
+			margin: 7px 0 0 -7px;
 			padding: 0;
 			display: inline-block;
 			float: left;
 		}
 			#header h1 a {
 				display: inline-block;
-				background-image: url('img/logo.png');
+				background-image: url('img/gfx.png');
 				background-repeat: no-repeat;
-				background-position: top left;
-				width: 186px;
-				height: 41px;
+				background-position: 0 -128px;
+				width: 170px;
+				height: 40px;
 			}
 				#header h1  span {
 					opacity: 0;
 				}
 		#search {
 			float: right;
-			margin: 4px 0;
+			margin: 10px 10px 0 0;
 		}
 			#search input {
-				width: 150px;
+				width: 175px;
 				padding: 1px 4px 1px 4px;
 				margin: 0 -1px 0 0;
 				vertical-align: bottom;
@@ -109,7 +109,7 @@ body {
 			}
 			#search button {
 				display: inline-block;
-				padding: 1px 4px;
+				padding: 1px 12px;
 				margin: 0 -1px 0 0;
 				height: 25px;
 				vertical-align: bottom;
@@ -161,17 +161,16 @@ body {
 
 /* links */
 a {
-	color: #c00;
+	color: #1B6DBF;
 	text-decoration: none;
 }
 	a:focus {
-		color: #e00;
+		opacity: .8;
 		outline: 0;
-		background-color: #fcc;
+		background-color: #E1E7F5;
 		display: inline-block;
 	}
-	a:hover {
-		color: #e00;
+	a:hover, a:hover span {
 		text-decoration: underline;
 	}
 
@@ -183,9 +182,26 @@ p {
 h1 {
 	font-weight: normal;
 }
+h2, h3 {
+	background-color: #f5f5f5;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	font-weight: normal;
+	padding: 3px 10px;
+	margin: 2em 0 1em 0;
+}
+h2 {
+	margin-top: 0;
+}
+
+div[tabindex] {
+	border: 0;
+	outline: 0;
+}
+
 .compare-mode div.user {
-	float: left;
 	width: 450px;
+	float: left;
 }
 	.compare-mode div.user:first-child {
 		padding-right: 10px;
@@ -197,7 +213,6 @@ h1 {
 		margin-left: -4px;
 	}
 
-
 /* icons */
 [class^='icon-'] {
 	display: inline-block;
@@ -207,23 +222,35 @@ h1 {
 	background-repeat: no-repeat;
 	background-image: url('img/gfx.png');
 }
-	a:hover .icon-mg { background-position: 0 -16px; }
-	a:hover .icon-club { background-position: -16px -16px; }
-	a:hover .icon-pop-out { background-position: -32px -16px; }
-	a:hover .icon-search { background-position: -48px -16px; }
-	a:hover .icon-compare { background-position: -64px -16px; }
-	a:hover .icon-dot { background-position: -80px -16px; }
-	a:hover .icon-plus { background-position: -96px -16px; }
+	a:hover .icon-mg { background-position: -128px -16px; }
+	a:hover .icon-club { background-position: -144px -16px; }
+	a:hover .icon-pop-out { background-position: -160px -16px; }
+	a:hover .icon-search { background-position: -176px -16px; }
+	a:hover .icon-compare { background-position: -192px -16px; }
+	a:hover .icon-dot { background-position: -208px -16px; }
+	a:hover .icon-plus { background-position: -224px -16px; }
+	a:hover .icon-minus { background-position: -240px -16px; }
+	a:hover .icon-tick { background-position: -256px -16px; }
+	a:hover .icon-cross { background-position: -272px -16px; }
+	a:hover .icon-eye { background-position: -288px -16px; }
+	a:hover .icon-hourglass { background-position: -304px -16px; }
+	a:hover .icon-schedule { background-position: -320px -16px; }
 
-	.icon-mg { background-position: 0 0; }
-	.icon-club { background-position: -16px 0; }
-	.icon-pop-out { background-position: -32px 0; }
-	.icon-search { background-position: -48px 0; }
-	.icon-compare { background-position: -64px 0; }
-	.icon-dot { background-position: -80px 0; }
-	.icon-plus { background-position: -96px 0; }
+	.icon-mg { background-position: -128px 0; }
+	.icon-club { background-position: -144px 0; }
+	.icon-pop-out { background-position: -160px 0; }
+	.icon-search { background-position: -176px 0; }
+	.icon-compare { background-position: -192px 0; }
+	.icon-dot { background-position: -208px 0; }
+	.icon-plus { background-position: -224px 0; }
+	.icon-minus { background-position: -240px 0; }
+	.icon-tick { background-position: -256px 0; }
+	.icon-cross { background-position: -272px 0; }
+	.icon-eye { background-position: -288px 0; }
+	.icon-hourglass { background-position: -304px 0; }
+	.icon-schedule { background-position: -320px 0; }
 
-	li.active .icon-anime, a:hover .icon-anime { background-position: -144px 0; }
-	li.active .icon-manga, a:hover .icon-manga { background-position: -208px 0; }
-	.icon-anime { background-position: -112px 0; width: 32px; height: 32px; }
-	.icon-manga { background-position: -176px 0; width: 32px; height: 32px; }
+	li.active .icon-anime, a:hover .icon-anime { background-position: -32px 0; }
+	li.active .icon-manga, a:hover .icon-manga { background-position: -96px 0; }
+	.icon-anime { background-position: 0 0; width: 32px; height: 32px; }
+	.icon-manga { background-position: -64px 0; width: 32px; height: 32px; }
