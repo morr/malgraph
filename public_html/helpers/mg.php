@@ -10,7 +10,6 @@ class mgHelper extends ChibiHelper {
 	}
 
 	public function fixText($str) {
-		$str = utf8_decode($str);
 		return $this->removeSpaces($str);
 	}
 
@@ -80,11 +79,11 @@ class mgHelper extends ChibiHelper {
 		$contents = curl_exec($ch);
 		curl_close($ch);
 
+		$contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
+
 		if (curl_errno($ch)) {
 			return null;
 		}
-
-		$contents = html_entity_decode($contents);
 		return $contents;
 	}
 

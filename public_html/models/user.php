@@ -11,7 +11,10 @@ class UserModel extends JSONDB {
 	const USER_LIST_STATUS_DROPPED = 'dropped';
 	const USER_LIST_STATUS_ONHOLD = 'onhold';
 	const USER_LIST_STATUS_COMPLETING = 'completing';
+	const USER_LIST_STATUS_WATCHING = self::USER_LIST_STATUS_COMPLETING;
+	const USER_LIST_STATUS_READING = self::USER_LIST_STATUS_COMPLETING;
 	const USER_LIST_STATUS_COMPLETED = 'completed';
+	const USER_LIST_STATUS_FINISHED = self::USER_LIST_STATUS_COMPLETED;
 	const USER_LIST_STATUS_PLANNED = 'planned';
 	const USER_LIST_STATUS_UNKNOWN = '???';
 
@@ -77,20 +80,32 @@ class UserModel extends JSONDB {
 
 			$list['entries'] = [];
 			$nodes = $xpath->query('//anime | //manga');
-			foreach ($nodes as $node) {
+			foreach ($nodes as $root) {
 				$entry = [];
-				$entry['id'] = intval($xpath->query('series_animedb_id | series_mangadb_id', $node)->item(0)->nodeValue);
-				$entry['score'] = intval($xpath->query('my_score', $node)->item(0)->nodeValue);
-				$entry['status'] = $this->fixStatus($xpath->query('my_status', $node)->item(0)->nodeValue);
-				$entry['start-date'] = $this->mgHelper->fixDate($xpath->query('my_start_date', $node)->item(0)->nodeValue);
-				$entry['finish-date'] = $this->mgHelper->fixDate($xpath->query('my_finish_date', $node)->item(0)->nodeValue);
+				$entry['id'] = intval($xpath->query('series_animedb_id | series_mangadb_id', $root)->item(0)->nodeValue);
+
+				$node = $xpath->query('my_score', $root)->item(0);
+				if (!empty($node)) {
+					$entry['score'] = intval($node->nodeValue);
+				} else {
+					$entry['score'] = 0;
+					var_dump($entry);die;
+				}
+
+				$entry['status'] = $this->fixStatus($xpath->query('my_status', $root)->item(0)->nodeValue);
+
+				$entry['start-date'] = $this->mgHelper->fixDate($xpath->query('my_start_date', $root)->item(0)->nodeValue);
+
+				$entry['finish-date'] = $this->mgHelper->fixDate($xpath->query('my_finish_date', $root)->item(0)->nodeValue);
+
 				if ($type == self::USER_LIST_TYPE_ANIME) {
-					$entry['episodes-completed'] = intval($xpath->query('my_watched_episodes', $node)->item(0)->nodeValue);
+					$entry['episodes-completed'] = intval($xpath->query('my_watched_episodes', $root)->item(0)->nodeValue);
 				}
 				else {
-					$entry['chapters-completed'] = intval($xpath->query('my_read_chapters', $node)->item(0)->nodeValue);
-					$entry['volumes-completed'] = intval($xpath->query('my_read_volumes', $node)->item(0)->nodeValue);
+					$entry['chapters-completed'] = intval($xpath->query('my_read_chapters', $root)->item(0)->nodeValue);
+					$entry['volumes-completed'] = intval($xpath->query('my_read_volumes', $root)->item(0)->nodeValue);
 				}
+
 				$list['entries'] []= $entry;
 			}
 
