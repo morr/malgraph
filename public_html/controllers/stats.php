@@ -161,10 +161,6 @@ class StatsController extends AbstractController {
 		$this->loadUsers();
 		$this->loadEntries();
 
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/jquery.jscrollpane.css'));
-		$this->headHelper->addScript($this->urlHelper->url('media/jquery.mousewheel.min.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/jquery.jscrollpane.min.js'));
-
 		foreach ($this->view->users as $i => &$u) {
 			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
 				$e['others'] = [];
@@ -221,6 +217,9 @@ class StatsController extends AbstractController {
 
 		//do sort
 		foreach ($this->view->users as &$u) {
+			if (empty($u[$this->view->am]['entries'])) {
+				continue;
+			}
 			$sortDirs = [
 				'status' => 1,
 				'title' => 1,

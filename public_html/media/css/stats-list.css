@@ -1,5 +1,5 @@
 div.table {
-	max-height: 500px;
+	max-height: 100%;
 	position: relative;
 }
 	div.table table {
@@ -15,9 +15,6 @@ div.table {
 				padding: 2px 8px;
 				text-align: left;
 			}
-			/*.compare-mode div.table td.title i { position: absolute; }
-			.compare-mode div.table th.title { padding-left: 29px; }
-			.compare-mode div.table td.title span { display: block; margin-left: 21px; }*/
 
 		div.table th.ord,
 		div.table td.ord { display: none; }

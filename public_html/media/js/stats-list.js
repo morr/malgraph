@@ -1,8 +1,8 @@
+//make content occupy as much screen area as possible.
 $(function() {
-
 	function resized() {
 		//add to height of the table content all the space below the footer
-		$('div.table').css('max-height', '0');
+		$('div.table').hide();
 		var wh = $(window).height();
 		var mh = $('body').outerHeight(true);
 		var ch = $('#main').height();
@@ -12,8 +12,8 @@ $(function() {
 			nh = 450 - sh;
 		}
 
+		$('div.table').show();
 		$('div.table').css('max-height', nh + 'px');
-		$('div.table').jScrollPane();
 	}
 	$(window).resize(resized);
 	resized();

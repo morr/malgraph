@@ -1,0 +1,116 @@
+.user-pic {
+	background: white;
+	max-width: 130px;
+	max-height: 200px;
+	border: 1px solid gray;
+	margin-right: 10px;
+	float: left;
+}
+	.user-pic.anonymous {
+		background-image: url('img/gfx.png');
+		background-repeat: no-repeat;
+		background-position: -384px 0px;
+		height: 188px;
+		width: 130px;
+	}
+
+div.section {
+	padding-bottom: 2em;
+}
+
+div.basic {
+	float: left;
+}
+	div.basic ul {
+		display: inline-block;
+	}
+
+.updated {
+	float: right;
+	font-size: 65%;
+	padding-top: 0.25em;
+	opacity: .25;
+}
+
+
+dl {
+	display: inline-block;
+	margin-bottom: 1em;
+}
+	dt {
+		clear: left;
+		font-weight: bold;
+		width: 10em;
+		float: left;
+	}
+		dt:after {
+			content: ': ';
+		}
+		dd {
+			float: left;
+			margin: 0;
+			padding: 0;
+		}
+
+#content ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	line-height: 1.5em;
+}
+	#clubs, #friends {
+		max-height: 200px;
+	}
+		#friends ul {
+			columns: auto 3;
+			-webkit-columns: auto 3;
+			-moz-columns: auto 3;
+		}
+			#friends li {
+				width: 140px;
+				overflow: hidden;
+				display: block;
+				text-overflow: ellipsis;
+			}
+			#friends a.mg {
+				display: inline;
+				width: 16px;
+				height: 16px;
+				position: relative;
+			}
+			#friends a.mg i {
+				position: absolute;
+			}
+			#friends a.mal {
+				display: inline-block;
+				margin-left: 21px;
+			}
+
+
+		#clubs ul {
+			columns: auto 2;
+			-webkit-columns: auto 2;
+			-moz-columns: auto 2;
+		}
+			#clubs li {
+				width: 210px;
+				overflow: hidden;
+				display: block;
+				text-overflow: ellipsis;
+			}
+
+			#clubs a {
+				position: relative;
+			}
+			#clubs i {
+				position: absolute;
+			}
+			#friends a.mal,
+			#clubs span {
+				display: inline-block;
+				margin-left: 21px;
+			}
+
+#content [class^='icon-'] {
+	margin-right: 5px;
+}
