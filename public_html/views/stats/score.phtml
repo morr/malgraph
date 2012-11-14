@@ -1,0 +1,190 @@
+<?php include 'views/switcher.php'; ?>
+
+<div class="users">
+<?php foreach ($this->users as $i => $user): ?>
+	<div class="user">
+		<div class="section">
+			<h2>
+				<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $user['user-name'], 'am' => $this->am]) ?>">
+					<?php echo $user['user-name'] ?></a>
+				`s <?php echo $this->am ?> rating statistics
+			</h2>
+
+			<dl>
+				<dt class="unrated">Rated titles</dt>
+				<dd class="unrated"><?php echo $user[$this->am]['score-info']['rated'] ?> <span class="percent">(<?php printf('%.02f', 100.0 * $user[$this->am]['score-info']['rated'] / max(1, $user[$this->am]['score-info']['total'])) ?>%)</span></dd>
+
+				<dt class="unrated">Unrated titles</dt>
+				<dd class="unrated"><?php echo $user[$this->am]['score-info']['unrated'] ?> <span class="percent">(<?php printf('%.02f', 100.0 * $user[$this->am]['score-info']['unrated'] / max(1, $user[$this->am]['score-info']['total'])) ?>%)</span></dd>
+
+				<dt class="planned">Planned titles</dt>
+				<dd class="planned"><?php echo $user[$this->am]['score-info']['planned'] ?> (not counted above)</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+
+		<div class="section score-dist">
+			<h3>Rating distribution</h3>
+			<?php if ($user[$this->am]['score-info']['rated'] == 0): ?>
+				<p>This user doesn't seem to have anything rated. No chart here.</p>
+			<?php else: ?>
+				<div id="target-score-dist-<?php echo $i ?>" class="target"></div>
+
+				<script type="text/javascript">
+					var chart = new Highcharts.Chart({
+						chart: {
+							renderTo: 'target-score-dist-<?php echo $i ?>',
+							type: 'column'
+						},
+
+						title: false,
+
+						xAxis: {
+							categories: [
+								'1',
+								'2',
+								'3',
+								'4',
+								'5',
+								'6',
+								'7',
+								'8',
+								'9',
+								'10'
+							],
+							title: {text: 'Rating'},
+						},
+
+						yAxis: {
+							min: 0,
+							title: {text: 'Count'}
+						},
+
+						legend: false,
+
+						tooltip: {
+							formatter: function() {
+								return 'Titles rated with ' + this.x + ': ' + this.y;
+							}
+						},
+
+						plotOptions: {
+							column: {
+								pointPadding: 0.1,
+								groupPadding: 0.1,
+								borderWidth: 0
+							}
+						},
+
+						series: [{
+							data: <?php echo json_encode(array_values($user[$this->am]['score-dist'])) ?>
+						}]
+					});
+				</script>
+			<?php endif ?>
+		</div>
+
+		<div class="section score-time-dist">
+			<h3>Rating to time distribution</h3>
+			<?php if ($user[$this->am]['score-info']['rated'] == 0): ?>
+				<p>This user doesn't seem to have anything rated. No chart here.</p>
+			<?php else: ?>
+				<div id="target-score-time-dist-<?php echo $i ?>" class="target"></div>
+				<script type="text/javascript">
+					var chart = new Highcharts.Chart({
+						chart: {
+							renderTo: 'target-score-time-dist-<?php echo $i ?>',
+							type: 'column'
+						},
+
+						title: false,
+
+						xAxis: {
+							categories: [
+								'1',
+								'2',
+								'3',
+								'4',
+								'5',
+								'6',
+								'7',
+								'8',
+								'9',
+								'10'
+							],
+							title: {text: 'Rating'},
+						},
+
+						yAxis: {
+							min: 0,
+							title: {text: 'Hours spent'}
+						},
+
+						legend: false,
+
+						tooltip: {
+							formatter: function() {
+								return 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
+							}
+						},
+
+						plotOptions: {
+							column: {
+								pointPadding: 0.1,
+								groupPadding: 0.1,
+								borderWidth: 0
+							}
+						},
+
+						series: [{
+							data: <?php echo json_encode(array_values($user[$this->am]['score-time-dist'])) ?>
+						}]
+					});
+				</script>
+			<?php endif ?>
+		</div>
+
+		<div class="section unrated">
+			<h3>Unrated titles</h3>
+			<?php if ($user[$this->am]['score-info']['rated'] == 0): ?>
+				<p>This used doesn't seem to have anythingon his list. No table here.</p>
+			<?php else: ?>
+				<table>
+					<thead>
+						<tr>
+							<th class="title">Title</th>
+							<?php if ($this->am == UserModel::USER_LIST_TYPE_ANIME): ?>
+								<th class="length" title="Length (episodes)">
+							<?php else: ?>
+								<th class="length" title="Length (volumes)">
+							<?php endif ?>
+								L.
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($user[$this->am]['score-info']['unrated-titles'] as $e): ?>
+							<tr>
+								<td class="title">
+									<a href="http://myanimelist.net/<?php echo $this->am ?>/<?php echo $e['full']['id'] ?>">
+										<?php echo $e['full']['title'] ?>
+									</a>
+								</td>
+								<td class="length">
+									<?php if ($this->am == UserModel::USER_LIST_TYPE_ANIME): ?>
+										<?php echo $e['full']['episodes'] ?>
+									<?php else: ?>
+										<?php echo $e['full']['volumes'] ?>
+									<?php endif ?>
+								</td>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+			<?php endif ?>
+		</div>
+
+	</div>
+<?php endforeach ?>
+<div class="clear"></div>
+</div>

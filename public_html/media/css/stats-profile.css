@@ -33,25 +33,6 @@ div.basic {
 }
 
 
-dl {
-	display: inline-block;
-	margin-bottom: 1em;
-}
-	dt {
-		clear: left;
-		font-weight: bold;
-		width: 10em;
-		float: left;
-	}
-		dt:after {
-			content: ': ';
-		}
-		dd {
-			float: left;
-			margin: 0;
-			padding: 0;
-		}
-
 #content ul {
 	list-style-type: none;
 	margin: 0;

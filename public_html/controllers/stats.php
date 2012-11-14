@@ -242,6 +242,136 @@ class StatsController extends AbstractController {
 
 
 
+	public function scoreAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+		$this->view->scoreDist = [];
+
+		//prepare info for view
+		foreach ($this->view->users as $i => &$u) {
+			$scoreDist = array_fill_keys(range(0, 10), 0);
+			$scoreTimeDist = array_fill_keys(range(0, 10), 0);
+			$scoreInfo = [];
+			$scoreInfo['total'] = 0;
+			$scoreInfo['planned'] = 0;
+			$scoreInfo['unrated-titles'] = [];
+			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
+				if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
+					$scoreInfo['planned'] ++;
+					continue;
+				}
+				$scoreInfo['total'] ++;
+				$scoreDist[$e['user']['score']] ++;
+				if ($this->view->am == UserModel::USER_LIST_TYPE_MANGA) {
+					$duration = 10;
+					$length = $e['user']['chapters-completed'];
+				} else {
+					$duration = $e['full']['duration'];
+					$length = $e['user']['episodes-completed'];
+				}
+				$weight = $length * $duration;
+				$scoreTimeDist[$e['user']['score']] += $weight;
+				if ($e['user']['score'] == 0) {
+					$scoreInfo['unrated-titles'] []= &$e;
+				}
+			}
+			//conert minutes to hours
+			foreach ($scoreTimeDist as $k => &$v) {
+				$v /= 60;
+			}
+			$scoreInfo['unrated'] = $scoreDist[0];
+			$scoreInfo['rated'] = array_sum($scoreDist) - $scoreDist[0];
+			$scoreDist = array_slice($scoreDist, 1);
+			$u[$this->view->am]['score-info'] = $scoreInfo;
+			$u[$this->view->am]['score-dist'] = $scoreDist;
+			$u[$this->view->am]['score-time-dist'] = $scoreTimeDist;
+			$this->sort($u[$this->view->am]['score-info']['unrated-titles'], 'length');
+
+		}
+
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
+	}
+
+	private function sort(array &$subject, $defaultSortColumn = null, array $customColumns = null) {
+		//get sort column
+		$sortColumn = null;
+		if (isset($_GET['sort-column'])) {
+			$sortColumn = $_GET['sort-column'];
+		} elseif ($defaultSortColumn != null) {
+			$sortColumn = $defaultSortColumn;
+		}
+		$this->view->sortColumn = $sortColumn;
+
+		//get sort direction
+		$sortDir = 0;
+		if (isset($_GET['sort-dir'])) {
+			$sortDir = intval($_GET['sort-dir']);
+		}
+		$this->view->sortDir = $sortDir;
+
+		if (empty($subject)) {
+			return;
+		}
+
+		//some common sorting flavours
+		$defs = [];
+		$defs['score'] = [0, function($e) { return $e['user']['score']; }];
+		$defs['status'] = [1, function($e) {
+			//sort statuses like MAL order
+			$statuses = array_flip([
+				UserModel::USER_LIST_STATUS_WATCHING,
+				UserModel::USER_LIST_STATUS_COMPLETED,
+				UserModel::USER_LIST_STATUS_ONHOLD,
+				UserModel::USER_LIST_STATUS_DROPPED,
+				UserModel::USER_LIST_STATUS_PLANNED,
+				UserModel::USER_LIST_STATUS_UNKNOWN,
+			]);
+			return $statuses[$e['user']['status']];
+		}];
+		$defs['length'] = [0, function($e) { return $e['full']['type'] == UserModel::USER_LIST_TYPE_MANGA ? $e['full']['volumes'] : $e['full']['episodes']; }];
+		$defs['title'] = [1, function($e) { return strtolower($e['full']['title']); }];
+
+		//load custom sorting flavours
+		if (!empty($customColumns)) {
+			foreach ($customColumns as $k => $def) {
+				$defs[$k] = $def;
+			}
+		}
+
+		//do sort
+		$sort = array_fill_keys(array_keys($defs), []);
+		$sortDirs = [];
+		foreach ($defs as $key => $def) {
+			list($defDefaultDir, $defFunc) = $def;
+			$sortDirs[$key] = $defDefaultDir;
+		}
+
+		foreach ($subject as $k => &$e) {
+			foreach ($defs as $defK => $def) {
+				list($defDefaultDir, $defFunc) = $def;
+				$sort[$defK][$k] = $defFunc($e);
+			}
+		}
+		if (empty($defs[$sortColumn])) {
+			$sortColumn = array_keys($defs)[0];
+		}
+/*
+echo '<pre>';
+print_r($sort[$sortColumn]);
+print_r(array_map(function($e) { return $e['full']['title']; }, $subject));
+*/
+		array_multisort($sort[$sortColumn], $sortDirs[$sortColumn] ^ $sortDir ? SORT_ASC : SORT_DESC, $sort['title'], SORT_ASC, $subject);
+/*
+print_r(array_map(function($e) { return $e['full']['title']; }, $subject));
+echo '</pre>';
+*/
+//die;
+	}
+
+
+
+
 	public function jsonAction() {
 		$this->loadUsers();
 		$this->loadEntries();
