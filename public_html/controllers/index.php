@@ -8,4 +8,10 @@ class IndexController extends AbstractController {
 	public function wrongUserAction() {
 		$this->view->userName = @$_GET['user-name'];
 	}
+
+	public function aboutAction() {
+	}
+
+	public function privacyAction() {
+	}
 }
