@@ -1,45 +1,45 @@
-<?php include 'views/switcher.php'; ?>
+<?php include 'views/_common/stats-switcher.phtml'; ?>
 
 <div class="users">
-<?php foreach ($this->users as $i => $user): ?>
+<?php foreach ($this->users as $i => $u): ?>
 	<div class="user">
 		<h2>
-			<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $user['user-name'], 'am' => $this->am]) ?>">
-				<?php echo $user['user-name'] ?></a>
+			<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $u['user-name'], 'am' => $this->am]) ?>">
+				<?php echo $u['user-name'] ?></a>
 			`s <?php echo $this->am ?> list
 		</h2>
 
-		<?php if (empty($user[$this->am]['entries'])): ?>
-			<p>This user doesn't seem to have anything on this list.</p>
+		<?php if (empty($u[$this->am]['entries'])): ?>
+			<p>This user doesn't seem to have anything on their list.</p>
 		<?php else: ?>
-			<div class="table scrollable">
+			<div class="table">
 				<table>
 					<thead>
 						<tr>
 							<th class="ord">#</th>
 
 							<th class="status" title="Status">
-								<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'status', 'sort-dir' => $this->sortColumn == 'status' ? 1 - $this->sortDir : 0]) ?>">
+								<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'status', 'sort-dir' => $this->sortColumn == 'status' ? 1 - $this->sortDir : 0]) ?>">
 									S
 								</a>
 							</th>
 
 							<?php if (count($this->users) > 1): ?>
-								<th title="Unique - marked with &bdquo;+&rdquo; if only this user has given title in his list.">
-									<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'unique', 'sort-dir' => $this->sortColumn == 'unique' ? 1 - $this->sortDir : 0]) ?>">
+								<th class="unique" title="Unique - marked with &bdquo;+&rdquo; if only this user has given title in their list.">
+									<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'unique', 'sort-dir' => $this->sortColumn == 'unique' ? 1 - $this->sortDir : 0]) ?>">
 										U
 									</a>
 								</th>
 							<?php endif ?>
 
 							<th class="title">
-								<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'title', 'sort-dir' => $this->sortColumn == 'title' ? 1 - $this->sortDir : 0]) ?>">
+								<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'title', 'sort-dir' => $this->sortColumn == 'title' ? 1 - $this->sortDir : 0]) ?>">
 									Title
 								</a>
 							</th>
 
 							<th class="score">
-								<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'score', 'sort-dir' => $this->sortColumn == 'score' ? 1 - $this->sortDir : 0]) ?>">
+								<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'score', 'sort-dir' => $this->sortColumn == 'score' ? 1 - $this->sortDir : 0]) ?>">
 									Score
 								</a>
 							</th>
@@ -48,42 +48,13 @@
 
 					<tbody>
 						<?php $k = 1 ?>
-						<?php foreach ($user[$this->am]['entries'] as $e): ?>
-							<?php
-								if (in_array($e['user']['status'], [UserModel::USER_LIST_STATUS_PLANNED, UserModel::USER_LIST_STATUS_UNKNOWN])) {
-									continue;
-								}
-							?>
+						<?php foreach ($u[$this->am]['entries'] as $e): ?>
 							<tr>
 								<td class="ord"><?php echo $k ++ ?></td>
 
-								<td class="status">
-									<?php if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED): ?>
-										<i class="icon-schedule"></i>
-									<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_DROPPED): ?>
-										<i class="icon-cross"></i>
-									<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_WATCHING): ?>
-										<i class="icon-eye"></i>
-									<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_ONHOLD): ?>
-										<i class="icon-hourglass"></i>
-									<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_COMPLETED): ?>
-										<i class="icon-tick"></i>
-									<?php endif ?>
-								</td>
-
-								<?php if (count($this->users) > 1): ?>
-									<td>
-										<?php if ($e['user']['unique']): ?>
-											<i class="icon-plus"></i>
-										<?php else: ?>
-											<i class="icon-dot"></i>
-										<?php endif ?>
-									</td>
-								<?php endif ?>
-
-								<td class="title">
-									<?php echo $e['full']['title'] ?>
-								</td>
+								<?php include 'views/_common/stats-table-status.phtml' ?>
+								<?php include 'views/_common/stats-table-unique.phtml' ?>
+								<?php include 'views/_common/stats-table-title.phtml' ?>
 
 								<?php if (!empty($e2)): ?>
 									<?php if ($e['user']['score'] > $e2['user']['score']): ?>
@@ -94,7 +65,7 @@
 										<td class="score same-score">
 									<?php endif ?>
 								<?php else: ?>
-									<td>
+									<td class="score">
 								<?php endif ?>
 									<?php if (empty($e['user']['score'])): ?>
 										-

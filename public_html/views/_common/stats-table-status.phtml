@@ -1,0 +1,13 @@
+<td class="status">
+	<?php if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED): ?>
+		<i title="Planned" class="icon-schedule"></i>
+	<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_DROPPED): ?>
+		<i title="Dropped" class="icon-cross"></i>
+	<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_WATCHING): ?>
+		<i title="Watching" class="icon-eye"></i>
+	<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_ONHOLD): ?>
+		<i title="On-hold" class="icon-hourglass"></i>
+	<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_COMPLETED): ?>
+		<i title="Completed" class="icon-tick"></i>
+	<?php endif ?>
+</td>

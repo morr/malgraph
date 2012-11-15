@@ -94,4 +94,9 @@ class mgHelper extends ChibiHelper {
 	public function restoreErrors() {
 		set_error_handler($this->errorHandler);
 	}
+
+
+	public function url($s, array $p = []) {
+		return str_replace('&', '&amp;', $this->urlHelper->url($s, $p));
+	}
 }

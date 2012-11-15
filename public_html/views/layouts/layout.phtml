@@ -12,11 +12,11 @@
 	<?php endif ?>
 		<div id="header">
 			<h1>
-				<a href="<?php echo $this->urlHelper->url('') ?>">
+				<a href="<?php echo $this->mgHelper->url('') ?>">
 					<span>MALgraph</span>
 				</a>
 			</h1>
-			<form class="waitable" id="search" action="<?php echo $this->urlHelper->url('stats/search') ?>" method="post">
+			<form class="waitable" id="search" action="<?php echo $this->mgHelper->url('stats/search') ?>" method="post">
 				<?php if ($this->view->controllerName == 'stats'): ?>
 					<input type="hidden" name="active-user-name" value="<?php echo reset($this->view->userNames) ?>">
 					<input type="hidden" name="action" value="<?php echo $this->view->actionName ?>">
@@ -47,7 +47,7 @@
 							<?php else: ?>
 								<li>
 							<?php endif ?>
-								<a title="Switch to <?php echo $type ?> view" href="<?php echo $this->urlHelper->url('stats/switch-am', ['am' => $type, 'action' => $this->view->actionName, 'u' => $this->view->userNames]) ?>">
+								<a title="Switch to <?php echo $type ?> view" href="<?php echo $this->mgHelper->url('stats/switch-am', ['am' => $type, 'action' => $this->view->actionName, 'u' => $this->view->userNames]) ?>">
 									<i class="icon-<?php echo $type ?>"></i>
 								</a>
 							</li>
@@ -73,7 +73,7 @@
 							<?php else: ?>
 								<li>
 							<?php endif ?>
-								<a class="waitable" href="<?php echo $this->urlHelper->url($item['controller'] . '/' . $item['action'], ['u' => $this->view->userNames, 'am' => $this->view->am]) ?>">
+								<a class="waitable" href="<?php echo $this->mgHelper->url($item['controller'] . '/' . $item['action'], ['u' => $this->view->userNames, 'am' => $this->view->am]) ?>">
 									<?php echo $item['text'] ?>
 								</a>
 							</li>
@@ -89,8 +89,8 @@
 		</div>
 
 		<div id="footer">
-			<p><a href="<?php echo $this->urlHelper->url('index/about') ?>">About</a></p>
-			<p><a href="<?php echo $this->urlHelper->url('index/privacy') ?>">Privacy policy</a></p>
+			<p><a href="<?php echo $this->mgHelper->url('index/about') ?>">About</a></p>
+			<p><a href="<?php echo $this->mgHelper->url('index/privacy') ?>">Privacy policy</a></p>
 			<p>Suggestions? Questions? Visit the <a href="http://myanimelist.net/clubs.php?cid=30017">MALgraph club</a> and ask!</p>
 			<p><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</p>
 		</div>
@@ -99,7 +99,7 @@
 	<?php if ($this->view->controllerName == 'stats'): ?>
 		<script type="text/javascript">
 			window.setTimeout(function() {
-				var url = <?php echo json_encode($this->urlHelper->url('stats/regenerate')) ?>;
+				var url = <?php echo json_encode($this->mgHelper->url('stats/regenerate')) ?>;
 				var data = <?php echo json_encode(['user-name' => reset($this->view->userNames)]) ?>;
 				$.get(url, data, function(response) { /*alert(response);*/ });
 			}, 1500);

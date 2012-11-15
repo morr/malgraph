@@ -2,24 +2,8 @@ div.table {
 	max-height: 100%;
 	position: relative;
 }
-	div.table table {
-		width: 100%;
-	}
-		div.table th,
-		div.table td {
-			padding: 2px 2px;
-			text-align: center;
-		}
-			div.table th.title,
-			div.table td.title {
-				padding: 2px 8px;
-				text-align: left;
-			}
 
-		div.table th.ord,
-		div.table td.ord { display: none; }
-
-		div.table td.same-score { color: black; }
-		div.table td.higher-score { color: #0a0; }
-		div.table td.lower-score { color: red; }
+	td.same-score { color: black; }
+	td.higher-score { color: #0a0; }
+	td.lower-score { color: red; }
 

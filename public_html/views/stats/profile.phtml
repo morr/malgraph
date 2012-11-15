@@ -1,32 +1,32 @@
-<?php include 'views/switcher.php'; ?>
+<?php include 'views/_common/stats-switcher.phtml'; ?>
 
 <div class="users">
-<?php foreach ($this->users as $user): ?>
+<?php foreach ($this->users as $u): ?>
 	<div class="user">
 		<div class="section">
-			<?php if (basename($user['profile-picture-url']) == 'na.gif'): ?>
-				<img alt="No profile picture" class="user-pic anonymous" src="<?php echo $this->urlHelper->url('/media/img/pixel.gif') ?>">
+			<?php if (basename($u['profile-picture-url']) == 'na.gif'): ?>
+				<img alt="No profile picture" class="user-pic anonymous" src="<?php echo $this->mgHelper->url('/media/img/pixel.gif') ?>">
 			<?php else: ?>
-				<img alt="Profile picture" class="user-pic" src="<?php echo $user['profile-picture-url'] ?>">
+				<img alt="Profile picture" class="user-pic" src="<?php echo $u['profile-picture-url'] ?>">
 			<?php endif ?>
 			<h2>
-				<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $user['user-name'], 'am' => $this->am]) ?>">
-					<?php echo $user['user-name'] ?>
+				<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $u['user-name'], 'am' => $this->am]) ?>">
+					<?php echo $u['user-name'] ?>
 				</a>
 
 				<?php $x = date_default_timezone_get() ?>
 				<?php date_default_timezone_set('UTC') ?>
 				<span class="updated" title="When was this profile last updated">
-					<?php echo date('M d, H:i', $user['generated']) ?> UTC
+					<?php echo date('M d, H:i', $u['generated']) ?> UTC
 				</span>
 				<?php date_default_timezone_set($x) ?>
 			</h2>
 			<div class="basic">
 				<dl>
 					<?php
-						if (intval($user['join-date']))
+						if (intval($u['join-date']))
 						{
-							list ($year, $month, $day) = explode ('-', $user['join-date']);
+							list ($year, $month, $day) = explode ('-', $u['join-date']);
 							$time = mktime(0, 0, 0, $month, $day, $year);
 							$diff = time() - $time;
 							$diff /= 3600 * 24;
@@ -36,31 +36,31 @@
 					?>
 
 					<dt>List views</dt>
-					<dd><?php echo $user[$this->am]['list-views'] ?></dd>
+					<dd><?php echo $u[$this->am]['list-views'] ?></dd>
 
 					<dt>Total clubs</dt>
-					<dd><?php echo count($user['clubs']) ?></dd>
+					<dd><?php echo count($u['clubs']) ?></dd>
 
 					<dt>Total friends</dt>
-					<dd><?php echo count($user['friends']) ?></dd>
+					<dd><?php echo count($u['friends']) ?></dd>
 				</dl>
 				<div class="clear"></div>
 
 				<ul>
 					<li>
-						<a href="http://myanimelist.net/profile/<?php echo $user['user-name'] ?>">
+						<a href="http://myanimelist.net/profile/<?php echo $u['user-name'] ?>">
 							<i class="icon-pop-out"></i>
 							MAL profile
 						</a>
 					</li>
 					<li>
-						<a href="http://myanimelist.net/animelist/<?php echo $user['user-name'] ?>">
+						<a href="http://myanimelist.net/animelist/<?php echo $u['user-name'] ?>">
 							<i class="icon-pop-out"></i>
 							MAL anime list
 						</a>
 					</li>
 					<li>
-						<a href="http://myanimelist.net/mangalist/<?php echo $user['user-name'] ?>">
+						<a href="http://myanimelist.net/mangalist/<?php echo $u['user-name'] ?>">
 							<i class="icon-pop-out"></i>
 							MAL manga list
 						</a>
@@ -72,15 +72,15 @@
 
 		<div class="section">
 			<h3>Friends</h3>
-			<?php if (empty($user['friends'])): ?>
-				This user has no friends on MAL. :(
+			<?php if (empty($u['friends'])): ?>
+				<p>This user has no friends on MAL. :(</p>
 			<?php else: ?>
 				<div id="friends" class="scrollable">
-					<?php usort($user['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
+					<?php usort($u['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
 					<ul>
-						<?php foreach ($user['friends'] as $friend): ?>
+						<?php foreach ($u['friends'] as $friend): ?>
 							<li>
-								<a class="mg waitable" href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => [reset($this->userNames), $friend], 'am' => $this->am]) ?>">
+								<a class="mg waitable" href="<?php echo $this->mgHelper->url('/stats/profile', ['u' => [reset($this->userNames), $friend], 'am' => $this->am]) ?>">
 									<i class="icon-mg"></i>
 								</a>
 								<a class="mal" href="http://myanimelist.net/profile/<?php echo $friend ?>">
@@ -95,13 +95,13 @@
 
 		<div class="section">
 			<h3>Clubs</h3>
-			<?php if (empty($user['clubs'])): ?>
+			<?php if (empty($u['clubs'])): ?>
 				<p>This user doesn't belong to any clubs.</p>
 			<?php else: ?>
 				<div id="clubs" class="scrollable">
-					<?php usort($user['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>
+					<?php usort($u['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>
 					<ul>
-						<?php foreach ($user['clubs'] as $club): ?>
+						<?php foreach ($u['clubs'] as $club): ?>
 							<li>
 								<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club['id'] ?>">
 									<i class="icon-club"></i>

@@ -142,6 +142,17 @@ class StatsController extends AbstractController {
 					$key = $e['id'];
 					$e2 = $model->get($key);
 					if (!empty($e2)) {
+
+						//add additional info
+						if ($am == UserModel::USER_LIST_TYPE_MANGA) {
+							$duration = 10;
+							$length = $e['chapters-completed'];
+						} else {
+							$duration = $e2['duration'];
+							$length = $e['episodes-completed'];
+						}
+						$e['total-duration'] = $length * $duration;
+
 						$nentries[$key] = ['user' => $e, 'full' => $e2];
 					}
 				}
@@ -150,21 +161,11 @@ class StatsController extends AbstractController {
 		}
 	}
 
-
-	public function profileAction() {
-		$this->loadUsers();
-	}
-
-
-
-	public function listAction() {
-		$this->loadUsers();
-		$this->loadEntries();
-
+	private function loadUniqueness() {
 		foreach ($this->view->users as $i => &$u) {
 			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
-				$e['others'] = [];
 				$e['user']['unique'] = true;
+				$e['others'] = [];
 			}
 		}
 
@@ -189,108 +190,6 @@ class StatsController extends AbstractController {
 				}
 			}
 		}
-
-
-		//get sort column
-		$sortColumn = null;
-		if (isset($_GET['sort-column'])) {
-			$sortColumn = $_GET['sort-column'];
-		}
-		$this->view->sortColumn = $sortColumn;
-
-		//get sort direction
-		$sortDir = 0;
-		if (isset($_GET['sort-dir'])) {
-			$sortDir = intval($_GET['sort-dir']);
-		}
-		$this->view->sortDir = $sortDir;
-
-		//sort statuses like MAL order
-		$statuses = array_flip([
-			UserModel::USER_LIST_STATUS_WATCHING,
-			UserModel::USER_LIST_STATUS_COMPLETED,
-			UserModel::USER_LIST_STATUS_ONHOLD,
-			UserModel::USER_LIST_STATUS_DROPPED,
-			UserModel::USER_LIST_STATUS_PLANNED,
-			UserModel::USER_LIST_STATUS_UNKNOWN,
-		]);
-
-		//do sort
-		foreach ($this->view->users as &$u) {
-			if (empty($u[$this->view->am]['entries'])) {
-				continue;
-			}
-			$sortDirs = [
-				'status' => 1,
-				'title' => 1,
-				'score' => 0,
-				'unique' => 1
-			];
-			$sort = array_fill_keys($sortDirs, []);
-			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
-				$sort['status'][$k] = $statuses[$e['user']['status']];
-				$sort['score'][$k] = $e['user']['score'];
-				$sort['title'][$k] = $e['full']['title'];
-				$sort['unique'][$k] = $e['user']['unique'];
-			}
-			if (empty($sort[$sortColumn])) {
-				$sortColumn = 'score';
-			}
-			array_multisort($sort[$sortColumn], $sortDirs[$sortColumn] ^ $sortDir ? SORT_ASC : SORT_DESC, $sort['title'], SORT_ASC, $u[$this->view->am]['entries']);
-		}
-	}
-
-
-
-	public function scoreAction() {
-		$this->loadUsers();
-		$this->loadEntries();
-		$this->view->scoreDist = [];
-
-		//prepare info for view
-		foreach ($this->view->users as $i => &$u) {
-			$scoreDist = array_fill_keys(range(0, 10), 0);
-			$scoreTimeDist = array_fill_keys(range(0, 10), 0);
-			$scoreInfo = [];
-			$scoreInfo['total'] = 0;
-			$scoreInfo['planned'] = 0;
-			$scoreInfo['unrated-titles'] = [];
-			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
-				if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
-					$scoreInfo['planned'] ++;
-					continue;
-				}
-				$scoreInfo['total'] ++;
-				$scoreDist[$e['user']['score']] ++;
-				if ($this->view->am == UserModel::USER_LIST_TYPE_MANGA) {
-					$duration = 10;
-					$length = $e['user']['chapters-completed'];
-				} else {
-					$duration = $e['full']['duration'];
-					$length = $e['user']['episodes-completed'];
-				}
-				$weight = $length * $duration;
-				$scoreTimeDist[$e['user']['score']] += $weight;
-				if ($e['user']['score'] == 0) {
-					$scoreInfo['unrated-titles'] []= &$e;
-				}
-			}
-			//conert minutes to hours
-			foreach ($scoreTimeDist as $k => &$v) {
-				$v /= 60;
-			}
-			$scoreInfo['unrated'] = $scoreDist[0];
-			$scoreInfo['rated'] = array_sum($scoreDist) - $scoreDist[0];
-			$scoreDist = array_slice($scoreDist, 1);
-			$u[$this->view->am]['score-info'] = $scoreInfo;
-			$u[$this->view->am]['score-dist'] = $scoreDist;
-			$u[$this->view->am]['score-time-dist'] = $scoreTimeDist;
-			$this->sort($u[$this->view->am]['score-info']['unrated-titles'], 'length');
-
-		}
-
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 	}
 
 	private function sort(array &$subject, $defaultSortColumn = null, array $customColumns = null) {
@@ -331,6 +230,7 @@ class StatsController extends AbstractController {
 		}];
 		$defs['length'] = [0, function($e) { return $e['full']['type'] == UserModel::USER_LIST_TYPE_MANGA ? $e['full']['volumes'] : $e['full']['episodes']; }];
 		$defs['title'] = [1, function($e) { return strtolower($e['full']['title']); }];
+		$defs['unique'] = [1, function($e) { return $e['user']['unique']; }];
 
 		//load custom sorting flavours
 		if (!empty($customColumns)) {
@@ -356,17 +256,95 @@ class StatsController extends AbstractController {
 		if (empty($defs[$sortColumn])) {
 			$sortColumn = array_keys($defs)[0];
 		}
-/*
-echo '<pre>';
-print_r($sort[$sortColumn]);
-print_r(array_map(function($e) { return $e['full']['title']; }, $subject));
-*/
+
 		array_multisort($sort[$sortColumn], $sortDirs[$sortColumn] ^ $sortDir ? SORT_ASC : SORT_DESC, $sort['title'], SORT_ASC, $subject);
-/*
-print_r(array_map(function($e) { return $e['full']['title']; }, $subject));
-echo '</pre>';
-*/
-//die;
+	}
+
+
+
+	public function profileAction() {
+		$this->loadUsers();
+	}
+
+
+
+	public function listAction() {
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
+
+		$this->loadUsers();
+		$this->loadEntries();
+		$this->loadUniqueness();
+
+		foreach ($this->view->users as $i => &$u) {
+			$this->sort($u[$this->view->am]['entries'], 'score');
+		}
+	}
+
+
+
+	public function scoreAction() {
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
+
+		$this->loadUsers();
+		$this->loadEntries();
+		$this->loadUniqueness();
+
+		//prepare info for view
+		foreach ($this->view->users as $i => &$u) {
+			$scoreDist = array_fill_keys(range(10, 0), 0);
+			$scoreTimeDist = array_fill_keys(range(10, 0), 0);
+			$scoreInfo = [];
+			$scoreInfo['total'] = 0;
+			$scoreInfo['planned'] = 0;
+			$scoreInfo['unrated-titles'] = [];
+			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
+				if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
+					$scoreInfo['planned'] ++;
+					continue;
+				}
+				$scoreInfo['total'] ++;
+				$scoreDist[$e['user']['score']] ++;
+				$scoreTimeDist[$e['user']['score']] += $e['user']['total-duration'];
+				if ($e['user']['score'] == 0) {
+					$scoreInfo['unrated-titles'] []= &$e;
+				}
+			}
+
+			//conert minutes to hours
+			foreach ($scoreTimeDist as $k => &$v) {
+				$v /= 60.0;
+			}
+
+			//calculate rated and unrated count
+			$scoreInfo['unrated'] = $scoreDist[0];
+			$scoreInfo['rated'] = array_sum($scoreDist) - $scoreDist[0];
+			$scoreInfo['unrated-total-time'] = $scoreTimeDist[0];
+			$scoreInfo['rated-total-time'] = array_sum($scoreTimeDist) - $scoreTimeDist[0];
+
+			//calculate mean
+			$scoreInfo['mean'] = 0;
+			foreach ($scoreDist as $score => $count) {
+				$scoreInfo['mean'] += $score * $count;
+			}
+			$scoreInfo['mean'] /= max(1, $scoreInfo['rated']);
+
+			//calculate standard deviation
+			$scoreInfo['std-dev'] = 0;
+			foreach ($u[$this->view->am]['entries'] as &$e) {
+				if ($e['user']['score'] > 0) {
+					$scoreInfo['std-dev'] += pow($e['user']['score'] - $scoreInfo['mean'], 2);
+				}
+			}
+			$scoreInfo['std-dev'] /= max(1, $scoreInfo['rated'] - 1);
+			$scoreInfo['std-dev'] = sqrt($scoreInfo['std-dev']);
+
+			$u[$this->view->am]['score-info'] = $scoreInfo;
+			$u[$this->view->am]['score-dist'] = $scoreDist;
+			$u[$this->view->am]['score-time-dist'] = $scoreTimeDist;
+			$this->sort($u[$this->view->am]['score-info']['unrated-titles'], 'length');
+		}
 	}
 
 
