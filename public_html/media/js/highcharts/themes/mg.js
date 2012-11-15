@@ -90,8 +90,8 @@ Highcharts.theme = {
 
 	plotOptions: {
 		bar: {
-			pointWidth: 16,
-			borderWidth: 0,
+			pointWidth: 18,
+			borderWidth: 1,
 			shadow: false,
 		},
 	},

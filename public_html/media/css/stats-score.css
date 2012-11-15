@@ -1,6 +1,7 @@
 .target {
 	width: 400px;
-	height: 257px;
+	height: 254px;
+	line-height: 0;
 }
 
 ul.infobox {
