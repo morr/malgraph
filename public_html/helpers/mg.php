@@ -1,5 +1,5 @@
 <?php
-class mgHelper extends ChibiHelper {
+class MGHelper extends ChibiHelper {
 	public function removeSpaces($subject) {
 		$subject = trim($subject);
 		$subject = rtrim($subject, ':');

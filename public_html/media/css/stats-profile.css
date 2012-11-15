@@ -1,17 +1,33 @@
 .user-pic {
 	background: white;
-	max-width: 130px;
-	max-height: 200px;
-	border: 1px solid gray;
 	margin-right: 10px;
+	position: relative;
 	float: left;
 }
+	.user-pic img {
+		border: 1px solid gray;
+		width: 130px;
+		max-height: 200px;
+	}
 	.user-pic.anonymous {
 		background-image: url('img/gfx.png');
 		background-repeat: no-repeat;
 		background-position: -384px 0px;
 		height: 188px;
 		width: 130px;
+	}
+
+.gender-icon {
+	position: absolute;
+	display: block;
+	background-color: white;
+	border-top-right-radius: 10px;
+	box-shadow: 0 0 1em 0.25em rgba(255, 255, 255, 1);
+	margin-left: -5px;
+	margin-top: -25px;
+}
+	#content .gender-icon i {
+		margin: 5px 5px 5px 0;
 	}
 
 div.basic {

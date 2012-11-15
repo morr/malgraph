@@ -10,14 +10,23 @@ interface CachedDB extends DB {
 	public function getCached($key);
 	public function getReal($key);
 	public function isFresh($data);
+	public function cacheExists($key);
 };
 
 abstract class JSONDB extends ChibiModel implements CachedDB {
 	protected $folder;
 	protected $suffix = '.json';
 
-	private function keyToPath($key) {
+	protected function keyToPath($key) {
 		return str_replace('//', '/', $this->folder . '/' . strtolower($key) . $this->suffix);
+	}
+
+	public function cacheExists($key) {
+		return file_exists($this->keyToPath(key));
+	}
+
+	public function getFolder() {
+		return $this->folder;
 	}
 
 	public function getKeys() {
@@ -70,3 +79,8 @@ abstract class JSONDB extends ChibiModel implements CachedDB {
 		return file_put_contents($path, json_encode($data), LOCK_EX);
 	}
 }
+
+/*class DB {
+	private $link;
+	private $lastQuery;
+	private static $instance;*/

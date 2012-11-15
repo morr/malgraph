@@ -3,52 +3,77 @@ require_once 'controllers/abstract.php';
 class StatsController extends AbstractController {
 	public function init() {
 		parent::init();
-	}
 
-	private function sanitizeAM($am) {
+		//discard session information to speed up things
+		session_write_close();
+
+		//no user specified
+		$userNames = $this->inputHelper->get('u');
+		if (empty($userNames)) {
+			throw new Exception('User name not specified.');
+		}
+		//user is not an array
+		if (!is_array($userNames)) {
+			$userNames = array($userNames);
+		}
+		foreach ($userNames as $userName) {
+			if (empty($userName)) {
+				throw new Exception('User name cannot be empty.');
+			}
+		}
+		//primary user appears more than once
+		if (count(array_keys($userNames, $userNames[0])) > 1) {
+			throw new Exception('Why would you want to compare an user with theirself?&hellip;');
+		}
+		//make users unique
+		$userNames = array_unique($userNames);
+		$this->view->userNames = $userNames;
+
+		//load anime-manga switch
+		$am = $this->inputHelper->get('am');
 		if ($am != UserModel::USER_LIST_TYPE_MANGA) {
 			$am = UserModel::USER_LIST_TYPE_ANIME;
 		}
-		return $am;
+		$this->view->am = $am;
 	}
-
-	private function sanitizeAction($a) {
-		if (!in_array($a, ['profile', 'list', 'score', 'act', 'fav', 'misc', 'sug', 'json'])) {
-			$a = 'profile';
-		}
-		return $a;
-	}
-
 
 	/*
 	 * Redirect to comparison mode from top search field
 	 */
 	public function searchAction() {
-		if (empty($_POST['user-name'])) {
-			throw new Exception('Empty user name.');
-		}
-		if ($_POST['submit'] == 'compare') {
-			if (empty($_POST['active-user-name'])) {
-				throw new Exception('Trying to compare an user to noone (?).');
-			}
-			$u = [$_POST['active-user-name'], $_POST['user-name']];
+		if ($this->inputHelper->get('submit') == 'compare') {
+			$u = [reset($this->view->userNames), end($this->view->userNames)];
 		} else {
-			$u = [$_POST['user-name']];
+			$u = [end($this->view->userNames)];
 		}
 
-		$am = null;
-		if (!empty($_POST['am'])) {
-			$am = $_POST['am'];
+		$action = $this->inputHelper->get('action');
+		if (!in_array($action, ['profile', 'list', 'score', 'act', 'fav', 'misc', 'sug', 'json'])) {
+			$action = 'profile';
 		}
-		$am = $this->sanitizeAM($am);
 
-		$action = null;
-		if (!empty($_POST['action'])) {
-			$action = $_POST['action'];
+		$this->forward($this->urlHelper->url('stats/' . $action, ['u' => $u, 'am' => $this->view->am]));
+	}
+
+
+	/*
+	 * Share anonymous information about user
+	 */
+	public function shareAnonymousAction() {
+		$this->loadUsers();
+
+		$modelUsers = new UserModel();
+		$u = [];
+		foreach ($this->view->users as $user) {
+			$u []= $user['anonymous-name'];
 		}
-		$action = $this->sanitizeAction($action);
 
-		$this->forward($this->urlHelper->url('stats/' . $action, ['u' => $u, 'am' => $am]));
+		$action = $this->inputHelper->get('action');
+		if (!in_array($action, ['profile', 'list', 'score', 'act', 'fav', 'misc', 'sug', 'json'])) {
+			$action = 'profile';
+		}
+
+		$this->forward($this->urlHelper->url('stats/' . $action, ['u' => $u, 'am' => $this->view->am]));
 	}
 
 
@@ -56,11 +81,7 @@ class StatsController extends AbstractController {
 	 * Set anime-manga switch
 	 */
 	public function switchAmAction() {
-		if (empty($_REQUEST['am'])) {
-			throw new Exception('Something went wrong.');
-		}
-		$am = $this->sanitizeAM($_REQUEST['am']);
-		$this->forward($this->urlHelper->url('stats/' . $_REQUEST['action'], ['u' => $_REQUEST['u'], 'am' => $am]));
+		$this->forward($this->urlHelper->url('stats/' . $_REQUEST['action'], ['u' => $u, 'am' => $am]));
 	}
 
 
@@ -68,12 +89,17 @@ class StatsController extends AbstractController {
 	 * Regenerate user from cache, if it has expired
 	 */
 	public function regenerateAction() {
+		//header('Content-Type: text/plain; charset=utf-8');
+		//$this->config->chibi->runtime->layoutName = null;
+
 		//discard session information to speed up things
 		session_write_close();
 
-		$key = $_GET['user-name'];
+		$key = $this->view->userNames;
+		if (is_array($key)) {
+			$key = reset($key);
+		}
 		if (empty($key)) {
-			header('Content-Type: text/plain; charset=utf-8');
 			echo 'Empty user name.';
 			return;
 		}
@@ -81,8 +107,7 @@ class StatsController extends AbstractController {
 		$modelUsers = new UserModel();
 		$modelUsers->allowUpdate(true);
 		$user = $modelUsers->get($key);
-		$this->config->chibi->runtime->layoutName = null;
-		header('Content-Type: text/plain; charset=utf-8');
+
 		echo $user['expires'];
 	}
 
@@ -91,43 +116,19 @@ class StatsController extends AbstractController {
 	 * Load all users information
 	 */
 	private function loadUsers() {
-		//no user specified
-		if (empty($_GET['u'])) {
-			throw new Exception('Empty user name.');
-		}
-		$userNames = $_GET['u'];
-		//user is not an array
-		if (!is_array($userNames)) {
-			$userNames = array($userNames);
-		}
-		//primary user appears more than once
-		if (count(array_keys($userNames, $userNames[0])) > 1) {
-			throw new Exception('Why would you want to compare yourself with&hellip; yourself?&hellip;');
-		}
-		//make users unique
-		$userNames = array_unique($userNames);
 		//make sure only two users are compared
-		if (count($userNames) > 2) {
+		if (count($this->view->userNames) > 2) {
 			throw new Exception('Sorry. We haven\'t implemented this.');
 		}
-		$this->view->userNames = $userNames;
-
 		$modelUsers = new UserModel();
 		$this->view->users = [];
 		foreach ($this->view->userNames as $userName) {
 			$user = $modelUsers->get($userName);
 			if (empty($user)) {
-				$this->forward($this->urlHelper->url('index/wrong-user', ['user-name' => $userName]));
+				$this->forward($this->urlHelper->url('index/wrong-user', ['u' => $userName]));
 			}
 			$this->view->users []= $user;
 		}
-
-		//load anime-manga switch
-		if (empty($_GET['am'])) {
-			throw new Exception('Something went wrong.');
-		}
-		$am = $this->sanitizeAM($_GET['am']);
-		$this->view->am = $am;
 	}
 
 	private function loadEntries() {

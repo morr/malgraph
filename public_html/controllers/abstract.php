@@ -1,14 +1,4 @@
 <?php
-class HTTPException extends Exception {
-	public function __construct($httpCode, $message) {
-		$this->httpCode = $httpCode;
-		$this->message = $message;
-	}
-	public function getHTTPCode() {
-		return $this->httpCode;
-	}
-}
-
 class AbstractController extends ChibiController {
 	public function init() {
 		if (!session_id()) {
@@ -50,21 +40,6 @@ class AbstractController extends ChibiController {
 		//and dynamic scripts linked above might want to set/unset such classes first.
 		$this->headHelper->addScript($this->urlHelper->url('media/js/core.js'));
 
-	}
-
-	public function work() {
-		try {
-			parent::work();
-		} catch (HTTPException $e) {
-			$c = ChibiController::getInstance($this->config->chibi->basic->errorController, $this->config->chibi->basic->errorHttpAction);
-			$c->errorCode = $e->getHTTPCode();
-			$c->message = $e->getMessage();
-			$c->work();
-		} catch (Exception $e) {
-			$c = ChibiController::getInstance($this->config->chibi->basic->errorController, $this->config->chibi->basic->errorHttpAction);
-			$c->message = $e->getMessage();
-			$c->work();
-		}
 	}
 
 }

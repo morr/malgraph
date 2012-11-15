@@ -249,6 +249,38 @@ class UserModel extends JSONDB {
 			return null;
 		}
 
+		$this->postGet($user);
+
 		return $user;
 	}
+
+	public function getCached($userName) {
+		$user = parent::getCached($userName);
+		$this->postGet($user);
+		return $user;
+	}
+
+	public function postGet(&$user) {
+		if (!empty($user)) {
+			$anonName = crypt($user['user-name'], '$2a$' . $this->config->misc->anonStatsSalt);
+			$anonName = unpack('H*', $anonName);
+			$anonName = array_shift($anonName);
+			$user['anonymous-name'] = $anonName;
+			$user['anonymous'] = $user['anonymous-name'] == $user['user-name'];
+		}
+		return $user;
+	}
+
+	public function put($userName, $data) {
+		if (!empty($data) and !empty($data['anonymous'])) {
+			$userName = $data['user-name'];
+		}
+		$ret = parent::put($userName, $data);
+		$path1 = $this->keyToPath($userName);
+		$path2 = dirname($path1);
+		$path2 .= '/' . $data['anonymous-name'] . $this->suffix;
+		symlink($path1, $path2);
+	}
+
+
 }

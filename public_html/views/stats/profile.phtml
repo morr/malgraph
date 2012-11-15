@@ -4,11 +4,24 @@
 <?php foreach ($this->users as $u): ?>
 	<div class="user">
 		<div class="section">
-			<?php if (basename($u['profile-picture-url']) == 'na.gif'): ?>
-				<img alt="No profile picture" class="user-pic anonymous" src="<?php echo $this->mgHelper->url('/media/img/pixel.gif') ?>">
-			<?php else: ?>
-				<img alt="Profile picture" class="user-pic" src="<?php echo $u['profile-picture-url'] ?>">
-			<?php endif ?>
+			<div class="user-pic">
+				<?php if (basename($u['profile-picture-url']) == 'na.gif'): ?>
+					<img alt="No profile picture" src="<?php echo $this->mgHelper->url('/media/img/pixel.gif') ?>">
+				<?php else: ?>
+					<img alt="Profile picture" src="<?php echo $u['profile-picture-url'] ?>">
+				<?php endif ?>
+
+				<?php if ($u['gender'] == UserModel::USER_GENDER_FEMALE): ?>
+					<div class="gender-icon">
+						<i class="icon-female"></i>
+					</div>
+				<?php elseif ($u['gender'] == UserModel::USER_GENDER_MALE): ?>
+					<div class="gender-icon">
+						<i class="icon-male"></i>
+					</div>
+				<?php endif ?>
+			</div>
+
 			<h2>
 				<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $u['user-name'], 'am' => $this->am]) ?>">
 					<?php echo $u['user-name'] ?>
@@ -21,6 +34,7 @@
 				</span>
 				<?php date_default_timezone_set($x) ?>
 			</h2>
+
 			<div class="basic">
 				<dl>
 					<?php

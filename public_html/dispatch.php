@@ -7,7 +7,8 @@ $configPaths = array(
 );
 foreach ($configPaths as $p) {
 	if (file_exists($p)) {
-		new BasicRouter(dirname($_SERVER['SCRIPT_FILENAME']), $p, $request);
+		ChibiConfig::load($p);
+		new BasicRouter(dirname($_SERVER['SCRIPT_FILENAME']), $request);
 		die;
 	}
 }

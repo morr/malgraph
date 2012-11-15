@@ -18,14 +18,16 @@
 			</h1>
 			<form class="waitable" id="search" action="<?php echo $this->mgHelper->url('stats/search') ?>" method="post">
 				<?php if ($this->view->controllerName == 'stats'): ?>
-					<input type="hidden" name="active-user-name" value="<?php echo reset($this->view->userNames) ?>">
+					<?php foreach ($this->view->userNames as $userName): ?>
+						<input type="hidden" name="u[]" value="<?php echo $userName ?>">
+					<?php endforeach ?>
 					<input type="hidden" name="action" value="<?php echo $this->view->actionName ?>">
 				<?php endif ?>
 				<?php if (!empty($this->view->am)): ?>
 					<input type="hidden" name="am" value="<?php echo $this->view->am ?>">
 				<?php endif ?>
 				<div class="control-group input-append">
-					<input type="search" name="user-name">
+					<input type="search" name="u[]">
 					<button title="Search" name="submit" value="search" class="btn" type="submit"><i class="icon-search"></i></button>
 					<?php if ($this->view->controllerName == 'stats'): ?>
 						<button title="Compare" name="submit" value="compare" class="btn" type="submit"><i class="icon-compare"></i></button>
@@ -93,6 +95,9 @@
 			<p><a href="<?php echo $this->mgHelper->url('index/privacy') ?>">Privacy policy</a></p>
 			<p>Suggestions? Questions? Visit the <a href="http://myanimelist.net/clubs.php?cid=30017">MALgraph club</a> and ask!</p>
 			<p><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</p>
+			<?php if ($this->view->controllerName == 'stats'): ?>
+				<p><a href="<?php echo $this->mgHelper->url('stats/share-anonymous', ['u' => $this->view->userNames, 'am' => $this->view->am, 'action' => $this->view->actionName]) ?>">Share anonymously</a></p>
+			<?php endif ?>
 		</div>
 	</div>
 
@@ -100,7 +105,7 @@
 		<script type="text/javascript">
 			window.setTimeout(function() {
 				var url = <?php echo json_encode($this->mgHelper->url('stats/regenerate')) ?>;
-				var data = <?php echo json_encode(['user-name' => reset($this->view->userNames)]) ?>;
+				var data = <?php echo json_encode(['u' => reset($this->view->userNames)]) ?>;
 				$.get(url, data, function(response) { /*alert(response);*/ });
 			}, 1500);
 		</script>
