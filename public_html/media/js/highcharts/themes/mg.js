@@ -1,25 +1,30 @@
 Highcharts.theme = {
 	colors: ['#1969CB', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+
 	credits: {'enabled': false},
+
 	chart: {
-		/*plotBackgroundColor: 'rgba(255, 255, 255, .9)',*/
 		plotShadow: false,
-		/*plotBorderWidth: 1*/
 	},
+
 	title: {
 		style: {
 			color: '#000',
 			font: 'bold 1.25em Verdana, Dejavu Sans, sans-serif'
 		}
 	},
+
 	subtitle: {
 		style: {
 			color: '#666666',
 			font: 'bold 1.15em Verdana, Dejavu Sans, sans-serif'
 		}
 	},
+
 	xAxis: {
 		gridLineWidth: 1,
+		minorGridLineColor: '#f5f5f5',
+		gridLineColor: '#f5f5f5',
 		lineColor: '#000',
 		tickColor: '#000',
 		labels: {
@@ -38,8 +43,11 @@ Highcharts.theme = {
 			}
 		}
 	},
+
 	yAxis: {
 		minorTickInterval: 'auto',
+		gridLineColor: '#ddd',
+		minorGridLineColor: '#f5f5f5',
 		lineColor: '#000',
 		lineWidth: 1,
 		tickWidth: 1,
@@ -47,7 +55,7 @@ Highcharts.theme = {
 		labels: {
 			style: {
 				color: '#000',
-				font: '9pt Verdana, Dejavu Sans, sans-serif'
+				font: '8pt Verdana, Dejavu Sans, sans-serif'
 			}
 		},
 		title: {
@@ -59,6 +67,7 @@ Highcharts.theme = {
 			}
 		}
 	},
+
 	legend: {
 		itemStyle: {
 			font: '9pt Verdana, Dejavu Sans, sans-serif',
@@ -72,11 +81,21 @@ Highcharts.theme = {
 			color: 'gray'
 		}
 	},
+
 	labels: {
 		style: {
 			color: '#99b'
 		}
-	}
+	},
+
+	plotOptions: {
+		bar: {
+			pointWidth: 16,
+			borderWidth: 0,
+			shadow: false,
+		},
+	},
+
 };
 
 // Apply the theme

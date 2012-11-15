@@ -83,14 +83,6 @@
 							}
 						},
 
-						plotOptions: {
-							bar: {
-								pointWidth: 16,
-								borderWidth: 0,
-								shadow: false,
-							},
-						},
-
 						series: [{
 							data: <?php echo json_encode(array_values($u[$this->am]['score-dist'])) ?>
 						}]
@@ -143,14 +135,6 @@
 									return 'Hours spent on unrated titles: ' + Math.round(this.y * 100) / 100.0;
 								}
 								return 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
-							}
-						},
-
-						plotOptions: {
-							bar: {
-								pointWidth: 16,
-								borderWidth: 0,
-								shadow: 0,
 							}
 						},
 
