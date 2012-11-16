@@ -8,7 +8,7 @@ class StatsController extends AbstractController {
 		session_write_close();
 
 		//no user specified
-		$userNames = $this->inputHelper->get('u');
+		$userNames = $this->inputHelper->getStringSafe('u');
 		if (empty($userNames)) {
 			throw new Exception('User name not specified.');
 		}
@@ -47,7 +47,7 @@ class StatsController extends AbstractController {
 			$u = [end($this->view->userNames)];
 		}
 
-		$action = $this->inputHelper->get('action');
+		$action = $this->inputHelper->getStringSafe('action');
 		if (!in_array($action, ['profile', 'list', 'score', 'act', 'fav', 'misc', 'sug', 'json'])) {
 			$action = 'profile';
 		}
@@ -59,7 +59,7 @@ class StatsController extends AbstractController {
 	/*
 	 * Share anonymous information about user
 	 */
-	public function shareAnonymousAction() {
+	public function anonymizeAction() {
 		$this->loadUsers();
 
 		$modelUsers = new UserModel();
@@ -68,7 +68,7 @@ class StatsController extends AbstractController {
 			$u []= $user['anon-name'];
 		}
 
-		$action = $this->inputHelper->get('action');
+		$action = $this->inputHelper->getStringSafe('action');
 		if (!in_array($action, ['profile', 'list', 'score', 'act', 'fav', 'misc', 'sug', 'json'])) {
 			$action = 'profile';
 		}
@@ -123,6 +123,8 @@ class StatsController extends AbstractController {
 		if (count($this->view->userNames) > 2) {
 			throw new Exception('Sorry. We haven\'t implemented this.');
 		}
+
+		$anons = [];
 		$modelUsers = new UserModel();
 		$this->view->users = [];
 		foreach ($this->view->userNames as $userName) {
@@ -135,14 +137,28 @@ class StatsController extends AbstractController {
 				$this->forward($this->urlHelper->url('index/net-down'));
 				return;
 			}
-			if (!empty($user['user-name'])) {
-				$user['link-name'] = $user['anonymous'] ? $user['anon-name'] : $user['user-name'];
-				$user['visible-name'] = $user['anonymous'] ? 'Anonymous' : $user['user-name'];
-			} else {
-				$user['link-name'] = null;
-				$user['visible-name'] = null;
-			}
 			$this->view->users []= $user;
+		}
+
+		foreach ($this->view->users as &$user) {
+			if (!empty($user['user-name'])) {
+				$user['link-name'] = $user['user-name'];
+				$user['visible-name'] = $user['user-name'];
+				if ($user['anonymous']) {
+					$anons []= &$user;
+				}
+			}
+		}
+
+		//prepare display names of anonymous users
+		$anonCurrent = 0;
+		$alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		foreach ($anons as $i => &$user) {
+			$user['link-name'] = $user['anon-name'];
+			$user['visible-name'] = 'Anonymous';
+			if (count($anons) > 1) {
+				$user['visible-name'] .= ' ' . $alphabet{$i};
+			}
 		}
 	}
 

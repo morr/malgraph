@@ -1,8 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<?php echo $this->headHelper->render() ?>
+	<meta property="og:title" content="<?php echo $this->headHelper->title ?>">
+	<meta property="og:description" content="<?php echo $this->headHelper->description ?>">
+	<meta property="og:image" content="<?php echo $this->urlHelper->url('media/img/logo.png') ?>">
+	<meta property="og:url" content="<?php echo $this->mgHelper->currentUrl() ?>">
+	<meta property="og:site_name" content="MALgraph" />
 </head>
 <body>
 	<?php if ($this->view->controllerName == 'stats' and count($this->view->userNames) > 1): ?>
@@ -91,13 +96,31 @@
 		</div>
 
 		<div id="footer">
-			<p><a href="<?php echo $this->mgHelper->url('index/about') ?>">About</a></p>
-			<p><a href="<?php echo $this->mgHelper->url('index/privacy') ?>">Privacy policy</a></p>
-			<p>Suggestions? Questions? Visit the <a href="http://myanimelist.net/clubs.php?cid=30017">MALgraph club</a> and ask!</p>
-			<p><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</p>
-			<?php if ($this->view->controllerName == 'stats'): ?>
-				<p><a href="<?php echo $this->mgHelper->url('stats/share-anonymous', ['u' => $this->view->userNames, 'am' => $this->view->am, 'action' => $this->view->actionName]) ?>">Share anonymously</a></p>
-			<?php endif ?>
+			<ul class="left">
+				<li><a href="<?php echo $this->mgHelper->url('index/about') ?>">About</a></li>
+				<li><a href="<?php echo $this->mgHelper->url('index/privacy') ?>">Privacy policy</a></li>
+				<li><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</li>
+			</ul>
+			<ul class="right">
+				<?php if ($this->view->controllerName == 'stats'): ?>
+					<li>
+						<a title="Anonymize current profile (for anonymous sharing)." href="<?php echo $this->mgHelper->url('stats/anonymize', ['u' => $this->view->userNames, 'am' => $this->view->am, 'action' => $this->view->actionName]) ?>">
+							<i class="icon-anonymize"></i>
+						</a>
+					</li>
+				<?php endif ?>
+				<li>
+					<a href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode($this->mgHelper->currenturl()) ?>">
+						<i class="icon-twitter"></i>
+					</a>
+				</li>
+				<li>
+					<a href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode($this->mgHelper->currentUrl()) ?>&amp;t=Share+MALgraph">
+						<i class="icon-facebook"></i>
+					</a>
+				</li>
+			</ul>
+			<div class="clear"></div>
 		</div>
 	</div>
 

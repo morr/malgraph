@@ -15,19 +15,6 @@
 				<?php else: ?>
 					<img alt="Profile picture" src="<?php echo $u['profile-picture-url'] ?>">
 				<?php endif ?>
-
-				<!-- gender -->
-				<?php if (!$u['anonymous']): ?>
-					<?php if ($u['gender'] == UserModel::USER_GENDER_FEMALE): ?>
-						<div class="gender-icon">
-							<i class="icon-female"></i>
-						</div>
-					<?php elseif ($u['gender'] == UserModel::USER_GENDER_MALE): ?>
-						<div class="gender-icon">
-							<i class="icon-male"></i>
-						</div>
-					<?php endif ?>
-				<?php endif ?>
 			</div>
 
 			<!-- user name -->
@@ -47,26 +34,36 @@
 			<div class="basic">
 				<!-- basic information -->
 				<dl>
-					<?php
-						if (intval($u['join-date']))
-						{
-							list ($year, $month, $day) = explode ('-', $u['join-date']);
-							$time = mktime(0, 0, 0, $month, $day, $year);
-							$diff = time() - $time;
-							$diff /= 3600 * 24;
-							echo '<dt>Time on MAL</dt>';
-							echo '<dd>' . sprintf('%.1f', $diff / 361.25) . ' years</dd>';
-						}
-					?>
+
+					<dt>Gender</dt>
+					<?php if (!$u['anonymous']): ?>
+						<?php if ($u['gender'] == UserModel::USER_GENDER_FEMALE): ?>
+							<dd>Female</dd>
+						<?php elseif ($u['gender'] == UserModel::USER_GENDER_MALE): ?>
+							<dd>Male</dd>
+						<?php else: ?>
+							<dd>Unknown</dd>
+						<?php endif ?>
+					<?php else: ?>
+						<dd>Unknown</dd>
+					<?php endif ?>
 
 					<dt>List views</dt>
 					<dd><?php echo $u[$this->am]['list-views'] ?></dd>
 
-					<dt>Total clubs</dt>
-					<dd><?php echo count($u['clubs']) ?></dd>
+					<dt>Time on MAL</dt>
+					<?php if (intval($u['join-date'])): ?>
+						<?php
+							list ($year, $month, $day) = explode ('-', $u['join-date']);
+							$time = mktime(0, 0, 0, $month, $day, $year);
+							$diff = time() - $time;
+							$diff /= 3600 * 24;
+						?>
+						<dd><?php printf('%.1f', $diff / 361.25) ?> years</dd>
+					<?php else: ?>
+						<dd>Unknown</dd>
+					<?php endif ?>
 
-					<dt>Total friends</dt>
-					<dd><?php echo count($u['friends']) ?></dd>
 				</dl>
 				<div class="clear"></div>
 
@@ -120,7 +117,7 @@
 
 		<!-- friends -->
 		<div class="section">
-			<h3>Friends</h3>
+			<h3>Friends (<?php echo count($u['friends']) ?>)</h3>
 			<?php if (empty($u['friends'])): ?>
 				<p>This user has no friends on MAL. :(</p>
 			<?php elseif ($u['anonymous']): ?>
@@ -146,7 +143,7 @@
 
 		<!-- clubs -->
 		<div class="section">
-			<h3>Clubs</h3>
+			<h3>Clubs (<?php echo count($u['clubs']) ?>)</h3>
 			<?php if (empty($u['clubs'])): ?>
 				<p>This user doesn't belong to any clubs.</p>
 			<?php elseif ($u['anonymous']): ?>

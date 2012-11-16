@@ -163,7 +163,7 @@ class UserModel extends JSONDB {
 		$user['user-name'] = substr($user['user-name'], 0, strpos($user['user-name'], '\'s Profile'));
 
 		//anonymous name
-		$anonName = crypt($user['user-name'], '$2a$' . $this->config->misc->anonStatsSalt);
+		$anonName = crypt($user['user-name'], '$2y$' . $this->config->misc->anonStatsSalt);
 		$user['anon-name'] = $anonName;
 
 		//static information
@@ -336,6 +336,12 @@ class UserModel extends JSONDB {
 			}
 			$data['anonymous'] = false;
 		}
+
+		if (!empty($data['user-name']) and !isset($this->anons[$data['anon-name']])) {
+			$this->anons[$data['anon-name']] = $data['user-name'];
+			file_put_contents($this->anonsFile, json_encode($this->anons), LOCK_EX);
+		}
+
 		return $data;
 	}
 

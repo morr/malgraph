@@ -13,6 +13,7 @@ class AbstractController extends ChibiController {
 
 		//basic settings
 		$this->headHelper->setTitle('MALgraph');
+		$this->headHelper->setDescription('Tool for MyAnimeList users offering fun statistical analysis of their profiles.');
 		$this->headHelper->setFavicon($this->urlHelper->url('media/img/favicon.png'));
 
 		//stylesheets

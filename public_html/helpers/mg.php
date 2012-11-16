@@ -1,5 +1,9 @@
 <?php
 class MGHelper extends ChibiHelper {
+	public function currentUrl() {
+		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI']);
+	}
+
 	public function removeSpaces($subject) {
 		$subject = trim($subject);
 		$subject = rtrim($subject, ':');

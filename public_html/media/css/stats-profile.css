@@ -21,19 +21,6 @@
 	text-decoration: line-through;
 }
 
-.gender-icon {
-	position: absolute;
-	display: block;
-	background-color: white;
-	border-top-right-radius: 10px;
-	box-shadow: 0 0 1em 0.25em rgba(255, 255, 255, 1);
-	margin-left: -5px;
-	margin-top: -25px;
-}
-	#content .gender-icon i {
-		margin: 5px 5px 5px 0;
-	}
-
 div.basic {
 	float: left;
 }

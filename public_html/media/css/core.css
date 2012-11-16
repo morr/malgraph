@@ -126,14 +126,21 @@ body {
 			}
 
 
-	#footer p {
+	#footer ul {
 		display: inline-block;
 		font-size: 8pt;
-		margin: 0 1em;
+		padding: 0;
+		margin: 0;
 	}
-		#footer p:first-child {
-			margin-left: 0;
+		#footer li {
+			padding: 3px 0;
+			margin: 0;
+			display: inline-block;
 		}
+		#footer .left { float: left; }
+		#footer .right { float: right; }
+		#footer .left li { margin-right: 2em; }
+		#footer .right li{ margin-left: 0.5em; }
 
 
 	#glider {
@@ -276,6 +283,9 @@ dl {
 	a:hover .icon-hourglass { background-position: -304px -16px; }
 	a:hover .icon-schedule { background-position: -320px -16px; }
 	a:hover .icon-switch { background-position: -336px -16px; }
+	a:hover .icon-anonymize { background-position: -352px -16px; }
+	a:hover .icon-facebook { background-position: -368px -16px; }
+	a:hover .icon-twitter { background-position: -384px -16px; }
 
 	.icon-mg { background-position: -128px 0; }
 	.icon-club { background-position: -144px 0; }
@@ -291,9 +301,9 @@ dl {
 	.icon-hourglass { background-position: -304px 0; }
 	.icon-schedule { background-position: -320px 0; }
 	.icon-switch { background-position: -336px 0; }
-
-	.icon-female { background-position: -352px 0; width: 24px; height: 24px; }
-	.icon-male { background-position: -376px 0; width: 24px; height: 24px; }
+	.icon-anonymize { background-position: -352px 0; }
+	.icon-facebook { background-position: -368px 0; }
+	.icon-twitter { background-position: -384px 0; }
 
 	li.active .icon-anime, a:hover .icon-anime { background-position: -32px 0; }
 	li.active .icon-manga, a:hover .icon-manga { background-position: -96px 0; }
