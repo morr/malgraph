@@ -45,12 +45,8 @@ class AnimeModel extends AMModel {
 		$entry['generated'] = time();
 		$entry['expires'] = time() + 3600 * 24 * 21;
 
-		try {
-			$this->loadCommon($entry, $doc);
-			$this->loadAnime($entry, $doc);
-		} catch (Exception $e) {
-			return null;
-		}
+		$this->loadCommon($entry, $doc);
+		$this->loadAnime($entry, $doc);
 
 		return $entry;
 	}

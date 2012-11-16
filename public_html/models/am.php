@@ -1,5 +1,5 @@
 <?php
-require_once 'db.php';
+require_once 'abstract.php';
 abstract class AMModel extends JSONDB {
 	const ENTRY_URL = 'http://myanimelist.net/{type}/{id}';
 
@@ -17,8 +17,11 @@ abstract class AMModel extends JSONDB {
 		$url = $this->mgHelper->replaceTokens(self::ENTRY_URL, ['type' => $type, 'id' => $id]);
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
-		$this->mgHelper->suppressErrors();
 		$contents = $this->mgHelper->download($url);
+		$this->mgHelper->suppressErrors();
+		if (empty($contents)) {
+			throw new DownloadException($url);
+		}
 		$doc->loadHTML($contents);
 		$this->mgHelper->restoreErrors();
 		return $doc;
@@ -29,7 +32,7 @@ abstract class AMModel extends JSONDB {
 
 		$node = $xpath->query('//div[@class = \'badresult\']');
 		if ($node->length >= 1) {
-			throw new Exception('Entry not found');
+			throw new InvalidEntryException($entry['id']);
 		}
 
 		//title

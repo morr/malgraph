@@ -1,5 +1,5 @@
 <?php
-require_once 'db.php';
+require_once 'abstract.php';
 class UserModel extends JSONDB {
 	const USER_GENDER_FEMALE = 'F';
 	const USER_GENDER_MALE = 'M';
@@ -24,14 +24,25 @@ class UserModel extends JSONDB {
 	const USER_LIST_STATUS_MAL_COMPLETED = 2;
 	const USER_LIST_STATUS_MAL_PLANNED = 6;
 
-	const USER_URL_ANIME = 'http://myanimelist.net/malappinfo.php?u={user}&status=all';
-	const USER_URL_MANGA = 'http://myanimelist.net/malappinfo.php?u={user}&status=all&type=manga';
+	const USER_URL_ANIME1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all';
+	const USER_URL_MANGA1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all&type=manga';
+	const USER_URL_ANIME2 = 'http://myanimelist.net/animelist/{user}&sclick=1';
+	const USER_URL_MANGA2 = 'http://myanimelist.net/mangalist/{user}&sclick=1';
 	const USER_URL_PROFILE = 'http://myanimelist.net/profile/{user}';
 	const USER_URL_CLUBS = 'http://myanimelist.net/showclubs.php?id={user-id}';
 	const USER_URL_FRIENDS = 'http://myanimelist.net/friends.php?id={user-id}&show={shift}';
 
+	private $anonsFile;
+	private $anons;
+
 	public function __construct() {
 		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'users';
+		$this->anonsFile = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'anons.json';
+		if (file_exists($this->anonsFile)) {
+			$this->anons = json_decode(file_get_contents($this->anonsFile), true);
+		} else {
+			$this->anons = [];
+		}
 	}
 
 	private $allowUpdate = false;
@@ -59,23 +70,42 @@ class UserModel extends JSONDB {
 
 	protected function loadLists(array &$user) {
 		$urls = [];
-		$urls[self::USER_LIST_TYPE_ANIME] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME, ['user' => $user['user-name']]);
-		$urls[self::USER_LIST_TYPE_MANGA] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA, ['user' => $user['user-name']]);
-		foreach ([self::USER_LIST_TYPE_ANIME, self::USER_LIST_TYPE_MANGA] as $type) {
+
+		$urls[self::USER_LIST_TYPE_ANIME] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME2, ['user' => $user['user-name']]);
+		$urls[self::USER_LIST_TYPE_MANGA] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA2, ['user' => $user['user-name']]);
+		foreach ($urls as $type => $url) {
 			$user[$type] = [];
+
+			$contents = $this->mgHelper->download($url);
+			if (empty($contents)) {
+				throw new DownloadException($url);
+			}
+			if (strpos($contents, 'This list has been made private by the owner') !== false) {
+				$user[$type]['private'] = true;
+			} else {
+				$user[$type]['private'] = false;
+			}
+		}
+
+		$urls[self::USER_LIST_TYPE_ANIME] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME1, ['user' => $user['user-name']]);
+		$urls[self::USER_LIST_TYPE_MANGA] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA1, ['user' => $user['user-name']]);
+		foreach ($urls as $type => $url) {
 			$list = &$user[$type];
 
 			$doc = new DOMDocument;
 			$doc->preserveWhiteSpace = false;
+			$contents = $this->mgHelper->download($url);
+			if (empty($contents)) {
+				throw new DownloadException($url);
+			}
 			$this->mgHelper->suppressErrors();
-			$contents = $this->mgHelper->download($urls[$type]);
 			$doc->loadHTML($contents);
 			$this->mgHelper->restoreErrors();
 			$xpath = new DOMXPath($doc);
 
 			if ($xpath->query('//myinfo')->length == 0) {
 				//user not found?
-				throw new Exception('User doesn\'t exist');
+				throw new InvalidEntryException($user['user-name']);
 			}
 
 			$list['entries'] = [];
@@ -89,7 +119,6 @@ class UserModel extends JSONDB {
 					$entry['score'] = intval($node->nodeValue);
 				} else {
 					$entry['score'] = 0;
-					var_dump($entry);die;
 				}
 
 				$entry['status'] = $this->fixStatus($xpath->query('my_status', $root)->item(0)->nodeValue);
@@ -116,31 +145,64 @@ class UserModel extends JSONDB {
 
 	protected function loadProfile(array &$user) {
 		$this->mgHelper->suppressErrors();
-		$contents = $this->mgHelper->download($this->mgHelper->replaceTokens(self::USER_URL_PROFILE, ['user' => $user['user-name']]));
-		if (!$contents) {
-			$this->mgHelper->restoreErrors();
-			throw new Exception('User doesn\'t exist');
+		$url = $this->mgHelper->replaceTokens(self::USER_URL_PROFILE, ['user' => $user['user-name']]);
+		$contents = $this->mgHelper->download($url);
+		if (empty($contents)) {
+			throw new DownloadException($url);
 		}
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
 		$doc->loadHTML($contents);
 		$xpath = new DOMXPath($doc);
+		$this->mgHelper->restoreErrors();
 
+		//basic information
 		$user[self::USER_LIST_TYPE_ANIME]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Anime List Views\']/following-sibling::td')->item(0)->nodeValue));
 		$user[self::USER_LIST_TYPE_MANGA]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Manga List Views\']/following-sibling::td')->item(0)->nodeValue));
 		$user['user-name'] = $this->mgHelper->fixText($xpath->query('//title')->item(0)->nodeValue);
 		$user['user-name'] = substr($user['user-name'], 0, strpos($user['user-name'], '\'s Profile'));
 
-		$user['birthday'] = $this->mgHelper->fixDate($xpath->query('//td[text() = \'Birthday\']/following-sibling::td')->item(0)->nodeValue);
-		$user['location'] = $this->mgHelper->fixText($xpath->query('//td[text() = \'Location\']/following-sibling::td')->item(0)->nodeValue);
-		$user['website'] = $this->mgHelper->fixText($xpath->query('//td[text() = \'Website\']/following-sibling::td')->item(0)->nodeValue);
-		$user['comment-count'] = intval($xpath->query('//td[text() = \'Comments\']/following-sibling::td')->item(0)->nodeValue);
-		$user['post-count'] = intval($xpath->query('//td[text() = \'Forum Posts\']/following-sibling::td')->item(0)->nodeValue);
+		//anonymous name
+		$anonName = crypt($user['user-name'], '$2a$' . $this->config->misc->anonStatsSalt);
+		$user['anon-name'] = $anonName;
+
+		//static information
 		$user['profile-picture-url'] = $xpath->query('//td[@class = \'profile_leftcell\']//img')->item(0)->getAttribute('src');
 		$user['join-date'] = $this->mgHelper->fixDate($xpath->query('//td[text() = \'Join Date\']/following-sibling::td')->item(0)->nodeValue);
 		$url = $this->mgHelper->parseURL($xpath->query('//a[text() = \'All Comments\']')->item(0)->getAttribute('href'));
 		$user['user-id'] = intval($url['query']['id']);
-		$this->mgHelper->restoreErrors();
+
+		//comments
+		$node = $xpath->query('//td[text() = \'Comments\']/following-sibling::td')->item(0);
+		if (!empty($node)) {
+			$user['comment-count'] = intval($node->nodeValue);
+		}
+
+		//posts
+		$node = $xpath->query('//td[text() = \'Forum Posts\']/following-sibling::td')->item(0);
+		if (!empty($node)) {
+			$user['post-count'] = intval($node->nodeValue);
+		}
+
+		//dynamic information
+		$user['birthday'] = null;
+		$node = $xpath->query('//td[text() = \'Birthday\']/following-sibling::td')->item(0);
+		if (!empty($node)) {
+			$user['birthday'] = $this->mgHelper->fixDate($node->nodeValue);
+		}
+
+		$user['location'] = null;
+		$node = $xpath->query('//td[text() = \'Location\']/following-sibling::td')->item(0);
+		if (!empty($node)) {
+			$user['location'] = $this->mgHelper->fixText($node->nodeValue);
+		}
+
+		$user['website'] = null;
+		$node = $xpath->query('//td[text() = \'Website\']/following-sibling::td')->item(0);
+		if (!empty($node)) {
+			$user['website'] = $this->mgHelper->fixText($node->nodeValue);
+		}
+
 
 		$gender = $xpath->query('//td[text() = \'Gender\']/following-sibling::td')->item(0)->nodeValue;
 		switch($gender) {
@@ -148,6 +210,8 @@ class UserModel extends JSONDB {
 			case 'Male': $user['gender'] = self::USER_GENDER_MALE; break;
 			case 'Not specified': $user['gender'] = self::USER_GENDER_UNKNOWN; break;
 		}
+
+
 
 		$node = $xpath->query('//div[@class = \'spaceit_pad\'][contains(text(), \'Total Clubs\')]')->item(0);
 		$user['clubs'] = [];
@@ -166,6 +230,8 @@ class UserModel extends JSONDB {
 				$this->loadClubs($user);
 			}
 		}
+
+
 
 		$node = $xpath->query('//div[@class = \'spaceit_pad\'][contains(text(), \'Total Friends\')]')->item(0);
 		$user['friends'] = [];
@@ -188,7 +254,11 @@ class UserModel extends JSONDB {
 		$user['clubs'] = [];
 
 		$this->mgHelper->suppressErrors();
-		$contents = $this->mgHelper->download($this->mgHelper->replaceTokens(self::USER_URL_CLUBS, ['user-id' => $user['user-id']]));
+		$url = $this->mgHelper->replaceTokens(self::USER_URL_CLUBS, ['user-id' => $user['user-id']]);
+		$contents = $this->mgHelper->download($url);
+		if (empty($contents)) {
+			throw new DownloadException($url);
+		}
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
 		$doc->loadHTML($contents);
@@ -213,7 +283,11 @@ class UserModel extends JSONDB {
 		$page = 6 * 7;
 		do {
 			$this->mgHelper->suppressErrors();
-			$contents = $this->mgHelper->download($this->mgHelper->replaceTokens(self::USER_URL_FRIENDS, ['user-id' => $user['user-id'], 'shift' => $shift]));
+			$url = $this->mgHelper->replaceTokens(self::USER_URL_FRIENDS, ['user-id' => $user['user-id'], 'shift' => $shift]);
+			$contents = $this->mgHelper->download($url);
+			if (empty($contents)) {
+				throw new DownloadException($url);
+			}
 			$doc = new DOMDocument;
 			$doc->preserveWhiteSpace = false;
 			$doc->loadHTML($contents);
@@ -242,45 +316,33 @@ class UserModel extends JSONDB {
 		$user['generated'] = time();
 		$user['expires'] = time() + 3600 * 24;
 
-		try {
-			$this->loadLists($user);
-			$this->loadProfile($user);
-		} catch (Exception $e) {
-			return null;
-		}
-
-		$this->postGet($user);
+		$this->loadLists($user);
+		$this->loadProfile($user);
 
 		return $user;
 	}
 
-	public function getCached($userName) {
-		$user = parent::getCached($userName);
-		$this->postGet($user);
-		return $user;
-	}
-
-	public function postGet(&$user) {
-		if (!empty($user)) {
-			$anonName = crypt($user['user-name'], '$2a$' . $this->config->misc->anonStatsSalt);
-			$anonName = unpack('H*', $anonName);
-			$anonName = array_shift($anonName);
-			$user['anonymous-name'] = $anonName;
-			$user['anonymous'] = $user['anonymous-name'] == $user['user-name'];
+	public function get($key, $getReal = false) {
+		if (isset($this->anons[$key])) {
+			$data = parent::get($this->anons[$key], $getReal);
+			if (empty($data)) {
+				return null;
+			}
+			$data['anonymous'] = true;
+		} else {
+			$data = parent::get($key, $getReal);
+			if (empty($data)) {
+				return null;
+			}
+			$data['anonymous'] = false;
 		}
-		return $user;
+		return $data;
 	}
 
-	public function put($userName, $data) {
-		if (!empty($data) and !empty($data['anonymous'])) {
-			$userName = $data['user-name'];
-		}
-		$ret = parent::put($userName, $data);
-		$path1 = $this->keyToPath($userName);
-		$path2 = dirname($path1);
-		$path2 .= '/' . $data['anonymous-name'] . $this->suffix;
-		symlink($path1, $path2);
+	public function put($key, &$data) {
+		$this->anons[$data['anon-name']] = $data['user-name'];
+		file_put_contents($this->anonsFile, json_encode($this->anons), LOCK_EX);
+		return parent::put($key, $data);
 	}
-
 
 }
