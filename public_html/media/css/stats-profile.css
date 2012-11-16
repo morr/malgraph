@@ -9,13 +9,17 @@
 		width: 130px;
 		max-height: 200px;
 	}
-	.user-pic.anonymous {
-		background-image: url('img/gfx.png');
+	.user-pic img.unavailable {
+		background-image: url('../img/gfx.png');
 		background-repeat: no-repeat;
-		background-position: -384px 0px;
-		height: 188px;
+		background-position: -384px -32px;
+		height: 186px;
 		width: 130px;
 	}
+
+.user.anonymous .mal li {
+	text-decoration: line-through;
+}
 
 .gender-icon {
 	position: absolute;

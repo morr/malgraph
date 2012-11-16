@@ -22,9 +22,9 @@ class StatsController extends AbstractController {
 			}
 		}
 		//primary user appears more than once
-		if (count(array_keys($userNames, $userNames[0])) > 1) {
+		/*if (count(array_keys($userNames, $userNames[0])) > 1) {
 			throw new Exception('Why would you want to compare an user with theirself?&hellip;');
-		}
+		}*/
 		//make users unique
 		$userNames = array_unique($userNames);
 		$this->view->userNames = $userNames;
@@ -65,7 +65,7 @@ class StatsController extends AbstractController {
 		$modelUsers = new UserModel();
 		$u = [];
 		foreach ($this->view->users as $user) {
-			$u []= $user['anonymous-name'];
+			$u []= $user['anon-name'];
 		}
 
 		$action = $this->inputHelper->get('action');
@@ -81,7 +81,7 @@ class StatsController extends AbstractController {
 	 * Set anime-manga switch
 	 */
 	public function switchAmAction() {
-		$this->forward($this->urlHelper->url('stats/' . $_REQUEST['action'], ['u' => $u, 'am' => $am]));
+		$this->forward($this->urlHelper->url('stats/' . $_REQUEST['action'], ['u' => $this->view->userNames, 'am' => $this->view->am]));
 	}
 
 
@@ -106,7 +106,10 @@ class StatsController extends AbstractController {
 
 		$modelUsers = new UserModel();
 		$modelUsers->allowUpdate(true);
-		$user = $modelUsers->get($key);
+		try {
+			$user = $modelUsers->get($key);
+		} catch (Exception $e) {
+		}
 
 		echo $user['expires'];
 	}
@@ -123,9 +126,21 @@ class StatsController extends AbstractController {
 		$modelUsers = new UserModel();
 		$this->view->users = [];
 		foreach ($this->view->userNames as $userName) {
-			$user = $modelUsers->get($userName);
-			if (empty($user)) {
+			try {
+				$user = $modelUsers->get($userName);
+			} catch (InvalidEntryException $e) {
 				$this->forward($this->urlHelper->url('index/wrong-user', ['u' => $userName]));
+				return;
+			} catch (DownloadException $e) {
+				$this->forward($this->urlHelper->url('index/net-down'));
+				return;
+			}
+			if (!empty($user['user-name'])) {
+				$user['link-name'] = $user['anonymous'] ? $user['anon-name'] : $user['user-name'];
+				$user['visible-name'] = $user['anonymous'] ? 'Anonymous' : $user['user-name'];
+			} else {
+				$user['link-name'] = null;
+				$user['visible-name'] = null;
 			}
 			$this->view->users []= $user;
 		}

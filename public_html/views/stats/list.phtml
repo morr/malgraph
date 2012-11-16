@@ -2,15 +2,23 @@
 
 <div class="users">
 <?php foreach ($this->users as $i => $u): ?>
-	<div class="user">
+
+	<?php if ($u['anonymous']): ?>
+		<div class="user anonymous">
+	<?php else: ?>
+		<div class="user">
+	<?php endif ?>
 		<h2>
-			<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $u['user-name'], 'am' => $this->am]) ?>">
-				<?php echo $u['user-name'] ?></a>
+			<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $u['link-name'], 'am' => $this->am]) ?>">
+				<?php echo $u['visible-name'] ?>
+			</a>
 			`s <?php echo $this->am ?> list
 		</h2>
 
 		<?php if (empty($u[$this->am]['entries'])): ?>
 			<p>This user doesn't seem to have anything on their list.</p>
+		<?php elseif ($u[$this->am]['private']): ?>
+			<p>This user has marked their list as private. No table here.</p>
 		<?php else: ?>
 			<div class="table">
 				<table>

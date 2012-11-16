@@ -14,4 +14,7 @@ class IndexController extends AbstractController {
 
 	public function privacyAction() {
 	}
+
+	public function netDownAction() {
+	}
 }

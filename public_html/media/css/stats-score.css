@@ -23,11 +23,11 @@ ul.infobox {
 			vertical-align: middle;
 		}
 
-		ul.infobox li span.header {
+		ul.infobox li span.prefix {
 			display: block;
 			margin: 0;
 		}
-			ul.infobox li span.header:after {
+			ul.infobox li span.prefix:after {
 				content: ':';
 			}
 

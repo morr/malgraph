@@ -1,5 +1,9 @@
-<?php foreach ($this->users as $user): ?>
-	<div class="user">
-		<pre><?php echo json_encode($user, JSON_PRETTY_PRINT) ?></pre>
+<?php foreach ($this->users as $u): ?>
+	<?php if ($u['anonymous']): ?>
+		<div class="user anonymous">
+	<?php else: ?>
+		<div class="user">
+	<?php endif ?>
+		<pre><?php echo json_encode($u, JSON_PRETTY_PRINT) ?></pre>
 	</div>
 <?php endforeach ?>
