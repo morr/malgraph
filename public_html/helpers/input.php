@@ -20,7 +20,11 @@ class InputHelper extends ChibiHelper {
 	}
 
 	public function getStringSafe($key) {
-		return htmlentities($this->get($key));
+		$value = $this->get($key);
+		if (is_array($value)) {
+			return array_map('htmlentities', $value);
+		}
+		return htmlentities($value);
 	}
 
 	public function getInt($key) {
