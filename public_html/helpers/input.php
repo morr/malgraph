@@ -19,6 +19,10 @@ class InputHelper extends ChibiHelper {
 		return null;
 	}
 
+	public function getStringSafe($key) {
+		return htmlentities($this->get($key));
+	}
+
 	public function getInt($key) {
 		return intval($this->get($key));
 	}

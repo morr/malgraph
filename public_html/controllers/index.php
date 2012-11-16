@@ -6,7 +6,7 @@ class IndexController extends AbstractController {
 	}
 
 	public function wrongUserAction() {
-		$this->view->userName = empty($_GET['u']) ? null : $_GET['u'];
+		$this->view->userName = $this->inputHelper->getStringSafe('u');
 	}
 
 	public function aboutAction() {
