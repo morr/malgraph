@@ -69,30 +69,62 @@ class MGHelper extends ChibiHelper {
 	}
 
 	public function download($url) {
+		if ($this->config->misc->useMirror) {
+			$mirror = unpack('H*', $url);
+			$mirror = array_shift($mirror);
+			$mirror = $this->config->chibi->runtime->rootFolder . '/mirror/' . $mirror . '.dat';
+			if (file_exists($mirror)) {
+				return file_get_contents($mirror);
+			}
+		}
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, ['Connection: close', 'User-Agent: Mozilla/5.0 (MALgraph crawler)']);
+		curl_setopt($ch, CURLOPT_AUTOREFERER, 0);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
+		$headers = [];
+		$headers['Connection'] = 'close';
+		$headers['User-Agent'] = 'Mozilla/5.0 (MALgraph crawler)';
+		if ($this->config->misc->sendReferrer) {
+			$headers['Referer'] = 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI']);
+		}
+
+		$curlHeaders = [];
+		foreach ($headers as $k => $v) {
+			$k = str_replace(' ', '-', ucwords(str_replace('-', ' ', $k)));
+			$curlHeaders []= $k . ': ' . $v;
+		}
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
 		//curl_setopt($ch, CURLOPT_TIMEOUT, 1);
 		$contents = curl_exec($ch);
-		curl_close($ch);
 
 		$contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
 
 		if (curl_errno($ch)) {
-			return null;
+			$e = curl_error($ch);
+			curl_close($ch);
+			throw new Exception($e);
+			//return null;
+		} else {
+			curl_close($ch);
+		}
+
+		if ($this->config->misc->useMirror) {
+			file_put_contents($mirror, $contents);
 		}
 		return $contents;
 	}
 
-	private $errorHandler;
 	public function suppressErrors() {
-		$this->errorHandler = set_error_handler(function($errno, $errstr, $errfile, $errline) {});
+		set_error_handler(function($errno, $errstr, $errfile, $errline) {});
 	}
 	public function restoreErrors() {
-		set_error_handler($this->errorHandler);
+		restore_error_handler();
 	}
 
 
