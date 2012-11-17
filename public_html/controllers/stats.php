@@ -62,7 +62,7 @@ class StatsController extends AbstractController {
 	public function anonymizeAction() {
 		$this->loadUsers();
 
-		$modelUsers = new UserModel();
+		$modelUsers = new UserModel(true);
 		$u = [];
 		foreach ($this->view->users as $user) {
 			$u []= $user['anon-name'];
@@ -105,7 +105,6 @@ class StatsController extends AbstractController {
 		}
 
 		$modelUsers = new UserModel();
-		$modelUsers->allowUpdate(true);
 		try {
 			$user = $modelUsers->get($key);
 		} catch (Exception $e) {
@@ -125,7 +124,7 @@ class StatsController extends AbstractController {
 		}
 
 		$anons = [];
-		$modelUsers = new UserModel();
+		$modelUsers = new UserModel(true);
 		$this->view->users = [];
 		foreach ($this->view->userNames as $userName) {
 			try {
@@ -136,6 +135,9 @@ class StatsController extends AbstractController {
 			} catch (DownloadException $e) {
 				$this->forward($this->urlHelper->url('index/net-down'));
 				return;
+			}
+			if ($user['blocked']) {
+				$this->forward($this->urlHelper->url('index/blocked-user', ['u' => $userName]));
 			}
 			$this->view->users []= $user;
 		}

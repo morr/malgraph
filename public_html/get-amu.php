@@ -44,13 +44,14 @@ function get($model, $id) {
 		$entry = $model->get($id);
 		$ok = true;
 	} catch (InvalidEntryException $x) {
+	} catch (DownloadException $x) {
 	}
 	$end = microtime(true);
 	printf('%05.3f ', $end - $start);
 	if ($ok) {
 		echo 'OK';
 	} else {
-		echo 'Not found';
+		echo 'Not OK';
 	}
 	echo PHP_EOL;
 }

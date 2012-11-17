@@ -35,7 +35,17 @@ class UserModel extends JSONDB {
 	private $anonsFile;
 	private $anons;
 
-	public function __construct() {
+	private $freezeUpdating;
+
+	public function isFresh($data) {
+		if ($this->freezeUpdating) {
+			return true;
+		}
+		return isset($data['expires']) and time() <= $data['expires'];
+	}
+
+	public function __construct($freeze = false) {
+		$this->freezeUpdating = $freeze;
 		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'users';
 		$this->anonsFile = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'anons.json';
 		if (file_exists($this->anonsFile)) {
@@ -43,18 +53,6 @@ class UserModel extends JSONDB {
 		} else {
 			$this->anons = [];
 		}
-	}
-
-	private $allowUpdate = false;
-	public function allowUpdate($a) {
-		$this->allowUpdate = $a;
-	}
-
-	public function isFresh($data) {
-		if ($this->allowUpdate) {
-			return isset($data['expires']) and time() <= $data['expires'];
-		}
-		return true;
 	}
 
 	protected function fixStatus($malStatus) {
@@ -315,12 +313,24 @@ class UserModel extends JSONDB {
 
 
 	public function getReal($userName) {
-		$vips = ['fri', 'rr-', 'karhu', 'draconismarch', 'archein', 'kkukaa', 'izdubar', 'bigonanime', 'don_don_kun', 'imperialx', 'el_marco', 'navycherub', 'kfyatek'];
-		$user = [];
-		$user['user-name'] = $userName;
-		$user['vip'] = in_array(strtolower($userName), $vips);
+		$user = $this->getCached($userName);
+		if (empty($user)) {
+			$user = [];
+			$user['vip'] = false;
+			$user['blocked'] = false;
+			$user['user-name'] = $userName;
+		}
+
 		$user['generated'] = time();
-		$user['expires'] = time() + 3600 * 24;
+		if ($user['vip']) {
+			$user['expires'] = time() + 3600 * 3;
+		} else {
+			$user['expires'] = time() + 3600 * 24;
+		}
+
+		if ($user['blocked']) {
+			return $user;
+		}
 
 		$this->loadLists($user);
 		$this->loadProfile($user);

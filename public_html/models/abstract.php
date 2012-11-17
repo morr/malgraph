@@ -57,7 +57,7 @@ abstract class JSONDB extends ChibiModel implements CachedDB {
 	public function getCached($key) {
 		$path = $this->keyToPath($key);
 		if (!file_exists($path)) {
-			return false;
+			return null;
 		}
 		$contents = file_get_contents($path);
 		$data = json_decode($contents, true);

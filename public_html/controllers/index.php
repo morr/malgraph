@@ -9,6 +9,10 @@ class IndexController extends AbstractController {
 		$this->view->userName = $this->inputHelper->getStringSafe('u');
 	}
 
+	public function blockedUserAction() {
+		$this->view->userName = $this->inputHelper->getStringSafe('u');
+	}
+
 	public function aboutAction() {
 	}
 

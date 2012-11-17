@@ -113,7 +113,7 @@ class MGHelper extends ChibiHelper {
 		}
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 		$contents = curl_exec($ch);
 
 		$contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
