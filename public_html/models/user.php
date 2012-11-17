@@ -163,7 +163,13 @@ class UserModel extends JSONDB {
 		$user['user-name'] = substr($user['user-name'], 0, strpos($user['user-name'], '\'s Profile'));
 
 		//anonymous name
-		$anonName = crypt($user['user-name'], '$2y$' . $this->config->misc->anonStatsSalt);
+		do {
+			$alpha = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			$anonName = '#';
+			foreach (range(1, 8) as $k) {
+				$anonName .= $alpha{mt_rand() % strlen($alpha)};
+			}
+		} while (!empty($this->anons[$anonName]) and $this->anons[$anonName] != $user['user-name']);
 		$user['anon-name'] = $anonName;
 
 		//static information
