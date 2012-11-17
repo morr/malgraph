@@ -133,6 +133,49 @@ class MGHelper extends ChibiHelper {
 		return $contents;
 	}
 
+	public function downloadMulti(array $urls) {
+		$chs = [];
+		$multicurl = curl_multi_init();
+		foreach ($urls as $key => $url) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+			curl_setopt($ch, CURLOPT_AUTOREFERER, 0);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_multi_add_handle($multicurl, $ch);
+			$chs[$key] = $ch;
+		}
+
+		$active = null;
+		do {
+			$mrc = curl_multi_exec($multicurl, $active);
+		} while ($mrc == CURLM_CALL_MULTI_PERFORM);
+
+		while ($active && $mrc == CURLM_OK) {
+			if (curl_multi_select($multicurl) != -1) {
+				do {
+					$mrc = curl_multi_exec($multicurl, $active);
+				}
+				while ($mrc == CURLM_CALL_MULTI_PERFORM);
+			}
+		}
+
+		$ret = [];
+		foreach ($urls as $key => $url) {
+			$ch = $chs[$key];
+			curl_multi_remove_handle($multicurl, $ch);
+			$ret[$key] = curl_multi_getcontent($ch);
+		}
+		curl_multi_close($multicurl);
+
+		return $ret;
+	}
+
+
+
+
 	public function suppressErrors() {
 		set_error_handler(function($errno, $errstr, $errfile, $errline) {});
 	}

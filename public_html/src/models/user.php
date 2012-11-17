@@ -32,6 +32,11 @@ class UserModel extends JSONDB {
 	const USER_URL_CLUBS = 'http://myanimelist.net/showclubs.php?id={user-id}';
 	const USER_URL_FRIENDS = 'http://myanimelist.net/friends.php?id={user-id}&show={shift}';
 
+	private static $types = [
+		self::USER_LIST_TYPE_ANIME,
+		self::USER_LIST_TYPE_MANGA
+	];
+
 	private $anonsFile;
 	private $anons;
 
@@ -66,18 +71,17 @@ class UserModel extends JSONDB {
 		return self::USER_LIST_STATUS_UNKNOWN;
 	}
 
-	protected function loadLists(array &$user) {
+	protected function loadLists(array &$user, array &$documents) {
 		$urls = [];
 
-		$urls[self::USER_LIST_TYPE_ANIME] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME2, ['user' => $user['user-name']]);
-		$urls[self::USER_LIST_TYPE_MANGA] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA2, ['user' => $user['user-name']]);
-		foreach ($urls as $type => $url) {
+		foreach (self::$types as $type) {
 			$user[$type] = [];
-
-			$contents = $this->mgHelper->download($url);
-			if (empty($contents)) {
-				throw new DownloadException($url);
+			if ($type == self::USER_LIST_TYPE_ANIME) {
+				$contents = $documents[self::USER_URL_ANIME2];
+			} else {
+				$contents = $documents[self::USER_URL_MANGA2];
 			}
+
 			if (strpos($contents, 'This list has been made private by the owner') !== false) {
 				$user[$type]['private'] = true;
 			} else {
@@ -85,17 +89,16 @@ class UserModel extends JSONDB {
 			}
 		}
 
-		$urls[self::USER_LIST_TYPE_ANIME] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME1, ['user' => $user['user-name']]);
-		$urls[self::USER_LIST_TYPE_MANGA] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA1, ['user' => $user['user-name']]);
-		foreach ($urls as $type => $url) {
+		foreach (self::$types as $type) {
 			$list = &$user[$type];
+			if ($type == self::USER_LIST_TYPE_ANIME) {
+				$contents = $documents[self::USER_URL_ANIME1];
+			} else {
+				$contents = $documents[self::USER_URL_MANGA1];
+			}
 
 			$doc = new DOMDocument;
 			$doc->preserveWhiteSpace = false;
-			$contents = $this->mgHelper->download($url);
-			if (empty($contents)) {
-				throw new DownloadException($url);
-			}
 			$this->mgHelper->suppressErrors();
 			$doc->loadHTML($contents);
 			$this->mgHelper->restoreErrors();
@@ -141,15 +144,11 @@ class UserModel extends JSONDB {
 	}
 
 
-	protected function loadProfile(array &$user) {
+	protected function loadProfile(array &$user, array &$documents) {
 		$this->mgHelper->suppressErrors();
-		$url = $this->mgHelper->replaceTokens(self::USER_URL_PROFILE, ['user' => $user['user-name']]);
-		$contents = $this->mgHelper->download($url);
-		if (empty($contents)) {
-			throw new DownloadException($url);
-		}
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
+		$contents = $documents[self::USER_URL_PROFILE];
 		$doc->loadHTML($contents);
 		$xpath = new DOMXPath($doc);
 		$this->mgHelper->restoreErrors();
@@ -159,16 +158,6 @@ class UserModel extends JSONDB {
 		$user[self::USER_LIST_TYPE_MANGA]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Manga List Views\']/following-sibling::td')->item(0)->nodeValue));
 		$user['user-name'] = $this->mgHelper->fixText($xpath->query('//title')->item(0)->nodeValue);
 		$user['user-name'] = substr($user['user-name'], 0, strpos($user['user-name'], '\'s Profile'));
-
-		//anonymous name
-		do {
-			$alpha = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-			$anonName = '=';
-			foreach (range(1, 8) as $k) {
-				$anonName .= $alpha{mt_rand() % strlen($alpha)};
-			}
-		} while (!empty($this->anons[$anonName]) and $this->anons[$anonName] != $user['user-name']);
-		$user['anon-name'] = $anonName;
 
 		//static information
 		$user['profile-picture-url'] = $xpath->query('//td[@class = \'profile_leftcell\']//img')->item(0)->getAttribute('src');
@@ -319,6 +308,14 @@ class UserModel extends JSONDB {
 			$user['vip'] = false;
 			$user['blocked'] = false;
 			$user['user-name'] = $userName;
+			do {
+				$alpha = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+				$anonName = '=';
+				foreach (range(1, 8) as $k) {
+					$anonName .= $alpha{mt_rand() % strlen($alpha)};
+				}
+			} while (!empty($this->anons[$anonName]) and $this->anons[$anonName] != $user['user-name']);
+			$user['anon-name'] = $anonName;
 		}
 
 		$user['generated'] = time();
@@ -332,9 +329,22 @@ class UserModel extends JSONDB {
 			return $user;
 		}
 
-		$this->loadLists($user);
-		$this->loadProfile($user);
+		$urls = [];
+		$urls[self::USER_URL_ANIME1] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME1, ['user' => $user['user-name']]);
+		$urls[self::USER_URL_MANGA1] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA1, ['user' => $user['user-name']]);
+		$urls[self::USER_URL_ANIME2] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME2, ['user' => $user['user-name']]);
+		$urls[self::USER_URL_MANGA2] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA2, ['user' => $user['user-name']]);
+		$urls[self::USER_URL_PROFILE] = $this->mgHelper->replaceTokens(self::USER_URL_PROFILE, ['user' => $user['user-name']]);
 
+		$documents = $this->mgHelper->downloadMulti($urls);
+		foreach ($documents as $type => $contents) {
+			if (empty($contents)) {
+				throw new DownloadException($urls[$type]);
+			}
+		}
+
+		$this->loadLists($user, $documents);
+		$this->loadProfile($user, $documents);
 		return $user;
 	}
 
