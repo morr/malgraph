@@ -6,9 +6,6 @@ $.fn.hasAttr = function(name) {
 };
 
 $(function() {
-	//focus search input
-	$('input').focus();
-
 	//scroll scrollable elements
 	$('.scrollable').jScrollPane({horizontalDragMaxWidth: 0});
 
@@ -56,9 +53,9 @@ $(function() {
 				var length = title.length;
 				if (length < 30) {
 					c = 'short';
-				} else if (length < 60) {
+				} else if (length < 70) {
 					c = 'medium';
-				} else {
+				} else if (length < 110) {
 					c = 'big';
 				}
 				var div = $('<div class="tooltip"/>').addClass(c).append($('<div>').text(title));
@@ -77,7 +74,6 @@ $(function() {
 
 		}).mouseleave(function() {
 			var target = $(this);
-			console.log('moues leave');
 
 			window.clearTimeout($(target).data('tooltip-show-timeout'));
 			$(target).data('tooltip-show-timeout', null);

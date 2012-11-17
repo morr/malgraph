@@ -1,13 +1,17 @@
 <td class="status">
+	<i
 	<?php if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED): ?>
-		<i title="Planned" class="icon-schedule"></i>
+		data-title="Planned" class="icon-schedule"
 	<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_DROPPED): ?>
-		<i title="Dropped" class="icon-cross"></i>
+		data-title="Dropped" class="icon-cross"
 	<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_WATCHING): ?>
-		<i title="Watching" class="icon-eye"></i>
+		data-title="Watching" class="icon-eye"
 	<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_ONHOLD): ?>
-		<i title="On-hold" class="icon-hourglass"></i>
+		data-title="On-hold" class="icon-hourglass"
 	<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_COMPLETED): ?>
-		<i title="Completed" class="icon-tick"></i>
+		data-title="Completed" class="icon-tick"
 	<?php endif ?>
+		rel="tooltip"
+	>
+	</i>
 </td>
