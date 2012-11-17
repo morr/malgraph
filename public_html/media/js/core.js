@@ -32,7 +32,7 @@ $(function() {
 		$(target).data('tooltip-hide-timeout', timeout);
 	}
 
-	$('[rel=\'tooltip\']').each(function() {
+	$('.tooltipable').each(function() {
 		$(this).mouseenter(function() {
 			var target = $(this);
 

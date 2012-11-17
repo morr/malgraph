@@ -2,18 +2,23 @@
 	<?php $e2 = reset($e['others']) ?>
 	<?php if ($e['user']['score'] > $e2['user']['score'] and $e2['user']['score'] > 0): ?>
 		<td class="score higher-score">
+			<span class="tooltipable" data-title="This title was rated lower by the other user.">
 	<?php elseif ($e['user']['score'] < $e2['user']['score'] and $e['user']['score'] > 0): ?>
 		<td class="score lower-score">
+			<span class="tooltipable" data-title="This title was rated higher by the other user.">
 	<?php else: ?>
 		<td class="score same-score">
+			<span class="tooltipable" data-title="Both users rated this title equally.">
 	<?php endif ?>
 <?php else: ?>
 	<td class="score">
+		<span>
 <?php endif ?>
 	<?php if (empty($e['user']['score'])): ?>
 		-
 	<?php else: ?>
 		<?php echo $e['user']['score'] ?>
 	<?php endif ?>
+	</span>
 </td>
 

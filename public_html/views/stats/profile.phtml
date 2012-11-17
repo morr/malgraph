@@ -10,7 +10,7 @@
 		<div class="user-pic">
 			<!-- profile picture -->
 			<?php if ($u['anonymous'] or basename($u['profile-picture-url']) == 'na.gif'): ?>
-				<img class="unavailable" alt="No profile picture" src="<?php echo $this->mgHelper->url('media/img/pixel.gif') ?>">
+				<img class="unavailable" alt="No profile picture" src="<?php echo $this->urlHelper->url('media/img/pixel.gif') ?>">
 			<?php else: ?>
 				<img alt="Profile picture" src="<?php echo $u['profile-picture-url'] ?>">
 			<?php endif ?>
@@ -19,13 +19,13 @@
 		<div class="section basic">
 			<!-- user name -->
 			<h2>
-				<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $u['link-name'], 'am' => $this->am]) ?>">
+				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
 					<?php echo $u['visible-name'] ?>
 				</a>
 
 				<?php $x = date_default_timezone_get() ?>
 				<?php date_default_timezone_set('UTC') ?>
-				<span class="updated" rel="tooltip" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
+				<span class="updated tooltipable" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
 					<?php echo date('M d, H:i', $u['generated']) ?> UTC
 				</span>
 				<?php date_default_timezone_set($x) ?>
@@ -124,12 +124,12 @@
 				<?php elseif ($u['anonymous']): ?>
 					<p>This user is viewed anonymously. Friends are not displayed.</p>
 				<?php else: ?>
-					<div id="friends" class="scrollable">
+					<div class="friends scrollable">
 						<?php usort($u['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
 						<ul>
 							<?php foreach ($u['friends'] as $friend): ?>
 								<li>
-									<a class="mg waitable" href="<?php echo $this->mgHelper->url('/stats/profile', ['u' => [reset($this->userNames), $friend], 'am' => $this->am]) ?>">
+									<a class="mg waitable" href="<?php echo $this->mgHelper->constructUrl(null, null, [], [reset($this->userNames), $friend]) ?>">
 										<i class="icon-mg"></i>
 									</a>
 									<a class="mal" href="http://myanimelist.net/profile/<?php echo $friend ?>">
@@ -152,7 +152,7 @@
 				<?php elseif ($u['anonymous']): ?>
 					<p>This user is viewed anonymously. Clubs are not displayed.</p>
 				<?php else: ?>
-					<div id="clubs" class="scrollable">
+					<div class="clubs scrollable">
 						<?php usort($u['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>
 						<ul>
 							<?php foreach ($u['clubs'] as $club): ?>

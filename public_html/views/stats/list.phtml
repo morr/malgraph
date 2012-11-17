@@ -11,7 +11,7 @@
 
 		<div class="section">
 			<h2>
-				<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $u['link-name'], 'am' => $this->am]) ?>">
+				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
 					<?php echo $u['visible-name'] ?>
 				</a>
 				`s <?php echo $this->am ?> list

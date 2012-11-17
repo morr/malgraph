@@ -21,28 +21,28 @@
 	<?php endif ?>
 		<div id="header">
 			<h1>
-				<a href="<?php echo $this->mgHelper->url('') ?>">
+				<a href="<?php echo $this->mgHelper->constructUrl('index', 'index') ?>">
 					<span>MALgraph</span>
 				</a>
 			</h1>
-			<form class="waitable" id="search" action="<?php echo $this->mgHelper->url('stats/search') ?>" method="post">
+			<form class="waitable" id="search" action="<?php echo $this->mgHelper->constructUrl('index', 'search') ?>" method="post">
 				<?php if ($this->view->controllerName == 'stats'): ?>
 					<?php foreach ($this->view->userNames as $userName): ?>
-						<input type="hidden" name="u[]" value="<?php echo $userName ?>">
+						<input type="hidden" name="user-names[]" value="<?php echo $userName ?>">
 					<?php endforeach ?>
-					<input type="hidden" name="action" value="<?php echo $this->view->actionName ?>">
+					<input type="hidden" name="action-name" value="<?php echo $this->view->actionName ?>">
 				<?php endif ?>
 				<?php if (!empty($this->view->am)): ?>
 					<input type="hidden" name="am" value="<?php echo $this->view->am ?>">
 				<?php endif ?>
 				<div class="control-group input-append">
-					<input type="search" name="u[]">
-					<button data-title="Search" data-position-my="center top" data-position-at="center bottom" rel="tooltip" name="submit" value="search" class="btn" type="submit"><i class="icon-search"></i></button>
-					<button data-title="Compare" data-position-my="center top" data-position-at="center bottom" rel="tooltip" name="submit" value="compare" type="submit"
+					<input type="search" name="user-names[]">
+					<button data-title="Search" data-position-my="center top" data-position-at="center bottom" name="submit" value="search" type="submit" class="tooltipable btn"><i class="icon-search"></i></button>
+					<button data-title="Compare" data-position-my="center top" data-position-at="center bottom" name="submit" value="compare" type="submit"
 						<?php if ($this->view->controllerName == 'stats'): ?>
-							class="btn"
+							class="tooltipable btn"
 						<?php else: ?>
-							class="btn disabled" disabled="disabled"
+							class="tooltipable btn disabled" disabled="disabled"
 						<?php endif ?>
 						><i class="icon-compare"></i>
 					</button>
@@ -56,8 +56,13 @@
 				<div id="menu">
 					<ul class="am">
 						<?php foreach ([UserModel::USER_LIST_TYPE_ANIME, UserModel::USER_LIST_TYPE_MANGA] as $type): ?>
-							<li <?php if ($this->view->am == $type) echo 'class="active"' ?> data-title="<?php echo ucfirst($this->mgHelper->amText($type)) ?> stats" data-position-my="center bottom" data-position-at="center top" rel="tooltip">
-								<a href="<?php echo $this->mgHelper->url('stats/switch-am', ['am' => $type, 'action' => $this->view->actionName, 'u' => $this->view->userNames]) ?>">
+							<li data-title="<?php echo ucfirst($this->mgHelper->amText($type)) ?> stats" data-position-my="center bottom" data-position-at="center top"
+								<?php if ($this->view->am == $type): ?>
+									class="active tooltipable"
+								<?php else: ?>
+									class="tooltipable"
+								<?php endif ?>
+								><a href="<?php echo $this->mgHelper->constructUrl(null, null, [], null, $type) ?>">
 									<i class="icon-<?php echo $type ?>"></i>
 								</a>
 							</li>
@@ -78,12 +83,12 @@
 					?>
 					<ul class="action">
 						<?php foreach ($menu as $item): ?>
-							<?php if ($this->view->controllerName == $item['controller'] and $this->view->actionName == $item['action']): ?>
+							<?php if ($this->view->actionName == $item['action']): ?>
 								<li class="active">
 							<?php else: ?>
 								<li>
 							<?php endif ?>
-								<a class="waitable" href="<?php echo $this->mgHelper->url($item['controller'] . '/' . $item['action'], ['u' => $this->view->userNames, 'am' => $this->view->am]) ?>">
+								<a class="waitable" href="<?php echo $this->mgHelper->constructUrl('stats', $item['action']) ?>">
 									<?php echo $item['text'] ?>
 								</a>
 							</li>
@@ -100,25 +105,37 @@
 
 		<div id="footer">
 			<ul class="left">
-				<li><a href="<?php echo $this->mgHelper->url('index/about') ?>">About</a></li>
-				<li><a href="<?php echo $this->mgHelper->url('index/privacy') ?>">Privacy policy</a></li>
+				<li><a href="<?php echo $this->mgHelper->constructUrl('index', 'about') ?>">About</a></li>
+				<li><a href="<?php echo $this->mgHelper->constructUrl('index', 'privacy') ?>">Privacy policy</a></li>
 				<li><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</li>
 			</ul>
 			<ul class="right">
 				<?php if ($this->view->controllerName == 'stats'): ?>
 					<li>
-						<a rel="tooltip" data-title="Anonymize current profile (for anonymous sharing)" href="<?php echo $this->mgHelper->url('stats/anonymize', ['u' => $this->view->userNames, 'am' => $this->view->am, 'action' => $this->view->actionName]) ?>">
+						<a class="tooltipable"
+							data-title="Anonymize current profile (for anonymous sharing)"
+							data-position-my="right top"
+							data-position-at="left bottom"
+							href="<?php echo $this->mgHelper->constructUrl('stats', null, [], array_map(function($u) { return $u['anon-name']; }, $this->view->users)) ?>">
 							<i class="icon-anonymize"></i>
 						</a>
 					</li>
 				<?php endif ?>
 				<li>
-					<a rel="tooltip" data-title="Share on Twitter" href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode($this->mgHelper->currenturl()) ?>">
+					<a class="tooltipipable"
+						data-position-my="right top"
+						data-position-at="left bottom"
+						data-title="Share on Twitter"
+						href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode($this->mgHelper->currenturl()) ?>">
 						<i class="icon-twitter"></i>
 					</a>
 				</li>
 				<li>
-					<a rel="tooltip" data-title="Share on Facebook" href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode($this->mgHelper->currentUrl()) ?>&amp;t=Share+MALgraph">
+					<a class="tooltipable"
+						data-position-at="left bottom"
+						data-position-my="right top"
+						data-title="Share on Facebook"
+						href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode($this->mgHelper->currentUrl()) ?>&amp;t=Share+MALgraph">
 						<i class="icon-facebook"></i>
 					</a>
 				</li>
@@ -130,7 +147,7 @@
 	<?php if ($this->view->controllerName == 'stats'): ?>
 		<script type="text/javascript">
 			window.setTimeout(function() {
-				var url = <?php echo json_encode($this->mgHelper->url('stats/regenerate')) ?>;
+				var url = <?php echo json_encode($this->mgHelper->constructUrl('index', 'regenerate')) ?>;
 				var data = <?php echo json_encode(['u' => reset($this->view->userNames)]) ?>;
 				$.get(url, data, function(response) { /*alert(response);*/ });
 			}, 1500);

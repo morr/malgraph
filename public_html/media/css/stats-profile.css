@@ -39,55 +39,55 @@ div.basic h3, div.basic .section-body {
 	padding: 0;
 	line-height: 1.5em;
 }
-	#clubs, #friends {
+	.clubs, .friends {
 		max-height: 200px;
 	}
-		#friends ul {
+		.friends ul {
 			columns: auto 3;
 			-webkit-columns: auto 3;
 			-moz-columns: auto 3;
 		}
-			#friends li {
+			.friends li {
 				width: 140px;
 				overflow: hidden;
 				display: block;
 				text-overflow: ellipsis;
 			}
-			#friends a.mg {
+			.friends a.mg {
 				display: inline;
 				width: 16px;
 				height: 16px;
 				position: relative;
 			}
-			#friends a.mg i {
+			.friends a.mg i {
 				position: absolute;
 			}
-			#friends a.mal {
+			.friends a.mal {
 				display: inline-block;
 				margin-left: 21px;
 			}
 
 
-		#clubs ul {
+		.clubs ul {
 			columns: auto 2;
 			-webkit-columns: auto 2;
 			-moz-columns: auto 2;
 		}
-			#clubs li {
+			.clubs li {
 				width: 210px;
 				overflow: hidden;
 				display: block;
 				text-overflow: ellipsis;
 			}
 
-			#clubs a {
+			.clubs a {
 				position: relative;
 			}
-			#clubs i {
+			.clubs i {
 				position: absolute;
 			}
-			#friends a.mal,
-			#clubs span {
+			.friends a.mal,
+			.clubs span {
 				display: inline-block;
 				margin-left: 21px;
 			}

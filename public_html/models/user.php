@@ -163,7 +163,7 @@ class UserModel extends JSONDB {
 		//anonymous name
 		do {
 			$alpha = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-			$anonName = '#';
+			$anonName = '=';
 			foreach (range(1, 8) as $k) {
 				$anonName .= $alpha{mt_rand() % strlen($alpha)};
 			}

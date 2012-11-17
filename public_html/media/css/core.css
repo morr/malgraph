@@ -293,7 +293,8 @@ dl {
 }
 
 /* icons */
-[class^='icon-'] {
+[class^='icon-'],
+[class*=' icon-'] {
 	display: inline-block;
 	vertical-align: text-top;
 	line-height: 16px;

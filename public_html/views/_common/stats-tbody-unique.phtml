@@ -1,9 +1,9 @@
 <?php if (count($this->users) > 1): ?>
 	<td class="unique">
 		<?php if ($e['user']['unique']): ?>
-			<i rel="tooltip" data-title="Only this user has this title on his list" class="icon-plus"></i>
+			<i data-title="Only this user has this title on his list" class="tooltipable icon-plus"></i>
 		<?php else: ?>
-			<i rel="tooltip" data-title="Both users have this title on their lists" class="icon-dot"></i>
+			<i data-title="Both users have this title on their lists" class="tooltipable icon-dot"></i>
 		<?php endif ?>
 	</td>
 <?php endif ?>

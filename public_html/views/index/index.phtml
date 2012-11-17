@@ -1,3 +1,7 @@
 <h1>Welcome to MALgraph!</h1>
 <p>MALgraph is an extension of your <a href="http://myanimelist.net">MyAnimeList</a> profile. It displays more stats than you probably need, including rating distribution, favorite studios and suggestions.</p>
-<p>Not convinced? Give it a try and enter your MAL username on the top of the page or <a href="<?php echo $this->urlHelper->url('/stats/profile', ['u' => 'rr-', 'am' => UserModel::USER_LIST_TYPE_ANIME]) ?>">click here</a> to view example profile.</p>
+<p>Not convinced? Give it a try and enter your MAL username on the top of the page or <a href="<?php echo $this->urlHelper->url('/rr-') ?>">click here</a> to view example profile.</p>
+<script type="text/javascript">
+	$('input').focus();
+</script>
+

@@ -13,9 +13,7 @@ class StatsController extends AbstractController {
 			throw new Exception('User name not specified.');
 		}
 		//user is not an array
-		if (!is_array($userNames)) {
-			$userNames = array($userNames);
-		}
+		$userNames = explode(',', $userNames);
 		foreach ($userNames as $userName) {
 			if (empty($userName)) {
 				throw new Exception('User name cannot be empty.');
@@ -38,83 +36,6 @@ class StatsController extends AbstractController {
 	}
 
 	/*
-	 * Redirect to comparison mode from top search field
-	 */
-	public function searchAction() {
-		if ($this->inputHelper->get('submit') == 'compare') {
-			$u = [reset($this->view->userNames), end($this->view->userNames)];
-		} else {
-			$u = [end($this->view->userNames)];
-		}
-
-		$action = $this->inputHelper->getStringSafe('action');
-		if (!in_array($action, ['profile', 'list', 'score', 'act', 'fav', 'misc', 'sug', 'json'])) {
-			$action = 'profile';
-		}
-
-		$this->forward($this->urlHelper->url('stats/' . $action, ['u' => $u, 'am' => $this->view->am]));
-	}
-
-
-	/*
-	 * Share anonymous information about user
-	 */
-	public function anonymizeAction() {
-		$this->loadUsers();
-
-		$modelUsers = new UserModel(true);
-		$u = [];
-		foreach ($this->view->users as $user) {
-			$u []= $user['anon-name'];
-		}
-
-		$action = $this->inputHelper->getStringSafe('action');
-		if (!in_array($action, ['profile', 'list', 'score', 'act', 'fav', 'misc', 'sug', 'json'])) {
-			$action = 'profile';
-		}
-
-		$this->forward($this->urlHelper->url('stats/' . $action, ['u' => $u, 'am' => $this->view->am]));
-	}
-
-
-	/*
-	 * Set anime-manga switch
-	 */
-	public function switchAmAction() {
-		$this->forward($this->urlHelper->url('stats/' . $_REQUEST['action'], ['u' => $this->view->userNames, 'am' => $this->view->am]));
-	}
-
-
-	/**
-	 * Regenerate user from cache, if it has expired
-	 */
-	public function regenerateAction() {
-		//header('Content-Type: text/plain; charset=utf-8');
-		//$this->config->chibi->runtime->layoutName = null;
-
-		//discard session information to speed up things
-		session_write_close();
-
-		$key = $this->view->userNames;
-		if (is_array($key)) {
-			$key = reset($key);
-		}
-		if (empty($key)) {
-			echo 'Empty user name.';
-			return;
-		}
-
-		$modelUsers = new UserModel();
-		try {
-			$user = $modelUsers->get($key);
-		} catch (Exception $e) {
-		}
-
-		echo $user['expires'];
-	}
-
-
-	/*
 	 * Load all users information
 	 */
 	private function loadUsers() {
@@ -130,14 +51,14 @@ class StatsController extends AbstractController {
 			try {
 				$user = $modelUsers->get($userName);
 			} catch (InvalidEntryException $e) {
-				$this->forward($this->urlHelper->url('index/wrong-user', ['u' => $userName]));
+				$this->forward($this->mgHelper->constructUrl('index', 'wrong-user', ['u' => $userName]));
 				return;
 			} catch (DownloadException $e) {
-				$this->forward($this->urlHelper->url('index/net-down'));
+				$this->forward($this->mgHelper->constructUrl('index', 'net-down'));
 				return;
 			}
 			if ($user['blocked']) {
-				$this->forward($this->urlHelper->url('index/blocked-user', ['u' => $userName]));
+				$this->forward($this->mgHelper->constructUrl('index', 'blocked-user', ['u' => $userName]));
 			}
 			$this->view->users []= $user;
 		}

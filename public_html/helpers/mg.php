@@ -1,7 +1,7 @@
 <?php
 class MGHelper extends ChibiHelper {
 	public function currentUrl() {
-		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI']);
+		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 	}
 
 	public function amText($type) {
@@ -141,7 +141,49 @@ class MGHelper extends ChibiHelper {
 	}
 
 
-	public function url($s, array $p = []) {
-		return str_replace('&', '&amp;', $this->urlHelper->url($s, $p));
+	public function constructUrl($controllerName = null, $actionName = null, array $get = [], $userNames = null, $am = null) {
+		if (empty($controllerName)) {
+			$controllerName = $this->view->controllerName;
+			if (empty($actionName)) {
+				$actionName = $this->view->actionName;
+			}
+		}
+		if ($controllerName == 'stats') {
+			if (empty($actionName)) {
+				$actionName = 'profile';
+			}
+			if (empty($userNames)) {
+				$userNames = $this->view->userNames;
+			}
+			if (empty($am)) {
+				$am = $this->view->am;
+			}
+			if (!is_array($userNames)) {
+				$userNames = [$userNames];
+			}
+			$url = join(',', $userNames);
+			if ($actionName != 'profile' or $am == UserModel::USER_LIST_TYPE_MANGA) {
+				$url .= '/';
+				$url .= $actionName;
+			}
+			if ($am != UserModel::USER_LIST_TYPE_ANIME) {
+				$url .= ',';
+				$url .= $am;
+			}
+		} elseif ($controllerName == 'index') {
+			if (empty($actionName)) {
+				$actionName = 'index';
+			}
+			if ($actionName == 'index') {
+				$url = '';
+			} else {
+				$url = 's/';
+				$url .= $actionName;
+			}
+		} else {
+			$url = '';
+		}
+		return $this->urlHelper->htmlUrl($url, $get);
 	}
+
 }
