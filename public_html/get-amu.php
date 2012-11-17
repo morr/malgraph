@@ -37,8 +37,21 @@ switch (strtolower($type)) {
 }
 
 function get($model, $id) {
-	echo $id . ': ';
-	$entry = $model->get($id);
+	echo str_pad($id, 16, ' ', STR_PAD_LEFT) . ': ';
+	$start = microtime(true);
+	$ok = false;
+	try {
+		$entry = $model->get($id);
+		$ok = true;
+	} catch (InvalidEntryException $x) {
+	}
+	$end = microtime(true);
+	printf('%05.3f ', $end - $start);
+	if ($ok) {
+		echo 'OK';
+	} else {
+		echo 'Not found';
+	}
 	echo PHP_EOL;
 }
 
@@ -47,5 +60,5 @@ if (!empty($id2)) {
 		get($model, $id);
 	}
 } else {
-	get($model, $i1d);
+	get($model, $id1);
 }
