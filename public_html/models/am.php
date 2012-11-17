@@ -127,10 +127,9 @@ abstract class AMModel extends JSONDB {
 			$id = intval($matches[0][0]);
 
 			//type
-			preg_match_all('/(anime|manga)\//', $link, $matches);
-			if ($matches[1][0] == 'anime') {
+			if (strpos($link, '/anime') !== false) {
 				$type = self::ENTRY_RELATION_TYPE_ANIME;
-			} elseif ($matches[1][0] == 'manga') {
+			} elseif (strpos($link, '/manga') !== false) {
 				$type = self::ENTRY_RELATION_TYPE_MANGA;
 			} else {
 				continue;
