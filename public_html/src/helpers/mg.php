@@ -157,6 +157,9 @@ class MGHelper extends ChibiHelper {
 			}
 			if (empty($am)) {
 				$am = $this->view->am;
+				if ($am != UserModel::USER_LIST_TYPE_MANGA) {
+					$am = UserModel::USER_LIST_TYPE_ANIME;
+				}
 			}
 			if (!is_array($userNames)) {
 				$userNames = [$userNames];
