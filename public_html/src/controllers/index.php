@@ -22,18 +22,35 @@ class IndexController extends AbstractController {
 	public function netDownAction() {
 	}
 
+	public function wrongQueryAction() {
+	}
+
 	public function searchAction() {
 		$action = $this->inputHelper->get('action-name');
 		$userNames = $this->inputHelper->getStringSafe('user-names');
 		$am = $this->inputHelper->getStringSafe('am');
 
 		if ($this->inputHelper->get('submit') == 'compare') {
-			$u = [reset($userNames), end($userNames)];
+			$userNames = [reset($userNames), end($userNames)];
+			if (strpos(end($userNames), ',') !== false) {
+				$userNames = array_slice(explode(',', end($userNames)), -2);
+			}
 		} else {
-			$u = [end($userNames)];
+			$userNames = [end($userNames)];
+			if (strpos(end($userNames), ',') !== false) {
+				$userNames = array_slice(explode(',', end($userNames)), -2);
+			}
 		}
 
-		$this->forward($this->mgHelper->constructUrl('stats', $action, [], $u, $am));
+		foreach ($userNames as &$userName) {
+			$userName = trim($userName);
+			if (!preg_match('/^=?[-_0-9A-Za-z]{3,}$/', $userName)) {
+				$this->forward($this->mgHelper->constructUrl('index', 'wrong-query'));
+				return;
+			}
+		}
+
+		$this->forward($this->mgHelper->constructUrl('stats', $action, [], $userNames, $am));
 	}
 
 	public function regenerateAction() {
