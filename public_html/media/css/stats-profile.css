@@ -21,12 +21,9 @@
 	text-decoration: line-through;
 }
 
-div.basic {
-	float: left;
+div.basic h3, div.basic .section-body {
+	padding-left: 10px;
 }
-	div.basic ul {
-		display: inline-block;
-	}
 
 .updated {
 	float: right;

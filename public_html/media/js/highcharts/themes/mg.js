@@ -5,6 +5,11 @@ Highcharts.theme = {
 
 	chart: {
 		plotShadow: false,
+		backgroundColor: 'rgba(255, 255, 255, 0)',
+		spacingTop: 0,
+		spacingBottom: 0,
+		spacingLeft: 0,
+		spacingRight: 0,
 	},
 
 	title: {

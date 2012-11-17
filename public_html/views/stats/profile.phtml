@@ -7,16 +7,16 @@
 	<?php else: ?>
 		<div class="user">
 	<?php endif ?>
-		<div class="section">
-			<div class="user-pic">
-				<!-- profile picture -->
-				<?php if ($u['anonymous'] or basename($u['profile-picture-url']) == 'na.gif'): ?>
-					<img class="unavailable" alt="No profile picture" src="<?php echo $this->mgHelper->url('media/img/pixel.gif') ?>">
-				<?php else: ?>
-					<img alt="Profile picture" src="<?php echo $u['profile-picture-url'] ?>">
-				<?php endif ?>
-			</div>
+		<div class="user-pic">
+			<!-- profile picture -->
+			<?php if ($u['anonymous'] or basename($u['profile-picture-url']) == 'na.gif'): ?>
+				<img class="unavailable" alt="No profile picture" src="<?php echo $this->mgHelper->url('media/img/pixel.gif') ?>">
+			<?php else: ?>
+				<img alt="Profile picture" src="<?php echo $u['profile-picture-url'] ?>">
+			<?php endif ?>
+		</div>
 
+		<div class="section basic">
 			<!-- user name -->
 			<h2>
 				<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $u['link-name'], 'am' => $this->am]) ?>">
@@ -31,7 +31,7 @@
 				<?php date_default_timezone_set($x) ?>
 			</h2>
 
-			<div class="basic">
+			<div class="section-body">
 				<!-- basic information -->
 				<dl>
 
@@ -65,7 +65,6 @@
 					<?php endif ?>
 
 				</dl>
-				<div class="clear"></div>
 
 				<!-- links to mal -->
 				<ul class="mal">
@@ -114,55 +113,60 @@
 			</div>
 			<div class="clear"></div>
 		</div>
+				<div class="clear"></div>
 
 		<!-- friends -->
 		<div class="section">
 			<h3>Friends (<?php echo count($u['friends']) ?>)</h3>
-			<?php if (empty($u['friends'])): ?>
-				<p>This user has no friends on MAL. :(</p>
-			<?php elseif ($u['anonymous']): ?>
-				<p>This user is viewed anonymously. Friends are not displayed.</p>
-			<?php else: ?>
-				<div id="friends" class="scrollable">
-					<?php usort($u['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
-					<ul>
-						<?php foreach ($u['friends'] as $friend): ?>
-							<li>
-								<a class="mg waitable" href="<?php echo $this->mgHelper->url('/stats/profile', ['u' => [reset($this->userNames), $friend], 'am' => $this->am]) ?>">
-									<i class="icon-mg"></i>
-								</a>
-								<a class="mal" href="http://myanimelist.net/profile/<?php echo $friend ?>">
-									<span><?php echo $friend ?></span>
-								</a>
-							</li>
-						<?php endforeach ?>
-					</ul>
-				</div>
-			<?php endif ?>
+			<div class="section-body">
+				<?php if (empty($u['friends'])): ?>
+					<p>This user has no friends on MAL. :(</p>
+				<?php elseif ($u['anonymous']): ?>
+					<p>This user is viewed anonymously. Friends are not displayed.</p>
+				<?php else: ?>
+					<div id="friends" class="scrollable">
+						<?php usort($u['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
+						<ul>
+							<?php foreach ($u['friends'] as $friend): ?>
+								<li>
+									<a class="mg waitable" href="<?php echo $this->mgHelper->url('/stats/profile', ['u' => [reset($this->userNames), $friend], 'am' => $this->am]) ?>">
+										<i class="icon-mg"></i>
+									</a>
+									<a class="mal" href="http://myanimelist.net/profile/<?php echo $friend ?>">
+										<span><?php echo $friend ?></span>
+									</a>
+								</li>
+							<?php endforeach ?>
+						</ul>
+					</div>
+				<?php endif ?>
+			</div>
 		</div>
 
 		<!-- clubs -->
 		<div class="section">
 			<h3>Clubs (<?php echo count($u['clubs']) ?>)</h3>
-			<?php if (empty($u['clubs'])): ?>
-				<p>This user doesn't belong to any clubs.</p>
-			<?php elseif ($u['anonymous']): ?>
-				<p>This user is viewed anonymously. Clubs are not displayed.</p>
-			<?php else: ?>
-				<div id="clubs" class="scrollable">
-					<?php usort($u['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>
-					<ul>
-						<?php foreach ($u['clubs'] as $club): ?>
-							<li>
-								<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club['id'] ?>">
-									<i class="icon-club"></i>
-									<span><?php echo $club['name'] ?></span>
-								</a>
-							</li>
-						<?php endforeach ?>
-					</ul>
-				</div>
-			<?php endif ?>
+			<div class="section-body">
+				<?php if (empty($u['clubs'])): ?>
+					<p>This user doesn't belong to any clubs.</p>
+				<?php elseif ($u['anonymous']): ?>
+					<p>This user is viewed anonymously. Clubs are not displayed.</p>
+				<?php else: ?>
+					<div id="clubs" class="scrollable">
+						<?php usort($u['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>
+						<ul>
+							<?php foreach ($u['clubs'] as $club): ?>
+								<li>
+									<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club['id'] ?>">
+										<i class="icon-club"></i>
+										<span><?php echo $club['name'] ?></span>
+									</a>
+								</li>
+							<?php endforeach ?>
+						</ul>
+					</div>
+				<?php endif ?>
+			</div>
 		</div>
 
 	</div>
