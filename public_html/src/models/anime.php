@@ -2,7 +2,7 @@
 require_once 'am.php';
 class AnimeModel extends AMModel {
 	public function __construct() {
-		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'anime';
+		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->animeCacheDir;
 	}
 
 	public function isFresh($data) {

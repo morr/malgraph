@@ -46,8 +46,8 @@ class UserModel extends JSONDB {
 
 	public function __construct($freeze = false) {
 		$this->freezeUpdating = $freeze;
-		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'users';
-		$this->anonsFile = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'anons.json';
+		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->userCacheDir;
+		$this->anonsFile = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->anonLookupFile;
 		if (file_exists($this->anonsFile)) {
 			$this->anons = json_decode(file_get_contents($this->anonsFile), true);
 		} else {

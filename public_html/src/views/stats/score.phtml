@@ -1,4 +1,4 @@
-<?php include 'views/_common/stats-switcher.phtml'; ?>
+<?php include 'src/views/_common/stats-switcher.phtml'; ?>
 
 <div class="users">
 <?php foreach ($this->users as $i => $u): ?>
@@ -169,10 +169,10 @@
 						<thead>
 							<tr>
 								<th class="ord">#</th>
-								<?php include 'views/_common/stats-thead-status.phtml' ?>
-								<?php include 'views/_common/stats-thead-unique.phtml' ?>
-								<?php include 'views/_common/stats-thead-title.phtml' ?>
-								<?php include 'views/_common/stats-thead-length.phtml' ?>
+								<?php include 'src/views/_common/stats-thead-status.phtml' ?>
+								<?php include 'src/views/_common/stats-thead-unique.phtml' ?>
+								<?php include 'src/views/_common/stats-thead-title.phtml' ?>
+								<?php include 'src/views/_common/stats-thead-length.phtml' ?>
 							</tr>
 						</thead>
 
@@ -181,10 +181,10 @@
 							<?php foreach ($u[$this->am]['score-info']['unrated-titles'] as $e): ?>
 								<tr>
 									<td class="ord"><?php echo $k ++ ?></td>
-									<?php include 'views/_common/stats-tbody-status.phtml' ?>
-									<?php include 'views/_common/stats-tbody-unique.phtml' ?>
-									<?php include 'views/_common/stats-tbody-title.phtml' ?>
-									<?php include 'views/_common/stats-tbody-length.phtml' ?>
+									<?php include 'src/views/_common/stats-tbody-status.phtml' ?>
+									<?php include 'src/views/_common/stats-tbody-unique.phtml' ?>
+									<?php include 'src/views/_common/stats-tbody-title.phtml' ?>
+									<?php include 'src/views/_common/stats-tbody-length.phtml' ?>
 								</tr>
 							<?php endforeach ?>
 						</tbody>

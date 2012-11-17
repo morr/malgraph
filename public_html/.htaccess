@@ -8,9 +8,9 @@ RewriteEngine On
 
 #block access to conf.ini
 RewriteRule ^conf.ini$ - [F]
-RewriteRule ^anons.json$ - [F]
-RewriteRule ^mirros$ - [F]
-RewriteRule ^cache$ - [F]
+RewriteRule ^data/anons.json$ - [F]
+RewriteRule ^data/mirror$ - [F]
+RewriteRule ^data/cache$ - [F]
 
 RewriteRule ^/?$ /s/index [QSA,L]
 RewriteRule ^/?s/(.*) /index/$1 [QSA,L]

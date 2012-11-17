@@ -83,9 +83,9 @@ class MGHelper extends ChibiHelper {
 	}
 
 	public function download($url) {
-		if ($this->config->misc->useMirror) {
+		if (!empty($this->config->misc->mirrorDir)) {
 			$mirror = rawurlencode($url);
-			$mirror = $this->config->chibi->runtime->rootFolder . '/mirror/' . $mirror . '.dat';
+			$mirror = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->mirrorDir . DIRECTORY_SEPARATOR . $mirror . '.dat';
 			if (file_exists($mirror)) {
 				return file_get_contents($mirror);
 			}
@@ -127,7 +127,7 @@ class MGHelper extends ChibiHelper {
 			curl_close($ch);
 		}
 
-		if ($this->config->misc->useMirror) {
+		if (!empty($mirror)) {
 			file_put_contents($mirror, $contents);
 		}
 		return $contents;

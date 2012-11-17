@@ -2,7 +2,7 @@
 require_once 'am.php';
 class MangaModel extends AMModel {
 	public function __construct() {
-		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'manga';
+		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->mangaCacheDir;
 	}
 
 	public function isFresh($data) {

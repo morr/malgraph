@@ -1,5 +1,5 @@
 <?php
-require_once 'controllers/abstract.php';
+require_once 'src/controllers/abstract.php';
 class StatsController extends AbstractController {
 	public function init() {
 		parent::init();
