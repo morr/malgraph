@@ -4,6 +4,16 @@ class MGHelper extends ChibiHelper {
 		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI']);
 	}
 
+	public function amText($type) {
+		switch ($type) {
+			case UserModel::USER_LIST_TYPE_ANIME:
+				return 'anime';
+			case UserModel::USER_LIST_TYPE_MANGA:
+				return 'manga';
+		}
+		return '?';
+	}
+
 	public function removeSpaces($subject) {
 		$subject = trim($subject);
 		$subject = rtrim($subject, ':');
@@ -74,8 +84,7 @@ class MGHelper extends ChibiHelper {
 
 	public function download($url) {
 		if ($this->config->misc->useMirror) {
-			$mirror = unpack('H*', $url);
-			$mirror = array_shift($mirror);
+			$mirror = rawurlencode($url);
 			$mirror = $this->config->chibi->runtime->rootFolder . '/mirror/' . $mirror . '.dat';
 			if (file_exists($mirror)) {
 				return file_get_contents($mirror);
@@ -104,7 +113,7 @@ class MGHelper extends ChibiHelper {
 		}
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
-		//curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
 		$contents = curl_exec($ch);
 
 		$contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
@@ -112,8 +121,8 @@ class MGHelper extends ChibiHelper {
 		if (curl_errno($ch)) {
 			$e = curl_error($ch);
 			curl_close($ch);
-			throw new Exception($e);
-			//return null;
+			//throw new Exception($e);
+			return null;
 		} else {
 			curl_close($ch);
 		}
