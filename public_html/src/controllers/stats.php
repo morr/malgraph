@@ -5,7 +5,7 @@ class StatsController extends AbstractController {
 		parent::init();
 
 		//discard session information to speed up things
-		session_write_close();
+		$this->sessionHelper->close();
 
 		//no user specified
 		$userNames = $this->inputHelper->getStringSafe('u');
@@ -51,14 +51,18 @@ class StatsController extends AbstractController {
 			try {
 				$user = $modelUsers->get($userName);
 			} catch (InvalidEntryException $e) {
-				$this->forward($this->mgHelper->constructUrl('index', 'wrong-user', ['u' => $userName]));
+				$this->sessionHelper->restore();
+				$_SESSION['wrong-user'] = $userName;
+				$this->forward($this->mgHelper->constructUrl('index', 'wrong-user'));
 				return;
 			} catch (DownloadException $e) {
 				$this->forward($this->mgHelper->constructUrl('index', 'net-down'));
 				return;
 			}
 			if ($user['blocked']) {
-				$this->forward($this->mgHelper->constructUrl('index', 'blocked-user', ['u' => $userName]));
+				$this->sessionHelper->restore();
+				$_SESSION['wrong-user'] = $userName;
+				$this->forward($this->mgHelper->constructUrl('index', 'blocked-user'));
 			}
 			$this->view->users []= $user;
 		}
