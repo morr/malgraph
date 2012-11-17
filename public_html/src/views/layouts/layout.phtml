@@ -116,7 +116,7 @@
 							data-title="Anonymize current profile (for anonymous sharing)"
 							data-position-my="right top"
 							data-position-at="left bottom"
-							href="<?php echo $this->mgHelper->constructUrl('stats', null, [], array_map(function($u) { return $u['anon-name']; }, $this->view->users)) ?>">
+							href="<?php echo $this->mgHelper->constructUrl(null, null, [], array_map(function($u) { return $u['anon-name']; }, $this->view->users)) ?>">
 							<i class="icon-anonymize"></i>
 						</a>
 					</li>
