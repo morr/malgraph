@@ -1,7 +1,8 @@
-<?php if (!empty($e2)): ?>
-	<?php if ($e['user']['score'] > $e2['user']['score']): ?>
+<?php if (!empty($e['others']) and count($e['others']) == 1): ?>
+	<?php $e2 = reset($e['others']) ?>
+	<?php if ($e['user']['score'] > $e2['user']['score'] and $e2['user']['score'] > 0): ?>
 		<td class="score higher-score">
-	<?php elseif ($e['user']['score'] < $e2['user']['score']): ?>
+	<?php elseif ($e['user']['score'] < $e2['user']['score'] and $e['user']['score'] > 0): ?>
 		<td class="score lower-score">
 	<?php else: ?>
 		<td class="score same-score">

@@ -214,8 +214,7 @@ class StatsController extends AbstractController {
 						$key = $e['full']['id'];
 						$l2 = &$u2[$this->view->am]['entries'];
 						if (!empty($l2[$key])) {
-							$e2 = $l2[$key];
-							$e['others'] []= &$e2;
+							$e['others'] []= &$l2[$key];
 						}
 					}
 				}
