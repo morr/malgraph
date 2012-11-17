@@ -31,6 +31,7 @@ class AbstractController extends ChibiController {
 		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.min.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.mousewheel.min.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.jscrollpane.min.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.ui.position.js'));
 		if (file_exists($p = 'media/js/' . $this->view->controllerName . '.js')) {
 			$this->headHelper->addScript($this->urlHelper->url($p));
 		}

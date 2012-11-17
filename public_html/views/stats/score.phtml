@@ -17,7 +17,8 @@
 		</div>
 
 		<div class="section score-dist">
-			<h3 title="How much time have you spent on titles rated with given score?">
+			<h3>
+				<i rel="tooltip" data-title="How much time have you spent on titles rated with given score?" class="icon-tooltip"></i>
 				Rating distribution
 			</h3>
 			<div class="section-body">
@@ -70,10 +71,15 @@
 
 							tooltip: {
 								formatter: function() {
+									var text;
 									if (this.x == '-') {
-										return 'Unrated titles: ' + this.y;
+										text = 'Unrated titles: ' + this.y;
+									} else {
+										text = 'Titles rated with ' + this.x + ': ' + this.y;
 									}
-									return 'Titles rated with ' + this.x + ': ' + this.y;
+									var percent = this.y * 100.0 / <?php echo max(1, $u[$this->am]['score-info']['rated'] + $u[$this->am]['score-info']['unrated']) ?>;
+									text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
+									return text;
 								}
 							},
 
@@ -87,7 +93,8 @@
 		</div>
 
 		<div class="section score-time-dist">
-			<h3 title="How much time have you spent on titles rated with given score?">
+			<h3>
+				<i rel="tooltip" data-title="How much time have you spent on titles rated with given score?" class="icon-tooltip"></i>
 				Rating to time distribution
 			</h3>
 			<div class="section-body">
@@ -129,10 +136,15 @@
 
 							tooltip: {
 								formatter: function() {
+									var text;
 									if (this.x == '-') {
-										return 'Hours spent on unrated titles: ' + Math.round(this.y * 100) / 100.0;
+										text = 'Hours spent on unrated titles: ' + Math.round(this.y * 100) / 100.0;
+									} else {
+										text = 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
 									}
-									return 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
+									var percent = this.y * 100.0 / <?php echo max(1, $u[$this->am]['score-info']['rated-total-time'] + $u[$this->am]['score-info']['unrated-total-time']) ?>;
+									text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
+									return text;
 								}
 							},
 
@@ -157,36 +169,10 @@
 						<thead>
 							<tr>
 								<th class="ord">#</th>
-
-								<th class="status" title="Status">
-									<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'status', 'sort-dir' => $this->sortColumn == 'status' ? 1 - $this->sortDir : 0]) ?>">
-										S
-									</a>
-								</th>
-
-								<?php if (count($this->users) > 1): ?>
-									<th class="unique" title="Unique - marked with &bdquo;+&rdquo; if only this user has given title in their list.">
-										<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'unique', 'sort-dir' => $this->sortColumn == 'unique' ? 1 - $this->sortDir : 0]) ?>">
-											U
-										</a>
-									</th>
-								<?php endif ?>
-
-								<th class="title">
-									<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'title', 'sort-dir' => $this->sortColumn == 'title' ? 1 - $this->sortDir : 0]) ?>">
-										Title
-									</a>
-								</th>
-
-								<?php if ($this->am == UserModel::USER_LIST_TYPE_ANIME): ?>
-									<th class="length" title="Length (episodes)">
-								<?php else: ?>
-									<th class="length" title="Length (volumes)">
-								<?php endif ?>
-									<a href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'length', 'sort-dir' => $this->sortColumn == 'length' ? 1 - $this->sortDir : 0]) ?>">
-										L
-									</a>
-								</th>
+								<?php include 'views/_common/stats-thead-status.phtml' ?>
+								<?php include 'views/_common/stats-thead-unique.phtml' ?>
+								<?php include 'views/_common/stats-thead-title.phtml' ?>
+								<?php include 'views/_common/stats-thead-length.phtml' ?>
 							</tr>
 						</thead>
 
@@ -195,21 +181,14 @@
 							<?php foreach ($u[$this->am]['score-info']['unrated-titles'] as $e): ?>
 								<tr>
 									<td class="ord"><?php echo $k ++ ?></td>
-
-									<?php include 'views/_common/stats-table-status.phtml' ?>
-									<?php include 'views/_common/stats-table-unique.phtml' ?>
-									<?php include 'views/_common/stats-table-title.phtml' ?>
-
-									<td class="length">
-										<?php if ($this->am == UserModel::USER_LIST_TYPE_ANIME): ?>
-											<?php echo $e['full']['episodes'] ?>
-										<?php else: ?>
-											<?php echo $e['full']['volumes'] ?>
-										<?php endif ?>
-									</td>
+									<?php include 'views/_common/stats-tbody-status.phtml' ?>
+									<?php include 'views/_common/stats-tbody-unique.phtml' ?>
+									<?php include 'views/_common/stats-tbody-title.phtml' ?>
+									<?php include 'views/_common/stats-tbody-length.phtml' ?>
 								</tr>
 							<?php endforeach ?>
 						</tbody>
+
 					</table>
 				<?php endif ?>
 			</div>

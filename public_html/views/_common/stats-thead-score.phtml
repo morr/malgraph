@@ -1,0 +1,5 @@
+<th class="score">
+	<a href="<?php echo $this->mgHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'score', 'sort-dir' => $this->sortColumn == 'score' ? 1 - $this->sortDir : 0]) ?>">
+		Score
+	</a>
+</th>

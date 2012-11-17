@@ -10,10 +10,14 @@
 	<meta property="og:site_name" content="MALgraph" />
 </head>
 <body>
-	<?php if ($this->view->controllerName == 'stats' and count($this->view->userNames) > 1): ?>
-	<div id="main-wrapper" class="compare-mode">
+	<?php if ($this->view->controllerName == 'stats'): ?>
+		<?php if (count($this->view->userNames) > 1): ?>
+			<div id="main-wrapper" class="user-mode compare-mode">
+		<?php else: ?>
+			<div id="main-wrapper" class="user-mode">
+		<?php endif ?>
 	<?php else: ?>
-	<div id="main-wrapper">
+		<div id="main-wrapper">
 	<?php endif ?>
 		<div id="header">
 			<h1>
@@ -33,12 +37,15 @@
 				<?php endif ?>
 				<div class="control-group input-append">
 					<input type="search" name="u[]">
-					<button title="Search" name="submit" value="search" class="btn" type="submit"><i class="icon-search"></i></button>
-					<?php if ($this->view->controllerName == 'stats'): ?>
-						<button title="Compare" name="submit" value="compare" class="btn" type="submit"><i class="icon-compare"></i></button>
-					<?php else: ?>
-						<button title="Compare" name="submit" value="compare" class="btn disabled" disabled="disabled" type="submit"><i class="icon-compare"></i></button>
-					<?php endif ?>
+					<button data-title="Search" data-position-my="center top" data-position-at="center bottom" rel="tooltip" name="submit" value="search" class="btn" type="submit"><i class="icon-search"></i></button>
+					<button data-title="Compare" data-position-my="center top" data-position-at="center bottom" rel="tooltip" name="submit" value="compare" type="submit"
+						<?php if ($this->view->controllerName == 'stats'): ?>
+							class="btn"
+						<?php else: ?>
+							class="btn disabled" disabled="disabled"
+						<?php endif ?>
+						><i class="icon-compare"></i>
+					</button>
 				</div>
 			</form>
 			<div class="clear"></div>
@@ -49,12 +56,8 @@
 				<div id="menu">
 					<ul class="am">
 						<?php foreach ([UserModel::USER_LIST_TYPE_ANIME, UserModel::USER_LIST_TYPE_MANGA] as $type): ?>
-							<?php if ($this->view->am == $type): ?>
-								<li class="active">
-							<?php else: ?>
-								<li>
-							<?php endif ?>
-								<a title="Switch to <?php echo $type ?> view" href="<?php echo $this->mgHelper->url('stats/switch-am', ['am' => $type, 'action' => $this->view->actionName, 'u' => $this->view->userNames]) ?>">
+							<li <?php if ($this->view->am == $type) echo 'class="active"' ?> data-title="<?php echo ucfirst($this->mgHelper->amText($type)) ?> stats" data-position-my="center bottom" data-position-at="center top" rel="tooltip">
+								<a href="<?php echo $this->mgHelper->url('stats/switch-am', ['am' => $type, 'action' => $this->view->actionName, 'u' => $this->view->userNames]) ?>">
 									<i class="icon-<?php echo $type ?>"></i>
 								</a>
 							</li>
@@ -73,7 +76,7 @@
 							['controller' => 'stats', 'action' => 'json', 'text' => 'JSON'],
 						];
 					?>
-					<ul>
+					<ul class="action">
 						<?php foreach ($menu as $item): ?>
 							<?php if ($this->view->controllerName == $item['controller'] and $this->view->actionName == $item['action']): ?>
 								<li class="active">
@@ -104,18 +107,18 @@
 			<ul class="right">
 				<?php if ($this->view->controllerName == 'stats'): ?>
 					<li>
-						<a title="Anonymize current profile (for anonymous sharing)." href="<?php echo $this->mgHelper->url('stats/anonymize', ['u' => $this->view->userNames, 'am' => $this->view->am, 'action' => $this->view->actionName]) ?>">
+						<a rel="tooltip" data-title="Anonymize current profile (for anonymous sharing)" href="<?php echo $this->mgHelper->url('stats/anonymize', ['u' => $this->view->userNames, 'am' => $this->view->am, 'action' => $this->view->actionName]) ?>">
 							<i class="icon-anonymize"></i>
 						</a>
 					</li>
 				<?php endif ?>
 				<li>
-					<a href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode($this->mgHelper->currenturl()) ?>">
+					<a rel="tooltip" data-title="Share on Twitter" href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode($this->mgHelper->currenturl()) ?>">
 						<i class="icon-twitter"></i>
 					</a>
 				</li>
 				<li>
-					<a href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode($this->mgHelper->currentUrl()) ?>&amp;t=Share+MALgraph">
+					<a rel="tooltip" data-title="Share on Facebook" href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode($this->mgHelper->currentUrl()) ?>&amp;t=Share+MALgraph">
 						<i class="icon-facebook"></i>
 					</a>
 				</li>

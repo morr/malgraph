@@ -1,0 +1,13 @@
+<th class="length">
+	<a rel="tooltip"
+	<?php if ($this->am == UserModel::USER_LIST_TYPE_ANIME): ?>
+		data-title="Length (episodes)"
+	<?php else: ?>
+		data-title="Length (volumes)"
+	<?php endif ?>
+	data-position-my="center bottom"
+	data-position-at="center top"
+	href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'length', 'sort-dir' => $this->sortColumn == 'length' ? 1 - $this->sortDir : 0]) ?>">
+		L
+	</a>
+</th>

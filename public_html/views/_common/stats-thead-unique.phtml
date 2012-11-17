@@ -1,0 +1,11 @@
+<?php if (count($this->users) > 1): ?>
+	<th class="unique">
+		<a rel="tooltip"
+			data-title="Unique - marked with &bdquo;+&rdquo; if only this user has given title in their list."
+			data-position-my="center bottom"
+			data-position-at="center top"
+			href="<?php echo $this->urlHelper->url('stats/' . $this->actionName, ['u' => $this->userNames, 'am' => $this->am, 'sort-column' => 'unique', 'sort-dir' => $this->sortColumn == 'unique' ? 1 - $this->sortDir : 0]) ?>">
+			U
+		</a>
+	</th>
+<?php endif ?>

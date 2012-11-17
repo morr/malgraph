@@ -25,7 +25,7 @@
 
 				<?php $x = date_default_timezone_get() ?>
 				<?php date_default_timezone_set('UTC') ?>
-				<span class="updated" title="When was this profile last updated">
+				<span class="updated" rel="tooltip" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
 					<?php echo date('M d, H:i', $u['generated']) ?> UTC
 				</span>
 				<?php date_default_timezone_set($x) ?>
