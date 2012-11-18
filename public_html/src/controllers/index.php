@@ -54,13 +54,13 @@ class IndexController extends AbstractController {
 	}
 
 	public function regenerateAction() {
-		//header('Content-Type: text/plain; charset=utf-8');
-		//$this->config->chibi->runtime->layoutName = null;
+		header('Content-Type: text/plain; charset=utf-8');
+		$this->config->chibi->runtime->layoutName = null;
 
 		//discard session information to speed up things
-		session_write_close();
+		$this->sessionHelper->close();
 
-		$key = $this->view->userNames;
+		$key = $this->inputHelper->getStringSafe('user-name');
 		if (is_array($key)) {
 			$key = reset($key);
 		}

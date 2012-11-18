@@ -148,7 +148,7 @@
 		<script type="text/javascript">
 			window.setTimeout(function() {
 				var url = <?php echo json_encode($this->mgHelper->constructUrl('index', 'regenerate')) ?>;
-				var data = <?php echo json_encode(['u' => reset($this->view->userNames)]) ?>;
+				var data = <?php echo json_encode(['user-name' => reset($this->view->userNames)]) ?>;
 				$.get(url, data, function(response) { /*alert(response);*/ });
 			}, 1500);
 		</script>
