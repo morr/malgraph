@@ -240,6 +240,134 @@ class StatsController extends AbstractController {
 
 
 
+	public function achAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+
+		foreach ($this->view->users as $i => &$u) {
+			$groups = [];
+			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
+				$groups [$e['user']['status']] []= &$e;
+			}
+
+			$achievements = [];
+
+			// MAL's database has 7310 anime and 21260 manga as of 06 sep 2012
+			/*$thresholds = [[
+				'count' => 6000,
+				'desc' => 'Are you having fun, breaking all the rules?',
+				'level' => ucfirst($this->mgHelper->amText()) . ' obsession'
+			], [
+				'count' => 3000,
+				'desc' => 'This deserves no further comment.',
+				'level' => ucfirst($this->mgHelper->amText()) . ' maniac'
+			], [
+				'count' => 1500,
+				'desc' => 'Are you even human? This is not possible for mere mortal beings.',
+				'level' => 'The Collector',
+			], [
+				'count' => 700,
+				'desc' => 'You should lean back and think about your life for a while&hellip;',
+				'level' => 'Basement dweller',
+			], [
+				'count' => 400,
+				'desc' => 'That\'s&hellip; a lot. You can be proud of yourself, that\'s for sure.',
+				'level' => 'A lot of free time',
+			], [
+				'count' => 100,
+				'desc' => 'You bought all of them, right?',
+				'level' => 'Casual ' . ($this->view->am == UserModel::USER_LIST_TYPE_MANGA ? 'reader' : 'watcher'),
+			]];
+			$count = count($groups[UserModel::USER_LIST_STATUS_COMPLETED]);
+			foreach ($thresholds as $threshold) {
+				if ($count > $threshold['count']) {
+					$achievements []= [
+						'id' => 'numbers-' . $this->mgHelper->amText() . $threshold['count'],
+						'title' => 'Completed over ' . $threshold['count'] . ' titles',
+						'level' => $threshold['level'],
+						'desc' => "You've completed over " . $threshold['count'] . " " . $this->mgHelper->amText() . ". " . $threshold['desc'],
+					];
+				}
+			}*/
+
+			$achList = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->achDefFile), true);
+			if ($this->view->am == UserModel::USER_LIST_TYPE_ANIME) {
+				$model = new AnimeModel();
+				$AM = 'anime';
+			} else {
+				$model = new MangaModel();
+				$AM = 'manga';
+			}
+
+			//achievments from json
+			foreach ($achList[$AM] as $group => $groupData) {
+				var_dump($group);
+				$achIds = array();
+				foreach ($groupData['titles'] as $title) {
+					$achIds []= $title['id'];
+				}
+				$entriesOwned = array();
+				foreach ($groups[UserModel::USER_LIST_STATUS_COMPLETED] as $k => $e) {
+					if (in_array($e['user']['id'], $achIds)) {
+						$entriesOwned []= &$groups[UserModel::USER_LIST_STATUS_COMPLETED][$k];
+					}
+				}
+				uasort($groupData['achievements'], function($a, $b) { return $a['threshold'] > $b['threshold'] ? -1 : 1; });
+				foreach ($groupData['achievements'] as $ach) {
+					if (count($entriesOwned) >= $ach['threshold']) {
+						$ach['entries'] = $entriesOwned;
+						$achievements []= $ach;
+						break;
+					}
+				}
+			}
+
+			//achievement for mean score
+			if ($this->view->am == UserModel::USER_LIST_TYPE_ANIME) {
+				$count = 0;
+				$sum = 0;
+				foreach ($u[$this->view->am]['entries'] as $e) {
+					if ($e['user']['score'] > 0 and $e['user']['status'] != UserModel::USER_LIST_STATUS_PLANNED) {
+						$sum += $e['user']['score'];
+						$count ++;
+					}
+				}
+				$scoreMean = $sum / max(1, $count);
+
+				if (($scoreMean < 5) && ($scoreMean > 0)) {
+					$achievements []= [
+						'id' => 'anime-suffering',
+						'title' => 'Watching anime is suffering',
+						'desc' => 'Mean score lower than 5. Someone has to counterweigh the fanboys, right?'
+					];
+				}
+				if ($scoreMean >= 8.5) {
+					$achievements []= [
+						'id' => 'anime-ilovethem',
+						'title' => 'I love Chinese cartoons',
+						'desc' => 'Mean score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;'
+					];
+				}
+			}
+
+			$files = scandir(implode(DIRECTORY_SEPARATOR, [$this->config->chibi->runtime->rootFolder, 'media', 'img', 'ach']));
+
+			foreach ($achievements as &$ach) {
+				$ach['path'] = null;
+				foreach ($files as $f) {
+					if (preg_match('/' . $ach['id'] . '[^0-9a-zA-Z_-]/', $f)) {
+						$ach['path'] = $f;
+					}
+				}
+			}
+			unset($ach);
+
+			$u['achievements'] = $achievements;
+		}
+	}
+
+
+
 	public function scoreAction() {
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));

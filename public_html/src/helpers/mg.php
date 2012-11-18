@@ -4,7 +4,10 @@ class MGHelper extends ChibiHelper {
 		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 	}
 
-	public function amText($type) {
+	public function amText($type = null) {
+		if ($type === null) {
+			$type = $this->view->am;
+		}
 		switch ($type) {
 			case UserModel::USER_LIST_TYPE_ANIME:
 				return 'anime';

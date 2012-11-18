@@ -1,0 +1,15 @@
+img {
+	float: left;
+	padding: 10px;
+}
+	#content ul {
+		display: inline-block;
+		margin: 0;
+		padding: 10px;
+	}
+		#content li {
+			display: inline-block;
+		}
+		#content li:not(:last-child):after {
+			content: ',\a0';
+		}

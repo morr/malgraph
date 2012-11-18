@@ -266,6 +266,9 @@ h3 {
 		margin-right: -10px !important;
 		display: block;
 	}
+	.section .section-body p {
+		margin: 6px 10px;
+	}
 
 dl {
 	display: inline-block;
