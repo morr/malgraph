@@ -19,10 +19,6 @@ class StatsController extends AbstractController {
 				throw new Exception('User name cannot be empty.');
 			}
 		}
-		//primary user appears more than once
-		/*if (count(array_keys($userNames, $userNames[0])) > 1) {
-			throw new Exception('Why would you want to compare an user with theirself?&hellip;');
-		}*/
 		//make users unique
 		$userNames = array_unique($userNames);
 		$this->view->userNames = $userNames;
@@ -188,7 +184,9 @@ class StatsController extends AbstractController {
 		}];
 		$defs['length'] = [0, function($e) { return $e['full']['type'] == UserModel::USER_LIST_TYPE_MANGA ? $e['full']['volumes'] : $e['full']['episodes']; }];
 		$defs['title'] = [1, function($e) { return strtolower($e['full']['title']); }];
-		$defs['unique'] = [1, function($e) { return $e['user']['unique']; }];
+		$defs['unique'] = [1, function($e) { return empty($e['user']['unique']) ? 0 : $e['user']['unique']; }];
+		$defs['start-date'] = [1, function($e) { return $e['user']['start-date']; }];
+		$defs['finish-date'] = [1, function($e) { return $e['user']['finish-date']; }];
 
 		//load custom sorting flavours
 		if (!empty($customColumns)) {
@@ -430,6 +428,96 @@ class StatsController extends AbstractController {
 			$u[$this->view->am]['score-dist'] = $scoreDist;
 			$u[$this->view->am]['score-time-dist'] = $scoreTimeDist;
 			$this->sort($u[$this->view->am]['score-info']['unrated-titles'], 'length');
+		}
+	}
+
+
+
+
+	public function actiAction() {
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
+
+		$this->loadUsers();
+		$this->loadEntries();
+
+		foreach ($this->view->users as $i => &$u) {
+			$periods = [];
+			$omitted = [];
+			$period = false;
+			$periodMin = false;
+			$periodMax = false;
+			foreach ($u[$this->view->am]['entries'] as &$e) {
+				if ($e['user']['status'] != UserModel::USER_LIST_STATUS_COMPLETED) {
+					continue;
+				}
+				$finishedA = explode('-', $e['user']['start-date']);
+				$finishedB = explode('-', $e['user']['finish-date']);
+				$yearA = intval($finishedA[0]);
+				$yearB = intval($finishedB[0]);
+				$monthA = isset($finishedA[1]) ? intval($finishedA[1]) : false;
+				$monthB = isset($finishedB[1]) ? intval($finishedB[1]) : false;
+				if ((!$yearA or !$monthA) and (!$yearB or !$monthB)) {
+					$omitted []= $e;
+					continue;
+				}
+				if (!$yearB or !$monthB) {
+					$period = sprintf('%04d-%02d', $yearA, $monthA);
+				} elseif (!$yearA or !$monthA) {
+					$period = sprintf('%04d-%02d', $yearB, $monthB);
+				} else {
+					$period = sprintf('%04d-%02d', $yearB, $monthB);
+				}
+				if (!isset($periods[$period])) {
+					$periods[$period] = [
+						'duration' => 0,
+						'titles' => []
+					];
+				}
+				$periods[$period]['titles'] []= $e;
+				if ($periodMin === false or strcmp($period, $periodMin) < 0) {
+					$periodMin = $period;
+				}
+				if ($periodMax === false or strcmp($period, $periodMax) > 0) {
+					$periodMax = $period;
+				}
+				$periods[$period]['duration'] += $e['user']['total-duration'];
+			}
+
+			//add empty periods so graph has no gaps
+			list($yearMin, $monthMin) = explode('-', $periodMin);
+			list($yearMax, $monthMax) = explode('-', $periodMax);
+			$empty = [
+				'duration' => 0,
+				'titles' => []
+			];
+			$keys = [];
+			for ($month = $monthMin; $month <= 12; $month ++) {
+				$keys []= sprintf('%04d-%02d', $yearMin, $month);
+			}
+			for ($year = $yearMin + 1; $year < $yearMax; $year ++) {
+				for ($month = 1; $month <= 12; $month ++) {
+					$keys []= sprintf('%04d-%02d', $year, $month);
+				}
+			}
+			for ($month = 1; $month <= $monthMax; $month ++) {
+				$keys []= sprintf('%04d-%02d', $yearMax, $month);
+			}
+			foreach ($keys as $key) {
+				if (!isset ($periods[$key])) {
+					$periods[$key] = $empty;
+				}
+			}
+
+			krsort($periods);
+			$u[$this->view->am]['acti-info'] = [
+				'periods' => $periods,
+				'omitted-titles' => $omitted
+			];
+
+			$this->sort($u[$this->view->am]['acti-info']['omitted-titles'], 'title');
+
 		}
 	}
 

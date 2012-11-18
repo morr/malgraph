@@ -1,0 +1,121 @@
+<?php $u = $this->user ?>
+<div class="section">
+	<h2>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
+			<?php echo $u['visible-name'] ?>
+		</a>
+		`s <?php echo $this->am ?> activity
+	</h2>
+</div>
+
+<div class="section acti-line">
+	<h3>
+		<i data-title="Number of titles you've completed within given period." class="tooltipable icon-tooltip"></i>
+		Activity timeline
+	</h3>
+	<div class="section-body">
+		<?php if (empty($u[$this->view->am]['acti-info']['periods'])): ?>
+			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified. This graph won't work without this data.</p>
+		<?php elseif (count($u[$this->view->am]['acti-info']['periods']) == 1): ?>
+			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($u[$this->am]['acti-info']['periods'])) ?>, so a graph isn't needed.</p>
+		<?php else: ?>
+			<div class="wrapper" style="height: 420px">
+				<div style="width: <?php echo count($u[$this->am]['acti-info']['periods']) * 30 + 100 ?>px; height: 400px" id="target-acti-line-<?php echo $u['user-id'] ?>" class="target"></div>
+			</div>
+
+			<script type="text/javascript">
+				var chart = new Highcharts.Chart({
+					chart: {
+						renderTo: 'target-acti-line-<?php echo $u['user-id'] ?>',
+						type: 'line',
+						marginTop: 8,
+						marginBottom: 56,
+					},
+
+					title: false,
+
+					xAxis: {
+						categories: <?php echo json_encode(array_keys($u[$this->am]['acti-info']['periods'])) ?>,
+						title: {text: 'Year'},
+						labels: {
+							rotation: -45,
+							align: 'right',
+						}
+					},
+
+					yAxis: {
+						title: {text: 'Count'},
+						min: 0,
+					},
+
+					legend: false,
+
+					tooltip: {
+						formatter: function() {
+							var text = 'Titles from ' + this.x + ': ' + this.y;
+							return text;
+						}
+					},
+
+					series: [{
+						data: <?php echo json_encode(array_map(function($p) { return count($p['titles']); }, array_values($u[$this->am]['acti-info']['periods']))) ?>,
+						/*point: {
+							events: {
+								click: function(e) {
+									alert(this.x);
+								}
+							}
+						}*/
+					}],
+
+					scrollbar: {
+						enabled: true
+					},
+				});
+				$('.wrapper').jScrollPane();
+			</script>
+		<?php endif ?>
+
+	</div>
+</div>
+
+<div class="section omitted">
+	<h3>
+		<i data-title="Titles that have missing start or completion date." class="tooltipable icon-tooltip"></i>
+		Titles with unknown completion date
+		<?php if (!empty($u[$this->view->am]['acti-info']['omitted-titles'])): ?>
+			&nbsp;(<?php echo count($u[$this->view->am]['acti-info']['omitted-titles']) ?>)
+		<?php endif ?>
+	</h3>
+	<div class="section-body">
+		<?php if (empty($u[$this->view->am]['acti-info']['omitted-titles'])): ?>
+			<p>Hurrah! No title has unspecified completion nor start date.</p>
+		<?php else: ?>
+			<table>
+				<thead>
+					<tr>
+						<th class="ord">#</th>
+						<?php echo $this->htmlHelper->tableHeadStatus() ?>
+						<?php echo $this->htmlHelper->tableHeadTitle() ?>
+						<?php echo $this->htmlHelper->tableHeadStartDate() ?>
+						<?php echo $this->htmlHelper->tableHeadFinishDate() ?>
+					</tr>
+				</thead>
+
+				<tbody>
+					<?php $k = 1 ?>
+					<?php foreach ($u[$this->view->am]['acti-info']['omitted-titles'] as $e): ?>
+						<tr>
+							<td class="ord"><?php echo $k ++ ?></td>
+							<?php echo $this->htmlHelper->tableBodyStatus($e) ?>
+							<?php echo $this->htmlHelper->tableBodyTitle($e) ?>
+							<?php echo $this->htmlHelper->tableBodyStartDate($e) ?>
+							<?php echo $this->htmlHelper->tableBodyFinishDate($e) ?>
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+
+			</table>
+		<?php endif ?>
+	</div>
+</div>
