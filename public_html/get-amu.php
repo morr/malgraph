@@ -21,15 +21,15 @@ if (count($argv)) {
 
 switch (strtolower($type)) {
 	case 'anime':
-		require_once 'models/anime.php';
+		require_once 'src/models/anime.php';
 		$model = new AnimeModel();
 		break;
 	case 'manga':
-		require_once 'models/manga.php';
+		require_once 'src/models/manga.php';
 		$model = new MangaModel();
 		break;
 	case 'user':
-		require_once 'models/user.php';
+		require_once 'src/models/user.php';
 		$model = new UserModel();
 		break;
 	default:
