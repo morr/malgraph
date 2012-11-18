@@ -1,175 +1,163 @@
-<?php include 'src/views/_common/stats-switcher.phtml'; ?>
+<?php $u = $this->user ?>
 
-<div class="users">
-<?php foreach ($this->users as $u): ?>
-	<?php if ($u['anonymous']): ?>
-		<div class="user anonymous">
+<div class="user-pic">
+	<!-- profile picture -->
+	<?php if ($u['anonymous'] or basename($u['profile-picture-url']) == 'na.gif'): ?>
+		<img class="unavailable" alt="No profile picture" src="<?php echo $this->urlHelper->url('media/img/pixel.gif') ?>">
 	<?php else: ?>
-		<div class="user">
+		<img alt="Profile picture" src="<?php echo $u['profile-picture-url'] ?>">
 	<?php endif ?>
-		<div class="user-pic">
-			<!-- profile picture -->
-			<?php if ($u['anonymous'] or basename($u['profile-picture-url']) == 'na.gif'): ?>
-				<img class="unavailable" alt="No profile picture" src="<?php echo $this->urlHelper->url('media/img/pixel.gif') ?>">
+</div>
+
+<div class="section basic">
+	<!-- user name -->
+	<h2>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
+			<?php echo $u['visible-name'] ?>
+		</a>
+
+		<?php $x = date_default_timezone_get() ?>
+		<?php date_default_timezone_set('UTC') ?>
+		<span class="updated tooltipable" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
+			<?php echo date('M d, H:i', $u['generated']) ?> UTC
+		</span>
+		<?php date_default_timezone_set($x) ?>
+	</h2>
+
+	<div class="section-body">
+		<!-- basic information -->
+		<dl>
+
+			<dt>Gender</dt>
+			<?php if (!$u['anonymous']): ?>
+				<?php if ($u['gender'] == UserModel::USER_GENDER_FEMALE): ?>
+					<dd>Female</dd>
+				<?php elseif ($u['gender'] == UserModel::USER_GENDER_MALE): ?>
+					<dd>Male</dd>
+				<?php else: ?>
+					<dd>Unknown</dd>
+				<?php endif ?>
 			<?php else: ?>
-				<img alt="Profile picture" src="<?php echo $u['profile-picture-url'] ?>">
+				<dd>Unknown</dd>
 			<?php endif ?>
-		</div>
 
-		<div class="section basic">
-			<!-- user name -->
-			<h2>
-				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
-					<?php echo $u['visible-name'] ?>
-				</a>
+			<dt>List views</dt>
+			<dd><?php echo $u[$this->am]['list-views'] ?></dd>
 
-				<?php $x = date_default_timezone_get() ?>
-				<?php date_default_timezone_set('UTC') ?>
-				<span class="updated tooltipable" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
-					<?php echo date('M d, H:i', $u['generated']) ?> UTC
-				</span>
-				<?php date_default_timezone_set($x) ?>
-			</h2>
+			<dt>Time on MAL</dt>
+			<?php if (intval($u['join-date'])): ?>
+				<?php
+					list ($year, $month, $day) = explode ('-', $u['join-date']);
+					$time = mktime(0, 0, 0, $month, $day, $year);
+					$diff = time() - $time;
+					$diff /= 3600 * 24;
+				?>
+				<dd><?php printf('%.1f', $diff / 361.25) ?> years</dd>
+			<?php else: ?>
+				<dd>Unknown</dd>
+			<?php endif ?>
 
-			<div class="section-body">
-				<!-- basic information -->
-				<dl>
+		</dl>
 
-					<dt>Gender</dt>
-					<?php if (!$u['anonymous']): ?>
-						<?php if ($u['gender'] == UserModel::USER_GENDER_FEMALE): ?>
-							<dd>Female</dd>
-						<?php elseif ($u['gender'] == UserModel::USER_GENDER_MALE): ?>
-							<dd>Male</dd>
-						<?php else: ?>
-							<dd>Unknown</dd>
-						<?php endif ?>
-					<?php else: ?>
-						<dd>Unknown</dd>
-					<?php endif ?>
+		<!-- links to mal -->
+		<ul class="mal">
+			<?php if ($u['anonymous']): ?>
+				<li>
+					<a href="#">
+						<i class="icon-pop-out"></i>
+						MAL profile
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<i class="icon-pop-out"></i>
+						MAL anime list
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<i class="icon-pop-out"></i>
+						MAL manga list
+					</a>
+				</li>
 
-					<dt>List views</dt>
-					<dd><?php echo $u[$this->am]['list-views'] ?></dd>
-
-					<dt>Time on MAL</dt>
-					<?php if (intval($u['join-date'])): ?>
-						<?php
-							list ($year, $month, $day) = explode ('-', $u['join-date']);
-							$time = mktime(0, 0, 0, $month, $day, $year);
-							$diff = time() - $time;
-							$diff /= 3600 * 24;
-						?>
-						<dd><?php printf('%.1f', $diff / 361.25) ?> years</dd>
-					<?php else: ?>
-						<dd>Unknown</dd>
-					<?php endif ?>
-
-				</dl>
-
-				<!-- links to mal -->
-				<ul class="mal">
-					<?php if ($u['anonymous']): ?>
-						<li>
-							<a href="#">
-								<i class="icon-pop-out"></i>
-								MAL profile
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<i class="icon-pop-out"></i>
-								MAL anime list
-							</a>
-						</li>
-						<li>
-							<a href="#">
-								<i class="icon-pop-out"></i>
-								MAL manga list
-							</a>
-						</li>
-
-					<?php else: ?>
-						<li>
-							<a href="http://myanimelist.net/profile/<?php echo $u['user-name'] ?>">
-								<i class="icon-pop-out"></i>
-								MAL profile
-							</a>
-						</li>
-						<li>
-							<a href="http://myanimelist.net/animelist/<?php echo $u['user-name'] ?>">
-								<i class="icon-pop-out"></i>
-								MAL anime list
-							</a>
-						</li>
-						<li>
-							<a href="http://myanimelist.net/mangalist/<?php echo $u['user-name'] ?>">
-								<i class="icon-pop-out"></i>
-								MAL manga list
-							</a>
-						</li>
-					<?php endif ?>
-				</ul>
-
-			</div>
-			<div class="clear"></div>
-		</div>
-				<div class="clear"></div>
-
-		<!-- friends -->
-		<div class="section">
-			<h3>Friends (<?php echo count($u['friends']) ?>)</h3>
-			<div class="section-body">
-				<?php if (empty($u['friends'])): ?>
-					<p>This user has no friends on MAL. :(</p>
-				<?php elseif ($u['anonymous']): ?>
-					<p>This user is viewed anonymously. Friends are not displayed.</p>
-				<?php else: ?>
-					<div class="friends scrollable">
-						<?php usort($u['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
-						<ul>
-							<?php foreach ($u['friends'] as $friend): ?>
-								<li>
-									<a class="mg waitable" href="<?php echo $this->mgHelper->constructUrl(null, null, [], [reset($this->userNames), $friend]) ?>">
-										<i class="icon-mg"></i>
-									</a>
-									<a class="mal" href="http://myanimelist.net/profile/<?php echo $friend ?>">
-										<span><?php echo $friend ?></span>
-									</a>
-								</li>
-							<?php endforeach ?>
-						</ul>
-					</div>
-				<?php endif ?>
-			</div>
-		</div>
-
-		<!-- clubs -->
-		<div class="section">
-			<h3>Clubs (<?php echo count($u['clubs']) ?>)</h3>
-			<div class="section-body">
-				<?php if (empty($u['clubs'])): ?>
-					<p>This user doesn't belong to any clubs.</p>
-				<?php elseif ($u['anonymous']): ?>
-					<p>This user is viewed anonymously. Clubs are not displayed.</p>
-				<?php else: ?>
-					<div class="clubs scrollable">
-						<?php usort($u['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>
-						<ul>
-							<?php foreach ($u['clubs'] as $club): ?>
-								<li>
-									<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club['id'] ?>">
-										<i class="icon-club"></i>
-										<span><?php echo $club['name'] ?></span>
-									</a>
-								</li>
-							<?php endforeach ?>
-						</ul>
-					</div>
-				<?php endif ?>
-			</div>
-		</div>
+			<?php else: ?>
+				<li>
+					<a href="http://myanimelist.net/profile/<?php echo $u['user-name'] ?>">
+						<i class="icon-pop-out"></i>
+						MAL profile
+					</a>
+				</li>
+				<li>
+					<a href="http://myanimelist.net/animelist/<?php echo $u['user-name'] ?>">
+						<i class="icon-pop-out"></i>
+						MAL anime list
+					</a>
+				</li>
+				<li>
+					<a href="http://myanimelist.net/mangalist/<?php echo $u['user-name'] ?>">
+						<i class="icon-pop-out"></i>
+						MAL manga list
+					</a>
+				</li>
+			<?php endif ?>
+		</ul>
 
 	</div>
-<?php endforeach ?>
-<div class="clear"></div>
+	<div class="clear"></div>
+</div>
+		<div class="clear"></div>
+
+<!-- friends -->
+<div class="section">
+	<h3>Friends (<?php echo count($u['friends']) ?>)</h3>
+	<div class="section-body">
+		<?php if (empty($u['friends'])): ?>
+			<p>This user has no friends on MAL. :(</p>
+		<?php elseif ($u['anonymous']): ?>
+			<p>This user is viewed anonymously. Friends are not displayed.</p>
+		<?php else: ?>
+			<div class="friends scrollable">
+				<?php usort($u['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
+				<ul>
+					<?php foreach ($u['friends'] as $friend): ?>
+						<li>
+							<a class="mg waitable" href="<?php echo $this->mgHelper->constructUrl(null, null, [], [reset($this->userNames), $friend]) ?>">
+								<i class="icon-mg"></i>
+							</a>
+							<a class="mal" href="http://myanimelist.net/profile/<?php echo $friend ?>">
+								<span><?php echo $friend ?></span>
+							</a>
+						</li>
+					<?php endforeach ?>
+				</ul>
+			</div>
+		<?php endif ?>
+	</div>
+</div>
+
+<!-- clubs -->
+<div class="section">
+	<h3>Clubs (<?php echo count($u['clubs']) ?>)</h3>
+	<div class="section-body">
+		<?php if (empty($u['clubs'])): ?>
+			<p>This user doesn't belong to any clubs.</p>
+		<?php elseif ($u['anonymous']): ?>
+			<p>This user is viewed anonymously. Clubs are not displayed.</p>
+		<?php else: ?>
+			<div class="clubs scrollable">
+				<?php usort($u['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>
+				<ul>
+					<?php foreach ($u['clubs'] as $club): ?>
+						<li>
+							<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club['id'] ?>">
+								<i class="icon-club"></i>
+								<span><?php echo $club['name'] ?></span>
+							</a>
+						</li>
+					<?php endforeach ?>
+				</ul>
+			</div>
+		<?php endif ?>
+	</div>
 </div>

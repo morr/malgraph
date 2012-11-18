@@ -1,66 +1,48 @@
-<?php include 'src/views/_common/stats-switcher.phtml'; ?>
+<?php $u = $this->user ?>
 
-<div class="users">
-<?php foreach ($this->users as $i => $u): ?>
+<div class="section">
+	<h2>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
+			<?php echo $u['visible-name'] ?>
+		</a>
+		`s <?php echo $this->am ?> list
+	</h2>
 
-	<?php if ($u['anonymous']): ?>
-		<div class="user anonymous">
-	<?php else: ?>
-		<div class="user">
-	<?php endif ?>
+	<div class="section-body">
+		<?php if (empty($u[$this->am]['entries'])): ?>
+			<p>This user doesn't seem to have anything on their list.</p>
+		<?php elseif ($u[$this->am]['private']): ?>
+			<p>This user has marked their list as private. No table here.</p>
+		<?php else: ?>
+			<div class="table">
+				<table>
+					<thead>
+						<tr>
+							<th class="ord">#</th>
 
-		<div class="section">
-			<h2>
-				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
-					<?php echo $u['visible-name'] ?>
-				</a>
-				`s <?php echo $this->am ?> list
-			</h2>
+							<?php echo $this->htmlHelper->tableHeadStatus() ?>
+							<?php echo $this->htmlHelper->tableHeadUnique() ?>
+							<?php echo $this->htmlHelper->tableHeadTitle() ?>
+							<?php echo $this->htmlHelper->tableHeadScore() ?>
+						</tr>
+					</thead>
 
-			<div class="section-body">
-				<?php if (empty($u[$this->am]['entries'])): ?>
-					<p>This user doesn't seem to have anything on their list.</p>
-				<?php elseif ($u[$this->am]['private']): ?>
-					<p>This user has marked their list as private. No table here.</p>
-				<?php else: ?>
-					<div class="table">
-						<table>
-							<thead>
-								<tr>
-									<th class="ord">#</th>
+					<tbody>
+						<?php $k = 1 ?>
+						<?php foreach ($u[$this->am]['entries'] as $e): ?>
+							<tr>
+								<td class="ord"><?php echo $k ++ ?></td>
+								<?php echo $this->htmlHelper->tableBodyStatus($e) ?>
+								<?php echo $this->htmlHelper->tableBodyUnique($e) ?>
+								<?php echo $this->htmlHelper->tableBodyTitle($e) ?>
+								<?php echo $this->htmlHelper->tableBodyScore($e) ?>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
 
-									<?php include 'src/views/_common/stats-thead-status.phtml' ?>
-									<?php include 'src/views/_common/stats-thead-unique.phtml' ?>
-									<?php include 'src/views/_common/stats-thead-title.phtml' ?>
-									<?php include 'src/views/_common/stats-thead-score.phtml' ?>
-								</tr>
-							</thead>
-
-							<tbody>
-								<?php $k = 1 ?>
-								<?php foreach ($u[$this->am]['entries'] as $e): ?>
-									<tr>
-										<td class="ord"><?php echo $k ++ ?></td>
-										<?php include 'src/views/_common/stats-tbody-status.phtml' ?>
-										<?php include 'src/views/_common/stats-tbody-unique.phtml' ?>
-										<?php include 'src/views/_common/stats-tbody-title.phtml' ?>
-										<?php include 'src/views/_common/stats-tbody-score.phtml' ?>
-									</tr>
-								<?php endforeach ?>
-							</tbody>
-
-						</table>
-					</div>
-				<?php endif ?>
-
+				</table>
 			</div>
-		</div>
+		<?php endif ?>
 
 	</div>
-<?php endforeach ?>
-<div class="clear"></div>
 </div>
-
-<script type="text/javascript">
-$('*').tooltip();
-</script>
