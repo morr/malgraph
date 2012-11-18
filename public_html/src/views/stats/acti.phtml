@@ -8,25 +8,85 @@
 	</h2>
 </div>
 
-<div class="section acti-line">
+<div class="section acti-line-daily">
 	<h3>
-		<i data-title="Number of titles you've completed within given period." class="tooltipable icon-tooltip"></i>
-		Activity timeline
+		<i data-title="Number of titles you've completed within given day. Shows last three weeks with 24h accuracy." class="tooltipable icon-tooltip"></i>
+		Activity timeline (daily)
 	</h3>
 	<div class="section-body">
-		<?php if (empty($u[$this->view->am]['acti-info']['periods'])): ?>
+		<div class="wrapper">
+			<div id="target-acti-line-daily-<?php echo $u['user-id'] ?>" class="target"></div>
+		</div>
+		<script type="text/javascript">
+
+			var chart = new Highcharts.Chart({
+				chart: {
+					renderTo: 'target-acti-line-daily-<?php echo $u['user-id'] ?>',
+					type: 'column',
+					marginTop: 8,
+					marginBottom: 40,
+				},
+
+				title: false,
+
+				xAxis: {
+					categories: <?php echo json_encode(array_keys($u[$this->am]['acti-info']['day-periods'])) ?>,
+					title: {text: 'Days ago'},
+				},
+
+				yAxis: {
+					title: {text: 'Count'},
+					min: 0,
+				},
+
+				legend: false,
+
+				tooltip: {
+					formatter: function() {
+						var text = '<?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'Chapters' : 'Epsidoes' ?> completed ';
+						if (this.x == 0) {
+							text += 'today';
+						} else if (this.x == 1) {
+							text += 'yesterday';
+						} else {
+							text += this.x + ' days ago';
+						}
+						text += ': ' + this.y;
+						return text;
+					}
+				},
+
+				series: [{
+					data: <?php echo json_encode(array_map(function($p) { return count($p['titles']); }, array_values($u[$this->am]['acti-info']['day-periods']))) ?>,
+				}],
+
+				scrollbar: {
+					enabled: true
+				},
+			});
+		</script>
+	</div>
+</div>
+
+<div class="section acti-line-monthly">
+	<h3>
+		<i data-title="Number of titles you've completed within given month." class="tooltipable icon-tooltip"></i>
+		Activity timeline (monthly)
+	</h3>
+	<div class="section-body">
+		<?php if (empty($u[$this->view->am]['acti-info']['month-periods'])): ?>
 			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified. This graph won't work without this data.</p>
-		<?php elseif (count($u[$this->view->am]['acti-info']['periods']) == 1): ?>
-			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($u[$this->am]['acti-info']['periods'])) ?>, so a graph isn't needed.</p>
+		<?php elseif (count($u[$this->view->am]['acti-info']['month-periods']) == 1): ?>
+			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($u[$this->am]['acti-info']['month-periods'])) ?>, so a graph isn't needed.</p>
 		<?php else: ?>
-			<div class="wrapper" style="height: 420px">
-				<div style="width: <?php echo count($u[$this->am]['acti-info']['periods']) * 30 + 100 ?>px" id="target-acti-line-<?php echo $u['user-id'] ?>" class="target"></div>
+			<div class="wrapper">
+				<div style="width: <?php echo count($u[$this->am]['acti-info']['month-periods']) * 30 + 100 ?>px" id="target-acti-line-monthly-<?php echo $u['user-id'] ?>" class="target"></div>
 			</div>
 
 			<script type="text/javascript">
 				var chart = new Highcharts.Chart({
 					chart: {
-						renderTo: 'target-acti-line-<?php echo $u['user-id'] ?>',
+						renderTo: 'target-acti-line-monthly-<?php echo $u['user-id'] ?>',
 						type: 'line',
 						marginTop: 8,
 						marginBottom: 56,
@@ -35,8 +95,7 @@
 					title: false,
 
 					xAxis: {
-						categories: <?php echo json_encode(array_keys($u[$this->am]['acti-info']['periods'])) ?>,
-						title: {text: 'Year'},
+						categories: <?php echo json_encode(array_keys($u[$this->am]['acti-info']['month-periods'])) ?>,
 						labels: {
 							rotation: -45,
 							align: 'right',
@@ -58,7 +117,7 @@
 					},
 
 					series: [{
-						data: <?php echo json_encode(array_map(function($p) { return count($p['titles']); }, array_values($u[$this->am]['acti-info']['periods']))) ?>,
+						data: <?php echo json_encode(array_map(function($p) { return count($p['titles']); }, array_values($u[$this->am]['acti-info']['month-periods']))) ?>,
 						/*point: {
 							events: {
 								click: function(e) {
@@ -72,7 +131,7 @@
 						enabled: true
 					},
 				});
-				$('.wrapper').jScrollPane();
+				$('.acti-line-monthly .wrapper').jScrollPane();
 			</script>
 		<?php endif ?>
 

@@ -443,11 +443,12 @@ class StatsController extends AbstractController {
 		$this->loadEntries();
 
 		foreach ($this->view->users as $i => &$u) {
-			$periods = [];
+			//count completed within month periods
+			$monthPeriods = [];
 			$omitted = [];
-			$period = false;
-			$periodMin = false;
-			$periodMax = false;
+			$monthPeriod = false;
+			$monthPeriodMin = false;
+			$monthPeriodMax = false;
 			foreach ($u[$this->view->am]['entries'] as &$e) {
 				if ($e['user']['status'] != UserModel::USER_LIST_STATUS_COMPLETED) {
 					continue;
@@ -463,35 +464,41 @@ class StatsController extends AbstractController {
 					continue;
 				}
 				if (!$yearB or !$monthB) {
-					$period = sprintf('%04d-%02d', $yearA, $monthA);
+					$monthPeriod = sprintf('%04d-%02d', $yearA, $monthA);
 				} elseif (!$yearA or !$monthA) {
-					$period = sprintf('%04d-%02d', $yearB, $monthB);
+					$monthPeriod = sprintf('%04d-%02d', $yearB, $monthB);
 				} else {
-					$period = sprintf('%04d-%02d', $yearB, $monthB);
+					$monthPeriod = sprintf('%04d-%02d', $yearB, $monthB);
 				}
-				if (!isset($periods[$period])) {
-					$periods[$period] = [
+				if (!isset($monthPeriods[$monthPeriod])) {
+					$monthPeriods[$monthPeriod] = [
 						'duration' => 0,
 						'titles' => []
 					];
 				}
-				$periods[$period]['titles'] []= $e;
-				if ($periodMin === false or strcmp($period, $periodMin) < 0) {
-					$periodMin = $period;
+				$monthPeriods[$monthPeriod]['titles'] []= $e;
+				if ($monthPeriodMin === false or strcmp($monthPeriod, $monthPeriod) < 0) {
+					$monthPeriodMin = $monthPeriod;
 				}
-				if ($periodMax === false or strcmp($period, $periodMax) > 0) {
-					$periodMax = $period;
+				if ($monthPeriodMax === false or strcmp($monthPeriod, $monthPeriodMax) > 0) {
+					$monthPeriodMax = $monthPeriod;
 				}
-				$periods[$period]['duration'] += $e['user']['total-duration'];
+				$monthPeriods[$monthPeriod]['duration'] += $e['user']['total-duration'];
 			}
 
-			//add empty periods so graph has no gaps
-			list($yearMin, $monthMin) = explode('-', $periodMin);
-			list($yearMax, $monthMax) = explode('-', $periodMax);
-			$empty = [
-				'duration' => 0,
-				'titles' => []
-			];
+			//add empty monthPeriods so graph has no gaps
+			list($yearMin, $monthMin) = explode('-', $monthPeriodMin);
+			list($yearMax, $monthMax) = explode('-', $monthPeriodMax);
+			//if now is later than given date, set it to now
+			//(these check are prolly unneeded, but i put them here to be on safe note with timezones)
+			if (date('Y') > $yearMax) {
+				$yearMax = date('Y');
+				$monthMax = date('m');
+			} elseif (date('Y') == $yearMax) {
+				if (date('m') > $monthMax) {
+					$monthMax = date('m');
+				}
+			}
 			$keys = [];
 			for ($month = $monthMin; $month <= 12; $month ++) {
 				$keys []= sprintf('%04d-%02d', $yearMin, $month);
@@ -505,14 +512,34 @@ class StatsController extends AbstractController {
 				$keys []= sprintf('%04d-%02d', $yearMax, $month);
 			}
 			foreach ($keys as $key) {
-				if (!isset ($periods[$key])) {
-					$periods[$key] = $empty;
+				if (!isset($monthPeriods[$key])) {
+					$monthPeriods[$key] = [
+						'duration' => 0,
+						'titles' => []
+					];
 				}
 			}
+			krsort($monthPeriods);
 
-			krsort($periods);
+			$dayPeriods = [];
+			$models = [];
+			$models[AMModel::ENTRY_TYPE_ANIME] = new AnimeModel();
+			$models[AMModel::ENTRY_TYPE_MANGA] = new MangaModel();
+			for ($daysBack = 0; $daysBack <= 21; $daysBack ++) {
+				$day = date('Y-m-d', mktime(-24 * $daysBack));
+				$dayPeriod = [];
+				$dayPeriod['titles'] = [];
+				foreach ($u[$this->view->am]['history'] as &$e) {
+					if ($e['date'] == $day) {
+						$dayPeriod['titles'] []= ['user' => $e, 'full' => $models[$e['type']]->get($e['id'])];
+					}
+				}
+				$dayPeriods[$daysBack] = $dayPeriod;
+			}
+
 			$u[$this->view->am]['acti-info'] = [
-				'periods' => $periods,
+				'month-periods' => $monthPeriods,
+				'day-periods' => $dayPeriods,
 				'omitted-titles' => $omitted
 			];
 
