@@ -9,9 +9,9 @@ class MGHelper extends ChibiHelper {
 			$type = $this->view->am;
 		}
 		switch ($type) {
-			case UserModel::USER_LIST_TYPE_ANIME:
+			case AMModel::ENTRY_TYPE_ANIME:
 				return 'anime';
-			case UserModel::USER_LIST_TYPE_MANGA:
+			case AMModel::ENTRY_TYPE_MANGA:
 				return 'manga';
 		}
 		return '?';
@@ -86,21 +86,26 @@ class MGHelper extends ChibiHelper {
 	}
 
 	public function download($url) {
-		if (!empty($this->config->misc->mirrorDir)) {
-			$mirror = rawurlencode($url);
-			$mirror = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->mirrorDir . DIRECTORY_SEPARATOR . $mirror . '.dat';
-			if (file_exists($mirror)) {
-				return file_get_contents($mirror);
-			}
-		}
+		return reset($this->downloadMulti([$url]));
+	}
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-		curl_setopt($ch, CURLOPT_AUTOREFERER, 0);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+	public function downloadMulti(array $urls) {
+		$documents = [];
+
+		if (!empty($this->config->misc->mirrorDir)) {
+			$mirrors = [];
+			$nurls = $urls;
+			foreach ($urls as $key => $url) {
+				$mirror = rawurlencode($url);
+				$mirror = implode(DIRECTORY_SEPARATOR, [$this->config->chibi->runtime->rootFolder, $this->config->misc->mirrorDir, $mirror . '.dat']);
+				$mirrors[$key] = $mirror;
+				if (file_exists($mirror)) {
+					$documents[$key] = file_get_contents($mirror);
+					unset($nurls[$key]);
+				}
+			}
+			$urls = $nurls;
+		}
 
 		$headers = [];
 		$headers['Connection'] = 'close';
@@ -115,28 +120,6 @@ class MGHelper extends ChibiHelper {
 			$curlHeaders []= $k . ': ' . $v;
 		}
 
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-		$contents = curl_exec($ch);
-
-		$contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
-
-		if (curl_errno($ch)) {
-			$e = curl_error($ch);
-			curl_close($ch);
-			//throw new Exception($e);
-			return null;
-		} else {
-			curl_close($ch);
-		}
-
-		if (!empty($mirror)) {
-			file_put_contents($mirror, $contents);
-		}
-		return $contents;
-	}
-
-	public function downloadMulti(array $urls) {
 		$chs = [];
 		$multicurl = curl_multi_init();
 		foreach ($urls as $key => $url) {
@@ -147,6 +130,8 @@ class MGHelper extends ChibiHelper {
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 			curl_setopt($ch, CURLOPT_AUTOREFERER, 0);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 			curl_multi_add_handle($multicurl, $ch);
 			$chs[$key] = $ch;
 		}
@@ -165,15 +150,17 @@ class MGHelper extends ChibiHelper {
 			}
 		}
 
-		$ret = [];
 		foreach ($urls as $key => $url) {
 			$ch = $chs[$key];
 			curl_multi_remove_handle($multicurl, $ch);
-			$ret[$key] = curl_multi_getcontent($ch);
+			$documents[$key] = curl_multi_getcontent($ch);
+			if (!empty($this->config->misc->mirrorDir)) {
+				file_put_contents($mirrors[$key], $documents[$key]);
+			}
 		}
 		curl_multi_close($multicurl);
 
-		return $ret;
+		return $documents;
 	}
 
 
@@ -203,19 +190,19 @@ class MGHelper extends ChibiHelper {
 			}
 			if (empty($am)) {
 				$am = $this->view->am;
-				if ($am != UserModel::USER_LIST_TYPE_MANGA) {
-					$am = UserModel::USER_LIST_TYPE_ANIME;
+				if ($am != AMModel::ENTRY_TYPE_MANGA) {
+					$am = AMModel::ENTRY_TYPE_ANIME;
 				}
 			}
 			if (!is_array($userNames)) {
 				$userNames = [$userNames];
 			}
 			$url = join(',', $userNames);
-			if ($actionName != 'profile' or $am == UserModel::USER_LIST_TYPE_MANGA) {
+			if ($actionName != 'profile' or $am == AMModel::ENTRY_TYPE_MANGA) {
 				$url .= '/';
 				$url .= $actionName;
 			}
-			if ($am != UserModel::USER_LIST_TYPE_ANIME) {
+			if ($am != AMModel::ENTRY_TYPE_ANIME) {
 				$url .= ',';
 				$url .= $am;
 			}

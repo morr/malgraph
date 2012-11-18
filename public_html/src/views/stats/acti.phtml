@@ -20,7 +20,7 @@
 			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($u[$this->am]['acti-info']['periods'])) ?>, so a graph isn't needed.</p>
 		<?php else: ?>
 			<div class="wrapper" style="height: 420px">
-				<div style="width: <?php echo count($u[$this->am]['acti-info']['periods']) * 30 + 100 ?>px; height: 400px" id="target-acti-line-<?php echo $u['user-id'] ?>" class="target"></div>
+				<div style="width: <?php echo count($u[$this->am]['acti-info']['periods']) * 30 + 100 ?>px" id="target-acti-line-<?php echo $u['user-id'] ?>" class="target"></div>
 			</div>
 
 			<script type="text/javascript">

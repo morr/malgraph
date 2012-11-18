@@ -55,7 +55,7 @@
 			<?php if ($this->view->controllerName == 'stats'): ?>
 				<div id="menu">
 					<ul class="am">
-						<?php foreach ([UserModel::USER_LIST_TYPE_ANIME, UserModel::USER_LIST_TYPE_MANGA] as $type): ?>
+						<?php foreach ([AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA] as $type): ?>
 							<li data-title="<?php echo ucfirst($this->mgHelper->amText($type)) ?> stats" data-position-my="center bottom" data-position-at="center top"
 								<?php if ($this->view->am == $type): ?>
 									class="active tooltipable"

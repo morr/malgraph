@@ -20,7 +20,7 @@ class HtmlHelper extends ChibiHelper {
 	public function tableHeadLength() { ?>
 		<th class="length">
 			<a class="tooltipable"
-			<?php if ($this->view->am == UserModel::USER_LIST_TYPE_ANIME): ?>
+			<?php if ($this->view->am == AMModel::ENTRY_TYPE_ANIME): ?>
 				data-title="Length (episodes)"
 			<?php else: ?>
 				data-title="Length (volumes)"
@@ -91,7 +91,7 @@ class HtmlHelper extends ChibiHelper {
 
 	public function tableBodyLength($e) { ?>
 		<td class="length">
-			<?php if ($this->view->am == UserModel::USER_LIST_TYPE_ANIME): ?>
+			<?php if ($this->view->am == AMModel::ENTRY_TYPE_ANIME): ?>
 				<?php echo $e['full']['episodes'] ?>
 			<?php else: ?>
 				<?php echo $e['full']['volumes'] ?>

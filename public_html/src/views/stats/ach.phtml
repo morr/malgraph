@@ -12,7 +12,7 @@
 <?php if (empty($u['achievements'])): ?>
 	<div class="section">
 		<div class="section-body">
-			<p>No achievements yet! Better get to <?php echo $this->am == UserModel::USER_LIST_TYPE_MANGA ? 'reading' : 'watching' ?>.</p>
+			<p>No achievements yet! Better get to <?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'reading' : 'watching' ?>.</p>
 		</div>
 	</div>
 <?php else: ?>
@@ -31,7 +31,7 @@
 					<p class="desc"><?php echo $ach['desc'] ?></p>
 				<?php endif ?>
 				<?php if (!empty($ach['entries'])): ?>
-					<p class="entries">Earned because you <?php echo $this->am == UserModel::USER_LIST_TYPE_MANGA ? 'read' : 'watched' ?> these:</p>
+					<p class="entries">Earned because you <?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'read' : 'watched' ?> these:</p>
 					<ul>
 						<?php foreach ($ach['entries'] as $e): ?>
 							<li>

@@ -10,8 +10,8 @@ abstract class AMModel extends JSONDB {
 	const ENTRY_STATUS_AIRING = self::ENTRY_STATUS_PUBLISHING;
 	const ENTRY_STATUS_FINISHED = 'finished';
 
-	const ENTRY_RELATION_TYPE_ANIME = 'anime';
-	const ENTRY_RELATION_TYPE_MANGA = 'manga';
+	const ENTRY_TYPE_ANIME = 'anime';
+	const ENTRY_TYPE_MANGA = 'manga';
 
 	protected function getXML($type, $id) {
 		$url = $this->mgHelper->replaceTokens(self::ENTRY_URL, ['type' => $type, 'id' => $id]);
@@ -128,9 +128,9 @@ abstract class AMModel extends JSONDB {
 
 			//type
 			if (strpos($link, '/anime') !== false) {
-				$type = self::ENTRY_RELATION_TYPE_ANIME;
+				$type = self::ENTRY_TYPE_ANIME;
 			} elseif (strpos($link, '/manga') !== false) {
-				$type = self::ENTRY_RELATION_TYPE_MANGA;
+				$type = self::ENTRY_TYPE_MANGA;
 			} else {
 				continue;
 			}

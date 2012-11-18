@@ -25,8 +25,8 @@ class StatsController extends AbstractController {
 
 		//load anime-manga switch
 		$am = $this->inputHelper->get('am');
-		if ($am != UserModel::USER_LIST_TYPE_MANGA) {
-			$am = UserModel::USER_LIST_TYPE_ANIME;
+		if ($am != AMModel::ENTRY_TYPE_MANGA) {
+			$am = AMModel::ENTRY_TYPE_ANIME;
 		}
 		$this->view->am = $am;
 	}
@@ -87,8 +87,8 @@ class StatsController extends AbstractController {
 
 	private function loadEntries() {
 		$models = [];
-		$models[UserModel::USER_LIST_TYPE_ANIME] = new AnimeModel();
-		$models[UserModel::USER_LIST_TYPE_MANGA] = new MangaModel();
+		$models[AMModel::ENTRY_TYPE_ANIME] = new AnimeModel();
+		$models[AMModel::ENTRY_TYPE_MANGA] = new MangaModel();
 		foreach ($this->view->users as $i => $u) {
 			foreach ($models as $am => $model) {
 				$entries = $u[$am]['entries'];
@@ -99,7 +99,7 @@ class StatsController extends AbstractController {
 					if (!empty($e2)) {
 
 						//add additional info
-						if ($am == UserModel::USER_LIST_TYPE_MANGA) {
+						if ($am == AMModel::ENTRY_TYPE_MANGA) {
 							$duration = 10;
 							$length = $e['chapters-completed'];
 						} else {
@@ -182,7 +182,7 @@ class StatsController extends AbstractController {
 			]);
 			return $statuses[$e['user']['status']];
 		}];
-		$defs['length'] = [0, function($e) { return $e['full']['type'] == UserModel::USER_LIST_TYPE_MANGA ? $e['full']['volumes'] : $e['full']['episodes']; }];
+		$defs['length'] = [0, function($e) { return $e['full']['type'] == AMModel::ENTRY_TYPE_MANGA ? $e['full']['volumes'] : $e['full']['episodes']; }];
 		$defs['title'] = [1, function($e) { return strtolower($e['full']['title']); }];
 		$defs['unique'] = [1, function($e) { return empty($e['user']['unique']) ? 0 : $e['user']['unique']; }];
 		$defs['start-date'] = [1, function($e) { return $e['user']['start-date']; }];
@@ -274,7 +274,7 @@ class StatsController extends AbstractController {
 			], [
 				'count' => 100,
 				'desc' => 'You bought all of them, right?',
-				'level' => 'Casual ' . ($this->view->am == UserModel::USER_LIST_TYPE_MANGA ? 'reader' : 'watcher'),
+				'level' => 'Casual ' . ($this->view->am == AMModel::ENTRY_TYPE_MANGA ? 'reader' : 'watcher'),
 			]];
 			$count = count($groups[UserModel::USER_LIST_STATUS_COMPLETED]);
 			foreach ($thresholds as $threshold) {
@@ -289,7 +289,7 @@ class StatsController extends AbstractController {
 			}*/
 
 			$achList = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->achDefFile), true);
-			if ($this->view->am == UserModel::USER_LIST_TYPE_ANIME) {
+			if ($this->view->am == AMModel::ENTRY_TYPE_ANIME) {
 				$model = new AnimeModel();
 				$AM = 'anime';
 			} else {
@@ -321,7 +321,7 @@ class StatsController extends AbstractController {
 			}
 
 			//achievement for mean score
-			if ($this->view->am == UserModel::USER_LIST_TYPE_ANIME) {
+			if ($this->view->am == AMModel::ENTRY_TYPE_ANIME) {
 				$count = 0;
 				$sum = 0;
 				foreach ($u[$this->view->am]['entries'] as $e) {

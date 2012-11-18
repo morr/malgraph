@@ -1,12 +1,10 @@
 <?php
 require_once 'abstract.php';
+require_once 'am.php';
 class UserModel extends JSONDB {
 	const USER_GENDER_FEMALE = 'F';
 	const USER_GENDER_MALE = 'M';
 	const USER_GENDER_UNKNOWN = '?';
-
-	const USER_LIST_TYPE_ANIME = 'anime';
-	const USER_LIST_TYPE_MANGA = 'manga';
 
 	const USER_LIST_STATUS_DROPPED = 'dropped';
 	const USER_LIST_STATUS_ONHOLD = 'onhold';
@@ -24,6 +22,7 @@ class UserModel extends JSONDB {
 	const USER_LIST_STATUS_MAL_COMPLETED = 2;
 	const USER_LIST_STATUS_MAL_PLANNED = 6;
 
+	const USER_URL_HISTORY = 'http://myanimelist.net/history/{user}';
 	const USER_URL_ANIME1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all';
 	const USER_URL_MANGA1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all&type=manga';
 	const USER_URL_ANIME2 = 'http://myanimelist.net/animelist/{user}&sclick=1';
@@ -33,8 +32,8 @@ class UserModel extends JSONDB {
 	const USER_URL_FRIENDS = 'http://myanimelist.net/friends.php?id={user-id}&show={shift}';
 
 	private static $types = [
-		self::USER_LIST_TYPE_ANIME,
-		self::USER_LIST_TYPE_MANGA
+		AMModel::ENTRY_TYPE_ANIME,
+		AMModel::ENTRY_TYPE_MANGA
 	];
 
 	private $anonsFile;
@@ -76,7 +75,7 @@ class UserModel extends JSONDB {
 
 		foreach (self::$types as $type) {
 			$user[$type] = [];
-			if ($type == self::USER_LIST_TYPE_ANIME) {
+			if ($type == AMModel::ENTRY_TYPE_ANIME) {
 				$contents = $documents[self::USER_URL_ANIME2];
 			} else {
 				$contents = $documents[self::USER_URL_MANGA2];
@@ -91,7 +90,7 @@ class UserModel extends JSONDB {
 
 		foreach (self::$types as $type) {
 			$list = &$user[$type];
-			if ($type == self::USER_LIST_TYPE_ANIME) {
+			if ($type == AMModel::ENTRY_TYPE_ANIME) {
 				$contents = $documents[self::USER_URL_ANIME1];
 			} else {
 				$contents = $documents[self::USER_URL_MANGA1];
@@ -128,7 +127,7 @@ class UserModel extends JSONDB {
 
 				$entry['finish-date'] = $this->mgHelper->fixDate($xpath->query('my_finish_date', $root)->item(0)->nodeValue);
 
-				if ($type == self::USER_LIST_TYPE_ANIME) {
+				if ($type == AMModel::ENTRY_TYPE_ANIME) {
 					$entry['episodes-completed'] = intval($xpath->query('my_watched_episodes', $root)->item(0)->nodeValue);
 				}
 				else {
@@ -145,17 +144,18 @@ class UserModel extends JSONDB {
 
 
 	protected function loadProfile(array &$user, array &$documents) {
-		$this->mgHelper->suppressErrors();
+		$contents = $documents[self::USER_URL_PROFILE];
+
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
-		$contents = $documents[self::USER_URL_PROFILE];
+		$this->mgHelper->suppressErrors();
 		$doc->loadHTML($contents);
-		$xpath = new DOMXPath($doc);
 		$this->mgHelper->restoreErrors();
+		$xpath = new DOMXPath($doc);
 
 		//basic information
-		$user[self::USER_LIST_TYPE_ANIME]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Anime List Views\']/following-sibling::td')->item(0)->nodeValue));
-		$user[self::USER_LIST_TYPE_MANGA]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Manga List Views\']/following-sibling::td')->item(0)->nodeValue));
+		$user[AMModel::ENTRY_TYPE_ANIME]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Anime List Views\']/following-sibling::td')->item(0)->nodeValue));
+		$user[AMModel::ENTRY_TYPE_MANGA]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Manga List Views\']/following-sibling::td')->item(0)->nodeValue));
 		$user['user-name'] = $this->mgHelper->fixText($xpath->query('//title')->item(0)->nodeValue);
 		$user['user-name'] = substr($user['user-name'], 0, strpos($user['user-name'], '\'s Profile'));
 
@@ -246,17 +246,18 @@ class UserModel extends JSONDB {
 	protected function loadClubs(array &$user) {
 		$user['clubs'] = [];
 
-		$this->mgHelper->suppressErrors();
 		$url = $this->mgHelper->replaceTokens(self::USER_URL_CLUBS, ['user-id' => $user['user-id']]);
 		$contents = $this->mgHelper->download($url);
 		if (empty($contents)) {
 			throw new DownloadException($url);
 		}
+
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
+		$this->mgHelper->suppressErrors();
 		$doc->loadHTML($contents);
-		$xpath = new DOMXPath($doc);
 		$this->mgHelper->restoreErrors();
+		$xpath = new DOMXPath($doc);
 
 		$nodes = $xpath->query('//ol//li//a');
 		foreach ($nodes as $node) {
@@ -275,17 +276,18 @@ class UserModel extends JSONDB {
 		$shift = 0;
 		$page = 6 * 7;
 		do {
-			$this->mgHelper->suppressErrors();
 			$url = $this->mgHelper->replaceTokens(self::USER_URL_FRIENDS, ['user-id' => $user['user-id'], 'shift' => $shift]);
 			$contents = $this->mgHelper->download($url);
 			if (empty($contents)) {
 				throw new DownloadException($url);
 			}
+
 			$doc = new DOMDocument;
 			$doc->preserveWhiteSpace = false;
+			$this->mgHelper->suppressErrors();
 			$doc->loadHTML($contents);
-			$xpath = new DOMXPath($doc);
 			$this->mgHelper->restoreErrors();
+			$xpath = new DOMXPath($doc);
 
 			preg_match('/ has (\d+) friends/', $contents, $results);
 			$max = intval($results[1]);
@@ -298,6 +300,76 @@ class UserModel extends JSONDB {
 			$shift += $page;
 		} while ($shift < $max);
 	}
+
+
+	protected function loadHistory(array &$user, array &$documents) {
+		$contents = $documents[self::USER_URL_HISTORY];
+
+		$doc = new DOMDocument;
+		$doc->preserveWhiteSpace = false;
+		$this->mgHelper->suppressErrors();
+		$doc->loadHTML($contents);
+		$this->mgHelper->restoreErrors();
+		$xpath = new DOMXPath($doc);
+
+		$nodes = $xpath->query('//table//td[@class = \'borderClass\']/..');
+
+		foreach ($nodes as $node) {
+			//basic info
+			$link = $node->childNodes->item(0)->childNodes->item(0)->getAttribute('href');
+			preg_match('/(\d+)\/?$/', $link, $matches);
+			$entry['id'] = intval($matches[0]);
+			$sub = intval($node->childNodes->item(0)->childNodes->item(2)->nodeValue);
+			if (strpos($link, 'manga') !== false) {
+				$type = AMModel::ENTRY_TYPE_MANGA;
+				$entry['chap'] = $sub;
+			} else {
+				$type = AMModel::ENTRY_TYPE_ANIME;
+				$entry['ep'] = $sub;
+			}
+			$entry['type'] = $type;
+
+			//parse time
+			//That's what MAL servers output for MG client
+			date_default_timezone_set('America/Los_Angeles');
+			$hour =   date('H');
+			$minute = date('i');
+			$second = date('s');
+			$day =    date('d');
+			$month =  date('m');
+			$year =   date('Y');
+			$dateString = $node->childNodes->item(2)->nodeValue;
+			if (preg_match('/(\d*) seconds? ago/', $dateString, $matches)) {
+				$second -= intval($matches[1]);
+			} elseif (preg_match('/(\d*) minutes? ago/', $dateString, $matches)) {
+				$second += - intval($matches[1]) * 60;
+			} elseif (preg_match('/(\d*) hours? ago/', $dateString, $matches)) {
+				$minute += - intval($matches[1]) * 60;
+			} elseif (preg_match('/Today, (\d*):(\d\d) (AM|PM)/', $dateString, $matches)) {
+				$hour = intval($matches[1]);
+				$minute = intval($matches[2]);
+				$hour += ($matches[3] == 'PM' and $hour != 12) ? 12 : 0;
+			} elseif (preg_match('/Yesterday, (\d*):(\d\d) (AM|PM)/', $dateString, $matches)) {
+				$hour = intval($matches[1]);
+				$minute = intval($matches[2]);
+				$hour += ($matches[3] == 'PM' and $hour != 12) ? 12 : 0;
+				$hour -= 24;
+			} elseif (preg_match('/(\d\d)-(\d\d)-(\d\d), (\d*):(\d\d) (AM|PM)/', $dateString, $matches)) {
+				$year = intval($matches[3]) + 2000;
+				$month = intval($matches[1]);
+				$day = intval($matches[2]);
+				$hour = intval($matches[4]);
+				$minute = intval($matches[5]);
+				$hour += ($matches[6] == 'PM' and $hour != 12) ? 12 : 0;
+			}
+			$time = mktime($hour, $minute, $second, $month, $day, $year);
+			date_default_timezone_set('UTC');
+			$entry['date'] = date('Y-m-d', $time);
+			$entry['hour'] = date('H:i:s', $time);
+			$user[$type]['history'] []= $entry;
+		}
+	}
+
 
 
 
@@ -335,6 +407,7 @@ class UserModel extends JSONDB {
 		$urls[self::USER_URL_ANIME2] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME2, ['user' => $user['user-name']]);
 		$urls[self::USER_URL_MANGA2] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA2, ['user' => $user['user-name']]);
 		$urls[self::USER_URL_PROFILE] = $this->mgHelper->replaceTokens(self::USER_URL_PROFILE, ['user' => $user['user-name']]);
+		$urls[self::USER_URL_HISTORY] = $this->mgHelper->replaceTokens(self::USER_URL_HISTORY, ['user' => $user['user-name']]);
 
 		$documents = $this->mgHelper->downloadMulti($urls);
 		foreach ($documents as $type => $contents) {
@@ -345,6 +418,7 @@ class UserModel extends JSONDB {
 
 		$this->loadLists($user, $documents);
 		$this->loadProfile($user, $documents);
+		$this->loadHistory($user, $documents);
 		return $user;
 	}
 
