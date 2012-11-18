@@ -74,7 +74,7 @@
 							['controller' => 'stats', 'action' => 'list', 'text' => 'List'],
 							['controller' => 'stats', 'action' => 'ach', 'text' => 'Achievements'],
 							['controller' => 'stats', 'action' => 'score', 'text' => 'Ratings'],
-							['controller' => 'stats', 'action' => 'active', 'text' => 'Activity'],
+							['controller' => 'stats', 'action' => 'acti', 'text' => 'Activity'],
 							['controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'],
 							['controller' => 'stats', 'action' => 'misc', 'text' => 'Miscellaneous'],
 							['controller' => 'stats', 'action' => 'sug', 'text' => 'Suggestions'],
@@ -95,11 +95,39 @@
 						<?php endforeach ?>
 					</ul>
 				</div>
+
+				<div id="content">
+					<?php if (count($this->view->users) > 1): ?>
+						<div id="switcher">
+							<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], [end($this->view->userNames), reset($this->view->userNames)]) ?>">
+								<i class="icon-switch"></i>
+							</a>
+						</div>
+					<?php endif ?>
+
+					<div class="users">
+						<?php foreach ($this->view->users as $u): ?>
+							<?php if ($u['anonymous']): ?>
+								<div class="user anonymous">
+							<?php else: ?>
+								<div class="user">
+							<?php endif ?>
+								<?php $this->view->user = $u ?>
+								<?php echo $this->view->render() ?>
+							</div>
+						<?php endforeach ?>
+					<div class="clear"></div>
+					</div>
+				</div>
+
+
+			<?php else: ?>
+				<div id="content">
+					<?php echo $this->view->render() ?>
+				</div>
 			<?php endif ?>
 
-			<div id="content">
-				<?php echo $this->view->render() ?>
-			</div>
+
 			<div class="clear"></div>
 		</div>
 
