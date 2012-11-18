@@ -1,14 +1,29 @@
 <?php if (!empty($e['others']) and count($e['others']) == 1): ?>
 	<?php $e2 = reset($e['others']) ?>
-	<?php if ($e['user']['score'] > $e2['user']['score'] and $e2['user']['score'] > 0): ?>
-		<td class="score higher-score">
-			<span class="tooltipable" data-title="This title was rated lower by the other user.">
-	<?php elseif ($e['user']['score'] < $e2['user']['score'] and $e['user']['score'] > 0): ?>
-		<td class="score lower-score">
-			<span class="tooltipable" data-title="This title was rated higher by the other user.">
+	<?php if ($e['user']['score'] > $e2['user']['score']): ?>
+		<?php if ($e2['user']['score'] > 0): ?>
+			<td class="score higher-score">
+				<span class="tooltipable" data-title="This title was rated lower by the other user.">
+		<?php else: ?>
+			<td class="score">
+				<span class="tooltipable" data-title="This title wasn't rated by the other user.">
+		<?php endif ?>
+	<?php elseif ($e['user']['score'] < $e2['user']['score']): ?>
+		<?php if ($e['user']['score'] > 0): ?>
+			<td class="score lower-score">
+				<span class="tooltipable" data-title="This title was rated higher by the other user.">
+		<?php else: ?>
+			<td class="score">
+				<span class="tooltipable" data-title="This title wasn't rated by this user.">
+		<?php endif ?>
 	<?php else: ?>
-		<td class="score same-score">
-			<span class="tooltipable" data-title="Both users rated this title equally.">
+		<?php if ($e['user']['score'] > 0): ?>
+			<td class="score same-score">
+				<span class="tooltipable" data-title="Both users rated this title equally.">
+		<?php else: ?>
+			<td class="score same-score">
+				<span class="tooltipable" data-title="None of users rated this title.">
+		<?php endif ?>
 	<?php endif ?>
 <?php else: ?>
 	<td class="score">
