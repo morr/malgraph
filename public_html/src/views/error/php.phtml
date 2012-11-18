@@ -1,0 +1,21 @@
+<h1>Serious error</h1>
+<p>If you see this, please mail chrupky@gmail.com with following information:</p>
+<p><?php echo $this->errorString ?> at <?php echo $this->errorFile ?>:<?php echo $this->errorLine ?></p>
+<ul>
+	<?php for ($k = 0, $i = 4; $i < count($this->backtrace); $i ++, $k ++): ?>
+		<?php $b = $this->backtrace[$i]; ?>
+		<li><?php
+			printf
+			(
+				'#%d  %s%s%s(%s) called at [%s:%d]',
+				$k,
+				@$b['class'],
+				@$b['type'],
+				$b['function'],
+				join(', ', array_map(function($x) { return @json_encode($x); }, empty($b['args']) ? array() : $b['args'])),
+				empty($b['file']) ? '[anonymous function]' : $b['file'],
+				@$b['line']
+			);
+		?></li>
+	<?php endfor ?>
+</ul>

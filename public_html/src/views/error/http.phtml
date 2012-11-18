@@ -1,0 +1,7 @@
+<h1>Error <?php echo $this->errorCode ?></h1>
+<?php if (!empty($this->message)): ?>
+	<p><?php echo $this->message ?></p>
+<?php endif ?>
+<?php if ($this->errorCode == 404): ?>
+	<!-- <?php echo $this->config->chibi->runtime->request ?> -->
+<?php endif ?>
