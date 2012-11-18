@@ -16,12 +16,9 @@
 			<?php echo $u['visible-name'] ?>
 		</a>
 
-		<?php $x = date_default_timezone_get() ?>
-		<?php date_default_timezone_set('UTC') ?>
 		<span class="updated tooltipable" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
 			<?php echo date('M d, H:i', $u['generated']) ?> UTC
 		</span>
-		<?php date_default_timezone_set($x) ?>
 	</h2>
 
 	<div class="section-body">

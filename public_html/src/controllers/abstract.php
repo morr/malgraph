@@ -1,6 +1,7 @@
 <?php
 class AbstractController extends ChibiController {
 	public function init() {
+		date_default_timezone_set('UTC');
 		if (!session_id()) {
 			session_start();
 		}
