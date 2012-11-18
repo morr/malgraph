@@ -12,6 +12,9 @@ class AnimeModel extends AMModel {
 	protected function loadAnime(&$entry, $doc) {
 		$xpath = new DOMXpath($doc);
 
+		//am
+		$entry['type'] = self::ENTRY_TYPE_ANIME;
+
 		$entry['duration'] = 0;
 		preg_match_all('/([0-9]+)/', $xpath->query('//span[starts-with(text(), \'Duration\')]')->item(0)->nextSibling->textContent, $matches);
 		array_reverse($matches);

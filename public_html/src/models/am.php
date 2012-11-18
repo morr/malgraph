@@ -51,7 +51,7 @@ abstract class AMModel extends JSONDB {
 		$entry['ranked'] = intval($matches[1][0]);
 
 		//type
-		$entry['type'] = strtolower($this->mgHelper->fixText($xpath->query('//span[starts-with(text(), \'Type\')]')->item(0)->nextSibling->textContent));
+		$entry['sub-type'] = strtolower($this->mgHelper->fixText($xpath->query('//span[starts-with(text(), \'Type\')]')->item(0)->nextSibling->textContent));
 
 		//status
 		$malStatus = strtolower($this->mgHelper->fixText($xpath->query('//span[starts-with(text(), \'Status\')]')->item(0)->nextSibling->textContent));

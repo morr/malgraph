@@ -86,7 +86,9 @@ class MGHelper extends ChibiHelper {
 	}
 
 	public function download($url) {
-		return reset($this->downloadMulti([$url]));
+		$urls = [$url];
+		$documents = $this->downloadMulti($urls);
+		return $documents[0];
 	}
 
 	public function downloadMulti(array $urls) {

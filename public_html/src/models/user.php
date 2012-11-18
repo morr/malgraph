@@ -313,6 +313,9 @@ class UserModel extends JSONDB {
 		$xpath = new DOMXPath($doc);
 
 		$nodes = $xpath->query('//table//td[@class = \'borderClass\']/..');
+		foreach (self::$types as $type) {
+			$user[$type]['history'] = [];
+		}
 
 		foreach ($nodes as $node) {
 			//basic info

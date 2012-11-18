@@ -1,6 +1,10 @@
 <?php
 class InvalidEntryException extends Exception {}
-class DownloadException extends Exception {}
+class DownloadException extends Exception {
+	public function __construct($url) {
+		$this->message = 'Error while downloading ' . $url;
+	}
+}
 
 interface DB {
 	public function get($key);

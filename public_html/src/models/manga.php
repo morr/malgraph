@@ -12,6 +12,9 @@ class MangaModel extends AMModel {
 	protected function loadManga(&$entry, $doc) {
 		$xpath = new DOMXpath($doc);
 
+		//am
+		$entry['type'] = self::ENTRY_TYPE_MANGA;
+
 		//chapter count
 		preg_match_all('/([0-9]+|Unknown)/', $xpath->query('//span[starts-with(text(), \'Chapter\')]')->item(0)->nextSibling->textContent, $matches);
 		$entry['chapters'] = intval($matches[0][0]);
