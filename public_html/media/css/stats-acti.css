@@ -1,0 +1,12 @@
+.acti-line-monthly .wrapper {
+	height: 360px;
+}
+.acti-line-monthly .target {
+	height: 340px;
+	min-width: 100%;
+}
+
+.acti-line-daily .target {
+	width: 100%;
+	height: 220px;
+}
