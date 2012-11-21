@@ -12,19 +12,8 @@ Highcharts.theme = {
 		spacingRight: 0,
 	},
 
-	title: {
-		style: {
-			color: '#000',
-			font: 'bold 1.25em Verdana, Dejavu Sans, sans-serif'
-		}
-	},
-
-	subtitle: {
-		style: {
-			color: '#666666',
-			font: 'bold 1.15em Verdana, Dejavu Sans, sans-serif'
-		}
-	},
+	title: false,
+	legend: false,
 
 	xAxis: {
 		gridLineWidth: 1,
@@ -35,7 +24,7 @@ Highcharts.theme = {
 		labels: {
 			style: {
 				color: '#000',
-				font: '9pt Verdana, Dejavu Sans, sans-serif'
+				font: '8pt Verdana, Dejavu Sans, sans-serif'
 			}
 		},
 		title: {
@@ -70,20 +59,6 @@ Highcharts.theme = {
 				fontSize: '9pt',
 				fontFamily: 'Verdana, Dejavu Sans, sans-serif'
 			}
-		}
-	},
-
-	legend: {
-		itemStyle: {
-			font: '9pt Verdana, Dejavu Sans, sans-serif',
-			color: 'black'
-
-		},
-		itemHoverStyle: {
-			color: '#039'
-		},
-		itemHiddenStyle: {
-			color: 'gray'
 		}
 	},
 

@@ -9,16 +9,16 @@
 	<meta property="og:url" content="<?php echo $this->mgHelper->currentUrl() ?>">
 	<meta property="og:site_name" content="MALgraph" />
 </head>
-<body>
-	<?php if ($this->view->controllerName == 'stats'): ?>
-		<?php if (count($this->view->userNames) > 1): ?>
-			<div id="main-wrapper" class="user-mode compare-mode">
-		<?php else: ?>
-			<div id="main-wrapper" class="user-mode">
-		<?php endif ?>
+<?php if ($this->view->controllerName == 'stats'): ?>
+	<?php if (count($this->view->userNames) > 1): ?>
+		<body class="user-mode compare-mode">
 	<?php else: ?>
-		<div id="main-wrapper">
+		<body class="user-mode">
 	<?php endif ?>
+<?php else: ?>
+	<body>
+<?php endif ?>
+	<div id="main-wrapper">
 		<div id="header">
 			<h1>
 				<a href="<?php echo $this->mgHelper->constructUrl('index', 'index') ?>">
@@ -108,9 +108,9 @@
 					<div class="users">
 						<?php foreach ($this->view->users as $u): ?>
 							<?php if ($u['anonymous']): ?>
-								<div class="user anonymous">
+								<div class="user anonymous" id="<?php echo $u['user-id'] ?>">
 							<?php else: ?>
-								<div class="user">
+								<div class="user" id="user-<?php echo $u['user-id'] ?>">
 							<?php endif ?>
 								<?php $this->view->user = $u ?>
 								<?php echo $this->view->render() ?>

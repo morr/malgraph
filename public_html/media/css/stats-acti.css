@@ -1,12 +1,24 @@
-.acti-line-monthly .wrapper {
-	height: 360px;
-}
 .acti-line-monthly .target {
 	height: 340px;
 	min-width: 100%;
 }
+	.acti-line-monthly .wrapper-target {
+		height: 360px;
+	}
 
 .acti-line-daily .target {
-	width: 100%;
+	width: 398px;
+	height: 250px;
+}
+
+ul.infobox {
 	height: 220px;
 }
+
+.more {
+	margin-top: 1em;
+	display: none;
+}
+	.more ul {
+		margin-bottom: 0;
+	}

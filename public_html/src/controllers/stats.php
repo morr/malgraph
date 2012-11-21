@@ -370,6 +370,7 @@ class StatsController extends AbstractController {
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
 
 		$this->loadUsers();
 		$this->loadEntries();
@@ -438,14 +439,21 @@ class StatsController extends AbstractController {
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
 
 		$this->loadUsers();
 		$this->loadEntries();
 
 		foreach ($this->view->users as $i => &$u) {
+			$actiInfo = [
+				'month-periods' => [],
+				'day-periods' => [],
+				'omitted-titles' => [],
+				'total-duration' => 0,
+				'mean-time' => 0,
+			];
+
 			//count completed within month periods
-			$monthPeriods = [];
-			$omitted = [];
 			$monthPeriod = false;
 			$monthPeriodMin = false;
 			$monthPeriodMax = false;
@@ -459,34 +467,32 @@ class StatsController extends AbstractController {
 				$yearB = intval($finishedB[0]);
 				$monthA = isset($finishedA[1]) ? intval($finishedA[1]) : false;
 				$monthB = isset($finishedB[1]) ? intval($finishedB[1]) : false;
-				if ((!$yearA or !$monthA) and (!$yearB or !$monthB)) {
-					$omitted []= $e;
+				if ($yearB and $monthB) {
+					$monthPeriod = sprintf('%04d-%02d', $yearB, $monthB);
+				} elseif ($yearA and $monthA) {
+					$monthPeriod = sprintf('%04d-%02d', $yearA, $monthA);
+				} else {
+					$actiInfo['omitted-titles'] []= $e;
 					continue;
 				}
-				if (!$yearB or !$monthB) {
-					$monthPeriod = sprintf('%04d-%02d', $yearA, $monthA);
-				} elseif (!$yearA or !$monthA) {
-					$monthPeriod = sprintf('%04d-%02d', $yearB, $monthB);
-				} else {
-					$monthPeriod = sprintf('%04d-%02d', $yearB, $monthB);
-				}
-				if (!isset($monthPeriods[$monthPeriod])) {
-					$monthPeriods[$monthPeriod] = [
+				if (!isset($actiInfo['month-periods'][$monthPeriod])) {
+					$actiInfo['month-periods'][$monthPeriod] = [
 						'duration' => 0,
 						'titles' => []
 					];
 				}
-				$monthPeriods[$monthPeriod]['titles'] []= $e;
+				$actiInfo['month-periods'][$monthPeriod]['titles'] []= $e;
 				if ($monthPeriodMin === false or strcmp($monthPeriod, $monthPeriod) < 0) {
 					$monthPeriodMin = $monthPeriod;
 				}
 				if ($monthPeriodMax === false or strcmp($monthPeriod, $monthPeriodMax) > 0) {
 					$monthPeriodMax = $monthPeriod;
 				}
-				$monthPeriods[$monthPeriod]['duration'] += $e['user']['total-duration'];
+				$actiInfo['month-periods'][$monthPeriod]['duration'] += $e['user']['total-duration'];
 			}
+			$this->sort($actiInfo['omitted-titles'], 'title');
 
-			//add empty monthPeriods so graph has no gaps
+			//add empty month periods so graph has no gaps
 			list($yearMin, $monthMin) = explode('-', $monthPeriodMin);
 			list($yearMax, $monthMax) = explode('-', $monthPeriodMax);
 			//if now is later than given date, set it to now
@@ -512,16 +518,22 @@ class StatsController extends AbstractController {
 				$keys []= sprintf('%04d-%02d', $yearMax, $month);
 			}
 			foreach ($keys as $key) {
-				if (!isset($monthPeriods[$key])) {
-					$monthPeriods[$key] = [
+				if (!isset($actiInfo['month-periods'][$key])) {
+					$actiInfo['month-periods'][$key] = [
 						'duration' => 0,
 						'titles' => []
 					];
 				}
 			}
-			krsort($monthPeriods);
+			krsort($actiInfo['month-periods']);
 
-			$dayPeriods = [];
+			//add some random information
+			$actiInfo['total-duration'] = array_sum(array_map(function($mp) { return $mp['duration']; }, $actiInfo['month-periods']));
+			list($year, $month, $day) = explode('-', $u['join-date']);
+			$joinedDays = (time() - mktime(0, 0, 0, $month, $day, $year)) / 24. / 3600.;
+			$actiInfo['mean-time'] = $actiInfo['total-duration'] / $joinedDays;
+
+			//day periods
 			$models = [];
 			$models[AMModel::ENTRY_TYPE_ANIME] = new AnimeModel();
 			$models[AMModel::ENTRY_TYPE_MANGA] = new MangaModel();
@@ -534,17 +546,10 @@ class StatsController extends AbstractController {
 						$dayPeriod['titles'] []= ['user' => $e, 'full' => $models[$e['type']]->get($e['id'])];
 					}
 				}
-				$dayPeriods[$daysBack] = $dayPeriod;
+				$actiInfo['day-periods'][$daysBack] = $dayPeriod;
 			}
 
-			$u[$this->view->am]['acti-info'] = [
-				'month-periods' => $monthPeriods,
-				'day-periods' => $dayPeriods,
-				'omitted-titles' => $omitted
-			];
-
-			$this->sort($u[$this->view->am]['acti-info']['omitted-titles'], 'title');
-
+			$u[$this->view->am]['acti-info'] = $actiInfo;
 		}
 	}
 

@@ -34,3 +34,16 @@ function resizeSections() {
 $(window).resize(resizeSections);
 resizeSections();
 
+function startResizingSections() {
+	var interval = window.setInterval(function() {
+		resizeSections();
+	}, 1000 / 60);
+	$('body').data('resize-sections-interval', interval);
+}
+function stopResizingSections() {
+	var interval = $('body').data('resize-sections-interval');
+	if (interval) {
+		window.clearInterval(interval);
+		$('body').data('resize-sections-interval', null);
+	}
+}

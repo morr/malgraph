@@ -12,7 +12,6 @@ body {
 #main-wrapper {
 	text-align: left;
 	margin: 0 auto;
-	display: inline-block;
 }
 	#main {
 		min-height: 450px;
@@ -23,17 +22,16 @@ body {
 		margin-top: 0;
 	}
 
-#content {
-	display: inline-block;
-	width: 500px; /* only content */
-}
-.user-mode #content {
-	width: 500px; /* menu+content */
-}
-	.compare-mode #menu+#content {
-		/* make sure second div.user doesn't fall under the first one */
-		width: 1035px;
-	}
+/* only content */
+#main-wrapper { width: 500px; }
+#content { width: 500px; }
+/* menu+content */
+.user-mode #main-wrapper { width: 620px; }
+.user-mode #content { width: 500px; }
+/* compare mode */
+.compare-mode #main-wrapper { width: 1145px; }
+.compare-mode #content { width: 1035px; }
+
 	.user-mode #header,
 	.user-mode #footer {
 		margin-left: 120px;

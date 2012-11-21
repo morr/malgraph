@@ -160,7 +160,7 @@ class HtmlHelper extends ChibiHelper {
 
 	public function tableBodyTitle($e) { ?>
 		<td class="title">
-			<a href="http://myanimelist.net/<?php echo $this->view->am ?>/<?php echo $e['full']['id'] ?>">
+			<a href="http://myanimelist.net/<?php echo $this->view->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
 				<?php echo $e['full']['title'] ?>
 			</a>
 		</td><?php

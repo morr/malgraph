@@ -14,35 +14,64 @@
 		Activity timeline (daily)
 	</h3>
 	<div class="section-body">
-		<div class="wrapper">
-			<div id="target-acti-line-daily-<?php echo $u['user-id'] ?>" class="target"></div>
+		<ul class="infobox">
+			<li>
+				<div>
+					<span class="prefix">Total time</span>
+					<span class="subject"><?php printf('%.02f', $u[$this->am]['acti-info']['total-duration'] / 60.0 / 24.0) ?></span>
+					<span class="suffix">days</span>
+				</div>
+			</li>
+			<li>
+				<div>
+					<span class="prefix">Average time</span>
+					<span class="subject"><?php printf('%.02f', $u[$this->am]['acti-info']['mean-time']) ?></span>
+					<span class="suffix">min/day</span>
+				</div>
+			</li>
+		</ul>
+
+		<div class="wrapper wrapper-target">
+			<div class="target"></div>
+			<div class="clear"></div>
 		</div>
+
+		<div class="wrapper wrapper-more">
+			<?php foreach ($u[$this->am]['acti-info']['day-periods'] as $k => $dp): ?>
+				<div class="more" data-id="<?php echo $k ?>">
+					<?php if ($k == 0): ?>
+						<p>Titles from today:</p>
+					<?php elseif ($k == 1): ?>
+						<p>Titles from yesterday:</p>
+					<?php else: ?>
+						<p>Titles from <?php echo $k ?> days ago:</p>
+					<?php endif ?>
+					<ul>
+						<?php foreach ($dp['titles'] as $e): ?>
+							<li>
+								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
+									<?php echo $e['full']['title'] ?>
+								</a>
+								&nbsp;&ndash;&nbsp;
+								<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+									chap. <?php echo $e['user']['chap'] ?>
+								<?php else: ?>
+									ep. <?php echo $e['user']['ep'] ?>
+								<?php endif ?>
+							</li>
+						<?php endforeach ?>
+					</ul>
+				</div>
+			<?php endforeach ?>
+		</div>
+
 		<script type="text/javascript">
-
-			var chart = new Highcharts.Chart({
-				chart: {
-					renderTo: 'target-acti-line-daily-<?php echo $u['user-id'] ?>',
-					type: 'column',
-					marginTop: 8,
-					marginBottom: 40,
-				},
-
-				title: false,
-
-				xAxis: {
-					categories: <?php echo json_encode(array_keys($u[$this->am]['acti-info']['day-periods'])) ?>,
-					title: {text: 'Days ago'},
-				},
-
-				yAxis: {
-					title: {text: 'Count'},
-					min: 0,
-				},
-
-				legend: false,
-
-				tooltip: {
-					formatter: function() {
+			$('#user-<?php echo $u['user-id'] ?> .acti-line-daily .target').each(function() {
+				var chart = new Highcharts.Chart({
+					chart: { renderTo: this, type: 'column', marginTop: 8 },
+					xAxis: { categories: <?php echo json_encode(array_map(function($x) { return sprintf('%02d', $x); }, array_keys($u[$this->am]['acti-info']['day-periods']))) ?>, title: { text: 'Days ago', margin: 15 }, labels: { style: { fontSize: '10px !important' } } },
+					yAxis: { title: { text: 'Count' }, min: 0 },
+					tooltip: { formatter: function() {
 						var text = '<?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'Chapters' : 'Epsidoes' ?> completed ';
 						if (this.x == 0) {
 							text += 'today';
@@ -52,17 +81,22 @@
 							text += this.x + ' days ago';
 						}
 						text += ': ' + this.y;
-						return text;
-					}
-				},
-
-				series: [{
-					data: <?php echo json_encode(array_map(function($p) { return count($p['titles']); }, array_values($u[$this->am]['acti-info']['day-periods']))) ?>,
-				}],
-
-				scrollbar: {
-					enabled: true
-				},
+						return text; } },
+					series: [ {
+						data: <?php echo json_encode(array_map(function($p) { return count($p['titles']); }, array_values($u[$this->am]['acti-info']['day-periods']))) ?>,
+						point: { events: { click: function(e) {
+							var target = $('#user-<?php echo $u['user-id'] ?> .acti-line-daily .more[data-id=' + this.x + ']');
+							if (!target.is(':visible')) {
+								$('#user-<?php echo $u['user-id'] ?> .acti-line-daily .wrapper .more').hide('slow');
+								target.show('slow', function() { stopResizingSections(); });
+							} else {
+								target.hide('slow', function() { stopResizingSections(); });
+							}
+							startResizingSections();
+						} } }
+					} ],
+					plotOptions: { column: { pointWidth: 17 } }
+				});
 			});
 		</script>
 	</div>
@@ -79,59 +113,51 @@
 		<?php elseif (count($u[$this->view->am]['acti-info']['month-periods']) == 1): ?>
 			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($u[$this->am]['acti-info']['month-periods'])) ?>, so a graph isn't needed.</p>
 		<?php else: ?>
-			<div class="wrapper">
-				<div style="width: <?php echo count($u[$this->am]['acti-info']['month-periods']) * 30 + 100 ?>px" id="target-acti-line-monthly-<?php echo $u['user-id'] ?>" class="target"></div>
+			<div class="wrapper wrapper-target">
+				<div style="width: <?php echo count($u[$this->am]['acti-info']['month-periods']) * 30 + 100 ?>px" class="target"></div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="wrapper wrapper-more">
+				<?php foreach ($u[$this->am]['acti-info']['month-periods'] as $k => $mp): ?>
+					<div class="more" data-id="<?php echo $k ?>">
+						<p>Titles from <?php echo $k ?>:</p>
+						<ul>
+							<?php foreach ($mp['titles'] as $e): ?>
+								<li>
+									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
+										<?php echo $e['full']['title'] ?>
+									</a>
+								</li>
+							<?php endforeach ?>
+						</ul>
+					</div>
+				<?php endforeach ?>
 			</div>
 
 			<script type="text/javascript">
-				var chart = new Highcharts.Chart({
-					chart: {
-						renderTo: 'target-acti-line-monthly-<?php echo $u['user-id'] ?>',
-						type: 'line',
-						marginTop: 8,
-						marginBottom: 56,
-					},
-
-					title: false,
-
-					xAxis: {
-						categories: <?php echo json_encode(array_keys($u[$this->am]['acti-info']['month-periods'])) ?>,
-						labels: {
-							rotation: -45,
-							align: 'right',
-						}
-					},
-
-					yAxis: {
-						title: {text: 'Count'},
-						min: 0,
-					},
-
-					legend: false,
-
-					tooltip: {
-						formatter: function() {
-							var text = 'Titles from ' + this.x + ': ' + this.y;
-							return text;
-						}
-					},
-
-					series: [{
-						data: <?php echo json_encode(array_map(function($p) { return count($p['titles']); }, array_values($u[$this->am]['acti-info']['month-periods']))) ?>,
-						/*point: {
-							events: {
-								click: function(e) {
-									alert(this.x);
+				$('#user-<?php echo $u['user-id'] ?> .acti-line-monthly .target').each(function() {
+					var chart = new Highcharts.Chart({
+						chart: { renderTo: this, type: 'line', marginTop: 8, marginBottom: 56 },
+						xAxis: { categories: <?php echo json_encode(array_keys($u[$this->am]['acti-info']['month-periods'])) ?>, labels: { rotation: -45, align: 'right' } },
+						yAxis: { title: {text: 'Count'}, min: 0 },
+						tooltip: { formatter: function() { var text = 'Titles from ' + this.x + ': ' + this.y; return text; } },
+						series: [ {
+							data: <?php echo json_encode(array_map(function($p) { return count($p['titles']); }, array_values($u[$this->am]['acti-info']['month-periods']))) ?>,
+							point: { events: { click: function(e) {
+								var target = $('#user-<?php echo $u['user-id'] ?> .acti-line-monthly .more[data-id=\'' + this.category + '\']');
+								if (!target.is(':visible')) {
+									$('#user-<?php echo $u['user-id'] ?> .acti-line-monthly .wrapper .more').hide('slow');
+									target.show('slow', function() { stopResizingSections(); });
+								} else {
+									target.hide('slow', function() { stopResizingSections(); });
 								}
-							}
-						}*/
-					}],
-
-					scrollbar: {
-						enabled: true
-					},
-				});
-				$('.acti-line-monthly .wrapper').jScrollPane();
+								startResizingSections();
+							} } }
+						} ],
+					});
+					});
+				$('.acti-line-monthly .wrapper-target').jScrollPane();
 			</script>
 		<?php endif ?>
 
