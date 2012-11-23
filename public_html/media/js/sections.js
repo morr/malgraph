@@ -36,8 +36,10 @@ function resizeSections() {
 		}
 	}
 }
-$(window).resize(resizeSections);
-resizeSections();
+$(function() {
+	$(window).resize(resizeSections);
+	resizeSections();
+});
 
 function toggleWithinSections(targets, hideSiblings) {
 	var data = {};
