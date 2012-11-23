@@ -1,9 +1,7 @@
-<?php $u = $this->user ?>
-
 <div class="section">
 	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
-			<?php echo $u['visible-name'] ?>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
+			<?php echo $this->user['visible-name'] ?>
 		</a>
 		`s <?php echo $this->am ?> rating statistics
 	</h2>
@@ -15,26 +13,26 @@
 		Rating distribution
 	</h3>
 	<div class="section-body">
-		<?php if ($u[$this->am]['score-info']['rated'] == 0): ?>
+		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
 			<p>This user doesn't seem to have anything rated. No chart here.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>
 					<div>
 						<span class="prefix">Total rated</span>
-						<span class="subject"><?php printf('%d', $u[$this->am]['score-info']['rated']) ?></span>
+						<span class="subject"><?php printf('%d', $this->user[$this->am]['score-info']['rated']) ?></span>
 					</div>
 				</li>
 				<li>
 					<div>
 						<span class="prefix">Mean score</span>
-						<span class="subject"><?php printf('%.02f', $u[$this->am]['score-info']['mean']) ?></span>
+						<span class="subject"><?php printf('%.02f', $this->user[$this->am]['score-info']['mean']) ?></span>
 					</div>
 				</li>
 				<li>
 					<div>
 						<span class="prefix">Std dev</span>
-						<span class="subject"><?php printf('%.02f',$u[$this->am]['score-info']['std-dev']) ?></span>
+						<span class="subject"><?php printf('%.02f',$this->user[$this->am]['score-info']['std-dev']) ?></span>
 					</div>
 				</li>
 			</ul>
@@ -44,11 +42,63 @@
 				<div class="clear"></div>
 			</div>
 
+			<div class="wrapper wrapper-more">
+				<?php foreach ($this->user[$this->am]['score-entries'] as $score => $entries): ?>
+					<div class="more" data-id="<?php echo $score ?>">
+						<?php if ($score == 0): ?>
+							<p>Unrated titles:</p>
+						<?php else: ?>
+							<p>Titles rated with <?php echo $score ?>:</p>
+						<?php endif ?>
+						<?php if (empty($entries)): ?>
+							<?php if ($score == 0): ?>
+								<p>Horray! No unrated titles.</p>
+							<?php else: ?>
+								<p>None!</p>
+							<?php endif ?>
+						<?php elseif ($this->user[$this->am]['private']): ?>
+							<p>This list is private!!!</p>
+						<?php else: ?>
+							<ul>
+								<?php foreach ($entries as $e): ?>
+									<li>
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
+											<?php echo $e['full']['title'] ?>
+										</a>
+										&nbsp;(
+										<?php echo $this->mgHelper->subTypeText($e['full']['sub-type']) ?>
+										<?php if ($e['full']['sub-type'] != AnimeModel::ENTRY_SUBTYPE_MOVIE): ?>
+											,&nbsp;
+											<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+												<?php echo $e['full']['volumes'] ?>&nbsp;
+												<?php if ($e['full']['volumes'] == 1): ?>
+													vol
+												<?php else: ?>
+													vols
+												<?php endif ?>
+											<?php else: ?>
+												<?php echo $e['full']['episodes'] ?>&nbsp;
+												<?php if ($e['full']['episodes'] == 1): ?>
+													ep
+												<?php else: ?>
+													eps
+												<?php endif ?>
+											<?php endif ?>
+										<?php endif ?>
+										)
+									</li>
+								<?php endforeach ?>
+							</ul>
+						<?php endif ?>
+					</div>
+				<?php endforeach ?>
+			</div>
+
 			<script type="text/javascript">
-				$('#user-<?php echo $u['user-id'] ?> .score-dist .target').each(function() {
+				$('#user-<?php echo $this->user['user-safe-id'] ?> .score-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 35 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($u[$this->am]['score-time-dist']))) ?>, title: { text: 'Rating' } },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-time-dist']))) ?>, title: { text: 'Rating' } },
 						yAxis: { title: { text: 'Count', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
@@ -57,11 +107,20 @@
 							} else {
 								text = 'Titles rated with ' + this.x + ': ' + this.y;
 							}
-							var percent = this.y * 100.0 / <?php echo max(1, $u[$this->am]['score-info']['rated'] + $u[$this->am]['score-info']['unrated']) ?>;
+							var percent = this.y * 100.0 / <?php echo max(1, $this->user[$this->am]['score-info']['rated'] + $this->user[$this->am]['score-info']['unrated']) ?>;
 							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
 							return text;
 						} },
-						series: [ { data: <?php echo json_encode(array_values($u[$this->am]['score-dist'])) ?> } ]
+						series: [ {
+							data: <?php echo json_encode(array_values($this->user[$this->am]['score-dist'])) ?>,
+							point: { events: { click: function(e) {
+								var x = this.category;
+								if (x == '-') {
+									x = 0;
+								}
+								toggleWithinSections($('.score-dist .more[data-id=' + x + ']'), true);
+							} } }
+						} ]
 					});
 				});
 			</script>
@@ -75,29 +134,61 @@
 		Rating to time distribution
 	</h3>
 	<div class="section-body">
-		<?php if ($u[$this->am]['score-info']['rated'] == 0): ?>
+		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
 			<p>This user doesn't seem to have anything rated. No chart here.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>
 					<div>
 						<span class="prefix">Total time</span>
-						<span class="subject"><?php printf('%.02f', ($u[$this->am]['score-info']['rated-total-time'] + $u[$this->am]['score-info']['unrated-total-time']) / 24.0) ?></span>
+						<span class="subject"><?php printf('%.02f', ($this->user[$this->am]['score-info']['rated-total-time'] + $this->user[$this->am]['score-info']['unrated-total-time']) / 24.0) ?></span>
 						<span class="suffix">days</span>
 					</div>
 				</li>
 			</ul>
 
 			<div class="wrapper wrapper-target">
-				<div id="target-score-time-dist-<?php echo $u['user-id'] ?>" class="target"></div>
+				<div id="target-score-time-dist-<?php echo $this->user['user-safe-id'] ?>" class="target"></div>
 				<div class="clear"></div>
 			</div>
 
+			<div class="wrapper wrapper-more">
+				<?php foreach ($this->user[$this->am]['score-entries'] as $score => $entries): ?>
+					<div class="more" data-id="<?php echo $score ?>">
+						<?php if ($score == 0): ?>
+							<p>Unrated titles:</p>
+						<?php else: ?>
+							<p>Titles rated with <?php echo $score ?>:</p>
+						<?php endif ?>
+						<?php if (empty($entries)): ?>
+							<?php if ($score == 0): ?>
+								<p>Horray! No unrated titles.</p>
+							<?php else: ?>
+								<p>None!</p>
+							<?php endif ?>
+						<?php elseif ($this->user[$this->am]['private']): ?>
+							<p>This list is private!!!</p>
+						<?php else: ?>
+							<ul>
+								<?php foreach ($entries as $e): ?>
+									<li>
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
+											<?php echo $e['full']['title'] ?>
+										</a>
+										&nbsp;(<?php echo $e['user']['total-duration'] ?> min.)
+									</li>
+								<?php endforeach ?>
+							</ul>
+						<?php endif ?>
+					</div>
+				<?php endforeach ?>
+			</div>
+
 			<script type="text/javascript">
-				$('#user-<?php echo $u['user-id'] ?> .score-time-dist .target').each(function() {
+				$('#user-<?php echo $this->user['user-safe-id'] ?> .score-time-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 15 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($u[$this->am]['score-time-dist']))) ?>, title: { text: 'Rating' } },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-time-dist']))) ?>, title: { text: 'Rating' } },
 						yAxis: { title: {text: 'Hours spent', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
@@ -106,51 +197,23 @@
 							} else {
 								text = 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
 							}
-							var percent = this.y * 100.0 / <?php echo max(1, $u[$this->am]['score-info']['rated-total-time'] + $u[$this->am]['score-info']['unrated-total-time']) ?>;
+							var percent = this.y * 100.0 / <?php echo max(1, $this->user[$this->am]['score-info']['rated-total-time'] + $this->user[$this->am]['score-info']['unrated-total-time']) ?>;
 							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
 							return text
 						} },
-						series: [ { data: <?php echo json_encode(array_values($u[$this->am]['score-time-dist'])) ?> } ]
+						series: [ {
+							data: <?php echo json_encode(array_values($this->user[$this->am]['score-time-dist'])) ?>,
+							point: { events: { click: function(e) {
+								var x = this.category;
+								if (x == '-') {
+									x = 0;
+								}
+								toggleWithinSections($('.score-time-dist .more[data-id=' + x + ']'), true);
+							} } }
+						} ]
 					});
 				});
 			</script>
-		<?php endif ?>
-	</div>
-</div>
-
-<div class="section unrated">
-	<h3>Unrated titles</h3>
-	<div class="section-body">
-		<?php if ($u[$this->am]['score-info']['unrated'] == 0): ?>
-			<p>This user doesn't seem to have anything unrated. No table here.</p>
-		<?php elseif ($u[$this->am]['private']): ?>
-			<p>This user has marked their list as private. No table here.</p>
-		<?php else: ?>
-			<table>
-				<thead>
-					<tr>
-						<th class="ord">#</th>
-						<?php echo $this->htmlHelper->tableHeadStatus() ?>
-						<?php echo $this->htmlHelper->tableHeadUnique() ?>
-						<?php echo $this->htmlHelper->tableHeadTitle() ?>
-						<?php echo $this->htmlHelper->tableHeadLength() ?>
-					</tr>
-				</thead>
-
-				<tbody>
-					<?php $k = 1 ?>
-					<?php foreach ($u[$this->am]['score-info']['unrated-titles'] as $e): ?>
-						<tr>
-							<td class="ord"><?php echo $k ++ ?></td>
-							<?php echo $this->htmlHelper->tableBodyStatus($e) ?>
-							<?php echo $this->htmlHelper->tableBodyUnique($e) ?>
-							<?php echo $this->htmlHelper->tableBodyTitle($e) ?>
-							<?php echo $this->htmlHelper->tableBodyLength($e) ?>
-						</tr>
-					<?php endforeach ?>
-				</tbody>
-
-			</table>
 		<?php endif ?>
 	</div>
 </div>

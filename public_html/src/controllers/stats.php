@@ -63,10 +63,11 @@ class StatsController extends AbstractController {
 			$this->view->users []= $user;
 		}
 
-		foreach ($this->view->users as &$user) {
+		foreach ($this->view->users as $k => &$user) {
 			if (!empty($user['user-name'])) {
 				$user['link-name'] = $user['user-name'];
 				$user['visible-name'] = $user['user-name'];
+				$user['user-safe-id'] = $k;
 				if ($user['anonymous']) {
 					$anons []= &$user;
 				}
@@ -239,6 +240,8 @@ class StatsController extends AbstractController {
 
 
 	public function achAction() {
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
+
 		$this->loadUsers();
 		$this->loadEntries();
 
@@ -310,6 +313,8 @@ class StatsController extends AbstractController {
 						$entriesOwned []= &$groups[UserModel::USER_LIST_STATUS_COMPLETED][$k];
 					}
 				}
+				$this->sort($entriesOwned, 'title');
+				//give corresponding achievement (make sure it has correct threshold)
 				uasort($groupData['achievements'], function($a, $b) { return $a['threshold'] > $b['threshold'] ? -1 : 1; });
 				foreach ($groupData['achievements'] as $ach) {
 					if (count($entriesOwned) >= $ach['threshold']) {
@@ -360,6 +365,9 @@ class StatsController extends AbstractController {
 			}
 			unset($ach);
 
+			//sort by achievement related titles count
+			uasort($achievements, function($a, $b) { return count($a['entries']) - count($b['entries']); });
+
 			$u['achievements'] = $achievements;
 		}
 	}
@@ -367,10 +375,10 @@ class StatsController extends AbstractController {
 
 
 	public function scoreAction() {
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 
 		$this->loadUsers();
 		$this->loadEntries();
@@ -380,21 +388,17 @@ class StatsController extends AbstractController {
 		foreach ($this->view->users as $i => &$u) {
 			$scoreDist = array_fill_keys(range(10, 0), 0);
 			$scoreTimeDist = array_fill_keys(range(10, 0), 0);
+			$scoreEntries = array_fill_keys(range(10, 0), []);
 			$scoreInfo = [];
 			$scoreInfo['total'] = 0;
-			$scoreInfo['planned'] = 0;
-			$scoreInfo['unrated-titles'] = [];
 			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
 				if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
-					$scoreInfo['planned'] ++;
 					continue;
 				}
 				$scoreInfo['total'] ++;
 				$scoreDist[$e['user']['score']] ++;
 				$scoreTimeDist[$e['user']['score']] += $e['user']['total-duration'];
-				if ($e['user']['score'] == 0) {
-					$scoreInfo['unrated-titles'] []= &$e;
-				}
+				$scoreEntries[$e['user']['score']] []= &$e;
 			}
 
 			//conert minutes to hours
@@ -425,21 +429,23 @@ class StatsController extends AbstractController {
 			$scoreInfo['std-dev'] /= max(1, $scoreInfo['rated'] - 1);
 			$scoreInfo['std-dev'] = sqrt($scoreInfo['std-dev']);
 
+			foreach ($scoreEntries as $x => &$entries) {
+				$this->sort($entries, 'title');
+			}
 			$u[$this->view->am]['score-info'] = $scoreInfo;
 			$u[$this->view->am]['score-dist'] = $scoreDist;
 			$u[$this->view->am]['score-time-dist'] = $scoreTimeDist;
-			$this->sort($u[$this->view->am]['score-info']['unrated-titles'], 'length');
+			$u[$this->view->am]['score-entries'] = $scoreEntries;
 		}
 	}
-
 
 
 
 	public function actiAction() {
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 
 		$this->loadUsers();
 		$this->loadEntries();
@@ -448,7 +454,6 @@ class StatsController extends AbstractController {
 			$actiInfo = [
 				'month-periods' => [],
 				'day-periods' => [],
-				'omitted-titles' => [],
 				'total-duration' => 0,
 				'mean-time' => 0,
 			];
@@ -472,60 +477,60 @@ class StatsController extends AbstractController {
 				} elseif ($yearA and $monthA) {
 					$monthPeriod = sprintf('%04d-%02d', $yearA, $monthA);
 				} else {
-					$actiInfo['omitted-titles'] []= $e;
-					continue;
+					$monthPeriod = '?';
 				}
 				if (!isset($actiInfo['month-periods'][$monthPeriod])) {
 					$actiInfo['month-periods'][$monthPeriod] = [
 						'duration' => 0,
-						'titles' => []
+						'entries' => []
 					];
 				}
-				$actiInfo['month-periods'][$monthPeriod]['titles'] []= $e;
-				if ($monthPeriodMin === false or strcmp($monthPeriod, $monthPeriod) < 0) {
-					$monthPeriodMin = $monthPeriod;
-				}
-				if ($monthPeriodMax === false or strcmp($monthPeriod, $monthPeriodMax) > 0) {
-					$monthPeriodMax = $monthPeriod;
+				$actiInfo['month-periods'][$monthPeriod]['entries'] []= $e;
+				if ($monthPeriod != '?') {
+					if ($monthPeriodMin === false or strcmp($monthPeriod, $monthPeriod) < 0) {
+						$monthPeriodMin = $monthPeriod;
+					}
+					if ($monthPeriodMax === false or strcmp($monthPeriod, $monthPeriodMax) > 0) {
+						$monthPeriodMax = $monthPeriod;
+					}
 				}
 				$actiInfo['month-periods'][$monthPeriod]['duration'] += $e['user']['total-duration'];
 			}
-			$this->sort($actiInfo['omitted-titles'], 'title');
 
 			//add empty month periods so graph has no gaps
-			list($yearMin, $monthMin) = explode('-', $monthPeriodMin);
-			list($yearMax, $monthMax) = explode('-', $monthPeriodMax);
-			//if now is later than given date, set it to now
-			//(these check are prolly unneeded, but i put them here to be on safe note with timezones)
-			if (date('Y') > $yearMax) {
+			if (!empty($monthPeriodMin)) {
+				list($yearMin, $monthMin) = explode('-', $monthPeriodMin);
 				$yearMax = date('Y');
 				$monthMax = date('m');
-			} elseif (date('Y') == $yearMax) {
-				if (date('m') > $monthMax) {
-					$monthMax = date('m');
+				$keys = [];
+				for ($month = $monthMin; $month <= 12; $month ++) {
+					$keys []= sprintf('%04d-%02d', $yearMin, $month);
 				}
-			}
-			$keys = [];
-			for ($month = $monthMin; $month <= 12; $month ++) {
-				$keys []= sprintf('%04d-%02d', $yearMin, $month);
-			}
-			for ($year = $yearMin + 1; $year < $yearMax; $year ++) {
-				for ($month = 1; $month <= 12; $month ++) {
-					$keys []= sprintf('%04d-%02d', $year, $month);
+				for ($year = $yearMin + 1; $year < $yearMax; $year ++) {
+					for ($month = 1; $month <= 12; $month ++) {
+						$keys []= sprintf('%04d-%02d', $year, $month);
+					}
 				}
-			}
-			for ($month = 1; $month <= $monthMax; $month ++) {
-				$keys []= sprintf('%04d-%02d', $yearMax, $month);
-			}
-			foreach ($keys as $key) {
-				if (!isset($actiInfo['month-periods'][$key])) {
-					$actiInfo['month-periods'][$key] = [
-						'duration' => 0,
-						'titles' => []
-					];
+				for ($month = 1; $month <= $monthMax; $month ++) {
+					$keys []= sprintf('%04d-%02d', $yearMax, $month);
 				}
+				foreach ($keys as $key) {
+					if (!isset($actiInfo['month-periods'][$key])) {
+						$actiInfo['month-periods'][$key] = [
+							'duration' => 0,
+							'entries' => []
+						];
+					}
+				}
+				uksort($actiInfo['month-periods'], function($a, $b) {
+					if ($a == '?') {
+						return 1;
+					} elseif ($b == '?') {
+						return - 1;
+					}
+					return strcmp($b, $a);
+				});
 			}
-			krsort($actiInfo['month-periods']);
 
 			//add some random information
 			$actiInfo['total-duration'] = array_sum(array_map(function($mp) { return $mp['duration']; }, $actiInfo['month-periods']));
@@ -540,10 +545,10 @@ class StatsController extends AbstractController {
 			for ($daysBack = 0; $daysBack <= 21; $daysBack ++) {
 				$day = date('Y-m-d', mktime(-24 * $daysBack));
 				$dayPeriod = [];
-				$dayPeriod['titles'] = [];
+				$dayPeriod['entries'] = [];
 				foreach ($u[$this->view->am]['history'] as &$e) {
 					if ($e['date'] == $day) {
-						$dayPeriod['titles'] []= ['user' => $e, 'full' => $models[$e['type']]->get($e['id'])];
+						$dayPeriod['entries'] []= ['user' => $e, 'full' => $models[$e['type']]->get($e['id'])];
 					}
 				}
 				$actiInfo['day-periods'][$daysBack] = $dayPeriod;
@@ -552,7 +557,6 @@ class StatsController extends AbstractController {
 			$u[$this->view->am]['acti-info'] = $actiInfo;
 		}
 	}
-
 
 
 

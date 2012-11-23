@@ -1,17 +1,15 @@
-<?php $u = $this->user ?>
-
 <div class="section">
 	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $u['link-name']) ?>">
-			<?php echo $u['visible-name'] ?>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
+			<?php echo $this->user['visible-name'] ?>
 		</a>
 		`s <?php echo $this->am ?> list
 	</h2>
 
 	<div class="section-body">
-		<?php if (empty($u[$this->am]['entries'])): ?>
+		<?php if (empty($this->user[$this->am]['entries'])): ?>
 			<p>This user doesn't seem to have anything on their list.</p>
-		<?php elseif ($u[$this->am]['private']): ?>
+		<?php elseif ($this->user[$this->am]['private']): ?>
 			<p>This user has marked their list as private. No table here.</p>
 		<?php else: ?>
 			<div class="table">
@@ -29,7 +27,7 @@
 
 					<tbody>
 						<?php $k = 1 ?>
-						<?php foreach ($u[$this->am]['entries'] as $e): ?>
+						<?php foreach ($this->user[$this->am]['entries'] as $e): ?>
 							<tr>
 								<td class="ord"><?php echo $k ++ ?></td>
 								<?php echo $this->htmlHelper->tableBodyStatus($e) ?>

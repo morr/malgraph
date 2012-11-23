@@ -1,6 +1,13 @@
 <?php
 require_once 'am.php';
 class AnimeModel extends AMModel {
+	const ENTRY_SUBTYPE_OVA = 'ova';
+	const ENTRY_SUBTYPE_ONA = 'ona';
+	const ENTRY_SUBTYPE_TV = 'tv';
+	const ENTRY_SUBTYPE_SPECIAL = 'special';
+	const ENTRY_SUBTYPE_MUSIC = 'music';
+	const ENTRY_SUBTYPE_MOVIE = 'movie';
+
 	public function __construct() {
 		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->animeCacheDir;
 	}

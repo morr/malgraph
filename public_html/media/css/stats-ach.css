@@ -2,14 +2,16 @@ img {
 	float: left;
 	padding: 10px;
 }
-	#content ul {
-		display: inline-block;
-		margin: 0;
-		padding: 10px;
+
+p.level {
+	margin: 0;
+	font-size: 8pt;
+	color: gray;
+	display: inline-block;
+}
+	p.level:before {
+		content: '\a0(';
 	}
-		#content li {
-			display: inline-block;
-		}
-		#content li:not(:last-child):after {
-			content: ',\a0';
-		}
+	p.level:after {
+		content: ')';
+	}

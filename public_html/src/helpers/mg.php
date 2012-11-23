@@ -4,15 +4,29 @@ class MGHelper extends ChibiHelper {
 		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 	}
 
+	public function subTypeText($subType) {
+		switch ($subType) {
+			case AnimeModel::ENTRY_SUBTYPE_OVA: return 'OVA';
+			case AnimeModel::ENTRY_SUBTYPE_ONA: return 'ONA';
+			case AnimeModel::ENTRY_SUBTYPE_TV: return 'TV';
+			case AnimeModel::ENTRY_SUBTYPE_SPECIAL: return 'Special';
+			case AnimeModel::ENTRY_SUBTYPE_MUSIC: return 'Music';
+			case AnimeModel::ENTRY_SUBTYPE_MOVIE: return 'Movie';
+			case MangaModel::ENTRY_SUBTYPE_MANGA: return 'Manga';
+			case MangaModel::ENTRY_SUBTYPE_MANHWA: return 'Manhwa';
+			case MangaModel::ENTRY_SUBTYPE_NOVEL: return 'Novel';
+			case MangaModel::ENTRY_SUBTYPE_ONESHOT: return 'One shot';
+			default: throw new Exception('Unknown type: ' . $subType);
+		}
+	}
+
 	public function amText($type = null) {
 		if ($type === null) {
 			$type = $this->view->am;
 		}
 		switch ($type) {
-			case AMModel::ENTRY_TYPE_ANIME:
-				return 'anime';
-			case AMModel::ENTRY_TYPE_MANGA:
-				return 'manga';
+			case AMModel::ENTRY_TYPE_ANIME: return 'anime';
+			case AMModel::ENTRY_TYPE_MANGA: return 'manga';
 		}
 		return '?';
 	}

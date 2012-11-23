@@ -1,6 +1,3 @@
-$.get('/media/js/glider.js');
-$.get('/media/js/sections.js');
-
 $.fn.hasAttr = function(name) {
 	return this.attr(name) !== undefined;
 };

@@ -108,9 +108,9 @@
 					<div class="users">
 						<?php foreach ($this->view->users as $u): ?>
 							<?php if ($u['anonymous']): ?>
-								<div class="user anonymous" id="<?php echo $u['user-id'] ?>">
+								<div class="user anonymous" id="<?php echo $u['user-safe-id'] ?>">
 							<?php else: ?>
-								<div class="user" id="user-<?php echo $u['user-id'] ?>">
+								<div class="user" id="user-<?php echo $u['user-safe-id'] ?>">
 							<?php endif ?>
 								<?php $this->view->user = $u ?>
 								<?php echo $this->view->render() ?>

@@ -42,6 +42,8 @@ class AbstractController extends ChibiController {
 		//load core script after dynamic scripts, since it works with some special css classes
 		//and dynamic scripts linked above might want to set/unset such classes first.
 		$this->headHelper->addScript($this->urlHelper->url('media/js/core.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/sections.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/glider.js'));
 
 	}
 

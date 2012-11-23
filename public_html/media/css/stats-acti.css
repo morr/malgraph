@@ -14,11 +14,3 @@
 ul.infobox {
 	height: 220px;
 }
-
-.more {
-	margin-top: 1em;
-	display: none;
-}
-	.more ul {
-		margin-bottom: 0;
-	}
