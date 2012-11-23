@@ -226,8 +226,6 @@ class StatsController extends AbstractController {
 
 
 	public function listAction() {
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/table.css'));
-
 		$this->loadUsers();
 		$this->loadEntries();
 		$this->loadUniqueness();
