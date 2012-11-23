@@ -3,11 +3,11 @@ div.table {
 	position: relative;
 }
 
-	td.same-score { color: pink; }
+	td.same-score { color: black; }
 	td.higher-score { color: #0a0; }
 	td.lower-score { color: red; }
-	td.no-score { color: gray; }
-	.compare-mode tr.unique .score { color: #ccc; }
+	td.no-score { color: #aaa; }
+	.compare-mode tr.unique .score { color: #ddd; }
 
 table {
 	width: 100%;
