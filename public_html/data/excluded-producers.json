@@ -1,0 +1,16 @@
+{
+"anime":
+[
+	{"id": 17,  "name": "(c) Aniplex"},
+	{"id": 31,  "name": "Geneon Universal Entertainment"},
+	{"id": 55,  "name": "(c) TV Asahi"},
+	{"id": 102, "name": "(c) FUNimation Entertainment"},
+	{"id": 217, "name": "(c) The Right Stuf International"},
+	{"id": 233, "name": "(c) Bandai Entertainment"},
+	{"id": 262, "name": "Kadokawa Pictures USA"},
+	{"id": 372, "name": "NIS America, Inc."}
+],
+"manga":
+[
+]
+}

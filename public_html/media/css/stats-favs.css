@@ -1,0 +1,26 @@
+table {
+	width: 100%;
+}
+	table .title { width: 100%; }
+	table .ord { text-align: center; }
+	table .mean, table .time, table.eval { text-align: right; }
+
+	th:not(:last-child),
+	td:not(:last-child) {
+		padding-right: 1em;
+	}
+
+.section[class*='bottom'] a {
+	color: #c00;
+}
+
+.weighted {
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 16px;
+}
+
+.more {
+	border-top: 4px solid #eee;
+	padding-top: 1em;
+}

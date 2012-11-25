@@ -16,7 +16,7 @@ RewriteRule ^/?$ /s/index [QSA,L]
 RewriteRule ^/?s/(.*) /index/$1 [QSA,L]
 
 RewriteRule ^/?([=,0-9a-zA-Z_-]{3,})/?$ $1/profile [L]
-RewriteRule ^/?([=,0-9a-zA-Z_-]{3,})/?(profile|list|ach|score|acti|favs|misc|sug|json)(,(anime|manga))?/?$ /dispatch.php?request=stats/$2&u=$1&am=$4 [QSA,L]
+RewriteRule ^/?([=,0-9a-zA-Z_-]{3,})/?(profile|list|ach|rat|acti|favs|misc|sug|json)(,(anime|manga))?/?$ /dispatch.php?request=stats/$2&u=$1&am=$4 [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

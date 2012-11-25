@@ -3,7 +3,7 @@
 		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
 			<?php echo $this->user['visible-name'] ?>
 		</a>
-		`s <?php echo $this->am ?> rating statistics
+		`s <?php echo $this->mgHelper->amText() ?> rating statistics
 	</h2>
 </div>
 
@@ -26,7 +26,7 @@
 				<li>
 					<div>
 						<span class="prefix">Mean score</span>
-						<span class="subject"><?php printf('%.02f', $this->user[$this->am]['score-info']['mean']) ?></span>
+						<span class="subject"><?php printf('%.02f', $this->user[$this->am]['score-info']['mean-score']) ?></span>
 					</div>
 				</li>
 				<li>
@@ -43,7 +43,7 @@
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->user[$this->am]['score-entries'] as $score => $entries): ?>
+				<?php foreach ($this->user[$this->am]['score-info']['dist-entries'] as $score => $entries): ?>
 					<div class="more" data-id="<?php echo $score ?>">
 						<?php if ($score == 0): ?>
 							<p>Unrated titles:</p>
@@ -98,7 +98,7 @@
 				$('#user-<?php echo $this->user['user-safe-id'] ?> .score-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 35 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-time-dist']))) ?>, title: { text: 'Rating' } },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-info']['dist-time']))) ?>, title: { text: 'Rating' } },
 						yAxis: { title: { text: 'Count', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
@@ -112,7 +112,7 @@
 							return text;
 						} },
 						series: [ {
-							data: <?php echo json_encode(array_values($this->user[$this->am]['score-dist'])) ?>,
+							data: <?php echo json_encode(array_values($this->user[$this->am]['score-info']['dist-score'])) ?>,
 							point: { events: { click: function(e) {
 								var x = this.category;
 								if (x == '-') {
@@ -145,6 +145,13 @@
 						<span class="suffix">days</span>
 					</div>
 				</li>
+				<li>
+					<div>
+						<span class="prefix">Mean score</span>
+						<span class="subject"><?php printf('%.02f', $this->user[$this->am]['score-info']['mean-time']) ?></span>
+						<span class="suffix">(weighted)</span>
+					</div>
+				</li>
 			</ul>
 
 			<div class="wrapper wrapper-target">
@@ -153,7 +160,7 @@
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->user[$this->am]['score-entries'] as $score => $entries): ?>
+				<?php foreach ($this->user[$this->am]['score-info']['dist-entries'] as $score => $entries): ?>
 					<div class="more" data-id="<?php echo $score ?>">
 						<?php if ($score == 0): ?>
 							<p>Unrated titles:</p>
@@ -188,7 +195,7 @@
 				$('#user-<?php echo $this->user['user-safe-id'] ?> .score-time-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 15 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-time-dist']))) ?>, title: { text: 'Rating' } },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-info']['dist-time']))) ?>, title: { text: 'Rating' } },
 						yAxis: { title: {text: 'Hours spent', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
@@ -202,7 +209,7 @@
 							return text
 						} },
 						series: [ {
-							data: <?php echo json_encode(array_values($this->user[$this->am]['score-time-dist'])) ?>,
+							data: <?php echo json_encode(array_values($this->user[$this->am]['score-info']['dist-time'])) ?>,
 							point: { events: { click: function(e) {
 								var x = this.category;
 								if (x == '-') {

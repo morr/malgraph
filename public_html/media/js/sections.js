@@ -1,4 +1,6 @@
-//function making profile boxes heights equal
+/*
+ * function instantly making profile boxes heights equal
+ */
 function resizeSections() {
 	if ($('.compare-mode').length == 0) {
 		return;
@@ -41,12 +43,21 @@ $(function() {
 	resizeSections();
 });
 
+/*
+ * function for profile boxes height animation
+ *        - for showing and hiding something within sections when they need to stay the same height.
+ */
 function toggleWithinSections(targets, hideSiblings) {
+	//make sure to toggle all sections even if there is no target element within them.
+	var section = $(targets).eq(0).parents('.section');
+	var sections = $('.' + section.attr('class').replace(/\s+/g, '.'));
+	//^ this approach requires the parent section class to be usable for matching all sibling sections!
+
 	var data = {};
-	targets.each(function(i, e) {
+	sections.each(function(i, e) {
 		data[i] = {};
-		var target = $(this);
-		var section = $(target).parents('.section');
+		var target = $(targets, $(this));
+		var section = $(this);//$(target).parents('.section');
 		var visible = data[i]['visible'] = target.is(':visible');
 		var oldHeight = section.height();
 		//simulate what will be done by animating
@@ -62,6 +73,7 @@ function toggleWithinSections(targets, hideSiblings) {
 		} else {
 			target.hide();
 		}
+		//get the height we're gonna animate soon
 		var newHeight = data[i]['height'] = section.height();
 		section.css('height', oldHeight + 'px');
 		//restore original state
@@ -82,6 +94,7 @@ function toggleWithinSections(targets, hideSiblings) {
 		}
 	});
 
+	//calculate maximum height.
 	var maxHeight = 0;
 	for (var i in data) {
 		if (data[i]['height'] > maxHeight) {
@@ -89,11 +102,13 @@ function toggleWithinSections(targets, hideSiblings) {
 		}
 	}
 
+	sections.each(function(i, e) {
+		var section = $(this);
+		section.animate({'height': maxHeight + 'px'}, {queue: false});
+	});
+
 	targets.each(function(i, e) {
 		var target = $(this);
-		var section = $(target).parents('.section');
-		section.animate({'height': maxHeight + 'px'}, {queue: false});
-
 		if (!data[i]['visible']) {
 			if (hideSiblings) {
 				target.siblings().slideUp('slow');

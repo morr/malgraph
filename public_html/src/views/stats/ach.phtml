@@ -3,7 +3,7 @@
 		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
 			<?php echo $this->user['visible-name'] ?>
 		</a>
-		`s <?php echo $this->am ?> achievements
+		`s <?php echo $this->mgHelper->amText() ?> achievements
 	</h2>
 </div>
 
@@ -15,10 +15,10 @@
 	</div>
 <?php else: ?>
 	<?php foreach ($this->user['achievements'] as $k => $ach): ?>
-		<?php if (!empty($ach['path'])): ?>
-			<img alt="<?php echo $ach['title'] ?>" src="<?php echo $this->urlHelper->url('media/img/ach/' . $ach['path']) ?>">
-		<?php endif ?>
 		<div class="section" data-id="<?php echo $k ?>">
+		<?php if (!empty($ach['path'])): ?>
+			<img class="more-trigger" alt="<?php echo $ach['title'] ?>" src="<?php echo $this->urlHelper->url('media/img/ach/' . $ach['path']) ?>">
+		<?php endif ?>
 			<h3>
 				<?php echo $ach['title'] ?>
 				<?php if (!empty($ach['level'])): ?>
@@ -56,7 +56,16 @@
 <script type="text/javascript">
 	$('#user-<?php echo $this->user['user-safe-id'] ?> .more-trigger').click(function(e) {
 		var k = $(this).parents('div.section').attr('data-id');
-		$('#user-<?php echo $this->user['user-safe-id'] ?> .section[data-id=\'' + k + '\'] .more').toggle('slow');
+		var target = $('#user-<?php echo $this->user['user-safe-id'] ?> .section[data-id=\'' + k + '\'] .more');
+		var allTargets = $('#user-<?php echo $this->user['user-safe-id'] ?> .more');
+		var isVisible = target.is(':visible');
+		allTargets.slideUp('slow');
+		if (!isVisible) {
+			target.slideDown('slow');
+		}
 		e.preventDefault();
+	});
+	$(function() {
+		$('.section').css('height', 'auto');
 	});
 </script>

@@ -31,6 +31,8 @@ class StatsController extends AbstractController {
 		$this->view->am = $am;
 	}
 
+
+
 	/*
 	 * Load all users information
 	 */
@@ -86,6 +88,11 @@ class StatsController extends AbstractController {
 		}
 	}
 
+
+
+	/*
+	 * Load all user entries information
+	 */
 	private function loadEntries() {
 		$models = [];
 		$models[AMModel::ENTRY_TYPE_ANIME] = new AnimeModel();
@@ -115,9 +122,7 @@ class StatsController extends AbstractController {
 				$this->view->users[$i][$am]['entries'] = $nentries;
 			}
 		}
-	}
 
-	private function loadUniqueness() {
 		foreach ($this->view->users as $i => &$u) {
 			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
 				$e['user']['unique'] = true;
@@ -147,7 +152,12 @@ class StatsController extends AbstractController {
 		}
 	}
 
-	private function sort(array &$subject, $defaultSortColumn = null, array $customColumns = null) {
+
+
+	/*
+	 * Sort given array of entries according to params
+	 */
+	private function sortEntries(array &$subject, $defaultSortColumn = null, array $customColumns = null) {
 		//get sort column
 		$sortColumn = null;
 		if (isset($_GET['sort-column'])) {
@@ -218,6 +228,62 @@ class StatsController extends AbstractController {
 	}
 
 
+	/*
+	 * Assign each group of entries some value
+	 */
+	private static function evaluateGroups(&$groups) {
+		foreach ($groups as $key => &$group)
+		{
+			$group['rated'] = 0;
+			$group['mean-score'] = 0;
+			$group['mean-time'] = 0;
+			$group['total-duration'] = 0;
+			foreach ($group['entries'] as &$entry) {
+				if ($entry['user']['score'] > 0) {
+					$duration = $entry['user']['total-duration'];
+					$group['rated'] ++;
+					$group['mean-score'] += $entry['user']['score'];
+					$group['mean-time'] += $entry['user']['score'] * $duration;
+					$group['total-duration'] += $duration;
+				}
+			}
+			$group['mean-score'] /= max(1, $group['rated']);
+			$group['mean-time'] /= max(1, $group['total-duration']);
+		}
+
+		$maxRated = 0;
+		$maxDuration = 0;
+		$averageMeanScore = 0;
+		$averageMeanTime = 0;
+		$totalRated = 0;
+		foreach ($groups as $key => &$group) {
+			$averageMeanScore += $group['mean-score'] * $group['rated'];
+			$averageMeanTime += $group['mean-time'] * $group['rated'];
+			$totalRated += $group['rated'];
+			$maxRated = max($group['rated'], $maxRated);
+			$maxDuration = max($group['total-duration'], $maxDuration);
+		}
+		$averageMeanScore /= max(1, $totalRated);
+		$averageMeanTime /= max(1, $totalRated);
+
+		foreach ($groups as $key => &$group) {
+			$value = $group['mean-time'] - $averageMeanTime;
+			$w1 = $group['rated'] / max(1, $maxRated);
+			$value *= $w1;
+
+			$group['value'] = $value;
+		}
+
+		uasort($groups, function($a, $b)
+		{
+			$am = $a['value'];
+			$bm = $b['value'];
+			return $am > $bm ? -1 : 1;
+		});
+	}
+
+
+
 
 	public function profileAction() {
 		$this->loadUsers();
@@ -228,10 +294,9 @@ class StatsController extends AbstractController {
 	public function listAction() {
 		$this->loadUsers();
 		$this->loadEntries();
-		$this->loadUniqueness();
 
 		foreach ($this->view->users as $i => &$u) {
-			$this->sort($u[$this->view->am]['entries'], 'score');
+			$this->sortEntries($u[$this->view->am]['entries'], 'score');
 		}
 	}
 
@@ -311,7 +376,7 @@ class StatsController extends AbstractController {
 						$entriesOwned []= &$groups[UserModel::USER_LIST_STATUS_COMPLETED][$k];
 					}
 				}
-				$this->sort($entriesOwned, 'title');
+				$this->sortEntries($entriesOwned, 'title');
 				//give corresponding achievement (make sure it has correct threshold)
 				uasort($groupData['achievements'], function($a, $b) { return $a['threshold'] > $b['threshold'] ? -1 : 1; });
 				foreach ($groupData['achievements'] as $ach) {
@@ -372,7 +437,7 @@ class StatsController extends AbstractController {
 
 
 
-	public function scoreAction() {
+	public function ratAction() {
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
@@ -380,60 +445,59 @@ class StatsController extends AbstractController {
 
 		$this->loadUsers();
 		$this->loadEntries();
-		$this->loadUniqueness();
 
 		//prepare info for view
 		foreach ($this->view->users as $i => &$u) {
-			$scoreDist = array_fill_keys(range(10, 0), 0);
-			$scoreTimeDist = array_fill_keys(range(10, 0), 0);
-			$scoreEntries = array_fill_keys(range(10, 0), []);
+			$allScores = range(10, 0);
+
 			$scoreInfo = [];
-			$scoreInfo['total'] = 0;
+			$scoreInfo['dist-score'] = array_fill_keys($allScores, 0);
+			$scoreInfo['dist-time'] = array_fill_keys($allScores, 0);
+			$scoreInfo['dist-entries'] = array_fill_keys($allScores, []);
 			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
 				if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
 					continue;
 				}
-				$scoreInfo['total'] ++;
-				$scoreDist[$e['user']['score']] ++;
-				$scoreTimeDist[$e['user']['score']] += $e['user']['total-duration'];
-				$scoreEntries[$e['user']['score']] []= &$e;
+				$scoreInfo['dist-score'][$e['user']['score']] ++;
+				$scoreInfo['dist-time'][$e['user']['score']] += $e['user']['total-duration'];
+				$scoreInfo['dist-entries'][$e['user']['score']] []= &$e;
 			}
 
 			//conert minutes to hours
-			foreach ($scoreTimeDist as $k => &$v) {
+			foreach ($scoreInfo['dist-time'] as $k => &$v) {
 				$v /= 60.0;
 			}
 
 			//calculate rated and unrated count
-			$scoreInfo['unrated'] = $scoreDist[0];
-			$scoreInfo['rated'] = array_sum($scoreDist) - $scoreDist[0];
-			$scoreInfo['unrated-total-time'] = $scoreTimeDist[0];
-			$scoreInfo['rated-total-time'] = array_sum($scoreTimeDist) - $scoreTimeDist[0];
+			$scoreInfo['unrated'] = $scoreInfo['dist-score'][0];
+			$scoreInfo['rated'] = array_sum($scoreInfo['dist-score']) - $scoreInfo['dist-score'][0];
+			$scoreInfo['unrated-total-time'] = $scoreInfo['dist-time'][0];
+			$scoreInfo['rated-total-time'] = array_sum($scoreInfo['dist-time']) - $scoreInfo['dist-time'][0];
 
 			//calculate mean
-			$scoreInfo['mean'] = 0;
-			foreach ($scoreDist as $score => $count) {
-				$scoreInfo['mean'] += $score * $count;
+			$scoreInfo['mean-score'] = 0;
+			$scoreInfo['mean-time'] = 0;
+			foreach ($allScores as $score) {
+				$scoreInfo['mean-score'] += $score * $scoreInfo['dist-score'][$score];
+				$scoreInfo['mean-time'] += $score * $scoreInfo['dist-time'][$score];
 			}
-			$scoreInfo['mean'] /= max(1, $scoreInfo['rated']);
+			$scoreInfo['mean-score'] /= max(1, $scoreInfo['rated']);
+			$scoreInfo['mean-time'] /= max(1, $scoreInfo['rated-total-time']);
 
 			//calculate standard deviation
 			$scoreInfo['std-dev'] = 0;
 			foreach ($u[$this->view->am]['entries'] as &$e) {
 				if ($e['user']['score'] > 0) {
-					$scoreInfo['std-dev'] += pow($e['user']['score'] - $scoreInfo['mean'], 2);
+					$scoreInfo['std-dev'] += pow($e['user']['score'] - $scoreInfo['mean-score'], 2);
 				}
 			}
 			$scoreInfo['std-dev'] /= max(1, $scoreInfo['rated'] - 1);
 			$scoreInfo['std-dev'] = sqrt($scoreInfo['std-dev']);
 
-			foreach ($scoreEntries as $x => &$entries) {
-				$this->sort($entries, 'title');
+			foreach ($scoreInfo['dist-entries'] as &$entries) {
+				$this->sortEntries($entries, 'title');
 			}
 			$u[$this->view->am]['score-info'] = $scoreInfo;
-			$u[$this->view->am]['score-dist'] = $scoreDist;
-			$u[$this->view->am]['score-time-dist'] = $scoreTimeDist;
-			$u[$this->view->am]['score-entries'] = $scoreEntries;
 		}
 	}
 
@@ -553,6 +617,68 @@ class StatsController extends AbstractController {
 			}
 
 			$u[$this->view->am]['acti-info'] = $actiInfo;
+		}
+	}
+
+
+
+	public function favsAction() {
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
+
+		$this->loadUsers();
+		$this->loadEntries();
+
+		$excludedList = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedProducersDefFile), true);
+		foreach ($this->view->users as &$u) {
+			$producers = array();
+			foreach ($u[$this->view->am]['entries'] as &$entry) {
+				if ($entry['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
+					continue;
+				}
+				if (!$entry['user']['score']) {
+					continue;
+				}
+				$datas = array();
+				if ($entry['full']['type'] == AMModel::ENTRY_TYPE_MANGA) {
+					foreach ($entry['full']['authors'] as $data) {
+						$datas []= $data;
+					}
+				} else {
+					foreach ($entry['full']['producers'] as $data) {
+						$datas []= $data;
+					}
+				}
+				foreach ($datas as $data) {
+					$excluded = false;
+					foreach ($excludedList[$this->mgHelper->amText()] as $excludedEntry) {
+						if ($excludedEntry['id'] == $data['id']) {
+							$excluded = true;
+							break;
+						}
+					}
+					if ($excluded) {
+						continue;
+					}
+					$producer = $data['name'];
+					if (!isset($producers[$producer])) {
+						$producers[$producer] = [
+							'entries' => array(),
+							'id' => $data['id'],
+							'name' => $data['name']
+						];
+					}
+					$producers[$producer]['entries'] []= &$entry;
+				}
+			}
+			foreach ($producers as &$producer) {
+				$this->sortEntries($producer['entries'], 'score');
+			}
+			unset($producer);
+			self::evaluateGroups($producers);
+			$u[$this->view->am]['producers'] = $producers;
 		}
 	}
 
