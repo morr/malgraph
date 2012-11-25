@@ -101,7 +101,7 @@
 									<?php if ($e['user']['score'] > $e2['user']['score']): ?>
 										<?php if ($e2['user']['score'] > 0): ?>
 											<td class="score higher-score">
-												<span class="tooltipable" data-title="This title was rated lower by the other user.">
+												<span class="tooltipable" data-title="This title was rated lower (<?php echo $e2['user']['score'] ?>) by the other user.">
 										<?php else: ?>
 											<td class="score no-score">
 												<span class="tooltipable" data-title="This title wasn't rated by the other user.">
@@ -109,7 +109,7 @@
 									<?php elseif ($e['user']['score'] < $e2['user']['score']): ?>
 										<?php if ($e['user']['score'] > 0): ?>
 											<td class="score lower-score">
-												<span class="tooltipable" data-title="This title was rated higher by the other user.">
+												<span class="tooltipable" data-title="This title was rated higher (<?php echo $e2['user']['score'] ?>) by the other user.">
 										<?php else: ?>
 											<td class="score no-score">
 												<span class="tooltipable" data-title="This title wasn't rated by this user.">
