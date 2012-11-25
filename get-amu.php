@@ -1,9 +1,9 @@
 #!/usr/bin/php
 <?php
-require_once 'lib/router.php';
-ChibiConfig::load('../conf.ini');
+require_once dirname(__FILE__) . '/public_html/lib/router.php';
+ChibiConfig::load(dirname(__FILE__) . '/conf.ini');
 $config = ChibiConfig::getInstance();
-$config->chibi->runtime->rootFolder = dirname(__FILE__);
+$config->chibi->runtime->rootFolder = dirname(__FILE__) . '/public_html';
 ChibiRegistry::getInstance()->loadHelper('mg');
 
 if (count($argv) < 3) {
@@ -21,15 +21,15 @@ if (count($argv)) {
 
 switch (strtolower($type)) {
 	case 'anime':
-		require_once 'src/models/anime.php';
+		require_once dirname(__FILE__) . '/public_html/src/models/anime.php';
 		$model = new AnimeModel();
 		break;
 	case 'manga':
-		require_once 'src/models/manga.php';
+		require_once dirname(__FILE__) . '/public_html/src/models/manga.php';
 		$model = new MangaModel();
 		break;
 	case 'user':
-		require_once 'src/models/user.php';
+		require_once dirname(__FILE__) . '/public_html/src/models/user.php';
 		$model = new UserModel();
 		break;
 	default:
