@@ -50,7 +50,7 @@
 									<td class="title">Title</td>
 									<td class="mean">Mean</td>
 									<td class="time">Time&nbsp;spent</td>
-									<td class="eval">Final</td>
+									<td class="eval">&bdquo;Value&rdquo;</td>
 								</tr>
 							</thead>
 							<tbody>
@@ -73,8 +73,8 @@
 											<?php echo htmlspecialchars($producer['name']) ?>
 										</a>
 									</td>
-									<td class="mean"><?php printf('%.02f', $producer['mean-score']) ?></td>
-									<td class="time"><?php printf('%.02f', $producer['total-duration'] / 60.0) ?>h</td>
+									<td class="mean"><?php printf('%.02f', $producer['mean-time']) ?></td>
+									<td class="time"><?php printf('%.02f', $producer['total-time'] / 60.0) ?>h</td>
 									<td class="eval"><?php printf('%.02f', $producer['value']) ?>&nbsp;pt</td>
 								</tr>
 							<?php endforeach ?>
@@ -104,14 +104,20 @@
 										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
 											<?php echo $e['full']['title'] ?>
 										</a>
-										&nbsp;(rated&nbsp;with&nbsp;<?php echo $e['user']['score'] ?>, duration:&nbsp;<?php echo $e['user']['total-duration'] ?>&nbsp;min.)
+										&nbsp;<span class="info">(
+											<?php if ($e['user']['score'] == 0): ?>
+												unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
+											<?php else: ?>
+												rated&nbsp;with&nbsp;<?php echo $e['user']['score'] ?>
+											<?php endif ?>
+										, <?php echo $e['user']['total-time'] ?>&nbsp;min.)</span>
 									</li>
 								<?php endforeach ?>
 							</ul>
 						<?php endif ?>
 						<p>
 							Mean score: <?php printf('%.02f', $producer['mean-score']) ?><br>
-							Mean score: <?php printf('%.02f', $producer['mean-time']) ?> (time weighted)<br>
+							<strong>Weighted mean score: <?php printf('%.02f', $producer['mean-time']) ?></strong><br>
 							Evaluated value: <?php printf('%f', $producer['value']) ?>
 						</p>
 					</div>
@@ -128,13 +134,6 @@
 		var k = $(this).attr('data-id');
 		var target = $('#user-<?php echo $this->user['user-safe-id'] ?> .more[data-id=\'' + k + '\']');
 		toggleWithinSections(target, true);
-		return;
-		var allTargets = $('#user-<?php echo $this->user['user-safe-id'] ?> .more');
-		var isVisible = target.is(':visible');
-		allTargets.slideUp('slow');
-		if (!isVisible) {
-			target.slideDown('slow');
-		}
 		e.preventDefault();
 	});
 	$(function() {

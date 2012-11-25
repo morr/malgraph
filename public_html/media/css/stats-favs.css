@@ -3,7 +3,7 @@ table {
 }
 	table .title { width: 100%; }
 	table .ord { text-align: center; }
-	table .mean, table .time, table.eval { text-align: right; }
+	table .mean, table .time, table .eval { text-align: right; }
 
 	th:not(:last-child),
 	td:not(:last-child) {
@@ -23,4 +23,9 @@ table {
 .more {
 	border-top: 4px solid #eee;
 	padding-top: 1em;
+}
+
+span.info {
+	font-size: 7pt;
+	color: gray;
 }

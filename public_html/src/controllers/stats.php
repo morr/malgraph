@@ -114,7 +114,7 @@ class StatsController extends AbstractController {
 							$duration = $e2['duration'];
 							$length = $e['episodes-completed'];
 						}
-						$e['total-duration'] = $length * $duration;
+						$e['total-time'] = $length * $duration;
 
 						$nentries[$key] = ['user' => $e, 'full' => $e2];
 					}
@@ -232,50 +232,77 @@ class StatsController extends AbstractController {
 	 * Assign each group of entries some value
 	 */
 	private static function evaluateGroups(&$groups) {
-		foreach ($groups as $key => &$group)
-		{
+		//score related evaluation
+		$global = [];
+		$global['mean-score'] = 0;
+		$global['unrated'] = 0;
+		$global['rated'] = 0;
+		$global['rated-max'] = 0; //maximum rating COUNT within group
+		foreach ($groups as &$group) {
 			$group['rated'] = 0;
+			$group['unrated'] = 0;
 			$group['mean-score'] = 0;
-			$group['mean-time'] = 0;
-			$group['total-duration'] = 0;
 			foreach ($group['entries'] as &$entry) {
-				if ($entry['user']['score'] > 0) {
-					$duration = $entry['user']['total-duration'];
+				$score = $entry['user']['score'];
+				if ($score > 0) {
 					$group['rated'] ++;
-					$group['mean-score'] += $entry['user']['score'];
-					$group['mean-time'] += $entry['user']['score'] * $duration;
-					$group['total-duration'] += $duration;
+					$group['mean-score'] += $score;
+					$global['rated'] ++;
+					$global['mean-score'] += $score;
+				} else {
+					$group['unrated'] ++;
+					$global['unrated'] ++;
 				}
 			}
 			$group['mean-score'] /= max(1, $group['rated']);
-			$group['mean-time'] /= max(1, $group['total-duration']);
+			$global['rated-max'] = max($group['rated'], $global['rated-max']);
 		}
+		$global['mean-score'] /= max(1, $global['rated']);
 
-		$maxRated = 0;
-		$maxDuration = 0;
-		$averageMeanScore = 0;
-		$averageMeanTime = 0;
-		$totalRated = 0;
-		foreach ($groups as $key => &$group) {
-			$averageMeanScore += $group['mean-score'] * $group['rated'];
-			$averageMeanTime += $group['mean-time'] * $group['rated'];
-			$totalRated += $group['rated'];
-			$maxRated = max($group['rated'], $maxRated);
-			$maxDuration = max($group['total-duration'], $maxDuration);
+		//time related evaluation
+		$global['total-time-weight'] = 0;
+		$global['total-time'] = 0;
+		$global['mean-time'] = 0;
+		foreach ($groups as &$group) {
+			$group['total-time-weight'] = 0;
+			$group['total-time'] = 0;
+			$group['mean-time'] = 0;
+			foreach ($group['entries'] as &$entry) {
+				$time = $entry['user']['total-time'];
+				$group['total-time'] += $time;
+				$global['total-time'] += $time;
+
+				$score = $entry['user']['score'];
+				if ($score == 0) {
+					$score = $group['mean-score'];
+				}
+				if ($score == 0) {
+					$score = $global['mean-score'];
+				}
+				if ($score == 0) {
+					// this happens when nothing is rated in given list.
+					$score = 5;
+				}
+
+				$weight = sqrt($time); // <-- square root of duration!
+				$group['mean-time'] += $score * $weight;
+				$group['total-time-weight'] += $weight;
+				$global['mean-time'] += $score * $weight;
+				$global['total-time-weight'] += $weight;
+			}
+			$group['mean-time'] /= max(1, $group['total-time-weight']);
 		}
-		$averageMeanScore /= max(1, $totalRated);
-		$averageMeanTime /= max(1, $totalRated);
+		$global['mean-time'] /= max(1, $global['total-time-weight']);
 
+		//evaluate them already, geez
 		foreach ($groups as $key => &$group) {
-			$value = $group['mean-time'] - $averageMeanTime;
-			$w1 = $group['rated'] / max(1, $maxRated);
-			$value *= $w1;
-
+			$value = $group['mean-time'] - $global['mean-time'];
+			$value *= $group['rated'] / max(1, $global['rated-max']);
 			$group['value'] = $value;
 		}
 
-		uasort($groups, function($a, $b)
-		{
+		//sort them as well
+		uasort($groups, function($a, $b) {
 			$am = $a['value'];
 			$bm = $b['value'];
 			return $am > $bm ? -1 : 1;
@@ -459,7 +486,7 @@ class StatsController extends AbstractController {
 					continue;
 				}
 				$scoreInfo['dist-score'][$e['user']['score']] ++;
-				$scoreInfo['dist-time'][$e['user']['score']] += $e['user']['total-duration'];
+				$scoreInfo['dist-time'][$e['user']['score']] += $e['user']['total-time'];
 				$scoreInfo['dist-entries'][$e['user']['score']] []= &$e;
 			}
 
@@ -516,7 +543,7 @@ class StatsController extends AbstractController {
 			$actiInfo = [
 				'month-periods' => [],
 				'day-periods' => [],
-				'total-duration' => 0,
+				'total-time' => 0,
 				'mean-time' => 0,
 			];
 
@@ -556,7 +583,7 @@ class StatsController extends AbstractController {
 						$monthPeriodMax = $monthPeriod;
 					}
 				}
-				$actiInfo['month-periods'][$monthPeriod]['duration'] += $e['user']['total-duration'];
+				$actiInfo['month-periods'][$monthPeriod]['duration'] += $e['user']['total-time'];
 			}
 
 			//add empty month periods so graph has no gaps
@@ -595,10 +622,10 @@ class StatsController extends AbstractController {
 			}
 
 			//add some random information
-			$actiInfo['total-duration'] = array_sum(array_map(function($mp) { return $mp['duration']; }, $actiInfo['month-periods']));
+			$actiInfo['total-time'] = array_sum(array_map(function($mp) { return $mp['duration']; }, $actiInfo['month-periods']));
 			list($year, $month, $day) = explode('-', $u['join-date']);
 			$joinedDays = (time() - mktime(0, 0, 0, $month, $day, $year)) / 24. / 3600.;
-			$actiInfo['mean-time'] = $actiInfo['total-duration'] / $joinedDays;
+			$actiInfo['mean-time'] = $actiInfo['total-time'] / $joinedDays;
 
 			//day periods
 			$models = [];
@@ -636,9 +663,6 @@ class StatsController extends AbstractController {
 			$producers = array();
 			foreach ($u[$this->view->am]['entries'] as &$entry) {
 				if ($entry['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
-					continue;
-				}
-				if (!$entry['user']['score']) {
 					continue;
 				}
 				$datas = array();
