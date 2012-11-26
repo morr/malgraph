@@ -163,9 +163,16 @@
 						} ],
 					});
 					});
-				$('.acti-line-monthly .wrapper-target').jScrollPane();
 			</script>
 		<?php endif ?>
 
 	</div>
 </div>
+
+<?php if ($this->user == reset($this->users)): ?>
+	<script type="text/javascript">
+		$(function() {
+			$('.acti-line-monthly .wrapper-target').jScrollPane();
+		});
+	</script>
+<?php endif ?>

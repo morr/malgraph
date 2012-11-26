@@ -65,7 +65,12 @@
 		}
 		e.preventDefault();
 	});
-	$(function() {
-		$('.section').css('height', 'auto');
-	});
 </script>
+
+<?php if ($this->user == reset($this->users)): ?>
+	<script type="text/javascript">
+		$(function() {
+			$('.section').css('height', 'auto');
+		});
+	</script>
+<?php endif ?>
