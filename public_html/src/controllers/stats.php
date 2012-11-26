@@ -131,7 +131,6 @@ class StatsController extends AbstractController {
 		}
 
 		if (count($this->view->users) > 1) {
-			$sortFuncs['unique'] = function($a, $b) { return $a['user']['unique'] - $b['user']['unique']; };
 			foreach ($this->view->users as $i => &$u) {
 				foreach ($this->view->users as $j => &$u2) {
 					if ($i == $j) {
@@ -157,23 +156,7 @@ class StatsController extends AbstractController {
 	/*
 	 * Sort given array of entries according to params
 	 */
-	private function sortEntries(array &$subject, $defaultSortColumn = null, array $customColumns = null) {
-		//get sort column
-		$sortColumn = null;
-		if (isset($_GET['sort-column'])) {
-			$sortColumn = $_GET['sort-column'];
-		} elseif ($defaultSortColumn != null) {
-			$sortColumn = $defaultSortColumn;
-		}
-		$this->view->sortColumn = $sortColumn;
-
-		//get sort direction
-		$sortDir = 0;
-		if (isset($_GET['sort-dir'])) {
-			$sortDir = intval($_GET['sort-dir']);
-		}
-		$this->view->sortDir = $sortDir;
-
+	private static function sortEntries(array &$subject, $sortColumn = null, $sortDir = 0) {
 		if (empty($subject)) {
 			return;
 		}
@@ -198,13 +181,6 @@ class StatsController extends AbstractController {
 		$defs['unique'] = [1, function($e) { return empty($e['user']['unique']) ? 0 : $e['user']['unique']; }];
 		$defs['start-date'] = [1, function($e) { return $e['user']['start-date']; }];
 		$defs['finish-date'] = [1, function($e) { return $e['user']['finish-date']; }];
-
-		//load custom sorting flavours
-		if (!empty($customColumns)) {
-			foreach ($customColumns as $k => $def) {
-				$defs[$k] = $def;
-			}
-		}
 
 		//do sort
 		$sort = array_fill_keys(array_keys($defs), []);
@@ -300,11 +276,13 @@ class StatsController extends AbstractController {
 
 
 	public function listAction() {
+		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
+
 		$this->loadUsers();
 		$this->loadEntries();
 
 		foreach ($this->view->users as $i => &$u) {
-			$this->sortEntries($u[$this->view->am]['entries'], 'score');
+			self::sortEntries($u[$this->view->am]['entries'], 'score');
 		}
 	}
 
@@ -384,7 +362,7 @@ class StatsController extends AbstractController {
 						$entriesOwned []= &$groups[UserModel::USER_LIST_STATUS_COMPLETED][$k];
 					}
 				}
-				$this->sortEntries($entriesOwned, 'title');
+				self::sortEntries($entriesOwned, 'title');
 				//give corresponding achievement (make sure it has correct threshold)
 				uasort($groupData['achievements'], function($a, $b) { return $a['threshold'] > $b['threshold'] ? -1 : 1; });
 				foreach ($groupData['achievements'] as $ach) {
@@ -503,7 +481,7 @@ class StatsController extends AbstractController {
 			$scoreInfo['std-dev'] = sqrt($scoreInfo['std-dev']);
 
 			foreach ($scoreInfo['dist-entries'] as &$entries) {
-				$this->sortEntries($entries, 'title');
+				self::sortEntries($entries, 'title');
 			}
 			$u[$this->view->am]['score-info'] = $scoreInfo;
 		}
@@ -680,7 +658,7 @@ class StatsController extends AbstractController {
 				}
 			}
 			foreach ($producers as &$producer) {
-				$this->sortEntries($producer['entries'], 'score');
+				self::sortEntries($producer['entries'], 'score');
 			}
 			unset($producer);
 			self::evaluateGroups($producers);

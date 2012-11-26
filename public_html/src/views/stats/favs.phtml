@@ -3,7 +3,7 @@
 		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
 			<?php echo $this->user['visible-name'] ?>
 		</a>
-		`s guessed <?php echo $this->mgHelper->amText() ?> favorites
+		`s <?php echo $this->mgHelper->amText() ?> favorites
 	</h2>
 </div>
 
@@ -24,7 +24,7 @@
 						<tr>
 							<th class="ord">#</th>
 							<th class="title">Title</th>
-							<th class="count"><span class="tooltipable" data-tooltip"Count of titles from this studio user has on their list">C</span></th>
+							<th class="count"><span class="tooltipable" data-title="Count of titles from this studio user has on their list">C</span></th>
 							<th class="mean">Mean</th>
 							<th class="time">Hours</th>
 						</tr>
@@ -125,7 +125,7 @@
 			$('.producers table').tablesorter({
 				headers: { 0: { sorter: false }, 4: { sorter: 'percent' } },
 				widgets: ['ord'],
-				sortList: [[4,1]]
+				sortList: [[2,1],[3,1]]
 			});
 
 			$('.extensible').jScrollPane();
