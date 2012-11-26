@@ -37,23 +37,19 @@ switch (strtolower($type)) {
 }
 
 function get($model, $id) {
-	echo str_pad($id, 16, ' ', STR_PAD_LEFT) . ': ';
 	$start = microtime(true);
-	$ok = false;
+	$entry = null;
+
+	echo sprintf('%+16s: ', $id);
 	try {
 		$entry = $model->get($id);
-		$ok = true;
 	} catch (InvalidEntryException $x) {
 	} catch (DownloadException $x) {
 	}
+
 	$end = microtime(true);
-	printf('%05.3f ', $end - $start);
-	if ($ok) {
-		echo 'OK';
-	} else {
-		echo 'Not OK';
-	}
-	echo PHP_EOL;
+	echo sprintf('%05.3f %s' . PHP_EOL, $end - $start, empty($entry) ? 'Not OK' : 'OK');
+	return $entry;
 }
 
 if (!empty($id2)) {
