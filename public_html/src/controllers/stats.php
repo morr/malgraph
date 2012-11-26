@@ -260,11 +260,9 @@ class StatsController extends AbstractController {
 		$global['mean-score'] /= max(1, $global['rated']);
 
 		//time related evaluation
-		$global['total-time-weight'] = 0;
 		$global['total-time'] = 0;
 		$global['mean-time'] = 0;
 		foreach ($groups as &$group) {
-			$group['total-time-weight'] = 0;
 			$group['total-time'] = 0;
 			$group['mean-time'] = 0;
 			foreach ($group['entries'] as &$entry) {
@@ -284,29 +282,12 @@ class StatsController extends AbstractController {
 					$score = 5;
 				}
 
-				$weight = sqrt($time); // <-- square root of duration!
-				$group['mean-time'] += $score * $weight;
-				$group['total-time-weight'] += $weight;
-				$global['mean-time'] += $score * $weight;
-				$global['total-time-weight'] += $weight;
+				$group['mean-time'] += $score * $time;
+				$global['mean-time'] += $score * $time;
 			}
-			$group['mean-time'] /= max(1, $group['total-time-weight']);
+			$group['mean-time'] /= max(1, $group['total-time']);
 		}
-		$global['mean-time'] /= max(1, $global['total-time-weight']);
-
-		//evaluate them already, geez
-		foreach ($groups as $key => &$group) {
-			$value = $group['mean-time'] - $global['mean-time'];
-			$value *= $group['rated'] / max(1, $global['rated-max']);
-			$group['value'] = $value;
-		}
-
-		//sort them as well
-		uasort($groups, function($a, $b) {
-			$am = $a['value'];
-			$bm = $b['value'];
-			return $am > $bm ? -1 : 1;
-		});
+		$global['mean-time'] /= max(1, $global['total-time']);
 	}
 
 
@@ -650,6 +631,7 @@ class StatsController extends AbstractController {
 
 
 	public function favsAction() {
+		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));

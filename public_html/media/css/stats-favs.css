@@ -3,29 +3,20 @@ table {
 }
 	table .title { width: 100%; }
 	table .ord { text-align: center; }
-	table .mean, table .time, table .eval { text-align: right; }
+	table .mean, table .time, table .count { text-align: right; }
 
-	th:not(:last-child),
-	td:not(:last-child) {
-		padding-right: 1em;
-	}
-
-.section[class*='bottom'] a {
-	color: #c00;
-}
-
-.weighted {
-	list-style-type: none;
-	padding: 0;
-	margin: 0 0 0 16px;
-}
-
-.more {
-	border-top: 4px solid #eee;
-	padding-top: 1em;
+table.tablesorter thead th:first-child {
+	padding-left: 6px;
+	padding-right: 6px;
 }
 
 span.info {
 	font-size: 7pt;
 	color: gray;
+}
+
+.extensible {
+	max-height: 30em;
+	overflow: auto;
+	box-shadow: inset 0 -2em 1em -1em #eee;
 }

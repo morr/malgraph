@@ -7,127 +7,98 @@
 	</h2>
 </div>
 
-<?php for ($x = 0; $x <= 1; $x ++): ?>
-	<?php if ($x == 0): ?>
-		<div class="section producers top-producers">
-	<?php else: ?>
-		<div class="section producers bottom-producers">
-	<?php endif ?>
-		<h3>
-			<?php if ($x == 0): ?>
-				<i data-title="Producers this user probably likes, according to some complex mathematics." class="tooltipable icon-tooltip"></i>
-				Most liked producers
+<div class="section producers producers">
+	<h3>
+		<i data-title="List of producers this user might like." class="tooltipable icon-tooltip"></i>
+		Producers
+	</h3>
+	<div class="section-body">
+		<div class="wrapper extensible">
+
+			<?php if (empty($this->user[$this->am]['producers'])): ?>
+				<p>This module won't work without ratings.</p>
+				<p>Rate a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
 			<?php else: ?>
-				<i data-title="Producers this user probably dislikes, according to some complex mathematics." class="tooltipable icon-tooltip"></i>
-				Least liked producers
+				<table class="tablesorter">
+					<thead>
+						<tr>
+							<th class="ord">#</th>
+							<th class="title">Title</th>
+							<th class="count"><span class="tooltipable" data-tooltip"Count of titles from this studio user has on their list">C</span></th>
+							<th class="mean">Mean</th>
+							<th class="time">Hours</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php $i = 1 ?>
+					<?php foreach ($this->user[$this->am]['producers'] as $producer): ?>
+						<tr>
+							<td class="ord"><?php echo $i ++ ?></td>
+							<td class="title">
+								<a
+									<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+										href="http://myanimelist.net/people/<?php echo $producer['id'] ?>/"
+									<?php else: ?>
+										href="http://myanimelist.net/anime.php?p=<?php echo $producer['id'] ?>"
+									<?php endif ?>
+								>
+									<i class="icon-pop-out"></i>
+								</a>
+								&nbsp;
+								<a class="more-trigger" data-id="<?php echo $producer['id'] ?>" href="#">
+									<?php echo htmlspecialchars($producer['name']) ?>
+								</a>
+							</td>
+							<td class="count"><?php printf('%d', count($producer['entries'])) ?></td>
+							<td class="mean"><?php printf('%.02f', $producer['mean-time']) ?></td>
+							<td class="time"><?php printf('%.02f', $producer['total-time'] / 60.0) ?>h</td>
+						</tr>
+					<?php endforeach ?>
+				</table>
 			<?php endif ?>
-		</h3>
-		<div class="section-body">
-			<div class="wrapper wrapper-target">
+			<div class="clear"></div>
+		</div>
 
-				<div class="target">
-					<?php
-						if ($x == 0) {
-							$slice = array_slice($this->user[$this->am]['producers'], 0, 10);
-						} else {
-							$slice = array_slice($this->user[$this->am]['producers'], -10);
-							//reverse score order in least favorite list
-							foreach ($slice as &$producer) {
-								$producer['entries'] = array_reverse($producer['entries']);
-							}
-							unset($producer);
-						}
-					?>
-
-					<?php if (empty($slice)): ?>
-						<p>This module won't work without ratings.</p>
-						<p>Rate a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
+		<div class="wrapper wrapper-more">
+			<?php foreach ($this->user[$this->am]['producers'] as $producer): ?>
+				<div class="more" data-id="<?php echo $producer['id'] ?>">
+					<p>
+						<?php echo ucfirst($this->mgHelper->amText()) ?>
+						&nbsp;from&nbsp;
+						<?php echo $producer['name'] ?>
+						&nbsp;(<?php echo count($producer['entries']) ?>):
+					</p>
+					<?php if (empty($producer['entries'])): ?>
+						<p>None!</p>
+					<?php elseif ($this->user[$this->am]['private']): ?>
+						<p>This list is private.</p>
 					<?php else: ?>
-						<table>
-							<thead>
-								<tr>
-									<th class="ord">#</th>
-									<td class="title">Title</td>
-									<td class="mean">Mean</td>
-									<td class="time">Time&nbsp;spent</td>
-									<td class="eval">&bdquo;Value&rdquo;</td>
-								</tr>
-							</thead>
-							<tbody>
-							<?php $i = $x == 0 ? 1 : 10 ?>
-							<?php foreach ($slice as $producer): ?>
-								<tr>
-									<td class="ord"><?php echo $i; $i += $x == 0 ? 1 : - 1 ?></td>
-									<td class="title">
-										<a
-											<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
-												href="http://myanimelist.net/people/<?php echo $producer['id'] ?>/"
-											<?php else: ?>
-												href="http://myanimelist.net/anime.php?p=<?php echo $producer['id'] ?>"
-											<?php endif ?>
-										>
-											<i class="icon-pop-out"></i>
-										</a>
-										&nbsp;
-										<a class="more-trigger" data-id="<?php echo $producer['id'] ?>" href="#">
-											<?php echo htmlspecialchars($producer['name']) ?>
-										</a>
-									</td>
-									<td class="mean"><?php printf('%.02f', $producer['mean-time']) ?></td>
-									<td class="time"><?php printf('%.02f', $producer['total-time'] / 60.0) ?>h</td>
-									<td class="eval"><?php printf('%.02f', $producer['value']) ?>&nbsp;pt</td>
-								</tr>
+						<ul>
+							<?php foreach ($producer['entries'] as $e): ?>
+								<li>
+									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
+										<?php echo $e['full']['title'] ?>
+									</a>
+									&nbsp;<span class="info">(
+										<?php if ($e['user']['score'] == 0): ?>
+											unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
+										<?php else: ?>
+											rated&nbsp;with&nbsp;<?php echo $e['user']['score'] ?>
+										<?php endif ?>
+									, <?php echo $e['user']['total-time'] ?>&nbsp;min.)</span>
+								</li>
 							<?php endforeach ?>
-						</table>
+						</ul>
 					<?php endif ?>
+					<p>
+						Mean score: <?php printf('%.02f', $producer['mean-score']) ?><br>
+						Weighted mean score: <?php printf('%.02f', $producer['mean-time']) ?><br>
+					</p>
 				</div>
-				<div class="clear"></div>
-			</div>
-
-			<div class="wrapper wrapper-more">
-				<?php foreach ($slice as $producer): ?>
-					<div class="more" data-id="<?php echo $producer['id'] ?>">
-						<p>
-							<?php echo ucfirst($this->mgHelper->amText()) ?>
-							&nbsp;from&nbsp;
-							<?php echo $producer['name'] ?>
-							&nbsp;(<?php echo count($producer['entries']) ?>):
-						</p>
-						<?php if (empty($producer['entries'])): ?>
-							<p>None!</p>
-						<?php elseif ($this->user[$this->am]['private']): ?>
-							<p>This list is private.</p>
-						<?php else: ?>
-							<ul>
-								<?php foreach ($producer['entries'] as $e): ?>
-									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-											<?php echo $e['full']['title'] ?>
-										</a>
-										&nbsp;<span class="info">(
-											<?php if ($e['user']['score'] == 0): ?>
-												unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
-											<?php else: ?>
-												rated&nbsp;with&nbsp;<?php echo $e['user']['score'] ?>
-											<?php endif ?>
-										, <?php echo $e['user']['total-time'] ?>&nbsp;min.)</span>
-									</li>
-								<?php endforeach ?>
-							</ul>
-						<?php endif ?>
-						<p>
-							Mean score: <?php printf('%.02f', $producer['mean-score']) ?><br>
-							<strong>Weighted mean score: <?php printf('%.02f', $producer['mean-time']) ?></strong><br>
-							Evaluated value: <?php printf('%f', $producer['value']) ?>
-						</p>
-					</div>
-				<?php endforeach ?>
-			</div>
-
+			<?php endforeach ?>
 		</div>
 	</div>
-
-<?php endfor ?>
+</div>
 
 <script type="text/javascript">
 	$('#user-<?php echo $this->user['user-safe-id'] ?> .more-trigger').click(function(e) {
@@ -136,7 +107,28 @@
 		toggleWithinSections(target, true);
 		e.preventDefault();
 	});
-	$(function() {
-		$('.section').css('height', 'auto');
-	});
 </script>
+
+<?php if ($this->user == reset($this->users)): ?>
+	<script type="text/javascript">
+		$(function() {
+			$('.section').css('height', 'auto');
+			$.tablesorter.addWidget({
+				id: 'ord',
+				format: function(table) {
+					for (var i = 0; i < table.tBodies[0].rows.length; i ++) {
+						$('tbody tr:eq(' + (i - 1) + ') td:first', table).text(i);
+					}
+				}
+			});
+
+			$('.producers table').tablesorter({
+				headers: { 0: { sorter: false }, 4: { sorter: 'percent' } },
+				widgets: ['ord'],
+				sortList: [[4,1]]
+			});
+
+			$('.extensible').jScrollPane();
+		});
+	</script>
+<?php endif ?>
