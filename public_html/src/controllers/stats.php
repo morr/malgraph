@@ -595,8 +595,11 @@ class StatsController extends AbstractController {
 		$excludedGenres = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedGenresDefFile), true);
 		$excludedGenreIds = array_map(function($e) { return $e['id']; }, $excludedGenres[$this->mgHelper->amText()]);
 		foreach ($this->view->users as &$u) {
-			$producers = array();
-			$genres = array();
+			$producers = [];
+			$genres = [];
+			$decades = [];
+			$years = [];
+
 			foreach ($u[$this->view->am]['entries'] as &$entry) {
 				if ($entry['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
 					continue;
@@ -639,8 +642,41 @@ class StatsController extends AbstractController {
 					}
 					$genres[$genre]['entries'] []= &$entry;
 				}
+
+				//years
+				$yearA = intval(substr($entry['full']['aired-from'], 0, 4));
+				$yearB = intval(substr($entry['full']['aired-to'], 0, 4));
+				if (!$yearA and !$yearB) {
+					$year = '?';
+				} elseif (!$yearA) {
+					$year = $yearB;
+				} elseif (!$yearB) {
+					$year = $yearA;
+				} else {
+					//$year = ($yearA + $yearB) >> 1;
+					$year = $yearA;
+				}
+				if (!isset($years[$year])) {
+					$years[$year] = [
+						'year' => $year,
+						'entries' => []
+					];
+				}
+				$years[$year]['entries'] []= &$entry;
+
+
+				//decades
+				$decade = floor($year / 10) * 10;
+				if (!isset($decades[$decade])) {
+					$decades[$decade] = [
+						'decade' => $decade,
+						'entries' => []
+					];
+				}
+				$decades[$decade]['entries'] []= &$entry;
 			}
 
+			//sort
 			foreach ($producers as &$producer) {
 				self::sortEntries($producer['entries'], 'score');
 			}
@@ -652,8 +688,14 @@ class StatsController extends AbstractController {
 
 			self::evaluateGroups($producers);
 			self::evaluateGroups($genres);
+			self::evaluateGroups($years);
+			self::evaluateGroups($decades);
+			ksort($years);
+			ksort($decades);
 			$u[$this->view->am]['producers'] = $producers;
 			$u[$this->view->am]['genres'] = $genres;
+			$u[$this->view->am]['years'] = $years;
+			$u[$this->view->am]['decades'] = $decades;
 		}
 	}
 

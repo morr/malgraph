@@ -9,7 +9,147 @@
 
 
 
-<div class="section producers producers">
+<div class="section decades">
+	<h3>
+		Decades
+	</h3>
+	<div class="section-body">
+
+		<div class="wrapper wrapper-target">
+			<div class="target"></div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="wrapper wrapper-more">
+			<?php foreach ($this->user[$this->am]['years'] as $k => $data): ?>
+				<div class="years more" data-id="<?php echo $k ?>">
+					<p>
+						<?php echo ucfirst($this->mgHelper->amText()) ?>
+						&nbsp;from&nbsp;
+						<?php echo $k ?>
+						:
+					</p>
+					<?php if (empty($data['entries'])): ?>
+						<p>None!</p>
+					<?php elseif ($this->user[$this->am]['private']): ?>
+						<p>This list is private.</p>
+					<?php else: ?>
+						<ul>
+							<?php foreach ($data['entries'] as $e): ?>
+								<li>
+									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
+										<?php echo $e['full']['title'] ?>
+									</a>
+									&nbsp;(
+									<?php if ($e['user']['score'] == 0): ?>
+										unrated
+									<?php else: ?>
+										rated with <?php echo $e['user']['score'] ?>
+									<?php endif ?>
+									)
+								</li>
+							<?php endforeach ?>
+						</ul>
+					<?php endif ?>
+				</div>
+			<?php endforeach ?>
+			<?php foreach ($this->user[$this->am]['decades'] as $k => $data): ?>
+				<div class="decades more" data-id="<?php echo $k ?>">
+					<p>
+						<?php echo ucfirst($this->mgHelper->amText()) ?>
+						&nbsp;from&nbsp;
+						<?php echo $k ?>
+						s:
+					</p>
+					<?php if (empty($data['entries'])): ?>
+						<p>None!</p>
+					<?php elseif ($this->user[$this->am]['private']): ?>
+						<p>This list is private.</p>
+					<?php else: ?>
+						<ul>
+							<?php foreach ($data['entries'] as $e): ?>
+								<li>
+									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
+										<?php echo $e['full']['title'] ?>
+									</a>
+									&nbsp;(
+									<?php if ($e['user']['score'] == 0): ?>
+										unrated
+									<?php else: ?>
+										rated with <?php echo $e['user']['score'] ?>
+									<?php endif ?>
+									)
+								</li>
+							<?php endforeach ?>
+						</ul>
+					<?php endif ?>
+				</div>
+			<?php endforeach ?>
+		</div>
+
+		<script type="text/javascript">
+			$('#user-<?php echo $this->user['user-safe-id'] ?> .decades .target').each(function() {
+				var chart = new Highcharts.Chart({
+					chart: { renderTo: this, type: 'line', marginTop: 8 },
+					xAxis: { reversed: true,
+						categories: <?php echo json_encode(array_keys($this->user[$this->am]['years'])) ?>,
+						labels: { enabled: false },
+						title: { text: 'Decades', margin: 15 },
+						<?php $json = [];
+							$i = 0;
+							foreach ($this->user[$this->am]['decades'] as $decade) {
+								if ($i ++ % 2 == 0) {
+									$json []= [
+										'from' => $decade['decade'] - 0.5,
+										'to' => $decade['decade'] + 9.5,
+										'color' => 'rgba(200, 230, 255, 0.2)',
+										'label' => ['text' => $decade['decade'] . 's'],
+										'zIndex' => 3,
+									];
+								}
+							} ?>
+						plotBands: <?php echo json_encode($json) ?>
+					},
+					yAxis: { title: { text: 'Mean' } },
+					tooltip: { formatter: function() {
+						var text = 'Mean score of titles from ';
+						if (this.series.name == 'decades') {
+							text += Math.floor(this.x / 10) * 10;
+							text += 's';
+						} else {
+							text += this.x;
+						}
+						text += ': ';
+						if (this.y == 0) {
+							text += 'unrated!';
+						} else {
+							text += Math.round(this.y * 100) / 100.0;
+						}
+						return text; } },
+					series: [ {
+						name: 'years',
+						data: <?php echo json_encode(array_map(function($data) { return [$data['year'], $data['mean-score']]; }, array_values($this->user[$this->am]['years']))) ?>,
+						point: { events: { click: function(e) {
+							toggleWithinSections($('.decades .years.more[data-id=\'' + this.category + '\']'), true);
+						} } }
+					}, {
+						name: 'decades',
+						data: <?php echo json_encode(array_map(function($data) { return [$data['decade'] + 4.5, $data['mean-score']]; }, array_values($this->user[$this->am]['decades']))) ?>,
+						point: { events: { click: function(e) {
+							var decade = Math.floor(this.category / 10) * 10;
+							toggleWithinSections($('.decades .decades.more[data-id=\'' + decade + '\']'), true);
+						} } }
+					} ],
+					plotOptions: { column: { pointWidth: 17 } }
+				});
+			});
+		</script>
+	</div>
+</div>
+
+
+
+<div class="section producers">
 	<h3>
 		<i data-title="List of producers this user might like." class="tooltipable icon-tooltip"></i>
 		Producers

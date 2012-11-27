@@ -1,3 +1,8 @@
+.decades .target {
+	height: 300px;
+	width: 100%;
+}
+
 table {
 	width: 100%;
 }
@@ -5,10 +10,10 @@ table {
 	table .ord { text-align: center; }
 	table .mean, table .time, table .count { text-align: right; }
 
-table.tablesorter thead th:first-child {
-	padding-left: 6px;
-	padding-right: 6px;
-}
+	table.tablesorter thead th:first-child {
+		padding-left: 6px;
+		padding-right: 6px;
+	}
 
 span.info {
 	font-size: 7pt;
