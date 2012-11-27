@@ -74,7 +74,7 @@ abstract class AMModel extends JSONDB {
 		$entry['aired-string'] = $this->mgHelper->fixText($xpath->query('//span[starts-with(text(), \'Aired\') or starts-with(text(), \'Published\')]')->item(0)->nextSibling->textContent);
 		if (strpos($entry['aired-string'], ' to ') !== false) {
 			$entry['aired-from'] = $this->mgHelper->fixDate(substr($entry['aired-string'], 0, strrpos($entry['aired-string'], ' to ')));
-			$entry['aired-fo'] = $this->mgHelper->fixDate(substr($entry['aired-string'], strrpos($entry['aired-string'], ' to ') + 4));
+			$entry['aired-to'] = $this->mgHelper->fixDate(substr($entry['aired-string'], strrpos($entry['aired-string'], ' to ') + 4));
 		} else {
 			$entry['aired-from'] = $entry['aired-to'] = $this->mgHelper->fixDate($entry['aired-string']);
 		}
