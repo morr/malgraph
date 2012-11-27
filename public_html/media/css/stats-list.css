@@ -9,23 +9,14 @@ div.table {
 	td.no-score { color: #aaa; }
 	.compare-mode tr.unique .score { color: #ddd; }
 
-table {
-	width: 100%;
-	border-spacing: 0;
+th,
+td {
+	padding: 2px 2px;
+	text-align: center;
 }
-	th,
-	td {
-		padding: 2px 2px;
-		text-align: center;
-	}
-		th.title,
-		td.title {
-			width: 100%;
-			padding: 2px 8px;
-			text-align: left;
-		}
-
-
-	tr:hover td {
-		background: #f5f5f5;
+	th.title,
+	td.title {
+		width: 100%;
+		padding: 2px 8px;
+		text-align: left;
 	}

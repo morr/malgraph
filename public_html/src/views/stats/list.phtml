@@ -145,10 +145,14 @@
 	<script type="text/javascript">
 		$(function() {
 			$('table').tablesorter({
-				textExtraction: function(o) {
-					return $(o).attr('data-sorter');
+				textExtraction: function(node) {
+					return $(node).attr('data-sorter');
 				},
-				sortList: [[3,1],[2,0]]
+				<?php if (count($this->sers) > 1): ?>
+					sortList: [[3,1],[2,0]]
+				<?php else: ?>
+					sortList: [[2,1],[1,0]]
+				<?php endif ?>
 			});
 		});
 	</script>
