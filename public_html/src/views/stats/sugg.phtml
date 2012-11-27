@@ -1,0 +1,55 @@
+<div class="section">
+	<h2>
+		<?php echo ucfirst($this->mgHelper->amText()) ?> suggestions for 
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
+			<?php echo $this->user['visible-name'] ?>
+		</a>
+	</h2>
+</div>
+
+<div class="section missing">
+	<h3>
+		<i data-title="List of titles related to those you`ve seen, sorted by score." class="tooltipable icon-tooltip"></i>
+		Missing titles
+	</h3>
+	<div class="section-body">
+
+		<?php if (empty($this->user['proposed-entries'])): ?>
+			<p>Waai! No missing relations!</p>
+		<?php else: ?>
+
+			<table>
+				<thead>
+				</thead>
+				<tbody>
+					<?php foreach ($this->user['proposed-entries'] as $data): ?>
+						<tr id="sug-row-<?php echo $this->am ?>-<?php echo $data['entry']['full']['id'] ?>">
+							<td class="subject">
+								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $data['entry']['full']['id'] ?>">
+									<?php echo htmlspecialchars($data['entry']['full']['title']) ?>
+								</a>
+							</td>
+							<td class="proposed">
+								<ul>
+									<?php foreach ($data['entries'] as $subEntry): ?>
+										<?php if (empty($subEntry['title'])): ?>
+											<?php trigger_error('Invalid entry ' . json_encode($subEntry) . ' for user ' . $this->user['user-name'], E_USER_WARNING) ?>
+											<?php continue ?>
+										<?php else: ?>
+											<li id="sug-elem-<?php echo $this->mgHelper->amText() ?>-<?php echo $subEntry['id'] ?>">
+												<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $subEntry['id'] ?>">
+													<?php echo htmlspecialchars($subEntry['title']) ?>
+												</a>
+											</li>
+										<?php endif ?>
+									<?php endforeach ?>
+								</ul>
+							</td>
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		<?php endif ?>
+
+	</div>
+</div>

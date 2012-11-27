@@ -584,7 +584,6 @@ class StatsController extends AbstractController {
 		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 
 		$this->loadUsers();
@@ -696,6 +695,52 @@ class StatsController extends AbstractController {
 			$u[$this->view->am]['genres'] = $genres;
 			$u[$this->view->am]['years'] = $years;
 			$u[$this->view->am]['decades'] = $decades;
+		}
+	}
+
+
+
+	public function suggAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+
+		foreach ($this->view->users as &$u) {
+			$proposedEntries = array();
+
+			//self::sortEntries($u[$this->view->am]['entries'], 'score');
+
+			foreach ($u[$this->view->am]['entries'] as &$entry) {
+				if ($entry['user']['status'] != UserModel::USER_LIST_STATUS_COMPLETED) {
+					continue;
+				}
+				foreach ($entry['full']['related'] as $data) {
+					//proposed entry is already on user's list and it's not on PTW list
+					if (isset($u[$this->view->am]['entries'][$data['id']])/* and $u[$this->view->am]['entries'][$data['id']]['user']['status'] != UserModel::USER_LIST_STATUS_PLANNED*/) {
+						continue;
+					}
+					if ($this->mgHelper->amText() != $data['type']) {
+						continue;
+					}
+
+					if (!isset($proposedEntries[$entry['full']['id']])) {
+						$proposedEntries[$entry['full']['id']] = [
+							'entry' => &$entry,
+							'entries' => [],
+						];
+					}
+					if ($this->view->am == AMModel::ENTRY_TYPE_ANIME) {
+						$model = new AnimeModel();
+					} else {
+						$model = new MangaModel();
+					}
+					$entry2 = $model->get($data['id']);
+					$proposedEntries[$entry['full']['id']]['entries'] []= $entry2;
+				}
+			}
+
+			uasort($proposedEntries, function($a, $b) { return $b['entry']['user']['score'] - $a['entry']['user']['score']; });
+
+			$u['proposed-entries'] = $proposedEntries;
 		}
 	}
 
