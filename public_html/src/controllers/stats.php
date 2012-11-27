@@ -260,7 +260,7 @@ class StatsController extends AbstractController {
 
 
 
-	public function achAction() {
+	public function achiAction() {
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 
 		$this->loadUsers();
@@ -395,7 +395,7 @@ class StatsController extends AbstractController {
 
 
 
-	public function ratAction() {
+	public function ratiAction() {
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
