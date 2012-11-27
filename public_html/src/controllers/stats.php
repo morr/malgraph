@@ -510,6 +510,7 @@ class StatsController extends AbstractController {
 			}
 		}
 
+		//define some handy constants
 		define('IMAGE_TYPE_ANIME', 1);
 		define('IMAGE_TYPE_MANGA', 2);
 		define('IMAGE_TYPE_ANIME_MANGA', 3);
@@ -519,11 +520,13 @@ class StatsController extends AbstractController {
 		define('COLOR_BAR_GUIDES_1', 2);
 		define('COLOR_BAR_GUIDES_2', 3);
 		define('COLOR_BACKGROUND', 4);
-		define('COLOR_FONT_DARK', 5);
-		define('COLOR_FONT_LIGHT', 6);
-		define('COLOR_TITLE', 7);
-		define('COLOR_LOGO', 8);
+		define('COLOR_BACKGROUND2', 5);
+		define('COLOR_FONT_DARK', 6);
+		define('COLOR_FONT_LIGHT', 7);
+		define('COLOR_TITLE', 8);
+		define('COLOR_LOGO', 9);
 
+		//get input data from GET
 		$this->view->user = reset($this->view->users);
 		if (!empty($_GET['type'])) {
 			switch ($_GET['type']) {
@@ -550,12 +553,14 @@ class StatsController extends AbstractController {
 			COLOR_BAR_GUIDES_1 => 'line1',
 			COLOR_BAR_GUIDES_2 => 'line2',
 			COLOR_BACKGROUND => 'back',
+			COLOR_BACKGROUND2 => 'back2',
 			COLOR_FONT_DARK => 'font1',
 			COLOR_FONT_LIGHT => 'font2',
 			COLOR_TITLE => 'title',
 			COLOR_LOGO => 'logo'
 		];
 
+		//sanitize input
 		foreach ($defs as $key => $constant) {
 			if (isset($_GET[$constant])) {
 				$value = $_GET[$constant];
@@ -568,17 +573,29 @@ class StatsController extends AbstractController {
 			}
 		}
 
+		if (empty($this->view->colors[COLOR_BACKGROUND2])) {
+			$this->view->colors[COLOR_BACKGROUND2] = $this->view->colors[COLOR_BACKGROUND];
+		}
 		if (empty($this->view->colors[COLOR_LOGO])) {
 			$this->view->colors[COLOR_LOGO] = $this->view->colors[COLOR_TITLE];
 		}
 
+		//finally render image
 		$this->config->chibi->runtime->layoutName = null;
-		//header('Content-type: text/plain; charset=utf-8');
 		header('Content-type: image/png');
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
-
 		$this->view->render();
+
+		//refresh user data AFTER rendering image
+		//because this is an image, we don't send ajax refresh requests
+		//and since they can stop visiting the site except for this image,
+		//we gotta do an update HERE, where we present image to given user
+		$modelUsers = new UserModel();
+		try {
+			$user = $modelUsers->get($this->view->user['user-name']);
+		} catch (Exception $e) {
+		}
 	}
 
 

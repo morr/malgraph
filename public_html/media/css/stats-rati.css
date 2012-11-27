@@ -5,5 +5,28 @@
 }
 
 ul.infobox {
-	height: 190px;
+	height: 240px;
 }
+
+.more.export div.wrapper {
+	margin-left: 2em;
+}
+	.more.export div.header {
+		margin-bottom: 10px;
+	}
+		.more.export select {
+			float: left;
+			margin: 0 10px 0 0;
+			width: 180px;
+		}
+			.more.export select[name='type'] {
+				width: 120px;
+			}
+		.more.export button {
+			margin: 0;
+			float: left;
+		}
+	.more.export textarea {
+		width: 400px;
+		height: 100px;
+	}

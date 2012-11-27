@@ -234,7 +234,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 		gradient($img, $x1, $y1 - 1, $x2, $y1 - 1, $this->colors[COLOR_BAR_GUIDES_1], $this->colors[COLOR_BAR_GUIDES_2]);
 		gradient($img, $x1, $y1, $x2, $y2, $this->colors[COLOR_BARS_1], $this->colors[COLOR_BARS_2]);
 		$x1 = $x1 + ($barWidth - 1) * $this->user[$am]['score-info']['dist-score'][$score] / max(1, $this->user[$am]['score-info']['rated-max']);
-		imagefilledrectangle ($img, $x1, $y1, $x2, $y2, makeColor($this->colors[COLOR_BACKGROUND]));
+		imagefilledrectangle ($img, $x1, $y1, $x2, $y2, makeColor($this->colors[COLOR_BACKGROUND2]));
 	}
 
 	$x = $tc[TEXT_SCORE]['width'] + $tc[TEXT_SCORE]['padding'];
@@ -299,7 +299,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 			gradient($img, $x1, $y1 - 1, $x2, $y1 - 1, $this->colors[COLOR_BAR_GUIDES_1], $this->colors[COLOR_BAR_GUIDES_2]);
 			gradient($img, $x1, $y1, $x2, $y2, $this->colors[COLOR_BARS_1], $this->colors[COLOR_BARS_2]);
 			$x1 += $mul * (($barWidth - 1) * $this->user[$am]['score-info']['dist-score'][$score] / max(1, $this->user[$am]['score-info']['rated-max']));
-			imagefilledrectangle ($img, $x1, $y1, $x2, $y2, makeColor($this->colors[COLOR_BACKGROUND]));
+			imagefilledrectangle ($img, $x1, $y1, $x2, $y2, makeColor($this->colors[COLOR_BACKGROUND2]));
 		}
 		$x = ($w >> 1) + (($tc[TEXT_SCORE]['width'] >> 1) + $tc[TEXT_SCORE]['padding']) * $mul;
 		if ($am == AMModel::ENTRY_TYPE_ANIME) {
