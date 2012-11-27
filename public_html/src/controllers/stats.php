@@ -205,10 +205,9 @@ class StatsController extends AbstractController {
 
 
 	/*
-	 * Assign each group of entries some value
+	 * Calculate for each group of entries some basic statistics
 	 */
 	private static function evaluateGroups(&$groups) {
-		//score related evaluation
 		$global = [];
 		$global['mean-score'] = 0;
 		$global['unrated'] = 0;
@@ -218,6 +217,7 @@ class StatsController extends AbstractController {
 			$group['rated'] = 0;
 			$group['unrated'] = 0;
 			$group['mean-score'] = 0;
+			$group['total-time'] = 0;
 			foreach ($group['entries'] as &$entry) {
 				$score = $entry['user']['score'];
 				if ($score > 0) {
@@ -229,41 +229,13 @@ class StatsController extends AbstractController {
 					$group['unrated'] ++;
 					$global['unrated'] ++;
 				}
+				$time = $entry['user']['total-time'];
+				$group['total-time'] += $time;
 			}
 			$group['mean-score'] /= max(1, $group['rated']);
 			$global['rated-max'] = max($group['rated'], $global['rated-max']);
 		}
 		$global['mean-score'] /= max(1, $global['rated']);
-
-		//time related evaluation
-		$global['total-time'] = 0;
-		$global['mean-time'] = 0;
-		foreach ($groups as &$group) {
-			$group['total-time'] = 0;
-			$group['mean-time'] = 0;
-			foreach ($group['entries'] as &$entry) {
-				$time = $entry['user']['total-time'];
-				$group['total-time'] += $time;
-				$global['total-time'] += $time;
-
-				$score = $entry['user']['score'];
-				if ($score == 0) {
-					$score = $group['mean-score'];
-				}
-				if ($score == 0) {
-					$score = $global['mean-score'];
-				}
-				if ($score == 0) {
-					// this happens when nothing is rated in given list.
-					$score = 5;
-				}
-
-				$group['mean-time'] += $score * $time;
-				$global['mean-time'] += $score * $time;
-			}
-			$group['mean-time'] /= max(1, $group['total-time']);
-		}
-		$global['mean-time'] /= max(1, $global['total-time']);
 	}
 
 
@@ -618,32 +590,26 @@ class StatsController extends AbstractController {
 		$this->loadUsers();
 		$this->loadEntries();
 
-		$excludedList = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedProducersDefFile), true);
+		$excludedProducers = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedProducersDefFile), true);
+		$excludedProducerIds = array_map(function($e) { return $e['id']; }, $excludedProducers[$this->mgHelper->amText()]);
+		$excludedGenres = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedGenresDefFile), true);
+		$excludedGenreIds = array_map(function($e) { return $e['id']; }, $excludedGenres[$this->mgHelper->amText()]);
 		foreach ($this->view->users as &$u) {
 			$producers = array();
+			$genres = array();
 			foreach ($u[$this->view->am]['entries'] as &$entry) {
 				if ($entry['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
 					continue;
 				}
-				$datas = array();
+
+				//producers
 				if ($entry['full']['type'] == AMModel::ENTRY_TYPE_MANGA) {
-					foreach ($entry['full']['authors'] as $data) {
-						$datas []= $data;
-					}
+					$x = &$entry['full']['authors'];
 				} else {
-					foreach ($entry['full']['producers'] as $data) {
-						$datas []= $data;
-					}
+					$x = &$entry['full']['producers'];
 				}
-				foreach ($datas as $data) {
-					$excluded = false;
-					foreach ($excludedList[$this->mgHelper->amText()] as $excludedEntry) {
-						if ($excludedEntry['id'] == $data['id']) {
-							$excluded = true;
-							break;
-						}
-					}
-					if ($excluded) {
+				foreach ($x as $data) {
+					if (in_array($data['id'], $excludedProducerIds)) {
 						continue;
 					}
 					$producer = $data['name'];
@@ -656,13 +622,38 @@ class StatsController extends AbstractController {
 					}
 					$producers[$producer]['entries'] []= &$entry;
 				}
+				unset ($x);
+
+				//genres
+				foreach ($entry['full']['genres'] as $data) {
+					if (in_array($data['id'], $excludedGenreIds)) {
+						continue;
+					}
+					$genre = $data['name'];
+					if (!isset($genres[$genre])) {
+						$genres[$genre] = [
+							'entries' => array(),
+							'id' => $data['id'],
+							'name' => $data['name']
+						];
+					}
+					$genres[$genre]['entries'] []= &$entry;
+				}
 			}
+
 			foreach ($producers as &$producer) {
 				self::sortEntries($producer['entries'], 'score');
 			}
-			unset($producer);
+			unset ($producer);
+			foreach ($genres as &$genre) {
+				self::sortEntries($genre['entries'], 'score');
+			}
+			unset ($genre);
+
 			self::evaluateGroups($producers);
+			self::evaluateGroups($genres);
 			$u[$this->view->am]['producers'] = $producers;
+			$u[$this->view->am]['genres'] = $genres;
 		}
 	}
 

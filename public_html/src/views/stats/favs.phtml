@@ -7,6 +7,8 @@
 	</h2>
 </div>
 
+
+
 <div class="section producers producers">
 	<h3>
 		<i data-title="List of producers this user might like." class="tooltipable icon-tooltip"></i>
@@ -16,8 +18,8 @@
 		<div class="wrapper extensible">
 
 			<?php if (empty($this->user[$this->am]['producers'])): ?>
-				<p>This module won't work without ratings.</p>
-				<p>Rate a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
+				<p>Looks like there are no known producers for this user.</p>
+				<p>Add a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
 			<?php else: ?>
 				<table class="tablesorter">
 					<thead>
@@ -50,7 +52,13 @@
 								</a>
 							</td>
 							<td class="count"><?php printf('%d', count($producer['entries'])) ?></td>
-							<td class="mean"><?php printf('%.02f', $producer['mean-time']) ?></td>
+							<td class="mean">
+								<?php if ($producer['mean-score'] == 0): ?>
+									-
+								<?php else: ?>
+									<?php printf('%.02f', $producer['mean-score']) ?>
+								<?php endif ?>
+							</td>
 							<td class="time"><?php printf('%.02f', $producer['total-time'] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>
@@ -90,22 +98,111 @@
 							<?php endforeach ?>
 						</ul>
 					<?php endif ?>
-					<p>
-						Mean score: <?php printf('%.02f', $producer['mean-score']) ?><br>
-						Weighted mean score: <?php printf('%.02f', $producer['mean-time']) ?><br>
-					</p>
 				</div>
 			<?php endforeach ?>
 		</div>
 	</div>
 </div>
 
+
+
+<div class="section genres">
+	<h3>
+		<i data-title="List of genres this user might like." class="tooltipable icon-tooltip"></i>
+		Genres
+	</h3>
+	<div class="section-body">
+		<div class="wrapper extensible">
+
+			<?php if (empty($this->user[$this->am]['genres'])): ?>
+				<p>Looks like there are no known genres for this user.</p>
+				<p>Add a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
+			<?php else: ?>
+				<table class="tablesorter">
+					<thead>
+						<tr>
+							<th class="ord">#</th>
+							<th class="title">Title</th>
+							<th class="count"><span class="tooltipable" data-title="Count of titles from this genre user has on their list">C</span></th>
+							<th class="mean">Mean</th>
+							<th class="time">Hours</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php $i = 1 ?>
+					<?php foreach ($this->user[$this->am]['genres'] as $genre): ?>
+						<tr>
+							<td class="ord"><?php echo $i ++ ?></td>
+							<td class="title">
+								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>.php?genre[]=<?php echo $genre['id'] ?>">
+									<i class="icon-pop-out"></i>
+								</a>
+								&nbsp;
+								<a class="more-trigger" data-id="<?php echo $genre['id'] ?>" href="#">
+									<?php echo htmlspecialchars(ucfirst($genre['name'])) ?>
+								</a>
+							</td>
+							<td class="count"><?php printf('%d', count($genre['entries'])) ?></td>
+							<td class="mean">
+								<?php if ($genre['mean-score'] == 0): ?>
+									-
+								<?php else: ?>
+									<?php printf('%.02f', $genre['mean-score']) ?>
+								<?php endif ?>
+							</td>
+							<td class="time"><?php printf('%.02f', $genre['total-time'] / 60.0) ?>h</td>
+						</tr>
+					<?php endforeach ?>
+				</table>
+			<?php endif ?>
+			<div class="clear"></div>
+		</div>
+
+		<div class="wrapper wrapper-more">
+			<?php foreach ($this->user[$this->am]['genres'] as $genre): ?>
+				<div class="more" data-id="<?php echo $genre['id'] ?>">
+					<p>
+						<?php echo ucfirst($this->mgHelper->amText()) ?>
+						&nbsp;from&nbsp;
+						<?php echo $genre['name'] ?>
+						&nbsp;(<?php echo count($genre['entries']) ?>):
+					</p>
+					<?php if (empty($genre['entries'])): ?>
+						<p>None!</p>
+					<?php elseif ($this->user[$this->am]['private']): ?>
+						<p>This list is private.</p>
+					<?php else: ?>
+						<ul>
+							<?php foreach ($genre['entries'] as $e): ?>
+								<li>
+									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
+										<?php echo $e['full']['title'] ?>
+									</a>
+									&nbsp;<span class="info">(
+										<?php if ($e['user']['score'] == 0): ?>
+											unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
+										<?php else: ?>
+											rated&nbsp;with&nbsp;<?php echo $e['user']['score'] ?>
+										<?php endif ?>
+									, <?php echo $e['user']['total-time'] ?>&nbsp;min.)</span>
+								</li>
+							<?php endforeach ?>
+						</ul>
+					<?php endif ?>
+				</div>
+			<?php endforeach ?>
+		</div>
+	</div>
+</div>
+
+
+
 <script type="text/javascript">
 	$('#user-<?php echo $this->user['user-safe-id'] ?> .more-trigger').click(function(e) {
-		var k = $(this).attr('data-id');
-		var target = $('#user-<?php echo $this->user['user-safe-id'] ?> .more[data-id=\'' + k + '\']');
-		toggleWithinSections(target, true);
 		e.preventDefault();
+		var k = $(this).attr('data-id');
+		var target = $(this).parents('.section').find('.more[data-id=\'' + k + '\']');
+		toggleWithinSections(target, true);
 	});
 </script>
 
@@ -117,12 +214,12 @@
 				id: 'ord',
 				format: function(table) {
 					for (var i = 0; i < table.tBodies[0].rows.length; i ++) {
-						$('tbody tr:eq(' + (i - 1) + ') td:first', table).text(i);
+						$('tbody tr:eq(' + i + ') td:first', table).text(i + 1);
 					}
 				}
 			});
 
-			$('.producers table').tablesorter({
+			$('table').tablesorter({
 				headers: { 0: { sorter: false }, 4: { sorter: 'percent' } },
 				widgets: ['ord'],
 				sortList: [[2,1],[3,1]]
