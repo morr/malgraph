@@ -461,6 +461,128 @@ class StatsController extends AbstractController {
 
 
 
+	public function ratiImgAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+
+		//prepare info for view
+		foreach (array(AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA) as $am) {
+			foreach ($this->view->users as $i => &$u) {
+				$allScores = range(10, 0);
+
+				$scoreInfo = [];
+				$scoreInfo['dist-score'] = array_fill_keys($allScores, 0);
+				$scoreInfo['dist-entries'] = array_fill_keys($allScores, []);
+				foreach ($u[$am]['entries'] as $k => &$e) {
+					if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
+						continue;
+					}
+					$scoreInfo['dist-score'][$e['user']['score']] ++;
+					$scoreInfo['dist-entries'][$e['user']['score']] []= &$e;
+				}
+
+				//calculate rated and unrated count
+				$scoreInfo['unrated'] = $scoreInfo['dist-score'][0];
+				$scoreInfo['rated'] = array_sum($scoreInfo['dist-score']) - $scoreInfo['dist-score'][0];
+				$scoreInfo['rated-max'] = max(array_diff($scoreInfo['dist-score'], array(0 => $scoreInfo['dist-score'][0])));
+
+				//calculate mean
+				$scoreInfo['mean-score'] = 0;
+				foreach ($allScores as $score) {
+					$scoreInfo['mean-score'] += $score * $scoreInfo['dist-score'][$score];
+				}
+				$scoreInfo['mean-score'] /= max(1, $scoreInfo['rated']);
+
+				//calculate standard deviation
+				$scoreInfo['std-dev'] = 0;
+				foreach ($u[$am]['entries'] as &$e) {
+					if ($e['user']['score'] > 0) {
+						$scoreInfo['std-dev'] += pow($e['user']['score'] - $scoreInfo['mean-score'], 2);
+					}
+				}
+				$scoreInfo['std-dev'] /= max(1, $scoreInfo['rated'] - 1);
+				$scoreInfo['std-dev'] = sqrt($scoreInfo['std-dev']);
+
+				foreach ($scoreInfo['dist-entries'] as &$entries) {
+					self::sortEntries($entries, 'title');
+				}
+				$u[$am]['score-info'] = $scoreInfo;
+			}
+		}
+
+		define('IMAGE_TYPE_ANIME', 1);
+		define('IMAGE_TYPE_MANGA', 2);
+		define('IMAGE_TYPE_ANIME_MANGA', 3);
+
+		define('COLOR_BARS_1', 0);
+		define('COLOR_BARS_2', 1);
+		define('COLOR_BAR_GUIDES_1', 2);
+		define('COLOR_BAR_GUIDES_2', 3);
+		define('COLOR_BACKGROUND', 4);
+		define('COLOR_FONT_DARK', 5);
+		define('COLOR_FONT_LIGHT', 6);
+		define('COLOR_TITLE', 7);
+		define('COLOR_LOGO', 8);
+
+		$this->view->user = reset($this->view->users);
+		if (!empty($_GET['type'])) {
+			switch ($_GET['type']) {
+				case '2': $this->view->imageType = IMAGE_TYPE_MANGA; break;
+				case '3': $this->view->imageType = IMAGE_TYPE_ANIME_MANGA; break;
+				default: $this->view->imageType = IMAGE_TYPE_ANIME; break;
+			}
+		}
+
+		$this->view->colors = [
+			COLOR_BARS_1 =>       array('a' => 0x00, 'r' => 0xa4, 'g' => 0xc0, 'b' => 0xf4),
+			COLOR_BARS_2 =>       array('a' => 0x00, 'r' => 0x13, 'g' => 0x45, 'b' => 0x9a),
+			COLOR_BAR_GUIDES_1 => array('a' => 0xee, 'r' => 0xa4, 'g' => 0xc0, 'b' => 0xf4),
+			COLOR_BAR_GUIDES_2 => array('a' => 0xee, 'r' => 0x13, 'g' => 0x45, 'b' => 0x9a),
+			COLOR_BACKGROUND =>   array('a' => 0xff, 'r' => 0xff, 'g' => 0xff, 'b' => 0xff),
+			COLOR_FONT_DARK =>    array('a' => 0x00, 'r' => 0x00, 'g' => 0x00, 'b' => 0x00),
+			COLOR_FONT_LIGHT =>   array('a' => 0xaa, 'r' => 0x00, 'g' => 0x00, 'b' => 0x00),
+			COLOR_TITLE =>        array('a' => 0x00, 'r' => 0x57, 'g' => 0x7f, 'b' => 0xc2),
+		];
+
+		$defs = [
+			COLOR_BARS_1 => 'bar1',
+			COLOR_BARS_2 => 'bar2',
+			COLOR_BAR_GUIDES_1 => 'line1',
+			COLOR_BAR_GUIDES_2 => 'line2',
+			COLOR_BACKGROUND => 'back',
+			COLOR_FONT_DARK => 'font1',
+			COLOR_FONT_LIGHT => 'font2',
+			COLOR_TITLE => 'title',
+			COLOR_LOGO => 'logo'
+		];
+
+		foreach ($defs as $key => $constant) {
+			if (isset($_GET[$constant])) {
+				$value = $_GET[$constant];
+				if (strlen($value) != 8) {
+					throw new Exception('Wrong length for ' . $constant . ' (expected 8 characters)');
+				}
+				$value = array_map('hexdec', str_split($value, 2));
+				list($a, $r, $g, $b) = $value;
+				$this->view->colors[$key] = array('a' => $a, 'r' => $r, 'g' => $g, 'b' => $b);
+			}
+		}
+
+		if (empty($this->view->colors[COLOR_LOGO])) {
+			$this->view->colors[COLOR_LOGO] = $this->view->colors[COLOR_TITLE];
+		}
+
+		$this->config->chibi->runtime->layoutName = null;
+		//header('Content-type: text/plain; charset=utf-8');
+		header('Content-type: image/png');
+		header('Cache-Control: no-cache, must-revalidate');
+		header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+
+		$this->view->render();
+	}
+
+
+
 	public function actiAction() {
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
