@@ -7,6 +7,8 @@
 	</h2>
 </div>
 
+
+
 <div class="section score-dist">
 	<h3>
 		<i data-title="Count of all entries scored with given rating, in a bar chart form" class="tooltipable icon-tooltip"></i>
@@ -14,7 +16,7 @@
 	</h3>
 	<div class="section-body">
 		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
-			<p>This user doesn't seem to have anything rated. No chart here.</p>
+			<p>This user doesn`t seem to have anything rated. No chart here.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>
@@ -145,6 +147,8 @@
 	</div>
 </div>
 
+
+
 <div class="section score-time-dist">
 	<h3>
 		<i data-title="How much time have you spent on titles rated with given score?" class="tooltipable icon-tooltip"></i>
@@ -152,7 +156,7 @@
 	</h3>
 	<div class="section-body">
 		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
-			<p>This user doesn't seem to have anything rated. No chart here.</p>
+			<p>This user doesn`t seem to have anything rated. No chart here.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>
@@ -241,6 +245,8 @@
 		<?php endif ?>
 	</div>
 </div>
+
+
 
 <?php if ($this->user == reset($this->users)): ?>
 	<script type="text/javascript">

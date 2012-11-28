@@ -7,6 +7,8 @@
 	<?php endif ?>
 </div>
 
+
+
 <div class="section basic">
 	<!-- user name -->
 	<h2>
@@ -103,6 +105,8 @@
 </div>
 		<div class="clear"></div>
 
+
+
 <!-- friends -->
 <div class="section">
 	<h3>Friends (<?php echo count($this->user['friends']) ?>)</h3>
@@ -131,12 +135,14 @@
 	</div>
 </div>
 
+
+
 <!-- clubs -->
 <div class="section">
 	<h3>Clubs (<?php echo count($this->user['clubs']) ?>)</h3>
 	<div class="section-body">
 		<?php if (empty($this->user['clubs'])): ?>
-			<p>This user doesn't belong to any clubs.</p>
+			<p>This user doesn`t belong to any clubs.</p>
 		<?php elseif ($this->user['anonymous']): ?>
 			<p>This user is viewed anonymously. Clubs are not displayed.</p>
 		<?php else: ?>

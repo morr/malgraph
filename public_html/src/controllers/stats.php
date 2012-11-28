@@ -839,6 +839,84 @@ class StatsController extends AbstractController {
 
 
 
+	public function miscAction() {
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
+
+		$this->loadUsers();
+		$this->loadEntries();
+
+		foreach ($this->view->users as &$u) {
+			$u[$this->view->am]['dist-status'] = [];
+			$u[$this->view->am]['dist-subtype'] = [];
+			$u[$this->view->am]['dist-length'] = [];
+			$u[$this->view->am]['misc'] = [
+				'total-chapters' => 0,
+				'total-volumes' => 0,
+				'total-episodes' => 0
+			];
+			$keys = $this->view->am == AMModel::ENTRY_TYPE_ANIME ? [1, 6, 13, 26, 52, 100] : [1, 10, 25, 50, 100, 200];
+			for ($i = 0; $i < count($keys); $i ++) {
+				$a = $i == 0 ? $keys[0] : $keys[$i - 1] + 1;
+				$b = $keys[$i];
+				$str = $a == $b ? "$a" : "$a-$b";
+				$u[$this->view->am]['dist-length'] []= [
+					'a' => $a,
+					'b' => $b,
+					'text' => $str,
+					'entries' => []
+				];
+			}
+			$x = end($u[$this->view->am]['dist-length']);
+			$u[$this->view->am]['dist-length'] []= [
+				'a' => $x['b'] + 1,
+				'b' => null,
+				'text' => ($x['b'] + 1) . '+',
+				'entries' => []
+			];
+			foreach ($u[$this->view->am]['entries'] as &$entry) {
+				if ($this->view->am == AMModel::ENTRY_TYPE_MANGA) {
+					$u[$this->view->am]['misc']['total-volumes'] += $entry['user']['volumes-completed'];
+					$u[$this->view->am]['misc']['total-chapters'] += $entry['user']['chapters-completed'];
+				} else {
+					$u[$this->view->am]['misc']['total-episodes'] += $entry['user']['episodes-completed'];
+				}
+
+				if ($entry['user']['status'] == UserModel::USER_LIST_STATUS_COMPLETED) {
+					$length = $entry['full'][$this->view->am == AMModel::ENTRY_TYPE_MANGA ? 'chapters' : 'episodes'];
+					foreach ($u[$this->view->am]['dist-length'] as &$threshold) {
+						if (($threshold['a'] === null or $length >= $threshold['a']) and ($threshold['b'] === null or $length <= $threshold['b'])) {
+							$threshold['entries'] []= &$entry;
+						}
+					}
+					unset($threshold);
+				}
+
+				if (empty($u[$this->view->am]['dist-status'][$entry['user']['status']])) {
+					$u[$this->view->am]['dist-status'][$entry['user']['status']]  = [
+						'entries' => [],
+						'text' => $this->mgHelper->statusText($entry['user']['status'])
+					];
+				}
+				$u[$this->view->am]['dist-status'][$entry['user']['status']]['entries'] []= &$entry;
+
+				if (empty($u[$this->view->am]['dist-subtype'][$entry['full']['sub-type']])) {
+					$u[$this->view->am]['dist-subtype'][$entry['full']['sub-type']] = [
+						'entries' => [],
+						'text' => $this->mgHelper->subTypeText($entry['full']['sub-type'])
+					];
+				}
+				$u[$this->view->am]['dist-subtype'][$entry['full']['sub-type']]['entries'] []= &$entry;
+			}
+			//filter empty thresholds
+			$u[$this->view->am]['dist-length'] = array_filter($u[$this->view->am]['dist-length'], function($x) { return count($x['entries']) > 0; });
+		}
+	}
+
+
+
 	public function suggAction() {
 		$this->loadUsers();
 		$this->loadEntries();

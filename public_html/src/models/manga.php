@@ -5,6 +5,7 @@ class MangaModel extends AMModel {
 	const ENTRY_SUBTYPE_MANHWA = 'manhwa';
 	const ENTRY_SUBTYPE_NOVEL = 'novel';
 	const ENTRY_SUBTYPE_ONESHOT = 'one shot';
+	const ENTRY_SUBTYPE_DOUJIN = 'doujin';
 
 	public function __construct() {
 		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->mangaCacheDir;

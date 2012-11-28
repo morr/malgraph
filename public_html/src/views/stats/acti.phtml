@@ -7,6 +7,8 @@
 	</h2>
 </div>
 
+
+
 <div class="section acti-line-daily">
 	<h3>
 		<i data-title="Number of titles you've completed within given day. Shows last three weeks with 24h accuracy." class="tooltipable icon-tooltip"></i>
@@ -105,6 +107,8 @@
 	</div>
 </div>
 
+
+
 <div class="section acti-line-monthly">
 	<h3>
 		<i data-title="Number of titles you've completed within given month." class="tooltipable icon-tooltip"></i>
@@ -112,9 +116,9 @@
 	</h3>
 	<div class="section-body">
 		<?php if (empty($this->user[$this->view->am]['acti-info']['month-periods'])): ?>
-			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified. This graph won't work without this data.</p>
+			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified. This graph won`t work without this data.</p>
 		<?php elseif (count($this->user[$this->view->am]['acti-info']['month-periods']) == 1): ?>
-			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($this->user[$this->am]['acti-info']['month-periods'])) ?>, so a graph isn't needed.</p>
+			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($this->user[$this->am]['acti-info']['month-periods'])) ?>, so a graph isn`t needed.</p>
 		<?php else: ?>
 			<div class="wrapper wrapper-target">
 				<div style="width: <?php echo count($this->user[$this->am]['acti-info']['month-periods']) * 30 + 100 ?>px" class="target"></div>
@@ -168,6 +172,8 @@
 
 	</div>
 </div>
+
+
 
 <?php if ($this->user == reset($this->users)): ?>
 	<script type="text/javascript">

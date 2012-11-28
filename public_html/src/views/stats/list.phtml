@@ -8,7 +8,7 @@
 
 	<div class="section-body">
 		<?php if (empty($this->user[$this->am]['entries'])): ?>
-			<p>This user doesn't seem to have anything on their list.</p>
+			<p>This user doesn`t seem to have anything on their list.</p>
 		<?php elseif ($this->user[$this->am]['private']): ?>
 			<p>This user has marked their list as private. No table here.</p>
 		<?php else: ?>
@@ -94,13 +94,13 @@
 										<?php if ($e2['user']['score'] > 0): ?>
 											<td class="score higher-score tooltipable" data-title="This title was rated lower (<?php echo $e2['user']['score'] ?>) by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php else: ?>
-											<td class="score no-score tooltipable" data-title="This title wasn't rated by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
+											<td class="score no-score tooltipable" data-title="This title wasn`t rated by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php endif ?>
 									<?php elseif ($e['user']['score'] < $e2['user']['score']): ?>
 										<?php if ($e['user']['score'] > 0): ?>
 											<td class="score lower-score tooltipable" data-title="This title was rated higher (<?php echo $e2['user']['score'] ?>) by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php else: ?>
-											<td class="score no-score tooltipable" data-title="This title wasn't rated by this user." data-sorter="<?php echo $e['user']['score'] ?>">
+											<td class="score no-score tooltipable" data-title="This title wasn`t rated by this user." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php endif ?>
 									<?php else: ?>
 										<?php if ($e['user']['score'] > 0): ?>
@@ -132,6 +132,8 @@
 
 	</div>
 </div>
+
+
 
 <?php if ($this->user == reset($this->users)): ?>
 	<script type="text/javascript">

@@ -7,6 +7,8 @@
 	</h2>
 </div>
 
+
+
 <?php if (empty($this->user['achievements'])): ?>
 	<div class="section">
 		<div class="section-body">
@@ -53,6 +55,8 @@
 		</div>
 	<?php endforeach ?>
 <?php endif ?>
+
+
 
 <script type="text/javascript">
 	$('#user-<?php echo $this->user['user-safe-id'] ?> .more-trigger').click(function(e) {
