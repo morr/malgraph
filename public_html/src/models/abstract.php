@@ -29,7 +29,7 @@ abstract class JSONDB extends ChibiModel implements CachedDB {
 	}
 
 	public function cacheExists($key) {
-		return file_exists($this->keyToPath(key));
+		return file_exists($this->keyToPath($key));
 	}
 
 	public function getFolder() {

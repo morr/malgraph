@@ -8,12 +8,14 @@ RewriteEngine On
 
 #block access to conf.ini
 RewriteRule ^conf.ini$ - [F]
+RewriteRule ^data/mg.log$ - [F]
 RewriteRule ^data/anons.json$ - [F]
 RewriteRule ^data/mirror$ - [F]
 RewriteRule ^data/cache$ - [F]
 
 RewriteRule ^/?$ /s/index [QSA,L]
-RewriteRule ^/?s/(.*) /index/$1 [QSA,L]
+RewriteRule ^/?s/(.*) /dispatch.php?request=index/$1 [QSA,L]
+RewriteRule ^/?a/(.*) /dispatch.php?request=admin/$1 [QSA,L]
 
 RewriteRule ^/?([=,0-9a-zA-Z_-]{3,})/?$ $1/profile [L]
 RewriteRule ^/?([=,0-9a-zA-Z_-]{3,})/?(profile|list|achi|rati|acti|favs|misc|sugg)(,(anime|manga))?/?$ /dispatch.php?request=stats/$2&u=$1&am=$4 [QSA,L]

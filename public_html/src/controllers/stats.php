@@ -255,11 +255,11 @@ class StatsController extends AbstractController {
 		$this->loadUsers();
 
 		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setTitle('MALgraph - ' . $this->view->users[0]['visible-name'] . '`s profile');
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s profile' . self::$descSuffix);
+			$this->headHelper->setTitle('MALgraph - ' . $this->view->users[0]['visible-name'] . '’s profile');
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s profile' . self::$descSuffix);
 		} else {
 			$this->headHelper->setTitle(implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)));
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s profiles' . self::$descSuffix);
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s profiles' . self::$descSuffix);
 		}
 	}
 
@@ -272,9 +272,9 @@ class StatsController extends AbstractController {
 		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
 		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - ' . $this->mgHelper->amText() . ' list');
 		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' list' . self::$descSuffix);
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s ' . $this->mgHelper->amText() . ' list' . self::$descSuffix);
 		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' lists' . self::$descSuffix);
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s ' . $this->mgHelper->amText() . ' lists' . self::$descSuffix);
 		}
 
 		foreach ($this->view->users as $i => &$u) {
@@ -291,9 +291,9 @@ class StatsController extends AbstractController {
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - achievements (' . $this->mgHelper->amText() . ')');
 		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' achievements' . self::$descSuffix);
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s ' . $this->mgHelper->amText() . ' achievements' . self::$descSuffix);
 		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' achievements' . self::$descSuffix);
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s ' . $this->mgHelper->amText() . ' achievements' . self::$descSuffix);
 		}
 
 		foreach ($this->view->users as $i => &$u) {
@@ -435,9 +435,9 @@ class StatsController extends AbstractController {
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - rating stats (' . $this->mgHelper->amText() . ')');
 		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' rating statistics' . self::$descSuffix);
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s ' . $this->mgHelper->amText() . ' rating statistics' . self::$descSuffix);
 		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' rating statistics' . self::$descSuffix);
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s ' . $this->mgHelper->amText() . ' rating statistics' . self::$descSuffix);
 		}
 
 		//prepare info for view
@@ -646,9 +646,9 @@ class StatsController extends AbstractController {
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - activity (' . $this->mgHelper->amText() . ')');
 		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' activity' . self::$descSuffix);
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s ' . $this->mgHelper->amText() . ' activity' . self::$descSuffix);
 		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' activity' . self::$descSuffix);
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s ' . $this->mgHelper->amText() . ' activity' . self::$descSuffix);
 		}
 
 		foreach ($this->view->users as $i => &$u) {
@@ -771,9 +771,9 @@ class StatsController extends AbstractController {
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - favorites (' . $this->mgHelper->amText() . ')');
 		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' favorites' . self::$descSuffix);
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s ' . $this->mgHelper->amText() . ' favorites' . self::$descSuffix);
 		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' favorites' . self::$descSuffix);
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s ' . $this->mgHelper->amText() . ' favorites' . self::$descSuffix);
 		}
 
 		$excludedProducers = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedProducersDefFile), true);
@@ -897,9 +897,9 @@ class StatsController extends AbstractController {
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
 		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - miscellaneous (' . $this->mgHelper->amText() . ')');
 		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s miscellaneous ' . $this->mgHelper->amText() . ' statistics' . self::$descSuffix);
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s miscellaneous ' . $this->mgHelper->amText() . ' statistics' . self::$descSuffix);
 		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s miscellaneous ' . $this->mgHelper->amText() . ' statistics' . self::$descSuffix);
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s miscellaneous ' . $this->mgHelper->amText() . ' statistics' . self::$descSuffix);
 		}
 
 		foreach ($this->view->users as &$u) {
@@ -977,9 +977,9 @@ class StatsController extends AbstractController {
 
 		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - suggestions (' . $this->mgHelper->amText() . ')');
 		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' suggestions' . self::$descSuffix);
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s ' . $this->mgHelper->amText() . ' suggestions' . self::$descSuffix);
 		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' suggestions' . self::$descSuffix);
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s ' . $this->mgHelper->amText() . ' suggestions' . self::$descSuffix);
 		}
 
 		foreach ($this->view->users as &$u) {

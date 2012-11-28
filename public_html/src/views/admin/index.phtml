@@ -1,0 +1,100 @@
+<?php if (!empty($this->message)): ?>
+	<p class="alert"><?php echo $this->message ?></p>
+	<script type="text/javascript">
+		$('p.alert').delay(1500).fadeOut();
+	</script>
+<?php endif ?>
+
+<a class="btn logout" href="<?php echo $this->urlHelper->url('a/logout') ?>">Get me outta here</a>
+<h1>Admin panel!</h1>
+
+<p>Just don’t do stupid things. Useful links:</p>
+<ul>
+	<li><a href="http://myanimelist.net/forum/?topicid=60908">Recent manga DB removals and merges</a></li>
+	<li><a href="myanimelist.net/forum/?topicid=140439">Recent anime DB removals and merges</a></li>
+</ul>
+
+<form class="aligned" action="<?php echo $this->urlHelper->url('a/am') ?>">
+	<fieldset>
+		<legend>Anime/manga manipulation center</legend>
+
+		<div class="control-group">
+			<label for="am-model">Model</label>
+			<div>
+				<label id="am-model" for="am-model-anime">
+					<input checked="checked" type="radio" name="am-model" id="am-model-anime" value="anime"/>&nbsp;
+					Anime
+				</label>
+				<label id="am-model" for="am-model-manga">
+					<input type="radio" name="am-model" id="am-model-manga" value="manga"/>&nbsp;
+					Manga
+				</label>
+			</div>
+			</select>
+		</div>
+
+		<div class="control-group">
+			<label for="am-id">ID</label>
+			<div>
+				<input type="text" name="am-id" id="am-id"/>
+				<p>(commas are OK)</p>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div>
+				<p>You can also paste IDs below:</p>
+				<textarea rows="5" name="ids"></textarea><br>
+				<button class="btn get-ids">Shove numbers to input field!</button>
+				<p>(plaintext garbage is OK)</p>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div>
+				<button class="btn btn-danger" type="submit" name="action" value="remove">Remove</button>&nbsp;
+				<button class="btn" type="submit" name="action" value="refresh">Refresh</button>
+			</div>
+		</div>
+
+	</fieldset>
+</form>
+
+<form class="aligned" action="<?php echo $this->urlHelper->url('a/user') ?>">
+	<fieldset>
+		<legend>User manipulation center</legend>
+
+		<div class="control-group">
+			<label for="user-name">Name</label>
+			<div>
+				<input type="text" name="user-name" id="user-name"/>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div>
+				<button class="btn btn-danger" type="submit" name="action" value="remove">Remove</button>&nbsp;
+				<button class="btn btn-warning" type="submit" name="action" value="toggle-block">Toggle block</button>&nbsp;
+				<button class="btn" type="submit" name="action" value="toggle-vip">Toggle VIP</button>&nbsp;
+				<button class="btn" type="submit" name="action" value="refresh">Refresh</button>
+			</div>
+		</div>
+
+	</fieldset>
+</form>
+
+<script type="text/javascript">
+	$('.btn.get-ids').click(function(e) {
+		var text = $('textarea[name=\'ids\']').val();
+		var regex = /(\d+)/g;
+		var ids = [];
+		while ((match = regex.exec(text)) != null) {
+			var id = match[1];
+			if (ids.lastIndexOf(id) == -1) {
+				ids.push(id);
+			}
+		}
+		$('input[name=\'am-id\']').val(ids.join(','));
+		e.preventDefault();
+	});
+</script>

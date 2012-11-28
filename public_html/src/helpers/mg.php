@@ -1,5 +1,26 @@
 <?php
 class MGHelper extends ChibiHelper {
+	public function log($message) {
+		$ip = null;
+		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		} elseif (isset($_SERVER['REMOTE_ADDR'])) {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+		if ((!$ip) or (!filter_var($ip, FILTER_VALIDATE_IP))) {
+			$ip = 'unknown';
+		}
+		$args = array (
+			"%s | %-15s | %-50s | %s\n",
+			date('Y-m-d H:i:s'),
+			$ip,
+			gethostbyaddr($ip),
+			$message
+		);
+		$message = call_user_func_array('sprintf', $args);
+		error_log($message, 3, $this->config->chibi->runtime->rootFolder . '/' . $this->config->misc->logFile);
+	}
+
 	public function currentUrl() {
 		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 	}

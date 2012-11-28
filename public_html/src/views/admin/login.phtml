@@ -1,0 +1,14 @@
+<form action="" method="post">
+	<div class="control-group">
+		<label for="password">Password:</label>
+		<input type="password" name="password">
+	</div>
+
+	<div class="control-group">
+		<button class="btn" type="submit">Log in</button>
+	</div>
+
+	<?php if (!empty($this->entered)): ?>
+		<p>Wrong password.</p>
+	<?php endif ?>
+</form>

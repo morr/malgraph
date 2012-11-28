@@ -87,6 +87,9 @@ $(function() {
 // fluid menu position
 $(function() {
 	var menu = $('#menu');
+	if (menu.length == 0) {
+		return;
+	}
 	var pos0 = 10;
 	var pos1 = menu.offset().top;
 	menu.css('position', 'fixed');
