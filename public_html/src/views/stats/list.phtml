@@ -16,25 +16,21 @@
 				<table class="tablesorter">
 					<thead>
 						<tr>
-							<th class="status">
-								<span class="tooltipable"
-									data-title="Status"
-									data-position-my="center bottom"
-									data-position-at="center top"
-								>
-									S
-								</span>
+							<th class="status tooltipable"
+								data-title="Status"
+								data-position-my="center bottom"
+								data-position-at="center top"
+							>
+								S
 							</th>
 
 							<?php if (count($this->view->users) > 1): ?>
-								<th class="unique">
-									<span class="tooltipable"
-										data-title="Unique - marked with &bdquo;+&rdquo; if only this user has given title in their list."
-										data-position-my="center bottom"
-										data-position-at="center top"
-									>
-										U
-									</span>
+								<th class="unique tooltipable"
+									data-title="Unique - marked with &bdquo;+&rdquo; if only this user has given title in their list."
+									data-position-my="center bottom"
+									data-position-at="center top"
+								>
+									U
 								</th>
 							<?php endif ?>
 
@@ -58,30 +54,30 @@
 							<?php endif ?>
 
 								<?php if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED): ?>
-									<td class="status" data-sorter="4">
-										<i data-title="Planned" class="icon-schedule tooltipable"></i>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="4">
+										<i class="icon-schedule"></i>
 								<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_DROPPED): ?>
-									<td class="status" data-sorter="5">
-										<i data-title="Dropped" class="icon-cross tooltipable"></i>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="5">
+										<i class="icon-cross"></i>
 								<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_WATCHING): ?>
-									<td class="status" data-sorter="1">
-										<i data-title="Watching" class="icon-eye tooltipable"></i>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="1">
+										<i class="icon-eye"></i>
 								<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_ONHOLD): ?>
-									<td class="status" data-sorter="3">
-										<i data-title="On-hold" class="icon-hourglass tooltipable"></i>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="3">
+										<i class="icon-hourglass"></i>
 								<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_COMPLETED): ?>
-									<td class="status" data-sorter="2">
-										<i data-title="Completed" class="icon-tick tooltipable"></i>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="2">
+										<i class="icon-tick"></i>
 								<?php endif ?>
 								</td>
 
 								<?php if (count($this->view->users) > 1): ?>
 									<?php if ($e['user']['unique']): ?>
-										<td class="unique" data-sorter="1">
-											<i data-title="Only this user has this title on his list" class="tooltipable icon-plus"></i>
+										<td class="unique tooltipable" data-title="Only this user has this title on his list" data-sorter="1">
+											<i class="icon-plus"></i>
 									<?php else: ?>
-										<td class="unique" data-sorter="0">
-											<i data-title="Both users have this title on their lists" class="tooltipable icon-dot"></i>
+										<td class="unique tooltipable" data-title="Both users have this title on their lists" data-sorter="0">
+											<i class="icon-dot"></i>
 									<?php endif ?>
 									</td>
 								<?php endif ?>
@@ -96,39 +92,35 @@
 									<?php $e2 = reset($e['others']) ?>
 									<?php if ($e['user']['score'] > $e2['user']['score']): ?>
 										<?php if ($e2['user']['score'] > 0): ?>
-											<td class="score higher-score" data-sorter="<?php echo $e['user']['score'] ?>">
-												<span class="tooltipable" data-title="This title was rated lower (<?php echo $e2['user']['score'] ?>) by the other user.">
+											<td class="score higher-score tooltipable" data-title="This title was rated lower (<?php echo $e2['user']['score'] ?>) by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php else: ?>
-											<td class="score no-score" data-sorter="<?php echo $e['user']['score'] ?>">
-												<span class="tooltipable" data-title="This title wasn't rated by the other user.">
+											<td class="score no-score tooltipable" data-title="This title wasn't rated by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php endif ?>
 									<?php elseif ($e['user']['score'] < $e2['user']['score']): ?>
 										<?php if ($e['user']['score'] > 0): ?>
-											<td class="score lower-score" data-sorter="<?php echo $e['user']['score'] ?>">
-												<span class="tooltipable" data-title="This title was rated higher (<?php echo $e2['user']['score'] ?>) by the other user.">
+											<td class="score lower-score tooltipable" data-title="This title was rated higher (<?php echo $e2['user']['score'] ?>) by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php else: ?>
-											<td class="score no-score" data-sorter="<?php echo $e['user']['score'] ?>">
-												<span class="tooltipable" data-title="This title wasn't rated by this user.">
+											<td class="score no-score tooltipable" data-title="This title wasn't rated by this user." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php endif ?>
 									<?php else: ?>
 										<?php if ($e['user']['score'] > 0): ?>
-											<td class="score same-score" data-sorter="<?php echo $e['user']['score'] ?>">
-												<span class="tooltipable" data-title="Both users rated this title equally.">
+											<td class="score same-score tooltipable" data-title="Both users rated this title equally." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php else: ?>
-											<td class="score no-score" data-sorter="<?php echo $e['user']['score'] ?>">
-												<span class="tooltipable" data-title="None of users rated this title.">
+											<td class="score no-score tooltipable" data-title="None of users rated this title." data-sorter="<?php echo $e['user']['score'] ?>">
 										<?php endif ?>
 									<?php endif ?>
 								<?php else: ?>
-									<td class="score" data-sorter="<?php echo $e['user']['score'] ?>">
-										<span>
+									<?php if (count($this->users) > 1): ?>
+										<td class="score tooltipable" data-title="This title is unique to this user." data-sorter="<?php echo $e['user']['score'] ?>">
+									<?php else: ?>
+										<td class="score" data-sorter="<?php echo $e['user']['score'] ?>">
+									<?php endif ?>
 								<?php endif ?>
 									<?php if (empty($e['user']['score'])): ?>
 										-
 									<?php else: ?>
 										<?php echo $e['user']['score'] ?>
 									<?php endif ?>
-									</span>
 								</td>
 							</tr>
 						<?php endforeach ?>

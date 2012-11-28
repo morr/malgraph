@@ -20,6 +20,20 @@ class MGHelper extends ChibiHelper {
 		}
 	}
 
+	public function statusText($status, $type = null) {
+		if ($type === null) {
+			$type = $this->view->am;
+		}
+		switch ($status) {
+			case UserModel::USER_LIST_STATUS_PLANNED: return 'Planned';
+			case UserModel::USER_LIST_STATUS_DROPPED: return 'Dropped';
+			case UserModel::USER_LIST_STATUS_COMPLETING: return $type == AMModel::ENTRY_TYPE_ANIME ? 'Watching' : 'Reading';
+			case UserModel::USER_LIST_STATUS_ONHOLD: return 'On-hold';
+			case UserModel::USER_LIST_STATUS_COMPLETED: return 'Completed';
+			default: throw new Exception('Unknown status: ' . $status);
+		}
+	}
+
 	public function amText($type = null) {
 		if ($type === null) {
 			$type = $this->view->am;
