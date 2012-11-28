@@ -2,6 +2,7 @@
 require_once 'src/controllers/abstract.php';
 class IndexController extends AbstractController {
 	public function indexAction() {
+		$this->headHelper->addKeywords(['myanimelist', 'mal', 'rating', 'favorites', 'score']);
 		$this->view->userName = null;
 	}
 

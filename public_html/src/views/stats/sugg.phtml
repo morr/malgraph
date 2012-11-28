@@ -18,6 +18,8 @@
 
 		<?php if (empty($this->user['proposed-entries'])): ?>
 			<p>Waai! No missing relations!</p>
+		<?php elseif ($this->user[$this->am]['private']): ?>
+			<p>This list is private. Cannot show this table!</p>
 		<?php else: ?>
 
 			<table>

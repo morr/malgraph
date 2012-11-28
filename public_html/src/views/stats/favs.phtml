@@ -155,7 +155,7 @@
 		Producers
 	</h3>
 	<div class="section-body">
-		<div class="wrapper extensible">
+		<div class="wrapper scrollable">
 
 			<?php if (empty($this->user[$this->am]['producers'])): ?>
 				<p>Looks like there are no known producers for this user.</p>
@@ -252,7 +252,7 @@
 		Genres
 	</h3>
 	<div class="section-body">
-		<div class="wrapper extensible">
+		<div class="wrapper scrollable">
 
 			<?php if (empty($this->user[$this->am]['genres'])): ?>
 				<p>Looks like there are no known genres for this user.</p>
@@ -346,10 +346,9 @@
 	});
 </script>
 
-<?php if ($this->user == reset($this->users)): ?>
+<?php if ($this->isFinal): ?>
 	<script type="text/javascript">
 		$(function() {
-			$('.section').css('height', 'auto');
 			$.tablesorter.addWidget({
 				id: 'ord',
 				format: function(table) {
@@ -364,8 +363,6 @@
 				widgets: ['ord'],
 				sortList: [[2,1],[3,1]]
 			});
-
-			$('.extensible').jScrollPane();
 		});
 	</script>
 <?php endif ?>

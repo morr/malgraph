@@ -56,7 +56,7 @@
 				<div id="menu">
 					<ul class="am">
 						<?php foreach ([AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA] as $type): ?>
-							<li data-title="<?php echo ucfirst($this->mgHelper->amText($type)) ?> stats" data-position-my="center bottom" data-position-at="center top"
+							<li data-title="<?php echo ucfirst($this->mgHelper->amText($type)) ?> stats" data-position-my="center top" data-position-at="center bottom"
 								<?php if ($this->view->am == $type): ?>
 									class="active tooltipable"
 								<?php else: ?>
@@ -78,7 +78,6 @@
 							['controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'],
 							['controller' => 'stats', 'action' => 'misc', 'text' => 'Miscellaneous'],
 							['controller' => 'stats', 'action' => 'sugg', 'text' => 'Suggestions'],
-							['controller' => 'stats', 'action' => 'json', 'text' => 'JSON'],
 						];
 					?>
 					<ul class="action">
@@ -106,12 +105,15 @@
 					<?php endif ?>
 
 					<div class="users">
-						<?php foreach ($this->view->users as $u): ?>
+						<?php $keys = array_keys($this->view->users) ?>
+						<?php foreach ($keys as $i => $k): ?>
+							<?php $u = $this->view->users[$k] ?>
 							<?php if ($u['anonymous']): ?>
-								<div class="user anonymous" id="<?php echo $u['user-safe-id'] ?>">
+								<div class="user anonymous" id="user-<?php echo $u['user-safe-id'] ?>">
 							<?php else: ?>
 								<div class="user" id="user-<?php echo $u['user-safe-id'] ?>">
 							<?php endif ?>
+								<?php $this->view->isFinal = $i == count($keys) - 1 ?>
 								<?php $this->view->user = $u ?>
 								<?php echo $this->view->render() ?>
 							</div>

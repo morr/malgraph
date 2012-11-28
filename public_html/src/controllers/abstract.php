@@ -14,7 +14,8 @@ class AbstractController extends ChibiController {
 
 		//basic settings
 		$this->headHelper->setTitle('MALgraph');
-		$this->headHelper->setDescription('Tool for MyAnimeList users offering fun statistical analysis of their profiles.');
+		$this->headHelper->setKeywords(['malgraph', 'anime', 'manga', 'statistics', 'stats']);
+		$this->headHelper->setDescription('MALgraph - an extension of your MyAnimeList profile. Check your rating distribution, get anime or manga recommendations, and compare numerous stats with other kawaii Japanese otaku.');
 		$this->headHelper->setFavicon($this->urlHelper->url('media/img/favicon.png'));
 
 		//stylesheets

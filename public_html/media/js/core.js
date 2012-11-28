@@ -2,12 +2,13 @@ $.fn.hasAttr = function(name) {
 	return this.attr(name) !== undefined;
 };
 
+// scroll scrollable elements
 $(function() {
-	//scroll scrollable elements
 	$('.scrollable').jScrollPane({horizontalDragMaxWidth: 0});
+});
 
-
-	/* tooltips */
+// tooltips
+$(function() {
 	/* timeouts to prevent flickering */
 	function stopTooltipRemoval(target) {
 		var timeout = $(target).data('tooltip-hide-timeout');
@@ -80,5 +81,22 @@ $(function() {
 			$(target).data('tooltip-show-timeout', null);
 			startTooltipRemoval($(target));
 		} );
+	});
+});
+
+// fluid menu position
+$(function() {
+	var menu = $('#menu');
+	var pos0 = 10;
+	var pos1 = menu.offset().top;
+	menu.css('position', 'fixed');
+	$(window).scroll(function(e) {
+		var pos2 = $(window).scrollTop();
+		if (pos2 < pos1 - pos0) {
+			menu.data('target-pos', pos1 - pos2);
+		} else {
+			menu.data('target-pos', pos0);
+		}
+		menu.css('top', menu.data('target-pos') + 'px');
 	});
 });

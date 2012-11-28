@@ -67,7 +67,7 @@ div.user {
 	width: 110px;
 	float: left;
 	margin-right: 10px;
-		position: absolute;
+	position: absolute;
 }
 	#menu+#content {
 		margin-left: 120px;
@@ -303,6 +303,7 @@ h1 { font-weight: normal; }
 div.tooltip {
 	position: absolute;
 	z-index: 1024;
+	pointer-events: none;
 }
 	div.tooltip div {
 		margin: 4px;

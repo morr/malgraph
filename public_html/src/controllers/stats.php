@@ -1,6 +1,8 @@
 <?php
 require_once 'src/controllers/abstract.php';
 class StatsController extends AbstractController {
+	private static $descSuffix = ' on MALgraph, an online tool that extends your MyAnimeList profile.'; //suffix for <meta> description tag
+
 	public function init() {
 		parent::init();
 
@@ -29,6 +31,14 @@ class StatsController extends AbstractController {
 			$am = AMModel::ENTRY_TYPE_ANIME;
 		}
 		$this->view->am = $am;
+
+		//add fun keywords
+		$this->headHelper->addKeywords(['profile', 'list', 'achievements', 'ratings', 'activity', 'favorites', 'suggestions', 'recommendations']);
+		foreach ($this->view->userNames as $userName) {
+			if ($userName{0} != '=') {
+				$this->headHelper->addKeywords([$userName]);
+			}
+		}
 	}
 
 
@@ -243,15 +253,29 @@ class StatsController extends AbstractController {
 
 	public function profileAction() {
 		$this->loadUsers();
+
+		if (count($this->view->userNames) == 1) {
+			$this->headHelper->setTitle('MALgraph - ' . $this->view->users[0]['visible-name'] . '`s profile');
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s profile' . self::$descSuffix);
+		} else {
+			$this->headHelper->setTitle(implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)));
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s profiles' . self::$descSuffix);
+		}
 	}
 
 
 
 	public function listAction() {
-		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
-
 		$this->loadUsers();
 		$this->loadEntries();
+
+		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
+		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - ' . $this->mgHelper->amText() . ' list');
+		if (count($this->view->userNames) == 1) {
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' list' . self::$descSuffix);
+		} else {
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' lists' . self::$descSuffix);
+		}
 
 		foreach ($this->view->users as $i => &$u) {
 			self::sortEntries($u[$this->view->am]['entries'], 'score');
@@ -261,10 +285,16 @@ class StatsController extends AbstractController {
 
 
 	public function achiAction() {
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-
 		$this->loadUsers();
 		$this->loadEntries();
+
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
+		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - achievements (' . $this->mgHelper->amText() . ')');
+		if (count($this->view->userNames) == 1) {
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' achievements' . self::$descSuffix);
+		} else {
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' achievements' . self::$descSuffix);
+		}
 
 		foreach ($this->view->users as $i => &$u) {
 			$groups = [];
@@ -396,13 +426,19 @@ class StatsController extends AbstractController {
 
 
 	public function ratiAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-
-		$this->loadUsers();
-		$this->loadEntries();
+		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - rating stats (' . $this->mgHelper->amText() . ')');
+		if (count($this->view->userNames) == 1) {
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' rating statistics' . self::$descSuffix);
+		} else {
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' rating statistics' . self::$descSuffix);
+		}
 
 		//prepare info for view
 		foreach ($this->view->users as $i => &$u) {
@@ -601,13 +637,19 @@ class StatsController extends AbstractController {
 
 
 	public function actiAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-
-		$this->loadUsers();
-		$this->loadEntries();
+		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - activity (' . $this->mgHelper->amText() . ')');
+		if (count($this->view->userNames) == 1) {
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' activity' . self::$descSuffix);
+		} else {
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' activity' . self::$descSuffix);
+		}
 
 		foreach ($this->view->users as $i => &$u) {
 			$actiInfo = [
@@ -720,13 +762,19 @@ class StatsController extends AbstractController {
 
 
 	public function favsAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+
 		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-
-		$this->loadUsers();
-		$this->loadEntries();
+		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - favorites (' . $this->mgHelper->amText() . ')');
+		if (count($this->view->userNames) == 1) {
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' favorites' . self::$descSuffix);
+		} else {
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' favorites' . self::$descSuffix);
+		}
 
 		$excludedProducers = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedProducersDefFile), true);
 		$excludedProducerIds = array_map(function($e) { return $e['id']; }, $excludedProducers[$this->mgHelper->amText()]);
@@ -785,7 +833,7 @@ class StatsController extends AbstractController {
 				$yearA = intval(substr($entry['full']['aired-from'], 0, 4));
 				$yearB = intval(substr($entry['full']['aired-to'], 0, 4));
 				if (!$yearA and !$yearB) {
-					$year = '?';
+					continue;
 				} elseif (!$yearA) {
 					$year = $yearB;
 				} elseif (!$yearB) {
@@ -840,13 +888,19 @@ class StatsController extends AbstractController {
 
 
 	public function miscAction() {
+		$this->loadUsers();
+		$this->loadEntries();
+
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
 		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
 		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-
-		$this->loadUsers();
-		$this->loadEntries();
+		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - miscellaneous (' . $this->mgHelper->amText() . ')');
+		if (count($this->view->userNames) == 1) {
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s miscellaneous ' . $this->mgHelper->amText() . ' statistics' . self::$descSuffix);
+		} else {
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s miscellaneous ' . $this->mgHelper->amText() . ' statistics' . self::$descSuffix);
+		}
 
 		foreach ($this->view->users as &$u) {
 			$u[$this->view->am]['dist-status'] = [];
@@ -921,6 +975,13 @@ class StatsController extends AbstractController {
 		$this->loadUsers();
 		$this->loadEntries();
 
+		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - suggestions (' . $this->mgHelper->amText() . ')');
+		if (count($this->view->userNames) == 1) {
+			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '`s ' . $this->mgHelper->amText() . ' suggestions' . self::$descSuffix);
+		} else {
+			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '`s ' . $this->mgHelper->amText() . ' suggestions' . self::$descSuffix);
+		}
+
 		foreach ($this->view->users as &$u) {
 			$proposedEntries = array();
 
@@ -959,12 +1020,5 @@ class StatsController extends AbstractController {
 
 			$u['proposed-entries'] = $proposedEntries;
 		}
-	}
-
-
-
-	public function jsonAction() {
-		$this->loadUsers();
-		$this->loadEntries();
 	}
 }
