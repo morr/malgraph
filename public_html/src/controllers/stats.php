@@ -258,7 +258,7 @@ class StatsController extends AbstractController {
 			$this->headHelper->setTitle('MALgraph - ' . $this->view->users[0]['visible-name'] . '’s profile');
 			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '’s profile' . self::$descSuffix);
 		} else {
-			$this->headHelper->setTitle(implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)));
+			$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)));
 			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '’s profiles' . self::$descSuffix);
 		}
 	}
