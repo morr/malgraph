@@ -1,5 +1,7 @@
 <?php
 class MGHelper extends ChibiHelper {
+	public static $descSuffix = ' on MALgraph, an online tool that extends your MyAnimeList profile.'; //suffix for <meta> description tag
+
 	public function log($message) {
 		$ip = null;
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {

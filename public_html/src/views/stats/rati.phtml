@@ -3,7 +3,7 @@
 		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
 			<?php echo $this->user['visible-name'] ?>
 		</a>
-		’s <?php echo $this->mgHelper->amText() ?> rating statistics
+		&rsquo;s <?php echo $this->mgHelper->amText() ?> rating statistics
 	</h2>
 </div>
 
@@ -16,7 +16,7 @@
 	</h3>
 	<div class="section-body">
 		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
-			<p>This user doesn’t seem to have anything rated. No chart here.</p>
+			<p>This user doesn&rsquo;t seem to have anything rated. No chart here.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>
@@ -34,7 +34,7 @@
 				<li>
 					<div>
 						<span class="prefix">Std dev</span>
-						<span class="subject"><?php printf('%.02f',$this->user[$this->am]['score-info']['std-dev']) ?></span>
+						<span class="subject"><?php printf('%.02f', $this->user[$this->am]['score-info']['std-dev']) ?></span>
 					</div>
 				</li>
 				<li>
@@ -116,7 +116,7 @@
 				$('#user-<?php echo $this->user['user-safe-id'] ?> .score-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 35 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-info']['dist-time']))) ?>, title: { text: 'Rating' } },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-info']['dist-score']))) ?>, title: { text: 'Rating' } },
 						yAxis: { title: { text: 'Count', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
@@ -156,7 +156,7 @@
 	</h3>
 	<div class="section-body">
 		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
-			<p>This user doesn’t seem to have anything rated. No chart here.</p>
+			<p>This user doesn&rsquo;t seem to have anything rated. No chart here.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>

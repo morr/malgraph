@@ -1,0 +1,56 @@
+<h1>Global statistics</h1>
+
+<p>These graphs are based on a group of randomly picked 500 users, as generating them for the whole database would take so long you&rsquo;d fall asleep.</p>
+<p>This means they will be different every time they&rsquo;re generated (every 24 h), but not different enough for you to miss the fact that either people only watch what they know they will like, or 7s and 8s are overused and most users don&rsquo;t know how to use the 1-10 scale.</p>
+<p>We&rsquo;ll leave it for you to decide which one is true.</p>
+
+<?php foreach ([AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA] as $am): ?>
+	<div class="section <?php echo $am ?>-score-dist">
+		<h2>Score distribution (<?php echo $this->mgHelper->amText($am) ?>)</h2>
+		<div class="section-body">
+			<ul class="infobox">
+				<li>
+					<div>
+						<span class="prefix">Total unrated</span>
+						<span class="subject"><?php printf('%.02f', $this->globals[$am]['unrated'] * 100.0 / ($this->globals[$am]['rated'] + $this->globals[$am]['unrated'])) ?>%</span>
+					</div>
+				</li>
+				<li>
+					<div>
+						<span class="prefix">Mean score</span>
+						<span class="subject"><?php printf('%.02f', $this->globals[$am]['mean-score']) ?></span>
+					</div>
+				</li>
+			</ul>
+
+			<div class="wrapper wrapper-target">
+				<div class="target"></div>
+				<div class="clear"></div>
+			</div>
+
+			<script type="text/javascript">
+				$('.<?php echo $am ?>-score-dist .target').each(function() {
+					var chart = new Highcharts.Chart({
+						chart: { renderTo: this, type: 'bar', marginRight: 35 },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->globals[$am]['dist-score']))) ?>, title: { text: 'Rating' } },
+						yAxis: { title: { text: 'Count', margin: 15 } },
+						tooltip: { formatter: function() {
+							var text;
+							if (this.x == '-') {
+								text = 'Unrated titles: ';
+							} else {
+								text = 'Titles rated with ' + this.x + ': ';
+							}
+							var percent = this.y * 100.0 / <?php echo max(1, $this->globals[$am]['rated']) ?>;
+							text += (Math.round(percent * 100.0) / 100.0) + '%';
+							return text;
+						} },
+						series: [ {
+							data: <?php echo json_encode(array_values($this->globals[$am]['dist-score'])) ?>,
+						} ]
+					});
+				});
+			</script>
+		</div>
+	</div>
+<?php endforeach ?>

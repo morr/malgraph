@@ -137,7 +137,8 @@
 			<ul class="left">
 				<li><a href="<?php echo $this->mgHelper->constructUrl('index', 'about') ?>">About</a></li>
 				<li><a href="<?php echo $this->mgHelper->constructUrl('index', 'privacy') ?>">Privacy policy</a></li>
-				<li><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</li>
+				<li><a href="<?php echo $this->mgHelper->constructUrl('index', 'globals') ?>">Global stats</a></li>
+				<!--<li><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</li>-->
 			</ul>
 			<ul class="right">
 				<?php if ($this->view->controllerName == 'stats'): ?>

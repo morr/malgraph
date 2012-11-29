@@ -3,7 +3,7 @@
 		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
 			<?php echo $this->user['visible-name'] ?>
 		</a>
-		’s <?php echo $this->mgHelper->amText() ?> activity
+		&rsquo;s <?php echo $this->mgHelper->amText() ?> activity
 	</h2>
 </div>
 
@@ -116,9 +116,9 @@
 	</h3>
 	<div class="section-body">
 		<?php if (empty($this->user[$this->view->am]['acti-info']['month-periods'])): ?>
-			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified. This graph won’t work without this data.</p>
+			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified. This graph won&rsquo;t work without this data.</p>
 		<?php elseif (count($this->user[$this->view->am]['acti-info']['month-periods']) == 1): ?>
-			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($this->user[$this->am]['acti-info']['month-periods'])) ?>, so a graph isn’t needed.</p>
+			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($this->user[$this->am]['acti-info']['month-periods'])) ?>, so a graph isn&rsquo;t needed.</p>
 		<?php else: ?>
 			<div class="wrapper wrapper-target">
 				<div style="width: <?php echo count($this->user[$this->am]['acti-info']['month-periods']) * 30 + 100 ?>px" class="target"></div>

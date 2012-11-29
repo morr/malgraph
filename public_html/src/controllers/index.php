@@ -26,6 +26,8 @@ class IndexController extends AbstractController {
 	public function wrongQueryAction() {
 	}
 
+
+
 	public function searchAction() {
 		$action = $this->inputHelper->get('action-name');
 		$userNames = $this->inputHelper->getStringSafe('user-names');
@@ -54,6 +56,8 @@ class IndexController extends AbstractController {
 		$this->forward($this->mgHelper->constructUrl('stats', $action, [], $userNames, $am));
 	}
 
+
+
 	public function regenerateAction() {
 		header('Content-Type: text/plain; charset=utf-8');
 		$this->config->chibi->runtime->layoutName = null;
@@ -80,4 +84,70 @@ class IndexController extends AbstractController {
 	}
 
 
+
+	public function globalsAction() {
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
+		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
+		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
+		$this->headHelper->setTitle('MALgraph - global stats');
+		$this->headHelper->setDescription('Global community statistics' . MGHelper::$descSuffix);
+
+		// load stats from cache
+		$path = $this->config->chibi->runtime->rootFolder . '/' . $this->config->misc->globalsCacheFile;
+		if (file_exists($path) and ((time() - filemtime($path)) < 24 * 3600)) {
+			$globals = json_decode(file_get_contents($path), true);
+		} else {
+			// regenerate cache
+			$modelUsers = new UserModel(true);
+			$goal = 500;
+			$users = [];
+			$allUsers = $modelUsers->getKeys();
+
+			$globals = [];
+			foreach ([AMModel::ENTRY_TYPE_MANGA, AMModel::ENTRY_TYPE_ANIME] as $am) {
+				$globals[$am] = [
+					'dist-score' => array_fill_keys(range(10, 0), 0)
+				];
+			}
+
+			while (count($users) < $goal) {
+				$userName = $allUsers[mt_rand() % count($allUsers)];
+				if (isset($users[$userName])) {
+					continue;
+				}
+				$user = $modelUsers->get($userName);
+
+				/*
+				// ignore users with profile younger than one year
+				list($year, $month, $day) = explode('-', $user['join-date']);
+				if (time() - mktime(0, 0, 0, $month, $day, $year) < 365 * 24 * 3600) {
+					continue;
+				}
+				*/
+
+				// all the work with single user goes here
+				foreach (array_keys($globals) as $am) {
+					foreach ($user[$am]['entries'] as $e) {
+						if ($e['status'] == UserModel::USER_LIST_STATUS_COMPLETED) {
+							$globals[$am]['dist-score'][$e['score']] ++;
+						}
+					}
+				}
+
+				$users[$userName] = true;
+			}
+
+			// postprocess global stats
+			foreach ([AMModel::ENTRY_TYPE_MANGA, AMModel::ENTRY_TYPE_ANIME] as $am) {
+				$globals[$am]['rated'] = array_sum($globals[$am]['dist-score']);
+				$globals[$am]['unrated'] = $globals[$am]['dist-score'][0];
+				$globals[$am]['mean-score'] = array_sum(array_map(function($s) use (&$globals, $am) { return $globals[$am]['dist-score'][$s] * $s; }, array_keys($globals[$am]['dist-score']))) / max(1, $globals[$am]['rated']);
+				unset ($globals[$am]['dist-score'][0]);
+			}
+
+			file_put_contents($path, json_encode($globals));
+		}
+
+		$this->view->globals = $globals;
+	}
 }
