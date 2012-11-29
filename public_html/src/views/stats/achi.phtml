@@ -36,9 +36,14 @@
 					<div class="clear"></div>
 					<div class="more">
 						<?php if ($this->user[$this->am]['private']): ?>
-							<p>This list is private.</p>
+							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
-							<p>Earned because you <?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'read' : 'watched' ?> these:</p>
+							<p>
+								Earned because you
+								&nbsp;<?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'read' : 'watched' ?>
+								&nbsp;(<?php echo count($ach['entries']) ?>)
+								:
+							</p>
 							<ul>
 								<?php foreach ($ach['entries'] as $e): ?>
 									<li>

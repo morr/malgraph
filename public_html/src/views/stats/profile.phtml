@@ -114,7 +114,7 @@
 		<?php if (empty($this->user['friends'])): ?>
 			<p>This user has no friends on MAL. :(</p>
 		<?php elseif ($this->user['anonymous']): ?>
-			<p>This user is viewed anonymously. Friends are not displayed.</p>
+			<p>This user wanted to be anonymous, so their friend aren&rsquo;t shown.</p>
 		<?php else: ?>
 			<div class="friends scrollable">
 				<?php usort($this->user['friends'], function($a, $b) { return strlen($a) > strlen($b); }); ?>
@@ -144,7 +144,7 @@
 		<?php if (empty($this->user['clubs'])): ?>
 			<p>This user doesn&rsquo;t belong to any clubs.</p>
 		<?php elseif ($this->user['anonymous']): ?>
-			<p>This user is viewed anonymously. Clubs are not displayed.</p>
+			<p>Neither wlil we tell you their clubs.</p>
 		<?php else: ?>
 			<div class="clubs scrollable">
 				<?php usort($this->user['clubs'], function($a, $b) { return strlen($a['name']) > strlen($b['name']); }); ?>

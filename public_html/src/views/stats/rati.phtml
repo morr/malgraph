@@ -63,11 +63,17 @@
 
 				<?php foreach ($this->user[$this->am]['score-info']['dist-entries'] as $score => $entries): ?>
 					<div class="more" data-id="<?php echo $score ?>">
-						<?php if ($score == 0): ?>
-							<p>Unrated titles:</p>
-						<?php else: ?>
-							<p>Titles rated with <?php echo $score ?>:</p>
-						<?php endif ?>
+						<p>
+							<?php if ($score == 0): ?>
+								Unrated titles
+							<?php else: ?>
+								Titles rated with <?php echo $score ?>
+							<?php endif ?>
+							<?php if (!empty($entries)): ?>
+								&nbsp;(<?php echo count($entries) ?>)
+							<?php endif ?>
+							:
+						</p>
 						<?php if (empty($entries)): ?>
 							<?php if ($score == 0): ?>
 								<p>Horray! No unrated titles.</p>
@@ -75,7 +81,7 @@
 								<p>None!</p>
 							<?php endif ?>
 						<?php elseif ($this->user[$this->am]['private']): ?>
-							<p>This list is private.</p>
+							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
 								<?php foreach ($entries as $e): ?>
@@ -183,11 +189,17 @@
 			<div class="wrapper wrapper-more">
 				<?php foreach ($this->user[$this->am]['score-info']['dist-entries'] as $score => $entries): ?>
 					<div class="more" data-id="<?php echo $score ?>">
-						<?php if ($score == 0): ?>
-							<p>Unrated titles:</p>
-						<?php else: ?>
-							<p>Titles rated with <?php echo $score ?>:</p>
-						<?php endif ?>
+						<p>
+							<?php if ($score == 0): ?>
+								Unrated titles
+							<?php else: ?>
+								Titles rated with <?php echo $score ?>
+							<?php endif ?>
+							<?php if (!empty($entries)): ?>
+								&nbsp;(<?php echo count($entries) ?>)
+							<?php endif ?>
+							:
+						</p>
 						<?php if (empty($entries)): ?>
 							<?php if ($score == 0): ?>
 								<p>Horray! No unrated titles.</p>
@@ -195,7 +207,7 @@
 								<p>None!</p>
 							<?php endif ?>
 						<?php elseif ($this->user[$this->am]['private']): ?>
-							<p>This list is private.</p>
+							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
 								<?php foreach ($entries as $e): ?>

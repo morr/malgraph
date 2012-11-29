@@ -11,6 +11,7 @@
 
 <div class="section decades">
 	<h3>
+		<i data-title="Shows your mean score of titles from any year or decade." class="tooltipable icon-tooltip"></i>
 		Decades
 	</h3>
 	<div class="section-body">
@@ -27,12 +28,15 @@
 						<?php echo ucfirst($this->mgHelper->amText()) ?>
 						&nbsp;from&nbsp;
 						<?php echo $k ?>
+						<?php if (!empty($data['entries'])): ?>
+							&nbsp;(<?php echo count($data['entries']) ?>)
+						<?php endif ?>
 						:
 					</p>
 					<?php if (empty($data['entries'])): ?>
 						<p>None!</p>
 					<?php elseif ($this->user[$this->am]['private']): ?>
-						<p>This list is private.</p>
+						<p>Can&rsquo;t show you titles from a private list.</p>
 					<?php else: ?>
 						<ul>
 							<?php foreach ($data['entries'] as $e): ?>
@@ -59,12 +63,15 @@
 						<?php echo ucfirst($this->mgHelper->amText()) ?>
 						&nbsp;from&nbsp;
 						<?php echo $k ?>
-						s:
+						s
+						<?php if (!empty($data['entries'])): ?>
+							&nbsp;(<?php echo count($data['entries']) ?>)
+						<?php endif ?>:
 					</p>
 					<?php if (empty($data['entries'])): ?>
 						<p>None!</p>
 					<?php elseif ($this->user[$this->am]['private']): ?>
-						<p>This list is private.</p>
+						<p>Can&rsquo;t show you titles from a private list.</p>
 					<?php else: ?>
 						<ul>
 							<?php foreach ($data['entries'] as $e): ?>
@@ -151,8 +158,13 @@
 
 <div class="section producers">
 	<h3>
-		<i data-title="List of producers this user might like." class="tooltipable icon-tooltip"></i>
-		Producers
+		<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+			<i data-title="Manga authors sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
+			Authors
+		<?php else: ?>
+			<i data-title="Anime studios sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
+			Studios
+		<?php endif ?>
 	</h3>
 	<div class="section-body">
 		<div class="wrapper scrollable">
@@ -173,33 +185,33 @@
 					</thead>
 					<tbody>
 					<?php $i = 1 ?>
-					<?php foreach ($this->user[$this->am]['producers'] as $producer): ?>
+					<?php foreach ($this->user[$this->am]['producers'] as $x): ?>
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
 								<a
 									<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
-										href="http://myanimelist.net/people/<?php echo $producer['id'] ?>/"
+										href="http://myanimelist.net/people/<?php echo $x['id'] ?>/"
 									<?php else: ?>
-										href="http://myanimelist.net/anime.php?p=<?php echo $producer['id'] ?>"
+										href="http://myanimelist.net/anime.php?p=<?php echo $x['id'] ?>"
 									<?php endif ?>
 								>
 									<i class="icon-pop-out"></i>
 								</a>
 								&nbsp;
-								<a class="more-trigger" data-id="<?php echo $producer['id'] ?>" href="#">
-									<?php echo htmlspecialchars($producer['name']) ?>
+								<a class="more-trigger" data-id="<?php echo $x['id'] ?>" href="#">
+									<?php echo htmlspecialchars($x['name']) ?>
 								</a>
 							</td>
-							<td class="count"><?php printf('%d', count($producer['entries'])) ?></td>
+							<td class="count"><?php printf('%d', count($x['entries'])) ?></td>
 							<td class="mean">
-								<?php if ($producer['mean-score'] == 0): ?>
+								<?php if ($x['mean-score'] == 0): ?>
 									-
 								<?php else: ?>
-									<?php printf('%.02f', $producer['mean-score']) ?>
+									<?php printf('%.02f', $x['mean-score']) ?>
 								<?php endif ?>
 							</td>
-							<td class="time"><?php printf('%.02f', $producer['total-time'] / 60.0) ?>h</td>
+							<td class="time"><?php printf('%.02f', $x['total-time'] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>
 				</table>
@@ -208,21 +220,24 @@
 		</div>
 
 		<div class="wrapper wrapper-more">
-			<?php foreach ($this->user[$this->am]['producers'] as $producer): ?>
-				<div class="more" data-id="<?php echo $producer['id'] ?>">
+			<?php foreach ($this->user[$this->am]['producers'] as $x): ?>
+				<div class="more" data-id="<?php echo $x['id'] ?>">
 					<p>
 						<?php echo ucfirst($this->mgHelper->amText()) ?>
 						&nbsp;from&nbsp;
-						<?php echo $producer['name'] ?>
-						&nbsp;(<?php echo count($producer['entries']) ?>):
+						<?php echo $x['name'] ?>
+						<?php if (!empty($x['entries'])): ?>
+							&nbsp;(<?php echo count($x['entries']) ?>)
+						<?php endif ?>
+						:
 					</p>
-					<?php if (empty($producer['entries'])): ?>
+					<?php if (empty($x['entries'])): ?>
 						<p>None!</p>
 					<?php elseif ($this->user[$this->am]['private']): ?>
-						<p>This list is private.</p>
+						<p>Can&rsquo;t show you titles from a private list.</p>
 					<?php else: ?>
 						<ul>
-							<?php foreach ($producer['entries'] as $e): ?>
+							<?php foreach ($x['entries'] as $e): ?>
 								<li>
 									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
 										<?php echo $e['full']['title'] ?>
@@ -248,7 +263,7 @@
 
 <div class="section genres">
 	<h3>
-		<i data-title="List of genres this user might like." class="tooltipable icon-tooltip"></i>
+		<i data-title="List of genres and demographics sorted like previous graph on this page." class="tooltipable icon-tooltip"></i>
 		Genres
 	</h3>
 	<div class="section-body">
@@ -270,27 +285,27 @@
 					</thead>
 					<tbody>
 					<?php $i = 1 ?>
-					<?php foreach ($this->user[$this->am]['genres'] as $genre): ?>
+					<?php foreach ($this->user[$this->am]['genres'] as $x): ?>
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
-								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>.php?genre[]=<?php echo $genre['id'] ?>">
+								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>.php?genre[]=<?php echo $x['id'] ?>">
 									<i class="icon-pop-out"></i>
 								</a>
 								&nbsp;
-								<a class="more-trigger" data-id="<?php echo $genre['id'] ?>" href="#">
-									<?php echo htmlspecialchars(ucfirst($genre['name'])) ?>
+								<a class="more-trigger" data-id="<?php echo $x['id'] ?>" href="#">
+									<?php echo htmlspecialchars(ucfirst($x['name'])) ?>
 								</a>
 							</td>
-							<td class="count"><?php printf('%d', count($genre['entries'])) ?></td>
+							<td class="count"><?php printf('%d', count($x['entries'])) ?></td>
 							<td class="mean">
-								<?php if ($genre['mean-score'] == 0): ?>
+								<?php if ($x['mean-score'] == 0): ?>
 									-
 								<?php else: ?>
-									<?php printf('%.02f', $genre['mean-score']) ?>
+									<?php printf('%.02f', $x['mean-score']) ?>
 								<?php endif ?>
 							</td>
-							<td class="time"><?php printf('%.02f', $genre['total-time'] / 60.0) ?>h</td>
+							<td class="time"><?php printf('%.02f', $x['total-time'] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>
 				</table>
@@ -299,21 +314,24 @@
 		</div>
 
 		<div class="wrapper wrapper-more">
-			<?php foreach ($this->user[$this->am]['genres'] as $genre): ?>
-				<div class="more" data-id="<?php echo $genre['id'] ?>">
+			<?php foreach ($this->user[$this->am]['genres'] as $x): ?>
+				<div class="more" data-id="<?php echo $x['id'] ?>">
 					<p>
 						<?php echo ucfirst($this->mgHelper->amText()) ?>
-						&nbsp;from&nbsp;
-						<?php echo $genre['name'] ?>
-						&nbsp;(<?php echo count($genre['entries']) ?>):
+						&nbsp;tagged as&nbsp;
+						<?php echo ucfirst($x['name']) ?>
+						<?php if (!empty($x['entries'])): ?>
+							&nbsp;(<?php echo count($x['entries']) ?>)
+						<?php endif ?>
+						:
 					</p>
-					<?php if (empty($genre['entries'])): ?>
+					<?php if (empty($x['entries'])): ?>
 						<p>None!</p>
 					<?php elseif ($this->user[$this->am]['private']): ?>
-						<p>This list is private.</p>
+						<p>Can&rsquo;t show you titles from a private list.</p>
 					<?php else: ?>
 						<ul>
-							<?php foreach ($genre['entries'] as $e): ?>
+							<?php foreach ($x['entries'] as $e): ?>
 								<li>
 									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
 										<?php echo $e['full']['title'] ?>

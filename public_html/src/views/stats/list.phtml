@@ -10,7 +10,7 @@
 		<?php if (empty($this->user[$this->am]['entries'])): ?>
 			<p>This user doesn&rsquo;t seem to have anything on their list.</p>
 		<?php elseif ($this->user[$this->am]['private']): ?>
-			<p>This user has marked their list as private. No table here.</p>
+			<p><?php echo ucfirst($this->mgHelper->amText()) ?> list of this user is private.<br>Each of us has some dirty secrets, isn&rsquo;t that right?</p>
 		<?php else: ?>
 			<div class="table">
 				<table class="tablesorter">

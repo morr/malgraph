@@ -58,12 +58,16 @@
 				<?php foreach ($this->user[$this->am]['dist-subtype'] as $k => $x): ?>
 					<div class="more" data-id="<?php echo $x['text'] ?>">
 						<p>
-							<?php echo ucfirst($x['text']) ?>:
+							<?php echo ucfirst($x['text']) ?>
+							<?php if (!empty($x['entries'])): ?>
+								&nbsp;(<?php echo count($x['entries']) ?>)
+							<?php endif ?>
+							:
 						</p>
 						<?php if (empty($x['entries'])): ?>
 							<p>None!</p>
 						<?php elseif ($this->user[$this->am]['private']): ?>
-							<p>This list is private.</p>
+							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
 								<?php foreach ($x['entries'] as $e): ?>
@@ -148,12 +152,19 @@
 					<div class="more" data-id="<?php echo $x['text'] ?>">
 						<p>
 							<?php echo ucfirst($this->mgHelper->amText()) ?> with <?php echo $x['text'] ?>&nbsp;
-							<?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'chapters' : 'episodes' ?>:
+							<?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'chapter' : 'episode' ?>
+							<?php if ($x['text'] != '1'): ?>
+								s
+							<?php endif ?>
+							<?php if (!empty($x['entries'])): ?>
+								&nbsp;(<?php echo count($x['entries']) ?>)
+							<?php endif ?>
+							:
 						</p>
 						<?php if (empty($x['entries'])): ?>
 							<p>None!</p>
 						<?php elseif ($this->user[$this->am]['private']): ?>
-							<p>This list is private.</p>
+							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
 								<?php foreach ($x['entries'] as $e): ?>
@@ -222,12 +233,16 @@
 				<?php foreach ($this->user[$this->am]['dist-status'] as $k => $x): ?>
 					<div class="more" data-id="<?php echo $x['text'] ?>">
 						<p>
-							<?php echo ucfirst($x['text']) ?> <?php echo $this->mgHelper->amText() ?>:
+							<?php echo ucfirst($x['text']) ?> <?php echo $this->mgHelper->amText() ?>
+							<?php if (!empty($x['entries'])): ?>
+								&nbsp;(<?php echo count($x['entries']) ?>)
+							<?php endif ?>
+							:
 						</p>
 						<?php if (empty($x['entries'])): ?>
 							<p>None!</p>
 						<?php elseif ($this->user[$this->am]['private']): ?>
-							<p>This list is private.</p>
+							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
 								<?php foreach ($x['entries'] as $e): ?>

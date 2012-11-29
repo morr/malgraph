@@ -38,7 +38,7 @@
 		</div>
 
 		<div class="wrapper wrapper-more">
-			<?php foreach ($this->user[$this->am]['acti-info']['day-periods'] as $k => $dp): ?>
+			<?php foreach ($this->user[$this->am]['acti-info']['day-periods'] as $k => $x): ?>
 				<div class="more" data-id="<?php echo $k ?>">
 					<p>
 						<?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'Chapters' : 'Episodes' ?>
@@ -50,15 +50,18 @@
 						<?php else: ?>
 							<?php echo $k ?> days ago
 						<?php endif ?>
+						<?php if (!empty($x['entries'])): ?>
+							&nbsp;(<?php echo count($x['entries']) ?>)
+						<?php endif ?>
 						:
 					</p>
-					<?php if (empty($dp['entries'])): ?>
+					<?php if (empty($x['entries'])): ?>
 						<p>None!</p>
 					<?php elseif ($this->user[$this->am]['private']): ?>
-						<p>This list is private.</p>
+						<p>Can&rsquo;t show you titles from a private list.</p>
 					<?php else: ?>
 						<ul>
-							<?php foreach ($dp['entries'] as $e): ?>
+							<?php foreach ($x['entries'] as $e): ?>
 								<li>
 									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
 										<?php echo $e['full']['title'] ?>
@@ -126,20 +129,26 @@
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->user[$this->am]['acti-info']['month-periods'] as $k => $mp): ?>
+				<?php foreach ($this->user[$this->am]['acti-info']['month-periods'] as $k => $x): ?>
 					<div class="more" data-id="<?php echo $k ?>">
-						<?php if ($k == '?'): ?>
-							<p>Titles with unspecified completion or start date:</p>
-						<?php else: ?>
-							<p>Titles from <?php echo $k ?>:</p>
-						<?php endif ?>
-						<?php if (empty($mp['entries'])): ?>
+						<p>
+							<?php if ($k == '?'): ?>
+								Titles with unspecified completion or start date
+							<?php else: ?>
+								Titles from <?php echo $k ?>
+							<?php endif ?>
+							<?php if (!empty($x['entries'])): ?>
+								&nbsp;(<?php echo count($x['entries']) ?>)
+							<?php endif ?>
+							:
+						</p>
+						<?php if (empty($x['entries'])): ?>
 							<p>None!</p>
 						<?php elseif ($this->user[$this->am]['private']): ?>
-							<p>This list is private.</p>
+							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
-								<?php foreach ($mp['entries'] as $e): ?>
+								<?php foreach ($x['entries'] as $e): ?>
 									<li>
 										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
 											<?php echo $e['full']['title'] ?>
