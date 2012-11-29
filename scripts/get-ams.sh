@@ -1,4 +1,5 @@
 #!/bin/bash
+dir=`dirname "$0"`
 type=$1; shift
 min=$1; shift
 max=$1; shift
@@ -8,5 +9,5 @@ if [[ "$type" != anime && "$type" != manga ]]; then
 fi
 seq $min $max|xargs -n 1 -P 20 -I {} sh -c "{
 	echo -n \"{} \";
-	php ./get-amu.php \"$type\" \"{}\" >/dev/null
+	php \"$dir/get-amu.php\" \"$type\" \"{}\" >/dev/null
 }"

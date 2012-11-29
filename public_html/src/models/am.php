@@ -61,7 +61,7 @@ abstract class AMModel extends JSONDB {
 				$entry['status'] = self::ENTRY_STATUS_NOT_YET_PUBLISHED;
 				break;
 			case 'publishing':
-			case 'airing':
+			case 'currently airing':
 				$entry['status'] = self::ENTRY_STATUS_PUBLISHING;
 				break;
 			case 'finished':
