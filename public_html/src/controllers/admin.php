@@ -117,7 +117,7 @@ class AdminController extends AbstractController {
 				if ($c2 > 0) {
 					$this->success($c1 . ' entries deleted OK');
 				} else {
-					$this->success($c1 . ' entries deleted OK, ' . $c2 . ' already didn’t exist');
+					$this->success($c1 . ' entries deleted OK, ' . $c2 . ' were already deleted');
 				}
 				break;
 			case 'refresh':
@@ -148,7 +148,7 @@ class AdminController extends AbstractController {
 		switch ($_GET['action']) {
 			case 'remove':
 				if (!$model->cacheExists($userName)) {
-					$this->success($userName . ' already didn’t exist');
+					$this->success($userName . ' was already deleted');
 				}
 				$model->delete($userName);
 				$this->success($userName . ' deleted OK');
