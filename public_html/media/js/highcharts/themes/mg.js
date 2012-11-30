@@ -84,6 +84,12 @@ Highcharts.theme = {
 		}
 	},
 
+	tooltip: {
+		style: {
+			pointerEvents: 'none'
+		}
+	}
+
 };
 
 // Apply the theme

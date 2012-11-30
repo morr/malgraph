@@ -969,7 +969,7 @@ class StatsController extends AbstractController {
 
 
 
-	public function suggAction() {
+	public function sugAction() {
 		$this->loadUsers();
 		$this->loadEntries();
 

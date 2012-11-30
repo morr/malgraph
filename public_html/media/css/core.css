@@ -317,10 +317,10 @@ div.tooltip {
 		width: 70px;
 	}
 		div.tooltip.medium div {
-			width: 95px;
+			width: 150px;
 		}
 		div.tooltip.big div {
-			width: 120px;
+			width: 240px;
 		}
 
 table.tablesorter {
