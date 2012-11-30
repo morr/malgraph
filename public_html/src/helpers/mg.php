@@ -215,6 +215,13 @@ class MGHelper extends ChibiHelper {
 		}
 		curl_multi_close($multicurl);
 
+		foreach (array_keys($documents) as $key) {
+			$documents[$key] = '<?xml encoding="utf-8" ?>' . $documents[$key];
+			//別ハックは、	Another hack
+			//私は静かに	makes me
+			//泣きます		quietly weep
+		}
+
 		return $documents;
 	}
 
