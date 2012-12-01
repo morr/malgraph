@@ -415,7 +415,14 @@ class StatsController extends AbstractController {
 			unset($ach);
 
 			//sort by achievement related titles count
-			uasort($achievements, function($a, $b) { return count($a['entries']) - count($b['entries']); });
+			uasort($achievements, function($a, $b) {
+				if (empty($a['entries'])) {
+					return - 1;
+				} elseif (empty($b['entries'])) {
+					return 1;
+				}
+				return count($a['entries']) - count($b['entries']);
+			});
 
 			$u['achievements'] = $achievements;
 		}
