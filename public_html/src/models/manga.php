@@ -3,6 +3,7 @@ require_once 'am.php';
 class MangaModel extends AMModel {
 	const ENTRY_SUBTYPE_MANGA = 'manga';
 	const ENTRY_SUBTYPE_MANHWA = 'manhwa';
+	const ENTRY_SUBTYPE_MANHUA = 'manhua';
 	const ENTRY_SUBTYPE_NOVEL = 'novel';
 	const ENTRY_SUBTYPE_ONESHOT = 'one shot';
 	const ENTRY_SUBTYPE_DOUJIN = 'doujin';

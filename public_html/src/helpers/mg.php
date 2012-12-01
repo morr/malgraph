@@ -37,6 +37,7 @@ class MGHelper extends ChibiHelper {
 			case AnimeModel::ENTRY_SUBTYPE_MOVIE: return 'Movie';
 			case MangaModel::ENTRY_SUBTYPE_MANGA: return 'Manga';
 			case MangaModel::ENTRY_SUBTYPE_MANHWA: return 'Manhwa';
+			case MangaModel::ENTRY_SUBTYPE_MANHUA: return 'Manhua';
 			case MangaModel::ENTRY_SUBTYPE_DOUJIN: return 'Doujin';
 			case MangaModel::ENTRY_SUBTYPE_NOVEL: return 'Novel';
 			case MangaModel::ENTRY_SUBTYPE_ONESHOT: return 'One shot';
