@@ -161,19 +161,52 @@
 				<?php endforeach ?>
 			</div>
 
+			<?php
+				$max = 0;
+				foreach ($this->user[$this->am]['acti-info']['month-periods'] as $key => $x2) {
+					if ($key != '?' and count($x2['entries']) > $max) {
+						$max = count($x2['entries']);
+					}
+				}
+				$real_max = intval(ceil($max / 5.0)) * 5;
+			?>
+
 			<script type="text/javascript">
 				$('#user-<?php echo $this->user['user-safe-id'] ?> .acti-line-monthly .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'line', marginTop: 8, marginBottom: 56 },
 						xAxis: { categories: <?php echo json_encode(array_keys($this->user[$this->am]['acti-info']['month-periods'])) ?>, labels: { rotation: -45, align: 'right' } },
-						yAxis: { title: {text: 'Count'}, min: 0 },
-						tooltip: { formatter: function() { var text = 'Titles from ' + this.x + ': ' + this.y; return text; } },
+						yAxis: { title: {text: 'Count'}, min: 0, max: <?php echo $real_max ?> },
+						tooltip: { formatter: function() {
+							var text = 'Titles ';
+							if (this.x == '?') {
+								text += 'with unspecified date: ' + this.point.real_y;
+							} else {
+								text += 'from ' + this.x + ': ' + this.y;
+							}
+							return text; } },
 						series: [ {
-							data: <?php echo json_encode(array_map(function($p) { return count($p['entries']); }, array_values($this->user[$this->am]['acti-info']['month-periods']))) ?>,
+							data:
+								<?php echo json_encode(array_map(function($key) {
+									$x = $this->user[$this->am]['acti-info']['month-periods'][$key];
+									return count($x['entries']);
+								}, array_keys($this->user[$this->am]['acti-info']['month-periods'])))
+								?>,
 							point: { events: { click: function(e) {
 								toggleWithinSections($('.acti-line-monthly .more[data-id=\'' + this.category + '\']'), true);
 							} } }
-						} ],
+						}, {
+							data: <?php
+								$x = &$this->user[$this->am]['acti-info']['month-periods']['?'];
+								echo json_encode([ [
+									'y' => min(count($x['entries']), $real_max),
+									'real_y' => count($x['entries'])
+								] ] )
+								?>,
+							point: { events: { click: function(e) {
+								toggleWithinSections($('.acti-line-monthly .more[data-id=\'' + this.category + '\']'), true);
+							} } }
+						}],
 					});
 					});
 			</script>
@@ -187,10 +220,7 @@
 <?php if ($this->isFinal): ?>
 	<script type="text/javascript">
 		$(function() {
-			var target = $('.acti-line-monthly .wrapper-target');
-			var pos = 9999;/*;_;*/
-			var api = target.jScrollPane().data('jsp');
-			api.scrollToX(pos, false);
+			$('.acti-line-monthly .wrapper-target').jScrollPane();
 		});
 	</script>
 <?php endif ?>
