@@ -187,7 +187,10 @@
 <?php if ($this->isFinal): ?>
 	<script type="text/javascript">
 		$(function() {
-			$('.acti-line-monthly .wrapper-target').jScrollPane();
+			var target = $('.acti-line-monthly .wrapper-target');
+			var pos = 9999;/*;_;*/
+			var api = target.jScrollPane().data('jsp');
+			api.scrollToX(pos, false);
 		});
 	</script>
 <?php endif ?>

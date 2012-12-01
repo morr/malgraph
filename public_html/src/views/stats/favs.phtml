@@ -98,7 +98,7 @@
 			$('#user-<?php echo $this->user['user-safe-id'] ?> .decades .target').each(function() {
 				var chart = new Highcharts.Chart({
 					chart: { renderTo: this, type: 'line', marginTop: 8 },
-					xAxis: { reversed: true,
+					xAxis: {
 						categories: <?php echo json_encode(array_keys($this->user[$this->am]['years'])) ?>,
 						labels: { enabled: false },
 						title: { text: 'Decades', margin: 15 },

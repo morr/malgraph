@@ -730,11 +730,11 @@ class StatsController extends AbstractController {
 				}
 				uksort($actiInfo['month-periods'], function($a, $b) {
 					if ($a == '?') {
-						return 1;
+						return -1;
 					} elseif ($b == '?') {
-						return - 1;
+						return 1;
 					}
-					return strcmp($b, $a);
+					return strcmp($a, $b);
 				});
 			}
 
@@ -748,7 +748,7 @@ class StatsController extends AbstractController {
 			$models = [];
 			$models[AMModel::ENTRY_TYPE_ANIME] = new AnimeModel();
 			$models[AMModel::ENTRY_TYPE_MANGA] = new MangaModel();
-			for ($daysBack = 0; $daysBack <= 21; $daysBack ++) {
+			for ($daysBack = 21; $daysBack >= 0; $daysBack --) {
 				$day = date('Y-m-d', mktime(-24 * $daysBack));
 				$dayPeriod = [];
 				$dayPeriod['entries'] = [];
