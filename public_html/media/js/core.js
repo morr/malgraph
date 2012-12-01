@@ -87,19 +87,21 @@ $(function() {
 // fluid menu position
 $(function() {
 	var menu = $('#menu');
+	var content = $('#content');
 	if (menu.length == 0) {
 		return;
 	}
-	var pos0 = 10;
-	var pos1 = menu.offset().top;
+	var y0 = 10;
+	var y1 = menu.offset().top;
+	var x_delta = content.offset().left - menu.offset().left;
 	menu.css('position', 'fixed');
-	$(window).scroll(function(e) {
-		var pos2 = $(window).scrollTop();
-		if (pos2 < pos1 - pos0) {
-			menu.data('target-pos', pos1 - pos2);
+	$(window).bind('resize scroll', function(e) {
+		var y2 = $(window).scrollTop();
+		if (y2 < y1 - y0) {
+			menu.css('top', (y1 - y2) + 'px');
 		} else {
-			menu.data('target-pos', pos0);
+			menu.css('top', y0 + 'px');
 		}
-		menu.css('top', menu.data('target-pos') + 'px');
+		menu.css('left', (content.offset().left - $(window).scrollLeft() - x_delta) + 'px');
 	});
 });
