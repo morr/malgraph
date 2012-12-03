@@ -142,7 +142,7 @@
 				textExtraction: function(node) {
 					return $(node).attr('data-sorter');
 				},
-				<?php if (count($this->sers) > 1): ?>
+				<?php if (count($this->users) > 1): ?>
 					sortList: [[3,1],[2,0]]
 				<?php else: ?>
 					sortList: [[2,1],[1,0]]
