@@ -100,7 +100,7 @@
 					series: [ {
 						data: <?php echo json_encode(array_map(function($p) { return count($p['entries']); }, array_values($this->user[$this->am]['acti-info']['day-periods']))) ?>,
 						point: { events: { click: function(e) {
-							toggleWithinSections($('.acti-line-daily .more[data-id=\'' + this.x + '\']'), true);
+							toggleWithinSections($('.acti-line-daily .more[data-id=\'' + this.category + '\']'), true);
 						} } }
 					} ],
 					plotOptions: { column: { pointWidth: 17 } }
