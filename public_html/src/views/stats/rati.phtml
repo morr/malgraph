@@ -16,7 +16,8 @@
 	</h3>
 	<div class="section-body">
 		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
-			<p>This user doesn&rsquo;t seem to have anything rated. No chart here.</p>
+			<p>No ratings, no graphs.<br>
+			MALgraph can&rsquo;t render those shiny bars until you feed it some data.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>
@@ -162,7 +163,8 @@
 	</h3>
 	<div class="section-body">
 		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
-			<p>This user doesn&rsquo;t seem to have anything rated. No chart here.</p>
+			<p>Couldn&rsquo;t find ratings on your list.<br>
+			Rate some <?php echo $this->mgHelper->amText() ?> and come back in 24 hours.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>

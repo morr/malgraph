@@ -357,9 +357,11 @@ class StatsController extends AbstractController {
 					$achIds []= $title['id'];
 				}
 				$entriesOwned = array();
-				foreach ($groups[UserModel::USER_LIST_STATUS_COMPLETED] as $k => $e) {
-					if (in_array($e['user']['id'], $achIds)) {
-						$entriesOwned []= &$groups[UserModel::USER_LIST_STATUS_COMPLETED][$k];
+				if (!empty($groups[UserModel::USER_LIST_STATUS_COMPLETED])) {
+					foreach ($groups[UserModel::USER_LIST_STATUS_COMPLETED] as $k => $e) {
+						if (in_array($e['user']['id'], $achIds)) {
+							$entriesOwned []= &$groups[UserModel::USER_LIST_STATUS_COMPLETED][$k];
+						}
 					}
 				}
 				self::sortEntries($entriesOwned, 'title');

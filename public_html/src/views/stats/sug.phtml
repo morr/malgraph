@@ -17,9 +17,10 @@
 	<div class="section-body">
 
 		<?php if (empty($this->user['proposed-entries'])): ?>
-			<p>Waai! No missing relations!</p>
+			<p>Yay! No missing relations!</p>
 		<?php elseif ($this->user[$this->am]['private']): ?>
-			<p>Can&rsquo;t show you titles from a private list.</p>
+			<p>Since <?php echo $this->user['visible-name'] ?>&rsquo;s <?php echo $this->mgHelper->amText() ?> we can&rsquo;t reveal its content by showing suggestions.<br>
+			If this is your list, click <a href="http://myanimelist.net/editprofile.php?go=listpreferences">here</a> to change privacy settings.</p>
 		<?php else: ?>
 
 			<table>

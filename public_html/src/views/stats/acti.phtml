@@ -119,7 +119,8 @@
 	</h3>
 	<div class="section-body">
 		<?php if (empty($this->user[$this->view->am]['acti-info']['month-periods'])): ?>
-			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified. This graph won&rsquo;t work without this data.</p>
+			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified.<br>
+			This graph won&rsquo;t work without this data.</p>
 		<?php elseif (count($this->user[$this->view->am]['acti-info']['month-periods']) == 1): ?>
 			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($this->user[$this->am]['acti-info']['month-periods'])) ?>, so a graph isn&rsquo;t needed.</p>
 		<?php else: ?>

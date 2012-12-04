@@ -21,8 +21,12 @@
 	text-decoration: line-through;
 }
 
-div.basic h3, div.basic .section-body {
-	padding-left: 10px;
+div.basic h3 {
+	padding-left: 142px;
+}
+div.basic .section-body {
+	padding-left: 142px;
+	padding-bottom: 10px;
 }
 
 .updated {
