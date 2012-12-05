@@ -255,6 +255,7 @@
 					<?php endif ?>
 				</div>
 			<?php endforeach ?>
+			<div class="more" data-id="null"></div>
 		</div>
 	</div>
 </div>
@@ -349,6 +350,7 @@
 					<?php endif ?>
 				</div>
 			<?php endforeach ?>
+			<div class="more" data-id="null"></div>
 		</div>
 	</div>
 </div>
@@ -359,8 +361,24 @@
 	$('#user-<?php echo $this->user['user-safe-id'] ?> .more-trigger').click(function(e) {
 		e.preventDefault();
 		var k = $(this).attr('data-id');
-		var target = $(this).parents('.section').find('.more[data-id=\'' + k + '\']');
-		toggleWithinSections(target, true);
+		/*var target = $('.section .more[data-id=\'' + k + '\']');
+		toggleWithinSections(target, true);*/
+		var selBase = '.' + $(this).parents('.section').attr('class').replace(/\s+/g, '.');
+		var selFinal = [];
+		$(selBase).each(function() {
+			var selSubBase = '#' + $(this).parents('.user').attr('id') + ' ' + selBase;
+			var sel1 = selSubBase + ' .more[data-id=\'' + k + '\']';
+			var sel2 = selSubBase + ' .more[data-id=\'null\']';
+			var target = $(sel1);
+			if (!target.length) {
+				selFinal.push(sel2);
+			} else {
+				selFinal.push(sel1);
+			}
+		});
+		selFinal = selFinal.join(',');
+		console.log(selFinal);
+		toggleWithinSections($(selFinal), true);
 	});
 </script>
 
