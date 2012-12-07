@@ -26,7 +26,7 @@
 			<li>
 				<div>
 					<span class="prefix">Average time</span>
-					<span class="subject"><?php printf('%.02f', $this->user[$this->am]['acti-info']['mean-time']) ?></span>
+					<span class="subject tooltipable" data-title="Earliest time user started or finished <?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL, was on <?php echo date('Y-m-d', $this->user[$this->am]['acti-info']['earliest-time']) ?>"><?php printf('%.02f', $this->user[$this->am]['acti-info']['mean-time']) ?></span>
 					<span class="suffix">min/day</span>
 				</div>
 			</li>

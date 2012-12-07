@@ -738,9 +738,26 @@ class StatsController extends AbstractController {
 
 			//add some random information
 			$actiInfo['total-time'] = array_sum(array_map(function($mp) { return $mp['duration']; }, $actiInfo['month-periods']));
+
 			list($year, $month, $day) = explode('-', $u['join-date']);
-			$joinedDays = (time() - mktime(0, 0, 0, $month, $day, $year)) / 24. / 3600.;
-			$actiInfo['mean-time'] = $actiInfo['total-time'] / $joinedDays;
+			$earliest = mktime(0, 0, 0, $month, $day, $year);
+			foreach ($u[$this->view->am]['entries'] as &$e) {
+				foreach (['start-date', 'finish-date'] as $k) {
+					$f = explode('-', $e['user'][$k]);
+					if (count($f) != 3) {
+						continue;
+					}
+					$year = intval($f[0]);
+					$month = intval($f[1]);
+					$day = intval($f[2]);
+					$time = mktime(0, 0, 0, $month, $day, $year);
+					if ($time < $earliest) {
+						$earliest = $time;
+					}
+				}
+			}
+			$actiInfo['earliest-time'] = $earliest;
+			$actiInfo['mean-time'] = $actiInfo['total-time'] / ((time() - $earliest) / (24. * 3600.0));
 
 			//day periods
 			$models = [];
