@@ -55,6 +55,8 @@ $(function() {
 					c = 'medium';
 				} else if (length < 110) {
 					c = 'big';
+				} else {
+					c = 'big';
 				}
 				var div = $('<div class="tooltip"/>').addClass(c).append($('<div>').text(title));
 				$(target).data('tooltip', div);
