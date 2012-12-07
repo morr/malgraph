@@ -274,10 +274,6 @@ class StatsController extends AbstractController {
 		} else {
 			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s ' . $this->mgHelper->amText() . ' lists' . MGHelper::$descSuffix);
 		}
-
-		foreach ($this->view->users as $i => &$u) {
-			self::sortEntries($u[$this->view->am]['entries'], 'score');
-		}
 	}
 
 
