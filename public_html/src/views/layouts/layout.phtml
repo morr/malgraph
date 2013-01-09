@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<?php echo $this->headHelper->render() ?>
-	<meta property="og:title" content="<?php echo $this->headHelper->title ?>">
-	<meta property="og:description" content="<?php echo $this->headHelper->description ?>">
-	<meta property="og:image" content="<?php echo $this->urlHelper->url('media/img/logo.png') ?>">
-	<meta property="og:url" content="<?php echo $this->mgHelper->currentUrl() ?>">
+	<?php echo HeadHelper::render() ?>
+	<meta property="og:title" content="<?php echo HeadHelper::getTitle() ?>">
+	<meta property="og:description" content="<?php echo HeadHelper::getDescription() ?>">
+	<meta property="og:image" content="<?php echo UrlHelper::url('media/img/logo.png') ?>">
+	<meta property="og:url" content="<?php echo ChibiRegistry::getHelper('mg')->currentUrl() ?>">
 	<meta property="og:site_name" content="MALgraph" />
 </head>
-<?php if ($this->view->controllerName == 'stats'): ?>
-	<?php if (count($this->view->userNames) > 1): ?>
+<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
+	<?php if (count(ChibiRegistry::getView()->userNames) > 1): ?>
 		<body class="user-mode compare-mode">
 	<?php else: ?>
 		<body class="user-mode">
@@ -21,25 +21,25 @@
 	<div id="main-wrapper">
 		<div id="header">
 			<h1>
-				<a href="<?php echo $this->mgHelper->constructUrl('index', 'index') ?>">
+				<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'index') ?>">
 					<span>MALgraph</span>
 				</a>
 			</h1>
-			<form class="waitable" id="search" action="<?php echo $this->mgHelper->constructUrl('index', 'search') ?>" method="post">
-				<?php if ($this->view->controllerName == 'stats'): ?>
-					<?php foreach ($this->view->userNames as $userName): ?>
+			<form class="waitable" id="search" action="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'search') ?>" method="post">
+				<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
+					<?php foreach (ChibiRegistry::getView()->userNames as $userName): ?>
 						<input type="hidden" name="user-names[]" value="<?php echo $userName ?>">
 					<?php endforeach ?>
-					<input type="hidden" name="action-name" value="<?php echo $this->view->actionName ?>">
+					<input type="hidden" name="action-name" value="<?php echo ChibiRegistry::getView()->actionName ?>">
 				<?php endif ?>
-				<?php if (!empty($this->view->am)): ?>
-					<input type="hidden" name="am" value="<?php echo $this->view->am ?>">
+				<?php if (!empty(ChibiRegistry::getView()->am)): ?>
+					<input type="hidden" name="am" value="<?php echo ChibiRegistry::getView()->am ?>">
 				<?php endif ?>
 				<div class="control-group input-append">
 					<input type="search" name="user-names[]">
 					<button data-title="Search" data-position-my="center top" data-position-at="center bottom" name="submit" value="search" type="submit" class="tooltipable btn"><i class="icon-search"></i></button>
 					<button data-title="Compare" data-position-my="center top" data-position-at="center bottom" name="submit" value="compare" type="submit"
-						<?php if ($this->view->controllerName == 'stats'): ?>
+						<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 							class="tooltipable btn"
 						<?php else: ?>
 							class="tooltipable btn disabled" disabled="disabled"
@@ -52,17 +52,17 @@
 		</div>
 
 		<div id="main">
-			<?php if ($this->view->controllerName == 'stats'): ?>
+			<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 				<div id="menu">
 					<ul class="am">
-						<?php foreach ([AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA] as $type): ?>
-							<li data-title="<?php echo ucfirst($this->mgHelper->amText($type)) ?> stats" data-position-my="center top" data-position-at="center bottom"
-								<?php if ($this->view->am == $type): ?>
+						<?php foreach ([AMModel::TYPE_ANIME, AMModel::TYPE_MANGA] as $type): ?>
+							<li data-title="<?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($type)) ?> stats" data-position-my="center top" data-position-at="center bottom"
+								<?php if (ChibiRegistry::getView()->am == $type): ?>
 									class="active tooltipable"
 								<?php else: ?>
 									class="tooltipable"
 								<?php endif ?>
-								><a href="<?php echo $this->mgHelper->constructUrl(null, null, [], null, $type) ?>">
+								><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], null, $type) ?>">
 									<i class="icon-<?php echo $type ?>"></i>
 								</a>
 							</li>
@@ -82,12 +82,12 @@
 					?>
 					<ul class="action">
 						<?php foreach ($menu as $item): ?>
-							<?php if ($this->view->actionName == $item['action']): ?>
+							<?php if (ChibiRegistry::getView()->actionName == $item['action']): ?>
 								<li class="active">
 							<?php else: ?>
 								<li>
 							<?php endif ?>
-								<a class="waitable" href="<?php echo $this->mgHelper->constructUrl('stats', $item['action']) ?>">
+								<a class="waitable" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('stats', $item['action']) ?>">
 									<?php echo $item['text'] ?>
 								</a>
 							</li>
@@ -96,26 +96,32 @@
 				</div>
 
 				<div id="content">
-					<?php if (count($this->view->users) > 1): ?>
+					<?php if (count(ChibiRegistry::getView()->users) > 1): ?>
 						<div id="switcher">
-							<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], [end($this->view->userNames), reset($this->view->userNames)]) ?>">
+							<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [end(ChibiRegistry::getView()->userNames), reset(ChibiRegistry::getView()->userNames)]) ?>">
 								<i class="icon-switch"></i>
 							</a>
 						</div>
 					<?php endif ?>
 
 					<div class="users">
-						<?php $keys = array_keys($this->view->users) ?>
+						<?php $keys = array_keys(ChibiRegistry::getView()->users) ?>
 						<?php foreach ($keys as $i => $k): ?>
-							<?php $u = $this->view->users[$k] ?>
-							<?php if ($u['anonymous']): ?>
-								<div class="user anonymous" id="user-<?php echo $u['user-safe-id'] ?>">
+							<?php $u = ChibiRegistry::getView()->users[$k] ?>
+							<?php if ($u->isAnonymous()): ?>
+								<div class="user anonymous" id="user-<?php echo $u->getRuntimeID() ?>">
 							<?php else: ?>
-								<div class="user" id="user-<?php echo $u['user-safe-id'] ?>">
+								<div class="user" id="user-<?php echo $u->getRuntimeID() ?>">
 							<?php endif ?>
-								<?php $this->view->isFinal = $i == count($keys) - 1 ?>
-								<?php $this->view->user = $u ?>
-								<?php echo $this->view->render() ?>
+								<?php ChibiRegistry::getView()->isFinal = $i == count($keys) - 1 ?>
+								<?php ChibiRegistry::getView()->user = $u ?>
+								<?php if (count(ChibiRegistry::getview()->users) > 1): ?>
+									<?php ChibiRegistry::getView()->otherUser = ChibiRegistry::getView()->users[$keys[1 - $i]] ?>
+								<?php else: ?>
+									<?php ChibiRegistry::getView()->otherUser = null ?>
+								<?php endif ?>
+								<?php ChibiRegistry::getView()->userName = ChibiRegistry::getView()->userNames[$i] ?>
+								<?php echo ChibiRegistry::getView()->render() ?>
 							</div>
 						<?php endforeach ?>
 					<div class="clear"></div>
@@ -125,7 +131,7 @@
 
 			<?php else: ?>
 				<div id="content">
-					<?php echo $this->view->render() ?>
+					<?php echo ChibiRegistry::getView()->render() ?>
 				</div>
 			<?php endif ?>
 
@@ -135,19 +141,19 @@
 
 		<div id="footer">
 			<ul class="left">
-				<li><a href="<?php echo $this->mgHelper->constructUrl('index', 'about') ?>">About</a></li>
-				<li><a href="<?php echo $this->mgHelper->constructUrl('index', 'privacy') ?>">Privacy policy</a></li>
-				<li><a href="<?php echo $this->mgHelper->constructUrl('index', 'globals') ?>">Global stats</a></li>
-				<!--<li><?php printf('%.02f', microtime(true) - $this->config->chibi->runtime->timeStarted) ?>s</li>-->
+				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'about') ?>">About</a></li>
+				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'privacy') ?>">Privacy policy</a></li>
+				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'globals') ?>">Global stats</a></li>
+				<li><?php printf('%.02f', microtime(true) - ChibiConfig::getInstance()->chibi->runtime->timeStarted) ?>s</li>
 			</ul>
 			<ul class="right">
-				<?php if ($this->view->controllerName == 'stats'): ?>
+				<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 					<li>
 						<a class="tooltipable"
 							data-title="Anonymize current profile (for anonymous sharing)"
 							data-position-my="center bottom"
 							data-position-at="center top"
-							href="<?php echo $this->mgHelper->constructUrl(null, null, [], array_map(function($u) { return $u['anon-name']; }, $this->view->users)) ?>">
+							href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], array_map(function($u) { return $u->getAnonymousName(); }, ChibiRegistry::getView()->users)) ?>">
 							<i class="icon-anonymize"></i>
 						</a>
 					</li>
@@ -157,7 +163,7 @@
 						data-position-my="center bottom"
 						data-position-at="center top"
 						data-title="Share on Twitter"
-						href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode($this->mgHelper->currenturl()) ?>">
+						href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode(ChibiRegistry::getHelper('mg')->currenturl()) ?>">
 						<i class="icon-twitter"></i>
 					</a>
 				</li>
@@ -166,7 +172,7 @@
 						data-position-my="center bottom"
 						data-position-at="center top"
 						data-title="Share on Facebook"
-						href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode($this->mgHelper->currentUrl()) ?>&amp;t=Share+MALgraph">
+						href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode(ChibiRegistry::getHelper('mg')->currentUrl()) ?>&amp;t=Share+MALgraph">
 						<i class="icon-facebook"></i>
 					</a>
 				</li>
@@ -175,11 +181,11 @@
 		</div>
 	</div>
 
-	<?php if ($this->view->controllerName == 'stats'): ?>
+	<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 		<script type="text/javascript">
 			window.setTimeout(function() {
-				var url = <?php echo json_encode($this->mgHelper->constructUrl('index', 'regenerate')) ?>;
-				var data = <?php echo json_encode(['user-name' => reset($this->view->userNames)]) ?>;
+				var url = <?php echo json_encode(ChibiRegistry::getHelper('mg')->constructUrl('index', 'regenerate')) ?>;
+				var data = <?php echo json_encode(['user-name' => reset(ChibiRegistry::getView()->userNames)]) ?>;
 				$.get(url, data, function(response) { /*alert(response);*/ });
 			}, 1500);
 		</script>

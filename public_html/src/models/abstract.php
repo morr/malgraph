@@ -6,23 +6,56 @@ class DownloadException extends Exception {
 	}
 }
 
-interface DB {
+interface CRUMModel {
 	public function get($key);
 	public function put($key, &$data);
 	public function getKeys();
 	public function delete($key);
 };
 
-interface CachedDB extends DB {
+interface CachableModel extends CRUMModel {
 	public function getCached($key);
 	public function getReal($key);
-	public function isFresh($data);
 	public function cacheExists($key);
 };
 
-abstract class JSONDB extends ChibiModel implements CachedDB {
+interface CachableModelEntry {
+	public function isFresh();
+}
+
+abstract class AbstractModelEntry implements CachableModelEntry {
+	protected $generationTime = null;
+	protected $expirationTime = null;
+
+	public function setGenerationTime($time = null) {
+		if ($time === null) {
+			$time = time();
+		}
+		$this->generationTime = $time;
+	}
+
+	public function getGenerationTime() {
+		return $this->generationTime;
+	}
+
+	public function setExpirationTime($time) {
+		$this->expirationTime = $time;
+	}
+
+	public function getExpirationTime() {
+		return $this->expirationTime;
+	}
+
+
+	public function isFresh() {
+		return $this->expirationTime > time();
+	}
+
+}
+
+abstract class AbstractModel implements CachableModel {
 	protected $folder;
-	protected $suffix = '.json';
+	protected $suffix = '.dat';
 
 	protected function keyToPath($key) {
 		return str_replace('//', '/', $this->folder . '/' . strtolower($key) . $this->suffix);
@@ -64,13 +97,17 @@ abstract class JSONDB extends ChibiModel implements CachedDB {
 			return null;
 		}
 		$contents = file_get_contents($path);
-		$data = json_decode($contents, true);
+		$data = unserialize($contents);
 		return $data;
 	}
 
-	public function get($key, $getReal = false) {
+	const CACHE_POLICY_FORCE_REAL = 0; //force to load real data
+	const CACHE_POLICY_DEFAULT = 1; //load cache if it hasn't expired, otherwise load real data
+	const CACHE_POLICY_FORCE_CACHE = 2; //force to load cached data, if it's available; otherwise load real data
+
+	public function get($key, $cachePolicy = self::CACHE_POLICY_DEFAULT) {
 		$data = $this->getCached($key);
-		if (!$getReal and $data and $this->isFresh($data)) {
+		if ($data and (($cachePolicy == self::CACHE_POLICY_DEFAULT and $data->isFresh()) or ($cachePolicy == self::CACHE_POLICY_FORCE_CACHE))) {
 			return $data;
 		}
 		$data = $this->getReal($key);
@@ -83,6 +120,6 @@ abstract class JSONDB extends ChibiModel implements CachedDB {
 
 	public function put($key, &$data) {
 		$path = $this->keyToPath($key);
-		return file_put_contents($path, json_encode($data), LOCK_EX);
+		return file_put_contents($path, serialize($data), LOCK_EX);
 	}
 }

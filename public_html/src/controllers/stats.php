@@ -1,5 +1,7 @@
 <?php
 require_once 'src/controllers/abstract.php';
+require_once 'src/models/user/listservice.php';
+
 class StatsController extends AbstractController {
 	public function init() {
 		parent::init();
@@ -25,37 +27,23 @@ class StatsController extends AbstractController {
 
 		//load anime-manga switch
 		$am = $this->inputHelper->get('am');
-		if ($am != AMModel::ENTRY_TYPE_MANGA) {
-			$am = AMModel::ENTRY_TYPE_ANIME;
+		if ($am != AMModel::TYPE_MANGA) {
+			$am = AMModel::TYPE_ANIME;
 		}
 		$this->view->am = $am;
 
-		//add fun keywords
-		$this->headHelper->addKeywords(['profile', 'list', 'achievements', 'ratings', 'activity', 'favorites', 'suggestions', 'recommendations']);
-		foreach ($this->view->userNames as $userName) {
-			if ($userName{0} != '=') {
-				$this->headHelper->addKeywords([$userName]);
-			}
-		}
-	}
-
-
-
-	/*
-	 * Load all users information
-	 */
-	private function loadUsers() {
 		//make sure only two users are compared
 		if (count($this->view->userNames) > 2) {
 			throw new Exception('Sorry. We haven\'t implemented this.');
 		}
 
+		//try to load requested users
 		$anons = [];
 		$modelUsers = new UserModel(true);
 		$this->view->users = [];
 		foreach ($this->view->userNames as $userName) {
 			try {
-				$user = $modelUsers->get($userName);
+				$userEntry = $modelUsers->get($userName, AbstractModel::CACHE_POLICY_FORCE_CACHE);
 			} catch (InvalidEntryException $e) {
 				$this->sessionHelper->restore();
 				$_SESSION['wrong-user'] = $userName;
@@ -65,100 +53,65 @@ class StatsController extends AbstractController {
 				$this->forward($this->mgHelper->constructUrl('index', 'net-down'));
 				return;
 			}
-			if ($user['blocked']) {
+			if ($userEntry->getUserData()->isBlocked()) {
 				$this->sessionHelper->restore();
 				$_SESSION['wrong-user'] = $userName;
 				$this->forward($this->mgHelper->constructUrl('index', 'blocked-user'));
 			}
-			$this->view->users []= $user;
+			$this->view->users []= $userEntry;
 		}
 
-		foreach ($this->view->users as $k => &$user) {
-			if (!empty($user['user-name'])) {
-				$user['link-name'] = $user['user-name'];
-				$user['visible-name'] = $user['user-name'];
-				$user['user-safe-id'] = $k;
-				if ($user['anonymous']) {
-					$anons []= &$user;
-				}
+		//set meta
+		$titles = [
+			'profile' => ['{nick}&rsquo;s profile', '{nicks_amp}'],
+			'list' => ['{nick} - list ({am})', '{nicks_amp} - lists ({am})'],
+			'rati' => ['{nick} - rating stats ({am})', '{nicks_amp} - rating stats ({am})'],
+			'acti' => ['{nick} - activity ({am})', '{nicks_amp} - activity ({am})'],
+			'achi' => ['{nick} - achievements ({am})', '{nicks_amp} - achievements ({am})'],
+			'sug' => ['{nick} - suggestions ({am})', '{nicks_amp} - suggestions ({am})'],
+			'favs' => ['{nick} - favorites ({am})', '{nicks_amp} - favorites ({am})'],
+			'misc' => ['{nick} - misc stats ({am})', '{nicks_amp} - misc stats ({am})'],
+		];
+		$descriptions = [
+			'profile' => ['{nick}&rsquo;s profile', 'Comparison of {nicks_and}&rsquo;s profiles'],
+			'list' => ['{nick}&rsquo;s {am} list', 'Comparison of {nicks_and}&rsquo;s {am} lists'],
+			'rati' => ['{nick}&rsquo;s {am} rating statistics', 'Comparison of {nicks_and}&rsquo;s {am} rating statistics'],
+			'acti' => ['{nick}&rsquo;s {am} activity', 'Comparison of {nicks_and}&rsquo;s {am} activity'],
+			'achi' => ['{nick}&rsquo;s {am} achievements', 'Comparison of {nicks_and}&rsquo;s {am} achievements'],
+			'sug' => ['{nick}&rsquo;s {am} suggestions', 'Comparison of {nicks_and}&rsquo;s {am} suggestions'],
+			'favs' => ['{nick}&rsquo;s {am} favorites', 'Comparison of {nicks_and}&rsquo;s {am} favorites'],
+			'misc' => ['{nick}&rsquo;s {am} misc stats', 'Comparison of {nicks_and}&rsquo;s {am} misc stats'],
+		];
+		$tokens = [
+			'nick' => $this->view->users[0]->getPublicName(),
+			'nicks_amp' => implode(' & ', array_map(function($user) { return $user->getPublicName(); }, $this->view->users)),
+			'nicks_and' => implode(' and ', array_map(function($user) { return $user->getPublicName(); }, $this->view->users)),
+			'am' => $this->mgHelper->amText()
+		];
+
+		if (isset($titles[$this->view->actionName])) {
+			$title = 'MALgraph - ';
+			$description = '';
+			if (count($this->view->users) > 1) {
+				$title .= $titles[$this->view->actionName][1];
+				$description .= $descriptions[$this->view->actionName][1];
+			} else {
+				$title .= $titles[$this->view->actionName][0];
+				$description .= $descriptions[$this->view->actionName][0];
 			}
-		}
+			$title = $this->mgHelper->replaceTokens($title, $tokens);
+			$description = $this->mgHelper->replaceTokens($description, $tokens);
 
-		//prepare display names of anonymous users
-		$anonCurrent = 0;
-		$alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		foreach ($anons as $i => &$user) {
-			$user['link-name'] = $user['anon-name'];
-			$user['visible-name'] = 'Anonymous';
-			if (count($anons) > 1) {
-				$user['visible-name'] .= ' ' . $alphabet{$i};
-			}
-		}
-	}
-
-
-
-	/*
-	 * Load all user entries information
-	 */
-	private function loadEntries() {
-		$models = [];
-		$models[AMModel::ENTRY_TYPE_ANIME] = new AnimeModel();
-		$models[AMModel::ENTRY_TYPE_MANGA] = new MangaModel();
-		foreach ($this->view->users as $i => $u) {
-			foreach ($models as $am => $model) {
-				$entries = $u[$am]['entries'];
-				$nentries = [];
-				foreach ($entries as $k => $e) {
-					$key = $e['id'];
-					$e2 = $model->get($key);
-					if (!empty($e2)) {
-
-						//add additional info
-						if ($am == AMModel::ENTRY_TYPE_MANGA) {
-							$duration = 10;
-							$length = $e['chapters-completed'];
-						} else {
-							$duration = $e2['duration'];
-							$length = $e['episodes-completed'];
-						}
-						$e['total-time'] = $length * $duration;
-
-						$nentries[$key] = ['user' => $e, 'full' => $e2];
-					}
-				}
-				$this->view->users[$i][$am]['entries'] = $nentries;
-			}
-		}
-
-		foreach ($this->view->users as $i => &$u) {
-			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
-				$e['user']['unique'] = true;
-				$e['others'] = [];
-			}
-		}
-
-		if (count($this->view->users) > 1) {
-			foreach ($this->view->users as $i => &$u) {
-				foreach ($this->view->users as $j => &$u2) {
-					if ($i == $j) {
-						continue;
-					}
-					foreach ($u[$this->view->am]['entries'] as $k => &$e) {
-						$key = $e['full']['id'];
-						$l2 = &$u2[$this->view->am]['entries'];
-						if (!empty($l2[$key])) {
-							$e['others'] []= &$l2[$key];
-						}
-					}
-				}
-				foreach ($u[$this->view->am]['entries'] as $k => &$e) {
-					$e['user']['unique'] = empty($e['others']);
+			HeadHelper::setTitle($title);
+			HeadHelper::setDescription($description);
+			HeadHelper::addKeywords(['profile', 'list', 'achievements', 'ratings', 'activity', 'favorites', 'suggestions', 'recommendations']);
+			foreach ($this->view->userNames as $userName) {
+				if ($userName{0} != '=') {
+					HeadHelper::addKeywords([$userName]);
 				}
 			}
 		}
 	}
-
 
 
 	/*
@@ -171,24 +124,23 @@ class StatsController extends AbstractController {
 
 		//some common sorting flavours
 		$defs = [];
-		$defs['score'] = [0, function($e) { return $e['user']['score']; }];
+		$defs['score'] = [0, function($e) { return $e->getScore(); }];
 		$defs['status'] = [1, function($e) {
 			//sort statuses like MAL order
 			$statuses = array_flip([
-				UserModel::USER_LIST_STATUS_WATCHING,
-				UserModel::USER_LIST_STATUS_COMPLETED,
-				UserModel::USER_LIST_STATUS_ONHOLD,
-				UserModel::USER_LIST_STATUS_DROPPED,
-				UserModel::USER_LIST_STATUS_PLANNED,
-				UserModel::USER_LIST_STATUS_UNKNOWN,
+				UserListEntry::STATUS_WATCHING,
+				UserListEntry::STATUS_COMPLETED,
+				UserListEntry::STATUS_ONHOLD,
+				UserListEntry::STATUS_DROPPED,
+				UserListEntry::STATUS_PLANNED,
+				UserListEntry::STATUS_UNKNOWN,
 			]);
-			return $statuses[$e['user']['status']];
+			return $statuses[$e->getStatus()];
 		}];
-		$defs['length'] = [0, function($e) { return $e['full']['type'] == AMModel::ENTRY_TYPE_MANGA ? $e['full']['volumes'] : $e['full']['episodes']; }];
-		$defs['title'] = [1, function($e) { return strtolower($e['full']['title']); }];
-		$defs['unique'] = [1, function($e) { return empty($e['user']['unique']) ? 0 : $e['user']['unique']; }];
-		$defs['start-date'] = [1, function($e) { return $e['user']['start-date']; }];
-		$defs['finish-date'] = [1, function($e) { return $e['user']['finish-date']; }];
+		$defs['length'] = [0, function($e) { return $e->getType() == AMModel::TYPE_MANGA ? $e->getAMEntry()->getVolumeCount() : $e->getAMEntry()->getEpisodeCount(); }];
+		$defs['title'] = [1, function($e) { return strtolower($e->getAMEntry()->getTitle()); }];
+		$defs['start-date'] = [1, function($e) { return $e->getStartDate(); }];
+		$defs['finish-date'] = [1, function($e) { return $e->getFinishDate(); }];
 
 		//do sort
 		$sort = array_fill_keys(array_keys($defs), []);
@@ -250,50 +202,23 @@ class StatsController extends AbstractController {
 
 
 	public function profileAction() {
-		$this->loadUsers();
-
-		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setTitle('MALgraph - ' . $this->view->users[0]['visible-name'] . '&rsquo;s profile');
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '&rsquo;s profile' . MGHelper::$descSuffix);
-		} else {
-			$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)));
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s profiles' . MGHelper::$descSuffix);
-		}
 	}
 
 
 
 	public function listAction() {
-		$this->loadUsers();
-		$this->loadEntries();
-
-		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
-		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - ' . $this->mgHelper->amText() . ' list');
-		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '&rsquo;s ' . $this->mgHelper->amText() . ' list' . MGHelper::$descSuffix);
-		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s ' . $this->mgHelper->amText() . ' lists' . MGHelper::$descSuffix);
-		}
+		HeadHelper::addScript(UrlHelper::url('media/js/jquery.tablesorter.min.js'));
 	}
 
 
 
 	public function achiAction() {
-		$this->loadUsers();
-		$this->loadEntries();
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - achievements (' . $this->mgHelper->amText() . ')');
-		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '&rsquo;s ' . $this->mgHelper->amText() . ' achievements' . MGHelper::$descSuffix);
-		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s ' . $this->mgHelper->amText() . ' achievements' . MGHelper::$descSuffix);
-		}
-
-		foreach ($this->view->users as $i => &$u) {
+		foreach ($this->view->users as $i => $u) {
 			$groups = [];
-			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
-				$groups [$e['user']['status']] []= &$e;
+			foreach ($u->getList($this->view->am)->getEntries() as $entry) {
+				$groups[$entry->getStatus()] []= $entry;
 			}
 
 			$achievements = [];
@@ -322,9 +247,9 @@ class StatsController extends AbstractController {
 			], [
 				'count' => 100,
 				'desc' => 'You bought all of them, right?',
-				'level' => 'Casual ' . ($this->view->am == AMModel::ENTRY_TYPE_MANGA ? 'reader' : 'watcher'),
+				'level' => 'Casual ' . ($this->view->am == AMModel::TYPE_MANGA ? 'reader' : 'watcher'),
 			]];
-			$count = count($groups[UserModel::USER_LIST_STATUS_COMPLETED]);
+			$count = count($groups[UserListEntry::STATUS_COMPLETED]);
 			foreach ($thresholds as $threshold) {
 				if ($count > $threshold['count']) {
 					$achievements []= [
@@ -336,8 +261,8 @@ class StatsController extends AbstractController {
 				}
 			}*/
 
-			$achList = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->achDefFile), true);
-			if ($this->view->am == AMModel::ENTRY_TYPE_ANIME) {
+			$achList = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile), true);
+			if ($this->view->am == AMModel::TYPE_ANIME) {
 				$model = new AnimeModel();
 				$AM = 'anime';
 			} else {
@@ -347,16 +272,15 @@ class StatsController extends AbstractController {
 
 			//achievments from json
 			foreach ($achList[$AM] as $group => $groupData) {
-				var_dump($group);
 				$achIds = array();
 				foreach ($groupData['titles'] as $title) {
 					$achIds []= $title['id'];
 				}
 				$entriesOwned = array();
-				if (!empty($groups[UserModel::USER_LIST_STATUS_COMPLETED])) {
-					foreach ($groups[UserModel::USER_LIST_STATUS_COMPLETED] as $k => $e) {
-						if (in_array($e['user']['id'], $achIds)) {
-							$entriesOwned []= &$groups[UserModel::USER_LIST_STATUS_COMPLETED][$k];
+				if (!empty($groups[UserListEntry::STATUS_COMPLETED])) {
+					foreach ($groups[UserListEntry::STATUS_COMPLETED] as $e) {
+						if (in_array($e->getID(), $achIds)) {
+							$entriesOwned []= $e;
 						}
 					}
 				}
@@ -373,12 +297,13 @@ class StatsController extends AbstractController {
 			}
 
 			//achievement for mean score
-			if ($this->view->am == AMModel::ENTRY_TYPE_ANIME) {
+			if ($this->view->am == AMModel::TYPE_ANIME) {
 				$count = 0;
 				$sum = 0;
-				foreach ($u[$this->view->am]['entries'] as $e) {
-					if ($e['user']['score'] > 0 and $e['user']['status'] != UserModel::USER_LIST_STATUS_PLANNED) {
-						$sum += $e['user']['score'];
+				$filter = UserListFilters::getNonPlanned();
+				foreach ($u->getList($this->view->am)->getEntries($filter) as $e) {
+					if ($e->getScore() > 0) {
+						$sum += $e->getScore();
 						$count ++;
 					}
 				}
@@ -400,7 +325,7 @@ class StatsController extends AbstractController {
 				}
 			}
 
-			$files = scandir(implode(DIRECTORY_SEPARATOR, [$this->config->chibi->runtime->rootFolder, 'media', 'img', 'ach']));
+			$files = scandir(implode(DIRECTORY_SEPARATOR, [ChibiConfig::getInstance()->chibi->runtime->rootFolder, 'media', 'img', 'ach']));
 
 			foreach ($achievements as &$ach) {
 				$ach['path'] = null;
@@ -422,131 +347,42 @@ class StatsController extends AbstractController {
 				return count($a['entries']) - count($b['entries']);
 			});
 
-			$u['achievements'] = $achievements;
+			$this->view->achievements[$u->getID()] = $achievements;
 		}
 	}
 
 
 
 	public function ratiAction() {
-		$this->loadUsers();
-		$this->loadEntries();
-
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - rating stats (' . $this->mgHelper->amText() . ')');
-		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '&rsquo;s ' . $this->mgHelper->amText() . ' rating statistics' . MGHelper::$descSuffix);
-		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s ' . $this->mgHelper->amText() . ' rating statistics' . MGHelper::$descSuffix);
-		}
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
 		//prepare info for view
-		foreach ($this->view->users as $i => &$u) {
-			$allScores = range(10, 0);
+		$this->view->scoreDistribution = [];
 
-			$scoreInfo = [];
-			$scoreInfo['dist-score'] = array_fill_keys($allScores, 0);
-			$scoreInfo['dist-time'] = array_fill_keys($allScores, 0);
-			$scoreInfo['dist-entries'] = array_fill_keys($allScores, []);
-			foreach ($u[$this->view->am]['entries'] as $k => &$e) {
-				if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
-					continue;
-				}
-				$scoreInfo['dist-score'][$e['user']['score']] ++;
-				$scoreInfo['dist-time'][$e['user']['score']] += $e['user']['total-time'];
-				$scoreInfo['dist-entries'][$e['user']['score']] []= &$e;
-			}
+		foreach ($this->view->users as $userEntry) {
+			$filter = UserListFilters::getNonPlanned();
+			$entries = $userEntry->getList($this->view->am)->getEntries($filter);
 
-			//conert minutes to hours
-			foreach ($scoreInfo['dist-time'] as $k => &$v) {
-				$v /= 60.0;
-			}
-
-			//calculate rated and unrated count
-			$scoreInfo['unrated'] = $scoreInfo['dist-score'][0];
-			$scoreInfo['rated'] = array_sum($scoreInfo['dist-score']) - $scoreInfo['dist-score'][0];
-			$scoreInfo['unrated-total-time'] = $scoreInfo['dist-time'][0];
-			$scoreInfo['rated-total-time'] = array_sum($scoreInfo['dist-time']) - $scoreInfo['dist-time'][0];
-
-			//calculate mean
-			$scoreInfo['mean-score'] = 0;
-			$scoreInfo['mean-time'] = 0;
-			foreach ($allScores as $score) {
-				$scoreInfo['mean-score'] += $score * $scoreInfo['dist-score'][$score];
-				$scoreInfo['mean-time'] += $score * $scoreInfo['dist-time'][$score];
-			}
-			$scoreInfo['mean-score'] /= max(1, $scoreInfo['rated']);
-			$scoreInfo['mean-time'] /= max(1, $scoreInfo['rated-total-time']);
-
-			//calculate standard deviation
-			$scoreInfo['std-dev'] = 0;
-			foreach ($u[$this->view->am]['entries'] as &$e) {
-				if ($e['user']['score'] > 0) {
-					$scoreInfo['std-dev'] += pow($e['user']['score'] - $scoreInfo['mean-score'], 2);
-				}
-			}
-			$scoreInfo['std-dev'] /= max(1, $scoreInfo['rated'] - 1);
-			$scoreInfo['std-dev'] = sqrt($scoreInfo['std-dev']);
-
-			foreach ($scoreInfo['dist-entries'] as &$entries) {
-				self::sortEntries($entries, 'title');
-			}
-			$u[$this->view->am]['score-info'] = $scoreInfo;
+			$this->view->scoreDistribution[$userEntry->getID()] = UserListService::getScoreDistribution($entries);
+			$this->view->scoreDurationDistribution[$userEntry->getID()] = UserListService::getScoreDurationDistribution($entries);
 		}
 	}
 
 
 
 	public function ratiImgAction() {
-		$this->loadUsers();
-		$this->loadEntries();
-
 		//prepare info for view
-		foreach (array(AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA) as $am) {
-			foreach ($this->view->users as $i => &$u) {
-				$allScores = range(10, 0);
-
-				$scoreInfo = [];
-				$scoreInfo['dist-score'] = array_fill_keys($allScores, 0);
-				$scoreInfo['dist-entries'] = array_fill_keys($allScores, []);
-				foreach ($u[$am]['entries'] as $k => &$e) {
-					if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
-						continue;
-					}
-					$scoreInfo['dist-score'][$e['user']['score']] ++;
-					$scoreInfo['dist-entries'][$e['user']['score']] []= &$e;
-				}
-
-				//calculate rated and unrated count
-				$scoreInfo['unrated'] = $scoreInfo['dist-score'][0];
-				$scoreInfo['rated'] = array_sum($scoreInfo['dist-score']) - $scoreInfo['dist-score'][0];
-				$scoreInfo['rated-max'] = max(array_diff($scoreInfo['dist-score'], array(0 => $scoreInfo['dist-score'][0])));
-
-				//calculate mean
-				$scoreInfo['mean-score'] = 0;
-				foreach ($allScores as $score) {
-					$scoreInfo['mean-score'] += $score * $scoreInfo['dist-score'][$score];
-				}
-				$scoreInfo['mean-score'] /= max(1, $scoreInfo['rated']);
-
-				//calculate standard deviation
-				$scoreInfo['std-dev'] = 0;
-				foreach ($u[$am]['entries'] as &$e) {
-					if ($e['user']['score'] > 0) {
-						$scoreInfo['std-dev'] += pow($e['user']['score'] - $scoreInfo['mean-score'], 2);
-					}
-				}
-				$scoreInfo['std-dev'] /= max(1, $scoreInfo['rated'] - 1);
-				$scoreInfo['std-dev'] = sqrt($scoreInfo['std-dev']);
-
-				foreach ($scoreInfo['dist-entries'] as &$entries) {
-					self::sortEntries($entries, 'title');
-				}
-				$u[$am]['score-info'] = $scoreInfo;
-			}
+		if (count($this->view->users) > 1) {
+			throw new Exception('Only one user is supported here');
+		}
+		$user = $this->view->users[0];
+		foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
+			$filter = UserListFilters::getNonPlanned();
+			$entries = $user->getList($am)->getEntries($filter);
+			$this->view->scoreDistribution[$am] = UserListService::getScoreDistribution($entries);
 		}
 
 		//define some handy constants
@@ -620,7 +456,7 @@ class StatsController extends AbstractController {
 		}
 
 		//finally render image
-		$this->config->chibi->runtime->layoutName = null;
+		ChibiConfig::getInstance()->chibi->runtime->layoutName = null;
 		header('Content-type: image/png');
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
@@ -632,7 +468,7 @@ class StatsController extends AbstractController {
 		//we gotta do an update HERE, where we present image to given user
 		$modelUsers = new UserModel();
 		try {
-			$user = $modelUsers->get($this->view->user['user-name']);
+			$user = $modelUsers->get($user->getUserName(), UserModel::CACHE_POLICY_DEFAULT);
 		} catch (Exception $e) {
 		}
 	}
@@ -640,21 +476,12 @@ class StatsController extends AbstractController {
 
 
 	public function actiAction() {
-		$this->loadUsers();
-		$this->loadEntries();
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - activity (' . $this->mgHelper->amText() . ')');
-		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '&rsquo;s ' . $this->mgHelper->amText() . ' activity' . MGHelper::$descSuffix);
-		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s ' . $this->mgHelper->amText() . ' activity' . MGHelper::$descSuffix);
-		}
-
-		foreach ($this->view->users as $i => &$u) {
+		foreach ($this->view->users as $i => $u) {
 			$actiInfo = [
 				'month-periods' => [],
 				'day-periods' => [],
@@ -666,12 +493,12 @@ class StatsController extends AbstractController {
 			$monthPeriod = false;
 			$monthPeriodMin = false;
 			$monthPeriodMax = false;
-			foreach ($u[$this->view->am]['entries'] as &$e) {
-				if ($e['user']['status'] != UserModel::USER_LIST_STATUS_COMPLETED) {
-					continue;
-				}
-				$finishedA = explode('-', $e['user']['start-date']);
-				$finishedB = explode('-', $e['user']['finish-date']);
+
+			$filter = UserListFilters::getCompleted();
+			$entries = $u->getList($this->view->am)->getEntries($filter);
+			foreach ($entries as $e) {
+				$finishedA = explode('-', $e->getStartDate());
+				$finishedB = explode('-', $e->getFinishDate());
 				$yearA = intval($finishedA[0]);
 				$yearB = intval($finishedB[0]);
 				$monthA = isset($finishedA[1]) ? intval($finishedA[1]) : false;
@@ -698,7 +525,7 @@ class StatsController extends AbstractController {
 						$monthPeriodMax = $monthPeriod;
 					}
 				}
-				$actiInfo['month-periods'][$monthPeriod]['duration'] += $e['user']['total-time'];
+				$actiInfo['month-periods'][$monthPeriod]['duration'] += $e->getCompletedDuration();
 			}
 
 			//add empty month periods so graph has no gaps
@@ -739,11 +566,12 @@ class StatsController extends AbstractController {
 			//add some random information
 			$actiInfo['total-time'] = array_sum(array_map(function($mp) { return $mp['duration']; }, $actiInfo['month-periods']));
 
-			list($year, $month, $day) = explode('-', $u['join-date']);
+			list($year, $month, $day) = explode('-', $u->getUserData()->getJoinDate());
 			$earliest = mktime(0, 0, 0, $month, $day, $year);
-			foreach ($u[$this->view->am]['entries'] as &$e) {
-				foreach (['start-date', 'finish-date'] as $k) {
-					$f = explode('-', $e['user'][$k]);
+			$entires = $u->getList($this->view->am)->getEntries();
+			foreach ($entries as $e) {
+				foreach ([$e->getStartDate(), $e->getFinishDate()] as $k) {
+					$f = explode('-', $k);
 					if (count($f) != 3) {
 						continue;
 					}
@@ -761,284 +589,143 @@ class StatsController extends AbstractController {
 
 			//day periods
 			$models = [];
-			$models[AMModel::ENTRY_TYPE_ANIME] = new AnimeModel();
-			$models[AMModel::ENTRY_TYPE_MANGA] = new MangaModel();
+			$models[AMModel::TYPE_ANIME] = new AnimeModel();
+			$models[AMModel::TYPE_MANGA] = new MangaModel();
 			for ($daysBack = 21; $daysBack >= 0; $daysBack --) {
 				$day = date('Y-m-d', mktime(-24 * $daysBack));
 				$dayPeriod = [];
 				$dayPeriod['entries'] = [];
-				foreach ($u[$this->view->am]['history'] as &$e) {
-					if ($e['date'] == $day) {
-						$dayPeriod['entries'] []= ['user' => $e, 'full' => $models[$e['type']]->get($e['id'])];
+				foreach ($u->getHistory($this->view->am)->getEntries() as $historyEntry) {
+					if ($historyEntry->getDate() == $day) {
+						$dayPeriod['entries'] []= ['user' => $historyEntry, 'full' => $historyEntry->getAMEntry()];
 					}
 				}
 				$actiInfo['day-periods'][$daysBack] = $dayPeriod;
 			}
 
-			$u[$this->view->am]['acti-info'] = $actiInfo;
+			$this->view->actiInfo[$u->getID()] = $actiInfo;
 		}
 	}
 
 
 
 	public function favsAction() {
-		$this->loadUsers();
-		$this->loadEntries();
+		HeadHelper::addScript(UrlHelper::url('media/js/jquery.tablesorter.min.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
-		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.tablesorter.min.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - favorites (' . $this->mgHelper->amText() . ')');
-		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '&rsquo;s ' . $this->mgHelper->amText() . ' favorites' . MGHelper::$descSuffix);
-		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s ' . $this->mgHelper->amText() . ' favorites' . MGHelper::$descSuffix);
-		}
+		$excludedCreators = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedCreatorsDefFile), true);
+		$excludedCreatorIds = array_map(function($e) { return $e['id']; }, $excludedCreators[$this->mgHelper->amText()]);
 
-		$excludedProducers = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedProducersDefFile), true);
-		$excludedProducerIds = array_map(function($e) { return $e['id']; }, $excludedProducers[$this->mgHelper->amText()]);
-		$excludedGenres = json_decode(file_get_contents($this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->excludedGenresDefFile), true);
+		$excludedGenres = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedGenresDefFile), true);
 		$excludedGenreIds = array_map(function($e) { return $e['id']; }, $excludedGenres[$this->mgHelper->amText()]);
-		foreach ($this->view->users as &$u) {
-			$producers = [];
-			$genres = [];
-			$decades = [];
-			$years = [];
 
-			foreach ($u[$this->view->am]['entries'] as &$entry) {
-				if ($entry['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED) {
-					continue;
-				}
+		foreach ($this->view->users as $user) {
+			$filter = UserListFilters::getNonPlanned();
+			$entries = $user->getList($this->view->am)->getEntries($filter);
 
-				//producers
-				if ($entry['full']['type'] == AMModel::ENTRY_TYPE_MANGA) {
-					$x = &$entry['full']['authors'];
-				} else {
-					$x = &$entry['full']['producers'];
-				}
-				foreach ($x as $data) {
-					if (in_array($data['id'], $excludedProducerIds)) {
-						continue;
-					}
-					$producer = $data['name'];
-					if (!isset($producers[$producer])) {
-						$producers[$producer] = [
-							'entries' => array(),
-							'id' => $data['id'],
-							'name' => $data['name']
-						];
-					}
-					$producers[$producer]['entries'] []= &$entry;
-				}
-				unset ($x);
+			$this->view->favCreators[$user->getID()] = UserListService::getCreatorDistribution($entries);
+			$this->view->favGenres[$user->getID()] = UserListService::getGenreDistribution($entries);
+			$this->view->favYears[$user->getID()] = UserListService::getYearDistribution($entries);
+			$this->view->favDecades[$user->getID()] = UserListService::getDecadeDistribution($entries);
 
-				//genres
-				foreach ($entry['full']['genres'] as $data) {
-					if (in_array($data['id'], $excludedGenreIds)) {
-						continue;
-					}
-					$genre = $data['name'];
-					if (!isset($genres[$genre])) {
-						$genres[$genre] = [
-							'entries' => array(),
-							'id' => $data['id'],
-							'name' => $data['name']
-						];
-					}
-					$genres[$genre]['entries'] []= &$entry;
-				}
-
-				//years
-				$yearA = intval(substr($entry['full']['aired-from'], 0, 4));
-				$yearB = intval(substr($entry['full']['aired-to'], 0, 4));
-				if (!$yearA and !$yearB) {
-					continue;
-				} elseif (!$yearA) {
-					$year = $yearB;
-				} elseif (!$yearB) {
-					$year = $yearA;
-				} else {
-					//$year = ($yearA + $yearB) >> 1;
-					$year = $yearA;
-				}
-				if (!isset($years[$year])) {
-					$years[$year] = [
-						'year' => $year,
-						'entries' => []
-					];
-				}
-				$years[$year]['entries'] []= &$entry;
-
-
-				//decades
-				$decade = floor($year / 10) * 10;
-				if (!isset($decades[$decade])) {
-					$decades[$decade] = [
-						'decade' => $decade,
-						'entries' => []
-					];
-				}
-				$decades[$decade]['entries'] []= &$entry;
+			$this->view->yearScores[$user->getID()] = [];
+			foreach ($this->view->favYears[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $this->view->favYears[$user->getID()]->getGroupEntries($key);
+				$this->view->yearScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
 
-			//sort
-			foreach ($producers as &$producer) {
-				self::sortEntries($producer['entries'], 'score');
+			$this->view->decadeScores[$user->getID()] = [];
+			foreach ($this->view->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $this->view->favDecades[$user->getID()]->getGroupEntries($key);
+				$this->view->decadeScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
-			unset ($producer);
-			foreach ($genres as &$genre) {
-				self::sortEntries($genre['entries'], 'score');
-			}
-			unset ($genre);
 
-			self::evaluateGroups($producers);
-			self::evaluateGroups($genres);
-			self::evaluateGroups($years);
-			self::evaluateGroups($decades);
-			ksort($years);
-			ksort($decades);
-			$u[$this->view->am]['producers'] = $producers;
-			$u[$this->view->am]['genres'] = $genres;
-			$u[$this->view->am]['years'] = $years;
-			$u[$this->view->am]['decades'] = $decades;
+			$this->view->creatorScores[$user->getID()] = [];
+			$this->view->creatorTimeSpent[$user->getID()] = [];
+			foreach ($this->view->favCreators[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $this->view->favCreators[$user->getID()]->getGroupEntries($key);
+				$this->view->creatorScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
+				$this->view->creatorTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
+			}
+
+			$this->view->genreScores[$user->getID()] = [];
+			$this->view->genreTimeSpent[$user->getID()] = [];
+			foreach ($this->view->favGenres[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $this->view->favGenres[$user->getID()]->getGroupEntries($key);
+				$this->view->genreScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
+				$this->view->genreTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
+			}
 		}
 	}
 
 
 
 	public function miscAction() {
-		$this->loadUsers();
-		$this->loadEntries();
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/more.css'));
-		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - miscellaneous (' . $this->mgHelper->amText() . ')');
-		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '&rsquo;s miscellaneous ' . $this->mgHelper->amText() . ' statistics' . MGHelper::$descSuffix);
-		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s miscellaneous ' . $this->mgHelper->amText() . ' statistics' . MGHelper::$descSuffix);
-		}
+		foreach ($this->view->users as $u) {
+			$filter = null;//UserListFilters::getNonPlanned();
+			$entries = $u->getList($this->view->am)->getEntries($filter);
+			$this->view->subTypeDistribution[$u->getID()] = UserListService::getSubTypeDistribution($entries);
+			$this->view->statusDistribution[$u->getID()] = UserListService::getStatusDistribution($entries);
+			$this->view->lengthDistribution[$u->getID()] = UserListService::getLengthDistribution($entries);
 
-		foreach ($this->view->users as &$u) {
-			$u[$this->view->am]['dist-status'] = [];
-			$u[$this->view->am]['dist-subtype'] = [];
-			$u[$this->view->am]['dist-length'] = [];
-			$u[$this->view->am]['misc'] = [
-				'total-chapters' => 0,
-				'total-volumes' => 0,
-				'total-episodes' => 0
-			];
-			$keys = $this->view->am == AMModel::ENTRY_TYPE_ANIME ? [1, 6, 13, 26, 52, 100] : [1, 10, 25, 50, 100, 200];
-			for ($i = 0; $i < count($keys); $i ++) {
-				$a = $i == 0 ? $keys[0] : $keys[$i - 1] + 1;
-				$b = $keys[$i];
-				$str = $a == $b ? "$a" : "$a-$b";
-				$u[$this->view->am]['dist-length'] []= [
-					'a' => $a,
-					'b' => $b,
-					'text' => $str,
-					'entries' => []
-				];
+			switch ($this->view->am) {
+				case AMModel::TYPE_ANIME:
+					$this->view->completedEpisodes[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedEpisodes(); }, $entries));
+					break;
+				case AMModel::TYPE_MANGA:
+					$this->view->completedChapters[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedChapters(); }, $entries));
+					$this->view->completedVolumes[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedVolumes(); }, $entries));
+					break;
 			}
-			$x = end($u[$this->view->am]['dist-length']);
-			$u[$this->view->am]['dist-length'] []= [
-				'a' => $x['b'] + 1,
-				'b' => null,
-				'text' => ($x['b'] + 1) . '+',
-				'entries' => []
-			];
-			foreach ($u[$this->view->am]['entries'] as &$entry) {
-				if ($this->view->am == AMModel::ENTRY_TYPE_MANGA) {
-					$u[$this->view->am]['misc']['total-volumes'] += $entry['user']['volumes-completed'];
-					$u[$this->view->am]['misc']['total-chapters'] += $entry['user']['chapters-completed'];
-				} else {
-					$u[$this->view->am]['misc']['total-episodes'] += $entry['user']['episodes-completed'];
-				}
-
-				if ($entry['user']['status'] == UserModel::USER_LIST_STATUS_COMPLETED) {
-					$length = $entry['full'][$this->view->am == AMModel::ENTRY_TYPE_MANGA ? 'chapters' : 'episodes'];
-					foreach ($u[$this->view->am]['dist-length'] as &$threshold) {
-						if (($threshold['a'] === null or $length >= $threshold['a']) and ($threshold['b'] === null or $length <= $threshold['b'])) {
-							$threshold['entries'] []= &$entry;
-						}
-					}
-					unset($threshold);
-				}
-
-				if (empty($u[$this->view->am]['dist-status'][$entry['user']['status']])) {
-					$u[$this->view->am]['dist-status'][$entry['user']['status']]  = [
-						'entries' => [],
-						'text' => $this->mgHelper->statusText($entry['user']['status'])
-					];
-				}
-				$u[$this->view->am]['dist-status'][$entry['user']['status']]['entries'] []= &$entry;
-
-				if (empty($u[$this->view->am]['dist-subtype'][$entry['full']['sub-type']])) {
-					$u[$this->view->am]['dist-subtype'][$entry['full']['sub-type']] = [
-						'entries' => [],
-						'text' => $this->mgHelper->subTypeText($entry['full']['sub-type'])
-					];
-				}
-				$u[$this->view->am]['dist-subtype'][$entry['full']['sub-type']]['entries'] []= &$entry;
-			}
-			//filter empty thresholds
-			$u[$this->view->am]['dist-length'] = array_filter($u[$this->view->am]['dist-length'], function($x) { return count($x['entries']) > 0; });
 		}
 	}
 
 
 
 	public function sugAction() {
-		$this->loadUsers();
-		$this->loadEntries();
-
-		$this->headHelper->setTitle('MALgraph - ' . implode(' & ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . ' - suggestions (' . $this->mgHelper->amText() . ')');
-		if (count($this->view->userNames) == 1) {
-			$this->headHelper->setDescription($this->view->users[0]['visible-name'] . '&rsquo;s ' . $this->mgHelper->amText() . ' suggestions' . MGHelper::$descSuffix);
-		} else {
-			$this->headHelper->setDescription('Comparison of ' . implode(' and ', array_map(function($x) { return $x['visible-name']; }, $this->view->users)) . '&rsquo;s ' . $this->mgHelper->amText() . ' suggestions' . MGHelper::$descSuffix);
-		}
-
-		foreach ($this->view->users as &$u) {
+		foreach ($this->view->users as $u) {
 			$proposedEntries = array();
 
 			//self::sortEntries($u[$this->view->am]['entries'], 'score');
 
-			foreach ($u[$this->view->am]['entries'] as &$entry) {
-				if ($entry['user']['status'] != UserModel::USER_LIST_STATUS_COMPLETED) {
-					continue;
-				}
-				foreach ($entry['full']['related'] as $data) {
-					//proposed entry is already on user's list and it's not on PTW list
-					if (isset($u[$this->view->am]['entries'][$data['id']])/* and $u[$this->view->am]['entries'][$data['id']]['user']['status'] != UserModel::USER_LIST_STATUS_PLANNED*/) {
+			$filter = UserListFilters::getCompleted();
+			$entries = $u->getList($this->view->am)->getEntries($filter);
+			foreach ($entries as $entry) {
+				foreach ($entry->getAMEntry()->getRelations() as $relation) {
+					//proposed entry is already on user's list
+					if ($u->getList($this->view->am)->getEntryByID($relation->getID()) != null) {
 						continue;
 					}
-					if ($this->mgHelper->amText() != $data['type']) {
+					if ($this->view->am != $relation->getType()) {
 						continue;
 					}
 
-					if (!isset($proposedEntries[$entry['full']['id']])) {
-						$proposedEntries[$entry['full']['id']] = [
-							'entry' => &$entry,
+					if (!isset($proposedEntries[$entry->getID()])) {
+						$proposedEntries[$entry->getID()] = [
+							'entry' => $entry,
 							'entries' => [],
 						];
 					}
-					if ($this->view->am == AMModel::ENTRY_TYPE_ANIME) {
+					if ($this->view->am == AMModel::TYPE_ANIME) {
 						$model = new AnimeModel();
 					} else {
 						$model = new MangaModel();
 					}
-					$entry2 = $model->get($data['id']);
-					$proposedEntries[$entry['full']['id']]['entries'] []= $entry2;
+					$entry2 = $model->get($relation->getID());
+					$proposedEntries[$entry->getID()]['entries'] []= $entry2;
 				}
 			}
 
-			uasort($proposedEntries, function($a, $b) { return $b['entry']['user']['score'] - $a['entry']['user']['score']; });
+			uasort($proposedEntries, function($a, $b) { return $b['entry']->getScore() - $a['entry']->getScore(); });
 
-			$u['proposed-entries'] = $proposedEntries;
+			$this->view->proposedEntries[$u->getID()] = $proposedEntries;
 		}
 	}
 }

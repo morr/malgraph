@@ -6,7 +6,7 @@
 
 <?php foreach ([AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA] as $am): ?>
 	<div class="section <?php echo $am ?>-score-dist">
-		<h2>Score distribution (<?php echo $this->mgHelper->amText($am) ?>)</h2>
+		<h2>Score distribution (<?php echo ChibiRegistry::getInstance('mg')->amText($am) ?>)</h2>
 		<div class="section-body">
 			<ul class="infobox">
 				<li>

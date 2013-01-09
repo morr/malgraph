@@ -20,7 +20,7 @@ class MGHelper extends ChibiHelper {
 			$message
 		);
 		$message = call_user_func_array('sprintf', $args);
-		error_log($message, 3, $this->config->chibi->runtime->rootFolder . '/' . $this->config->misc->logFile);
+		error_log($message, 3, ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/' . ChibiConfig::getInstance()->misc->logFile);
 	}
 
 	public function currentUrl() {
@@ -29,18 +29,18 @@ class MGHelper extends ChibiHelper {
 
 	public function subTypeText($subType) {
 		switch ($subType) {
-			case AnimeModel::ENTRY_SUBTYPE_OVA: return 'OVA';
-			case AnimeModel::ENTRY_SUBTYPE_ONA: return 'ONA';
-			case AnimeModel::ENTRY_SUBTYPE_TV: return 'TV';
-			case AnimeModel::ENTRY_SUBTYPE_SPECIAL: return 'Special';
-			case AnimeModel::ENTRY_SUBTYPE_MUSIC: return 'Music';
-			case AnimeModel::ENTRY_SUBTYPE_MOVIE: return 'Movie';
-			case MangaModel::ENTRY_SUBTYPE_MANGA: return 'Manga';
-			case MangaModel::ENTRY_SUBTYPE_MANHWA: return 'Manhwa';
-			case MangaModel::ENTRY_SUBTYPE_MANHUA: return 'Manhua';
-			case MangaModel::ENTRY_SUBTYPE_DOUJIN: return 'Doujin';
-			case MangaModel::ENTRY_SUBTYPE_NOVEL: return 'Novel';
-			case MangaModel::ENTRY_SUBTYPE_ONESHOT: return 'One shot';
+			case AnimeEntry::SUBTYPE_OVA: return 'OVA';
+			case AnimeEntry::SUBTYPE_ONA: return 'ONA';
+			case AnimeEntry::SUBTYPE_TV: return 'TV';
+			case AnimeEntry::SUBTYPE_SPECIAL: return 'Special';
+			case AnimeEntry::SUBTYPE_MUSIC: return 'Music';
+			case AnimeEntry::SUBTYPE_MOVIE: return 'Movie';
+			case MangaEntry::SUBTYPE_MANGA: return 'Manga';
+			case MangaEntry::SUBTYPE_MANHWA: return 'Manhwa';
+			case MangaEntry::SUBTYPE_MANHUA: return 'Manhua';
+			case MangaEntry::SUBTYPE_DOUJIN: return 'Doujin';
+			case MangaEntry::SUBTYPE_NOVEL: return 'Novel';
+			case MangaEntry::SUBTYPE_ONESHOT: return 'One shot';
 			case '': return 'Unknown';
 			default: throw new Exception('Unknown type: ' . $subType);
 		}
@@ -48,25 +48,25 @@ class MGHelper extends ChibiHelper {
 
 	public function statusText($status, $type = null) {
 		if ($type === null) {
-			$type = $this->view->am;
+			$type = ChibiRegistry::getView()->am;
 		}
 		switch ($status) {
-			case UserModel::USER_LIST_STATUS_PLANNED: return 'Planned';
-			case UserModel::USER_LIST_STATUS_DROPPED: return 'Dropped';
-			case UserModel::USER_LIST_STATUS_COMPLETING: return $type == AMModel::ENTRY_TYPE_ANIME ? 'Watching' : 'Reading';
-			case UserModel::USER_LIST_STATUS_ONHOLD: return 'On-hold';
-			case UserModel::USER_LIST_STATUS_COMPLETED: return 'Completed';
+			case UserListEntry::STATUS_PLANNED: return 'Planned';
+			case UserListEntry::STATUS_DROPPED: return 'Dropped';
+			case UserListEntry::STATUS_COMPLETING: return $type == AMModel::TYPE_ANIME ? 'Watching' : 'Reading';
+			case UserListEntry::STATUS_ONHOLD: return 'On-hold';
+			case UserListEntry::STATUS_COMPLETED: return 'Completed';
 			default: throw new Exception('Unknown status: ' . $status);
 		}
 	}
 
 	public function amText($type = null) {
 		if ($type === null) {
-			$type = $this->view->am;
+			$type = ChibiRegistry::getView()->am;
 		}
 		switch ($type) {
-			case AMModel::ENTRY_TYPE_ANIME: return 'anime';
-			case AMModel::ENTRY_TYPE_MANGA: return 'manga';
+			case AMModel::TYPE_ANIME: return 'anime';
+			case AMModel::TYPE_MANGA: return 'manga';
 		}
 		return '?';
 	}
@@ -148,12 +148,12 @@ class MGHelper extends ChibiHelper {
 	public function downloadMulti(array $urls) {
 		$documents = [];
 
-		if (!empty($this->config->misc->mirrorDir)) {
+		if (!empty(ChibiConfig::getInstance()->misc->mirrorDir)) {
 			$mirrors = [];
 			$nurls = $urls;
 			foreach ($urls as $key => $url) {
 				$mirror = rawurlencode($url);
-				$mirror = implode(DIRECTORY_SEPARATOR, [$this->config->chibi->runtime->rootFolder, $this->config->misc->mirrorDir, $mirror . '.dat']);
+				$mirror = implode(DIRECTORY_SEPARATOR, [ChibiConfig::getInstance()->chibi->runtime->rootFolder, ChibiConfig::getInstance()->misc->mirrorDir, $mirror . '.dat']);
 				$mirrors[$key] = $mirror;
 				if (file_exists($mirror)) {
 					$documents[$key] = file_get_contents($mirror);
@@ -166,7 +166,7 @@ class MGHelper extends ChibiHelper {
 		$headers = [];
 		$headers['Connection'] = 'close';
 		$headers['User-Agent'] = 'Mozilla/5.0 (MALgraph crawler)';
-		if ($this->config->misc->sendReferrer) {
+		if (ChibiConfig::getInstance()->misc->sendReferrer) {
 			$headers['Referer'] = 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI']);
 		}
 
@@ -210,7 +210,7 @@ class MGHelper extends ChibiHelper {
 			$ch = $chs[$key];
 			curl_multi_remove_handle($multicurl, $ch);
 			$documents[$key] = curl_multi_getcontent($ch);
-			if (!empty($this->config->misc->mirrorDir)) {
+			if (!empty(ChibiConfig::getInstance()->misc->mirrorDir)) {
 				file_put_contents($mirrors[$key], $documents[$key]);
 			}
 		}
@@ -239,9 +239,9 @@ class MGHelper extends ChibiHelper {
 
 	public function constructUrl($controllerName = null, $actionName = null, array $get = [], $userNames = null, $am = null) {
 		if (empty($controllerName)) {
-			$controllerName = $this->view->controllerName;
+			$controllerName = ChibiRegistry::getView()->controllerName;
 			if (empty($actionName)) {
-				$actionName = $this->view->actionName;
+				$actionName = ChibiRegistry::getView()->actionName;
 			}
 		}
 		if ($controllerName == 'stats') {
@@ -249,23 +249,23 @@ class MGHelper extends ChibiHelper {
 				$actionName = 'profile';
 			}
 			if (empty($userNames)) {
-				$userNames = $this->view->userNames;
+				$userNames = ChibiRegistry::getView()->userNames;
 			}
-			if (empty($am)) {
-				$am = $this->view->am;
-				if ($am != AMModel::ENTRY_TYPE_MANGA) {
-					$am = AMModel::ENTRY_TYPE_ANIME;
-				}
+			if (empty($am) and !empty(ChibiRegistry::getView()->am)) {
+				$am = ChibiRegistry::getView()->am;
+			}
+			if ($am != AMModel::TYPE_MANGA) {
+				$am = AMModel::TYPE_ANIME;
 			}
 			if (!is_array($userNames)) {
 				$userNames = [$userNames];
 			}
 			$url = join(',', $userNames);
-			if ($actionName != 'profile' or $am == AMModel::ENTRY_TYPE_MANGA) {
+			if ($actionName != 'profile' or $am == AMModel::TYPE_MANGA) {
 				$url .= '/';
 				$url .= $actionName;
 			}
-			if ($am != AMModel::ENTRY_TYPE_ANIME) {
+			if ($am != AMModel::TYPE_ANIME) {
 				$url .= ',';
 				$url .= $am;
 			}
@@ -282,7 +282,7 @@ class MGHelper extends ChibiHelper {
 		} else {
 			$url = '';
 		}
-		return $this->urlHelper->htmlUrl($url, $get);
+		return UrlHelper::htmlUrl($url, $get);
 	}
 
 }

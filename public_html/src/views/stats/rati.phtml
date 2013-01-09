@@ -1,7 +1,7 @@
 <div class="section">
 	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
-			<?php echo $this->user['visible-name'] ?>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user->getLinkableName()) ?>">
+			<?php echo $this->user->getPublicName() ?>
 		</a>
 		&rsquo;s <?php echo $this->mgHelper->amText() ?> rating statistics
 	</h2>
@@ -15,7 +15,7 @@
 		Rating distribution
 	</h3>
 	<div class="section-body">
-		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
+		<?php if ($this->scoreDistribution[$this->user->getID()]->getRatedCount() == 0): ?>
 			<p>No ratings, no graphs.<br>
 			MALgraph can&rsquo;t render those shiny bars until you feed it some data.</p>
 		<?php else: ?>
@@ -23,19 +23,19 @@
 				<li>
 					<div>
 						<span class="prefix">Total rated</span>
-						<span class="subject"><?php printf('%d', $this->user[$this->am]['score-info']['rated']) ?></span>
+						<span class="subject"><?php printf('%d', $this->scoreDistribution[$this->user->getID()]->getRatedCount()) ?></span>
 					</div>
 				</li>
 				<li>
 					<div>
 						<span class="prefix">Mean score</span>
-						<span class="subject"><?php printf('%.02f', $this->user[$this->am]['score-info']['mean-score']) ?></span>
+						<span class="subject"><?php printf('%.02f', $this->scoreDistribution[$this->user->getID()]->getMeanScore()) ?></span>
 					</div>
 				</li>
 				<li>
 					<div>
 						<span class="prefix">Std dev</span>
-						<span class="subject"><?php printf('%.02f', $this->user[$this->am]['score-info']['std-dev']) ?></span>
+						<span class="subject"><?php printf('%.02f', $this->scoreDistribution[$this->user->getID()]->getStandardDeviation()) ?></span>
 					</div>
 				</li>
 				<li>
@@ -58,11 +58,12 @@
 							<a target="_blank" class="btn export-show" href="#">Show</a>
 							<div class="clear"></div>
 						</div>
-						<textarea name="bbcode">[center][url=http://<?php echo $_SERVER['SERVER_NAME'] ?>/<?php echo $this->user['link-name'] ?>][img]http://<?php echo $_SERVER['SERVER_NAME'] ?>/export/<?php echo $this->user['link-name'] ?>?type=1[/img][/url][/center]</textarea>
+						<textarea name="bbcode">[center][url=http://<?php echo $_SERVER['SERVER_NAME'] ?>/<?php echo $this->user->getLinkableName() ?>][img]http://<?php echo $_SERVER['SERVER_NAME'] ?>/export/<?php echo $this->user->getLinkableName() ?>?type=1[/img][/url][/center]</textarea>
 					</div>
 				</div>
 
-				<?php foreach ($this->user[$this->am]['score-info']['dist-entries'] as $score => $entries): ?>
+				<?php foreach ($this->scoreDistribution[$this->user->getID()]->getGroupsKeys() as $score): ?>
+					<?php $entries = $this->scoreDistribution[$this->user->getID()]->getGroupEntries($score) ?>
 					<div class="more" data-id="<?php echo $score ?>">
 						<p>
 							<?php if ($score == 0): ?>
@@ -81,32 +82,34 @@
 							<?php else: ?>
 								<p>None!</p>
 							<?php endif ?>
-						<?php elseif ($this->user[$this->am]['private']): ?>
+						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
-								<?php foreach ($entries as $e): ?>
+								<?php foreach ($entries as $entry): ?>
+									<?php $amEntry = $entry->getAMEntry() ?>
 									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-											<?php echo $e['full']['title'] ?>
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
+											<?php echo $amEntry->getTitle() ?>
 										</a>
 										&nbsp;(
-										<?php echo $this->mgHelper->subTypeText($e['full']['sub-type']) ?>
-										<?php if ($e['full']['sub-type'] != AnimeModel::ENTRY_SUBTYPE_MOVIE): ?>
+										<?php echo $this->mgHelper->subTypeText($amEntry->getSubType()) ?>
+										<?php if ($amEntry->getSubType() != AnimeEntry::SUBTYPE_MOVIE): ?>
 											,&nbsp;
-											<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
-												<?php echo $e['full']['volumes'] ?>&nbsp;
-												<?php if ($e['full']['volumes'] == 1): ?>
+											<?php if ($this->am == AMModel::TYPE_MANGA): ?>
+												<?php echo $amEntry->getVolumeCount() ?>&nbsp;
+												<?php if ($amEntry->getVolumeCount() == 1): ?>
 													vol
 												<?php else: ?>
 													vols
 												<?php endif ?>
 											<?php else: ?>
-												<?php echo $e['full']['episodes'] ?>&nbsp;
-												<?php if ($e['full']['episodes'] == 1): ?>
-													ep
+												<?php if (!$amEntry->getEpisodeCount()): ?>
+													? eps
+												<?php elseif ($amEntry->getEpisodeCount() == 1): ?>
+													1 ep
 												<?php else: ?>
-													eps
+													<?php echo $amEntry->getEpisodeCount() ?>&nbsp;eps
 												<?php endif ?>
 											<?php endif ?>
 										<?php endif ?>
@@ -120,10 +123,10 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $this->user['user-safe-id'] ?> .score-dist .target').each(function() {
+				$('#user-<?php echo $this->user->getRuntimeID() ?> .score-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 35 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-info']['dist-score']))) ?>, title: { text: 'Rating' } },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, $this->scoreDistribution[$this->user->getID()]->getGroupsKeys())) ?>, title: { text: 'Rating' } },
 						yAxis: { title: { text: 'Count', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
@@ -132,12 +135,12 @@
 							} else {
 								text = 'Titles rated with ' + this.x + ': ' + this.y;
 							}
-							var percent = this.y * 100.0 / <?php echo max(1, $this->user[$this->am]['score-info']['rated'] + $this->user[$this->am]['score-info']['unrated']) ?>;
+							var percent = this.y * 100.0 / <?php echo max(1, $this->scoreDistribution[$this->user->getID()]->getTotalSize()) ?>;
 							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
 							return text;
 						} },
 						series: [ {
-							data: <?php echo json_encode(array_values($this->user[$this->am]['score-info']['dist-score'])) ?>,
+							data: <?php echo json_encode(array_values($this->scoreDistribution[$this->user->getID()]->getGroupsSizes())) ?>,
 							point: { events: { click: function(e) {
 								var x = this.category;
 								if (x == '-') {
@@ -155,14 +158,13 @@
 </div>
 
 
-
 <div class="section score-time-dist">
 	<h3>
 		<i data-title="How much time have you spent on titles rated with given score?" class="tooltipable icon-tooltip"></i>
 		Rating to time distribution
 	</h3>
 	<div class="section-body">
-		<?php if ($this->user[$this->am]['score-info']['rated'] == 0): ?>
+		<?php if ($this->scoreDistribution[$this->user->getID()]->getRatedCount() == 0): ?>
 			<p>Couldn&rsquo;t find ratings on your list.<br>
 			Rate some <?php echo $this->mgHelper->amText() ?> and come back in 24 hours.</p>
 		<?php else: ?>
@@ -170,26 +172,27 @@
 				<li>
 					<div>
 						<span class="prefix">Total time</span>
-						<span class="subject"><?php printf('%.02f', ($this->user[$this->am]['score-info']['rated-total-time'] + $this->user[$this->am]['score-info']['unrated-total-time']) / 24.0) ?></span>
+						<span class="subject"><?php printf('%.02f', $this->scoreDurationDistribution[$this->user->getID()]->getTotalTime() / 1440.) ?></span>
 						<span class="suffix">days</span>
 					</div>
 				</li>
 				<li>
 					<div>
 						<span class="prefix">Mean score</span>
-						<span class="subject"><?php printf('%.02f', $this->user[$this->am]['score-info']['mean-time']) ?></span>
+						<span class="subject"><?php printf('%.02f', $this->scoreDurationDistribution[$this->user->getID()]->getMeanScore()) ?></span>
 						<span class="suffix">(weighted)</span>
 					</div>
 				</li>
 			</ul>
 
 			<div class="wrapper wrapper-target">
-				<div id="target-score-time-dist-<?php echo $this->user['user-safe-id'] ?>" class="target"></div>
+				<div class="target"></div>
 				<div class="clear"></div>
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->user[$this->am]['score-info']['dist-entries'] as $score => $entries): ?>
+				<?php foreach ($this->scoreDurationDistribution[$this->user->getID()]->getGroupsKeys() as $score): ?>
+					<?php $entries = $this->scoreDurationDistribution[$this->user->getID()]->getGroupEntries($score) ?>
 					<div class="more" data-id="<?php echo $score ?>">
 						<p>
 							<?php if ($score == 0): ?>
@@ -208,16 +211,17 @@
 							<?php else: ?>
 								<p>None!</p>
 							<?php endif ?>
-						<?php elseif ($this->user[$this->am]['private']): ?>
+						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
-								<?php foreach ($entries as $e): ?>
+								<?php foreach ($entries as $entry): ?>
+									<?php $amEntry = $entry->getAMEntry() ?>
 									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-											<?php echo $e['full']['title'] ?>
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
+											<?php echo $amEntry->getTitle() ?>
 										</a>
-										&nbsp;(<?php echo $e['user']['total-time'] ?> min.)
+										&nbsp;(<?php echo $entry->getCompletedDuration() ?> min.)
 									</li>
 								<?php endforeach ?>
 							</ul>
@@ -227,10 +231,10 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $this->user['user-safe-id'] ?> .score-time-dist .target').each(function() {
+				$('#user-<?php echo $this->user->getRuntimeID() ?> .score-time-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 15 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->user[$this->am]['score-info']['dist-time']))) ?>, title: { text: 'Rating' } },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, $this->scoreDistribution[$this->user->getID()]->getGroupsKeys())) ?>, title: { text: 'Rating' } },
 						yAxis: { title: {text: 'Hours spent', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
@@ -239,12 +243,12 @@
 							} else {
 								text = 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
 							}
-							var percent = this.y * 100.0 / <?php echo max(1, $this->user[$this->am]['score-info']['rated-total-time'] + $this->user[$this->am]['score-info']['unrated-total-time']) ?>;
+							var percent = this.y * 100.0 / <?php echo max(1, $this->scoreDurationDistribution[$this->user->getID()]->getTotalSize()) ?>;
 							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
 							return text
 						} },
 						series: [ {
-							data: <?php echo json_encode(array_values($this->user[$this->am]['score-info']['dist-time'])) ?>,
+							data: <?php echo json_encode(array_map(function($x) { return $x / 60.; }, array_values($this->scoreDurationDistribution[$this->user->getID()]->getGroupsSizes()))) ?>,
 							point: { events: { click: function(e) {
 								var x = this.category;
 								if (x == '-') {
@@ -284,19 +288,19 @@
 				$(this).change(function() {
 					var textarea = $(this).parents('.export').find('textarea');
 					var type = $(this).find('option:selected').data('type');
-					textarea.text(textarea.text().replace(/(type=[0-9]*)/, 'type=' + type));
+					textarea.val(textarea.val().replace(/(type=[0-9]*)/, 'type=' + type));
 				});
 			});
 
 			var themes =
 			[
 				{ 'params': { }, 'name': 'Blue (default)' },
-				{ 'params': { 'bar1': '00ffaaaa', 'bar2': '00ee6677', 'line1': 'c0ffaaaa', 'line2': 'c0ee6677', 'back': 'ffffffff', 'font1': '20442233', 'font2': '85aa4444', 'title': '00cc5566', 'hue': 330 }, 'name': 'Pink' },
-				{ 'params': { 'bar1': '0044ff44', 'bar2': '00008800', 'line1': 'dd44ff44', 'line2': 'dd00aa00', 'back': 'ffffffff', 'font1': '20227722', 'font2': '90227722', 'title': '00227722', 'hue': 100 }, 'name': 'Green' },
-				{ 'params': { 'bar1': '00eecc05', 'bar2': '00dd2200', 'line1': 'aaffdd00', 'line2': 'aaff0000', 'back': 'ffffffff', 'font1': '20220700', 'font2': '90220700', 'title': '00220700', 'hue': 45  }, 'name': 'Flame (yellow + red)' },
-				{ 'params': { 'bar1': 'aa000000', 'bar2': '33000000', 'line1': 'ff000000', 'line2': 'dd000000', 'back': 'ffffffff', 'font1': '20000000', 'font2': '90000000', 'title': '20000000', 'hue': 218 }, 'name': 'Gray' },
-				{ 'params': { 'bar1': '0084a0d4', 'bar2': '0003359a', 'line1': '00446084', 'line2': '0001156a', 'back': '00000000', 'font1': '00779fe2', 'font2': '50779fe2', 'title': '00779fe2', 'hue': 218 }, 'name': 'unBlue (blue on black)' },
-				{ 'params': { 'bar1': '0044ff44', 'bar2': '00008800', 'line1': '00004400', 'line2': '00008800', 'back': '00000000', 'font1': '2044ff44', 'font2': '00008800', 'title': '0033aa33', 'hue': 100 }, 'name': 'Matrix (green on black)' },
+				{ 'params': { 'bar1': '00ffaaaa', 'bar2': '00ee6677', 'line1': 'c0ffaaaa', 'line2': 'c0ee6677', 'back': 'ffffffff', 'font1': '20442233', 'font2': '85aa4444', 'title': '00cc5566' }, 'name': 'Pink' },
+				{ 'params': { 'bar1': '0044ff44', 'bar2': '00008800', 'line1': 'dd44ff44', 'line2': 'dd00aa00', 'back': 'ffffffff', 'font1': '20227722', 'font2': '90227722', 'title': '00227722' }, 'name': 'Green' },
+				{ 'params': { 'bar1': '00eecc05', 'bar2': '00dd2200', 'line1': 'aaffdd00', 'line2': 'aaff0000', 'back': 'ffffffff', 'font1': '20220700', 'font2': '90220700', 'title': '00220700'  }, 'name': 'Flame (yellow + red)' },
+				{ 'params': { 'bar1': 'aa000000', 'bar2': '33000000', 'line1': 'ff000000', 'line2': 'dd000000', 'back': 'ffffffff', 'font1': '20000000', 'font2': '90000000', 'title': '20000000' }, 'name': 'Gray' },
+				{ 'params': { 'bar1': '0084a0d4', 'bar2': '0003359a', 'line1': '00446084', 'line2': '0001156a', 'back': '00000000', 'font1': '00779fe2', 'font2': '50779fe2', 'title': '00779fe2' }, 'name': 'unBlue (blue on black)' },
+				{ 'params': { 'bar1': '0044ff44', 'bar2': '00008800', 'line1': '00004400', 'line2': '00008800', 'back': '00000000', 'font1': '2044ff44', 'font2': '00008800', 'title': '0033aa33' }, 'name': 'Matrix (green on black)' },
 			];
 			$('select[name=\'theme\']').each(function() {
 				for (var i in themes) {
@@ -309,7 +313,7 @@
 					for (key in params) {
 						merged += '&' + key + '=' + params[key];
 					}
-					textarea.text(textarea.text().replace(/(type=[0-9]*).*?\[/, '$1' + merged + '['));
+					textarea.val(textarea.val().replace(/(type=[0-9]*).*?\[/, '$1' + merged + '['));
 				});
 			});
 
@@ -319,7 +323,7 @@
 
 			$('.btn.export-show').mousedown(function() {
 				var textarea = $(this).parents('.export').find('textarea');
-				var matches = textarea.text().match(/\[img\]([^\[]*)\[\/img]/);
+				var matches = textarea.val().match(/\[img\]([^\[]*)\[\/img]/);
 				$(this).attr('href', matches[1]);
 			});
 		});

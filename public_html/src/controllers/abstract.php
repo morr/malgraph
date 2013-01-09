@@ -1,50 +1,56 @@
 <?php
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/anime.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/manga.php';
+
 class AbstractController extends ChibiController {
 	public function init() {
 		date_default_timezone_set('UTC');
 		if (!session_id()) {
 			session_start();
 		}
-		$this->registry->loadModel('user');
-		$this->registry->loadModel('anime');
-		$this->registry->loadModel('manga');
 
-		$this->view->controllerName = $this->config->chibi->runtime->controllerName;
-		$this->view->actionName = $this->config->chibi->runtime->actionName;
+		$this->view = ChibiRegistry::getView();
+		$this->sessionHelper = $this->view->sessionHelper = ChibiRegistry::getHelper('session');
+		$this->inputHelper = $this->view->inputHelper = ChibiRegistry::getHelper('input');
+		$this->mgHelper = $this->view->mgHelper = ChibiRegistry::getHelper('mg');
+
+		$this->view->controllerName = ChibiConfig::getInstance()->chibi->runtime->controllerName;
+		$this->view->actionName = ChibiConfig::getInstance()->chibi->runtime->actionName;
 
 		//basic settings
-		$this->headHelper->setTitle('MALgraph');
-		$this->headHelper->setKeywords(['malgraph', 'anime', 'manga', 'statistics', 'stats']);
-		$this->headHelper->setDescription('MALgraph - an extension of your MyAnimeList profile. Check your rating distribution, get anime or manga recommendations, and compare numerous stats with other kawaii Japanese otaku.');
-		$this->headHelper->setFavicon($this->urlHelper->url('media/img/favicon.png'));
+		HeadHelper::setTitle('MALgraph');
+		HeadHelper::setKeywords(['malgraph', 'anime', 'manga', 'statistics', 'stats']);
+		HeadHelper::setDescription('MALgraph - an extension of your MyAnimeList profile. Check your rating distribution, get anime or manga recommendations, and compare numerous stats with other kawaii Japanese otaku.');
+		HeadHelper::setFavicon(UrlHelper::url('media/img/favicon.png'));
 
 		//stylesheets
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/bootstrap.min.css'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/jquery.jscrollpane.css'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/core.css'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/bootstrap.min.css'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/jquery.jscrollpane.css'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/core.css'));
 		if (file_exists($p = 'media/css/'. $this->view->controllerName . '.css')) {
-			$this->headHelper->addStylesheet($this->urlHelper->url($p));
+			HeadHelper::addStylesheet(UrlHelper::url($p));
 		}
 		if (file_exists($p = 'media/css/' . $this->view->controllerName . '-' . $this->view->actionName . '.css')) {
-			$this->headHelper->addStylesheet($this->urlHelper->url($p));
+			HeadHelper::addStylesheet(UrlHelper::url($p));
 		}
 
 		//scripts
-		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.min.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.mousewheel.min.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.jscrollpane.min.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/jquery.ui.position.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/jquery.min.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/jquery.mousewheel.min.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/jquery.jscrollpane.min.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/jquery.ui.position.js'));
 		if (file_exists($p = 'media/js/' . $this->view->controllerName . '.js')) {
-			$this->headHelper->addScript($this->urlHelper->url($p));
+			HeadHelper::addScript(UrlHelper::url($p));
 		}
 		if (file_exists($p = 'media/js/' . $this->view->controllerName . '-' . $this->view->actionName . '.js')) {
-			$this->headHelper->addScript($this->urlHelper->url($p));
+			HeadHelper::addScript(UrlHelper::url($p));
 		}
 		//load core script after dynamic scripts, since it works with some special css classes
 		//and dynamic scripts linked above might want to set/unset such classes first.
-		$this->headHelper->addScript($this->urlHelper->url('media/js/core.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/sections.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/glider.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/core.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/sections.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/glider.js'));
 
 	}
 

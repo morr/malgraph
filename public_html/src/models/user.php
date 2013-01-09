@@ -1,292 +1,242 @@
 <?php
+require_once 'anon.php';
 require_once 'abstract.php';
-require_once 'am.php';
-class UserModel extends JSONDB {
-	const USER_GENDER_FEMALE = 'F';
-	const USER_GENDER_MALE = 'M';
-	const USER_GENDER_UNKNOWN = '?';
+require_once 'user/entry.php';
+require_once 'user/clubentry.php';
+require_once 'user/friendentry.php';
+require_once 'user/list.php';
+require_once 'user/listentry.php';
+require_once 'user/history.php';
+require_once 'user/historyentry.php';
 
-	const USER_LIST_STATUS_DROPPED = 'dropped';
-	const USER_LIST_STATUS_ONHOLD = 'onhold';
-	const USER_LIST_STATUS_COMPLETING = 'completing';
-	const USER_LIST_STATUS_WATCHING = self::USER_LIST_STATUS_COMPLETING;
-	const USER_LIST_STATUS_READING = self::USER_LIST_STATUS_COMPLETING;
-	const USER_LIST_STATUS_COMPLETED = 'completed';
-	const USER_LIST_STATUS_FINISHED = self::USER_LIST_STATUS_COMPLETED;
-	const USER_LIST_STATUS_PLANNED = 'planned';
-	const USER_LIST_STATUS_UNKNOWN = '???';
+class UserModel extends AbstractModel {
+	const URL_ANIME1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all';
+	const URL_MANGA1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all&type=manga';
+	const URL_ANIME2 = 'http://myanimelist.net/animelist/{user}&sclick=1';
+	const URL_MANGA2 = 'http://myanimelist.net/mangalist/{user}&sclick=1';
+	const URL_PROFILE = 'http://myanimelist.net/profile/{user}';
+	const URL_HISTORY = 'http://myanimelist.net/history/{user}';
+	const URL_CLUBS = 'http://myanimelist.net/showclubs.php?id={user-id}';
+	const URL_FRIENDS = 'http://myanimelist.net/friends.php?id={user-id}&show={shift}';
 
-	const USER_LIST_STATUS_MAL_DROPPED = 4;
-	const USER_LIST_STATUS_MAL_ONHOLD = 3;
-	const USER_LIST_STATUS_MAL_COMPLETING = 1;
-	const USER_LIST_STATUS_MAL_COMPLETED = 2;
-	const USER_LIST_STATUS_MAL_PLANNED = 6;
-
-	const USER_URL_HISTORY = 'http://myanimelist.net/history/{user}';
-	const USER_URL_ANIME1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all';
-	const USER_URL_MANGA1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all&type=manga';
-	const USER_URL_ANIME2 = 'http://myanimelist.net/animelist/{user}&sclick=1';
-	const USER_URL_MANGA2 = 'http://myanimelist.net/mangalist/{user}&sclick=1';
-	const USER_URL_PROFILE = 'http://myanimelist.net/profile/{user}';
-	const USER_URL_CLUBS = 'http://myanimelist.net/showclubs.php?id={user-id}';
-	const USER_URL_FRIENDS = 'http://myanimelist.net/friends.php?id={user-id}&show={shift}';
-
-	private static $types = [
-		AMModel::ENTRY_TYPE_ANIME,
-		AMModel::ENTRY_TYPE_MANGA
-	];
-
-	private $anonsFile;
-	private $anons;
-
-	private $freezeUpdating;
-
-	public function isFresh($data) {
-		if ($this->freezeUpdating) {
-			return true;
-		}
-		return isset($data['expires']) and time() <= $data['expires'];
+	public function __construct() {
+		$this->folder = ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->userCacheDir;
 	}
 
-	public function __construct($freeze = false) {
-		$this->freezeUpdating = $freeze;
-		$this->folder = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->userCacheDir;
-		$this->anonsFile = $this->config->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . $this->config->misc->anonLookupFile;
-		if (file_exists($this->anonsFile)) {
-			$this->anons = json_decode(file_get_contents($this->anonsFile), true);
-		} else {
-			$this->anons = [];
-		}
-	}
+	protected function loadLists(UserEntry &$userEntry, array &$documents) {
+		$userEntry->setList(AMModel::TYPE_ANIME, new UserAnimeList());
+		$userEntry->setList(AMModel::TYPE_MANGA, new UserMangaList());
 
-	protected function fixStatus($malStatus) {
-		switch ($malStatus) {
-			case self::USER_LIST_STATUS_MAL_DROPPED: return self::USER_LIST_STATUS_DROPPED; break;
-			case self::USER_LIST_STATUS_MAL_ONHOLD: return self::USER_LIST_STATUS_ONHOLD; break;
-			case self::USER_LIST_STATUS_MAL_COMPLETING: return self::USER_LIST_STATUS_COMPLETING; break;
-			case self::USER_LIST_STATUS_MAL_COMPLETED: return self::USER_LIST_STATUS_COMPLETED; break;
-			case self::USER_LIST_STATUS_MAL_PLANNED: return self::USER_LIST_STATUS_PLANNED; break;
-		}
-		return self::USER_LIST_STATUS_UNKNOWN;
-	}
-
-	protected function loadLists(array &$user, array &$documents) {
-		$urls = [];
-
-		foreach (self::$types as $type) {
-			$user[$type] = [];
-			if ($type == AMModel::ENTRY_TYPE_ANIME) {
-				$contents = $documents[self::USER_URL_ANIME2];
+		foreach (AMModel::getTypes() as $type) {
+			$list = $userEntry->getList($type);
+			if ($type == AMModel::TYPE_ANIME) {
+				$contents = $documents[self::URL_ANIME2];
 			} else {
-				$contents = $documents[self::USER_URL_MANGA2];
+				$contents = $documents[self::URL_MANGA2];
 			}
 
 			if (strpos($contents, 'This list has been made private by the owner') !== false) {
-				$user[$type]['private'] = true;
+				$list->setPrivate(true);
 			} else {
-				$user[$type]['private'] = false;
+				$list->setPrivate(false);
 			}
 		}
 
-		foreach (self::$types as $type) {
-			$list = &$user[$type];
-			if ($type == AMModel::ENTRY_TYPE_ANIME) {
-				$contents = $documents[self::USER_URL_ANIME1];
+		foreach (AMModel::getTypes() as $type) {
+			$list = $userEntry->getList($type);
+			if ($type == AMModel::TYPE_ANIME) {
+				$contents = $documents[self::URL_ANIME1];
 			} else {
-				$contents = $documents[self::USER_URL_MANGA1];
+				$contents = $documents[self::URL_MANGA1];
 			}
 
 			$doc = new DOMDocument;
 			$doc->preserveWhiteSpace = false;
-			$this->mgHelper->suppressErrors();
+			ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
 			$doc->loadHTML($contents);
-			$this->mgHelper->restoreErrors();
+			ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
 			$xpath = new DOMXPath($doc);
 
 			if ($xpath->query('//myinfo')->length == 0) {
 				//user not found?
-				throw new InvalidEntryException($user['user-name']);
+				throw new InvalidEntryException($userEntry->getUserName());
 			}
 
-			$list['entries'] = [];
 			$nodes = $xpath->query('//anime | //manga');
 			foreach ($nodes as $root) {
-				$entry = [];
-				$entry['id'] = intval($xpath->query('series_animedb_id | series_mangadb_id', $root)->item(0)->nodeValue);
+				$id = intval($xpath->query('series_animedb_id | series_mangadb_id', $root)->item(0)->nodeValue);
+				$entry = UserListEntry::factory($list, $id);
 
 				$node = $xpath->query('my_score', $root)->item(0);
 				if (!empty($node)) {
-					$entry['score'] = intval($node->nodeValue);
-				} else {
-					$entry['score'] = 0;
+					$entry->setScore(intval($node->nodeValue));
 				}
 
-				$entry['status'] = $this->fixStatus($xpath->query('my_status', $root)->item(0)->nodeValue);
+				$malStatus = $xpath->query('my_status', $root)->item(0)->nodeValue;
+				$status = UserListEntry::STATUS_UNKNOWN;
+				switch ($malStatus) {
+					case UserListEntry::STATUS_MAL_DROPPED: $status = UserListEntry::STATUS_DROPPED; break;
+					case UserListEntry::STATUS_MAL_ONHOLD: $status = UserListEntry::STATUS_ONHOLD; break;
+					case UserListEntry::STATUS_MAL_COMPLETING: $status = UserListEntry::STATUS_COMPLETING; break;
+					case UserListEntry::STATUS_MAL_COMPLETED: $status = UserListEntry::STATUS_COMPLETED; break;
+					case UserListEntry::STATUS_MAL_PLANNED: $status = UserListEntry::STATUS_PLANNED; break;
+				}
+				$entry->setStatus($status);
+				$entry->setStartDate(ChibiRegistry::getInstance()->getHelper('mg')->fixDate($xpath->query('my_start_date', $root)->item(0)->nodeValue));
+				$entry->setFinishDate(ChibiRegistry::getInstance()->getHelper('mg')->fixDate($xpath->query('my_finish_date', $root)->item(0)->nodeValue));
 
-				$entry['start-date'] = $this->mgHelper->fixDate($xpath->query('my_start_date', $root)->item(0)->nodeValue);
-
-				$entry['finish-date'] = $this->mgHelper->fixDate($xpath->query('my_finish_date', $root)->item(0)->nodeValue);
-
-				if ($type == AMModel::ENTRY_TYPE_ANIME) {
-					$entry['episodes-completed'] = intval($xpath->query('my_watched_episodes', $root)->item(0)->nodeValue);
+				if ($type == AMModel::TYPE_ANIME) {
+					$entry->setCompletedEpisodes(intval($xpath->query('my_watched_episodes', $root)->item(0)->nodeValue));
 				}
 				else {
-					$entry['chapters-completed'] = intval($xpath->query('my_read_chapters', $root)->item(0)->nodeValue);
-					$entry['volumes-completed'] = intval($xpath->query('my_read_volumes', $root)->item(0)->nodeValue);
+					$entry->setCompletedChapters(intval($xpath->query('my_read_chapters', $root)->item(0)->nodeValue));
+					$entry->setCompletedVolumes(intval($xpath->query('my_read_volumes', $root)->item(0)->nodeValue));
 				}
 
-				$list['entries'] []= $entry;
+				$list->addEntry($entry);
 			}
 
-			$list['time-spent'] = floatval($xpath->query('//user_days_spent_watching')->item(0)->nodeValue);
+			$list->setTimeSpent(floatval($xpath->query('//user_days_spent_watching')->item(0)->nodeValue));
 		}
 	}
 
-
-	protected function loadProfile(array &$user, array &$documents) {
-		$contents = $documents[self::USER_URL_PROFILE];
+	protected function loadProfile(UserEntry &$userEntry, array &$documents) {
+		$contents = $documents[self::URL_PROFILE];
 
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
-		$this->mgHelper->suppressErrors();
+		ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
 		$doc->loadHTML($contents);
-		$this->mgHelper->restoreErrors();
+		ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
 		$xpath = new DOMXPath($doc);
 
+		$userData = $userEntry->getUserData();
+
 		//basic information
-		$user[AMModel::ENTRY_TYPE_ANIME]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Anime List Views\']/following-sibling::td')->item(0)->nodeValue));
-		$user[AMModel::ENTRY_TYPE_MANGA]['list-views'] = intval(str_replace(',', '', $xpath->query('//td[text() = \'Manga List Views\']/following-sibling::td')->item(0)->nodeValue));
-		$user['user-name'] = $this->mgHelper->fixText($xpath->query('//title')->item(0)->nodeValue);
-		$user['user-name'] = substr($user['user-name'], 0, strpos($user['user-name'], '\'s Profile'));
+		$userEntry->getAnimeList()->setViewCount(intval(str_replace(',', '', $xpath->query('//td[text() = \'Anime List Views\']/following-sibling::td')->item(0)->nodeValue)));
+		$userEntry->getMangaList()->setViewCount(intval(str_replace(',', '', $xpath->query('//td[text() = \'Manga List Views\']/following-sibling::td')->item(0)->nodeValue)));
+		$tmp = ChibiRegistry::getInstance()->getHelper('mg')->fixText($xpath->query('//title')->item(0)->nodeValue);
+		$userEntry->setUserName(substr($tmp, 0, strpos($tmp, '\'s Profile')));
 
 		//static information
-		$user['profile-picture-url'] = $xpath->query('//td[@class = \'profile_leftcell\']//img')->item(0)->getAttribute('src');
-		$user['join-date'] = $this->mgHelper->fixDate($xpath->query('//td[text() = \'Join Date\']/following-sibling::td')->item(0)->nodeValue);
-		$url = $this->mgHelper->parseURL($xpath->query('//a[text() = \'All Comments\']')->item(0)->getAttribute('href'));
-		$user['user-id'] = intval($url['query']['id']);
+		$userData->setProfilePictureURL($xpath->query('//td[@class = \'profile_leftcell\']//img')->item(0)->getAttribute('src'));
+		$userData->setJoinDate(ChibiRegistry::getInstance()->getHelper('mg')->fixDate($xpath->query('//td[text() = \'Join Date\']/following-sibling::td')->item(0)->nodeValue));
+		$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($xpath->query('//a[text() = \'All Comments\']')->item(0)->getAttribute('href'));
+		$userEntry->setID(intval($url['query']['id']));
 
 		//comments
 		$node = $xpath->query('//td[text() = \'Comments\']/following-sibling::td')->item(0);
 		if (!empty($node)) {
-			$user['comment-count'] = intval($node->nodeValue);
+			$userData->setCommentCount(intval($node->nodeValue));
 		}
 
 		//posts
 		$node = $xpath->query('//td[text() = \'Forum Posts\']/following-sibling::td')->item(0);
 		if (!empty($node)) {
-			$user['post-count'] = intval($node->nodeValue);
+			$userData->setPostCount(intval($node->nodeValue));
 		}
 
 		//dynamic information
-		$user['birthday'] = null;
 		$node = $xpath->query('//td[text() = \'Birthday\']/following-sibling::td')->item(0);
 		if (!empty($node)) {
-			$user['birthday'] = $this->mgHelper->fixDate($node->nodeValue);
+			$userData->setBirthday(ChibiRegistry::getInstance()->getHelper('mg')->fixDate($node->nodeValue));
 		}
 
-		$user['location'] = null;
 		$node = $xpath->query('//td[text() = \'Location\']/following-sibling::td')->item(0);
 		if (!empty($node)) {
-			$user['location'] = $this->mgHelper->fixText($node->nodeValue);
+			$userData->setLocation(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
 		}
 
-		$user['website'] = null;
 		$node = $xpath->query('//td[text() = \'Website\']/following-sibling::td')->item(0);
 		if (!empty($node)) {
-			$user['website'] = $this->mgHelper->fixText($node->nodeValue);
+			$userData->setWebsite(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
 		}
 
 
 		$gender = $xpath->query('//td[text() = \'Gender\']/following-sibling::td')->item(0)->nodeValue;
 		switch($gender) {
-			case 'Female': $user['gender'] = self::USER_GENDER_FEMALE; break;
-			case 'Male': $user['gender'] = self::USER_GENDER_MALE; break;
-			case 'Not specified': $user['gender'] = self::USER_GENDER_UNKNOWN; break;
+			case 'Female': $userData->setGender(UserData::GENDER_FEMALE); break;
+			case 'Male': $userData->setGender(UserData::GENDER_MALE); break;
 		}
 
-
-
+		$userEntry->resetClubs();
 		$node = $xpath->query('//div[@class = \'spaceit_pad\'][contains(text(), \'Total Clubs\')]')->item(0);
-		$user['clubs'] = [];
 		if (!empty($node)) {
 			$clubCount = intval(substr($node->nodeValue, 13));
 			if ($clubCount <= 15) {
 				$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'/club\')]');
 				foreach ($q as $node) {
-					$url = $this->mgHelper->parseURL($node->getAttribute('href'));
-					$club = [];
-					$club['id'] = intval($url['query']['cid']);
-					$club['name'] = $this->mgHelper->fixText($node->nodeValue);
-					$user['clubs'] []= $club;
+					$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($node->getAttribute('href'));
+					$club = new UserClubEntry();
+					$club->setID(intval($url['query']['cid']));
+					$club->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+					$userEntry->addClub($club);
 				}
 			} else {
-				$this->loadClubs($user);
+				$this->loadClubs($userEntry);
 			}
 		}
 
-
-
+		$userEntry->resetFriends();
 		$node = $xpath->query('//div[@class = \'spaceit_pad\'][contains(text(), \'Total Friends\')]')->item(0);
-		$user['friends'] = [];
 		if (!empty($node)) {
 			$friendCount = intval(substr($node->nodeValue, 15));
 			if ($friendCount <= 30) {
 				$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'profile\')]');
 				foreach ($q as $node) {
-					$user['friends'] []= $this->mgHelper->fixText($node->nodeValue);
+					$friend = new UserFriendEntry();
+					$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+					$userEntry->addFriend($friend);
 				}
 			} else {
-				$this->loadFriends($user);
+				$this->loadFriends($userEntry);
 			}
 		}
-
 	}
 
 
-	protected function loadClubs(array &$user) {
-		$user['clubs'] = [];
-
-		$url = $this->mgHelper->replaceTokens(self::USER_URL_CLUBS, ['user-id' => $user['user-id']]);
-		$contents = $this->mgHelper->download($url);
+	protected function loadClubs(UserEntry &$userEntry) {
+		$userEntry->resetClubs();
+		$url = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_CLUBS, ['user-id' => $userEntry->getID()]);
+		$contents = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
 		if (empty($contents)) {
 			throw new DownloadException($url);
 		}
 
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
-		$this->mgHelper->suppressErrors();
+		ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
 		$doc->loadHTML($contents);
-		$this->mgHelper->restoreErrors();
+		ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
 		$xpath = new DOMXPath($doc);
 
 		$nodes = $xpath->query('//ol//li//a');
 		foreach ($nodes as $node) {
-			$url = $this->mgHelper->parseURL($node->getAttribute('href'));
-			$club = [];
-			$club['id'] = intval($url['query']['cid']);
-			$club['name'] = $this->mgHelper->fixText($node->nodeValue);
-			$user['clubs'] []= $club;
+			$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($node->getAttribute('href'));
+			$club = new UserClubEntry();
+			$club->setID(intval($url['query']['cid']));
+			$club->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+			$userEntry->addClub($club);
 		}
 	}
 
-	protected function loadFriends(array &$user) {
-		$user['friends'] = [];
-
+	protected function loadFriends(UserEntry &$userEntry) {
+		$userEntry->resetFriends();
 		$max = 0;
 		$shift = 0;
 		$page = 6 * 7;
 		do {
-			$url = $this->mgHelper->replaceTokens(self::USER_URL_FRIENDS, ['user-id' => $user['user-id'], 'shift' => $shift]);
-			$contents = $this->mgHelper->download($url);
+			$url = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_FRIENDS, ['user-id' => $userEntry->getID(), 'shift' => $shift]);
+			$contents = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
 			if (empty($contents)) {
 				throw new DownloadException($url);
 			}
 
 			$doc = new DOMDocument;
 			$doc->preserveWhiteSpace = false;
-			$this->mgHelper->suppressErrors();
+			ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
 			$doc->loadHTML($contents);
-			$this->mgHelper->restoreErrors();
+			ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
 			$xpath = new DOMXPath($doc);
 
 			preg_match('/ has (\d+) friends/', $contents, $results);
@@ -294,43 +244,44 @@ class UserModel extends JSONDB {
 
 			$nodes = $xpath->query('//table//div[contains(@style, \'margin\')]/a[contains(@href, \'profile\')]');
 			foreach ($nodes as $node) {
-				$user['friends'] []= $this->mgHelper->fixText($node->nodeValue);
+				$friend = new UserFriendEntry();
+				$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+				$userEntry->addFriend($friend);
 			}
 
 			$shift += $page;
 		} while ($shift < $max);
 	}
 
-
-	protected function loadHistory(array &$user, array &$documents) {
-		$contents = $documents[self::USER_URL_HISTORY];
+	protected function loadHistory(UserEntry &$userEntry, array &$documents) {
+		$contents = $documents[self::URL_HISTORY];
 
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
-		$this->mgHelper->suppressErrors();
+		ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
 		$doc->loadHTML($contents);
-		$this->mgHelper->restoreErrors();
+		ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
 		$xpath = new DOMXPath($doc);
 
 		$nodes = $xpath->query('//table//td[@class = \'borderClass\']/..');
-		foreach (self::$types as $type) {
-			$user[$type]['history'] = [];
-		}
+		$userEntry->setHistory(AMModel::TYPE_ANIME, new UserAnimeHistory());
+		$userEntry->setHistory(AMModel::TYPE_MANGA, new UserMangaHistory());
 
 		foreach ($nodes as $node) {
 			//basic info
 			$link = $node->childNodes->item(0)->childNodes->item(0)->getAttribute('href');
-			preg_match('/(\d+)\/?$/', $link, $matches);
-			$entry['id'] = intval($matches[0]);
 			$sub = intval($node->childNodes->item(0)->childNodes->item(2)->nodeValue);
+			preg_match('/(\d+)\/?$/', $link, $matches);
+			$id = intval($matches[0]);
 			if (strpos($link, 'manga') !== false) {
-				$type = AMModel::ENTRY_TYPE_MANGA;
-				$entry['chap'] = $sub;
+				$entry = UserHistoryEntry::factory($userEntry->getMangaHistory(), $id);
+				$entry->setChapter($sub);
+			} elseif (strpos($link, 'anime') !== false) { //risky
+				$entry = UserHistoryEntry::factory($userEntry->getAnimeHistory(), $id);
+				$entry->setEpisode($sub);
 			} else {
-				$type = AMModel::ENTRY_TYPE_ANIME;
-				$entry['ep'] = $sub;
+				throw new Exception('Unknown history entry type');
 			}
-			$entry['type'] = $type;
 
 			//parse time
 			//That's what MAL servers output for MG client
@@ -367,91 +318,66 @@ class UserModel extends JSONDB {
 			}
 			$time = mktime($hour, $minute, $second, $month, $day, $year);
 			date_default_timezone_set('UTC');
-			$entry['date'] = date('Y-m-d', $time);
-			$entry['hour'] = date('H:i:s', $time);
-			$user[$type]['history'] []= $entry;
+			$entry->setTimestamp($time);
+			$userEntry->getHistory($entry->getType())->addEntry($entry);
 		}
 	}
 
 
-
-
 	public function getReal($userName) {
-		$user = $this->getCached($userName);
-		if (empty($user)) {
-			$user = [];
-			$user['vip'] = false;
-			$user['blocked'] = false;
-			$user['user-name'] = $userName;
-			do {
-				$alpha = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-				$anonName = '=';
-				foreach (range(1, 8) as $k) {
-					$anonName .= $alpha{mt_rand() % strlen($alpha)};
-				}
-			} while (!empty($this->anons[$anonName]) and $this->anons[$anonName] != $user['user-name']);
-			$user['anon-name'] = $anonName;
+		$userEntry = $this->getCached($userName);
+		if (empty($userEntry)) {
+			$userEntry = new UserEntry($userName);
 		}
 
-		$user['generated'] = time();
-		if ($user['vip']) {
-			$user['expires'] = time() + 3600 * 3;
+		$userEntry->setGenerationTime(time());
+		if ($userEntry->getUserData()->isVIP()) {
+			$userEntry->setExpirationTime(time() + 3600 * 3);
 		} else {
-			$user['expires'] = time() + 3600 * 24;
+			$userEntry->setExpirationTime(time() + 3600 * 24);
 		}
 
-		if ($user['blocked']) {
-			return $user;
+		if ($userEntry->getUserData()->isBlocked()) {
+			return $userEntry;
 		}
 
 		$urls = [];
-		$urls[self::USER_URL_ANIME1] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME1, ['user' => $user['user-name']]);
-		$urls[self::USER_URL_MANGA1] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA1, ['user' => $user['user-name']]);
-		$urls[self::USER_URL_ANIME2] = $this->mgHelper->replaceTokens(self::USER_URL_ANIME2, ['user' => $user['user-name']]);
-		$urls[self::USER_URL_MANGA2] = $this->mgHelper->replaceTokens(self::USER_URL_MANGA2, ['user' => $user['user-name']]);
-		$urls[self::USER_URL_PROFILE] = $this->mgHelper->replaceTokens(self::USER_URL_PROFILE, ['user' => $user['user-name']]);
-		$urls[self::USER_URL_HISTORY] = $this->mgHelper->replaceTokens(self::USER_URL_HISTORY, ['user' => $user['user-name']]);
+		$urls[self::URL_ANIME1] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_ANIME1, ['user' => $userEntry->getUserName()]);
+		$urls[self::URL_MANGA1] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_MANGA1, ['user' => $userEntry->getUserName()]);
+		$urls[self::URL_ANIME2] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_ANIME2, ['user' => $userEntry->getUserName()]);
+		$urls[self::URL_MANGA2] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_MANGA2, ['user' => $userEntry->getUserName()]);
+		$urls[self::URL_PROFILE] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_PROFILE, ['user' => $userEntry->getUserName()]);
+		$urls[self::URL_HISTORY] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_HISTORY, ['user' => $userEntry->getUserName()]);
 
-		$documents = $this->mgHelper->downloadMulti($urls);
+		$documents = ChibiRegistry::getInstance()->getHelper('mg')->downloadMulti($urls);
 		foreach ($documents as $type => $contents) {
 			if (empty($contents)) {
 				throw new DownloadException($urls[$type]);
 			}
 		}
 
-		$this->loadLists($user, $documents);
-		$this->loadProfile($user, $documents);
-		$this->loadHistory($user, $documents);
-		return $user;
+		$this->loadLists($userEntry, $documents);
+		$this->loadProfile($userEntry, $documents);
+		$this->loadHistory($userEntry, $documents);
+		return $userEntry;
 	}
 
-	public function get($key, $getReal = false) {
-		if (isset($this->anons[$key])) {
-			$data = parent::get($this->anons[$key], $getReal);
-			if (empty($data)) {
+	public function get($key, $cachePolicy = self::CACHE_POLICY_DEFAULT) {
+		if (AnonService::getByAnonName($key)) {
+			$userEntry = parent::get(AnonService::getByAnonName($key), $cachePolicy);
+			if (empty($userEntry)) {
 				return null;
 			}
-			$data['anonymous'] = true;
+			$userEntry->setAnonymous(true);
 		} else {
-			$data = parent::get($key, $getReal);
-			if (empty($data)) {
+			$userEntry = parent::get($key, $cachePolicy);
+			if (empty($userEntry)) {
 				return null;
 			}
-			$data['anonymous'] = false;
+			$userEntry->setAnonymous(false);
 		}
 
-		if (!empty($data['user-name']) and !isset($this->anons[$data['anon-name']])) {
-			$this->anons[$data['anon-name']] = $data['user-name'];
-			file_put_contents($this->anonsFile, json_encode($this->anons), LOCK_EX);
-		}
-
-		return $data;
-	}
-
-	public function put($key, &$data) {
-		$this->anons[$data['anon-name']] = $data['user-name'];
-		file_put_contents($this->anonsFile, json_encode($this->anons), LOCK_EX);
-		return parent::put($key, $data);
+		return $userEntry;
 	}
 
 }

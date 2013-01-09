@@ -1,16 +1,16 @@
 <div class="section">
 	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
-			<?php echo $this->user['visible-name'] ?>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user->getLinkableName()) ?>">
+			<?php echo $this->user->getPublicName() ?>
 		</a>
 		&rsquo;s <?php echo $this->mgHelper->amText() ?> list
 	</h2>
 
 	<div class="section-body">
-		<?php if (empty($this->user[$this->am]['entries'])): ?>
+		<?php if (count($this->user->getList($this->am)->getEntries()) == 0): ?>
 			<p>Sadly, <?php echo $this->user['visible-name'] ?>&rsquo;s <?php echo $this->mgHelper->amText() ?> list is empty.<br>
 			If this is your list, add (and rate) something and come back in 24 hours.</p>
-		<?php elseif ($this->user[$this->am]['private']): ?>
+		<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 			<p><?php echo ucfirst($this->mgHelper->amText()) ?> list of this user is private.<br>Each of us has some dirty secrets, isn&rsquo;t that right?</p>
 		<?php else: ?>
 			<div class="table">
@@ -25,7 +25,7 @@
 								S
 							</th>
 
-							<?php if (count($this->view->users) > 1): ?>
+							<?php if (count($this->users) > 1): ?>
 								<th class="unique tooltipable"
 									data-title="Unique - marked with &bdquo;+&rdquo; if only this user has given title in their list."
 									data-position-my="center bottom"
@@ -45,35 +45,41 @@
 						</tr>
 					</thead>
 
+					<?php ChibiRegistry::getHelper('benchmark')->benchmark('tbody') ?>
+
 					<tbody>
 						<?php $k = 1 ?>
-						<?php foreach ($this->user[$this->am]['entries'] as $e): ?>
-							<?php if ($e['user']['unique']): ?>
+						<?php foreach ($this->user->getList($this->am)->getEntries() as $e): ?>
+							<?php $e2 = null ?>
+							<?php if (!empty($this->otherUser)): ?>
+								<?php $e2 = $this->otherUser->getList($this->am)->getEntryByID($e->getID()) ?>
+							<?php endif ?>
+							<?php if (empty($e2)): ?>
 								<tr class="unique">
 							<?php else: ?>
 								<tr>
 							<?php endif ?>
-
-								<?php if ($e['user']['status'] == UserModel::USER_LIST_STATUS_PLANNED): ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="4">
+								<?php switch($e->getStatus()) {
+									case UserListEntry::STATUS_PLANNED: ?>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="4">
 										<i class="icon-schedule"></i>
-								<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_DROPPED): ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="5">
+								<?php break; case UserListEntry::STATUS_DROPPED: ?>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="5">
 										<i class="icon-cross"></i>
-								<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_WATCHING): ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="1">
+								<?php break; case UserListEntry::STATUS_WATCHING: ?>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="1">
 										<i class="icon-eye"></i>
-								<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_ONHOLD): ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="3">
+								<?php break; case UserListEntry::STATUS_ONHOLD: ?>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="3">
 										<i class="icon-hourglass"></i>
-								<?php elseif ($e['user']['status'] == UserModel::USER_LIST_STATUS_COMPLETED): ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e['user']['status']) ?>" data-sorter="2">
+								<?php break; case UserListEntry::STATUS_COMPLETED: ?>
+									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="2">
 										<i class="icon-tick"></i>
-								<?php endif ?>
+								<?php break; } ?>
 								</td>
 
-								<?php if (count($this->view->users) > 1): ?>
-									<?php if ($e['user']['unique']): ?>
+								<?php if (count(ChibiRegistry::getView()->users) > 1): ?>
+									<?php if (empty($e2)): ?>
 										<td class="unique tooltipable" data-title="Only this user has this title on his list" data-sorter="1">
 											<i class="icon-plus"></i>
 									<?php else: ?>
@@ -83,50 +89,50 @@
 									</td>
 								<?php endif ?>
 
-								<td class="title" data-sorter="<?php echo $e['full']['title'] ?>">
-									<a href="http://myanimelist.net/<?php echo $this->view->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-										<?php echo $e['full']['title'] ?>
+								<td class="title" data-sorter="<?php echo $e->getAMEntry()->getTitle() ?>">
+									<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->amText() ?>/<?php echo $e->getID() ?>">
+										<?php echo $e->getAMEntry()->getTitle() ?>
 									</a>
 								</td>
 
-								<?php if (!empty($e['others']) and count($e['others']) == 1): ?>
-									<?php $e2 = reset($e['others']) ?>
-									<?php if ($e['user']['score'] > $e2['user']['score']): ?>
-										<?php if ($e2['user']['score'] > 0): ?>
-											<td class="score higher-score tooltipable" data-title="This title was rated lower (<?php echo $e2['user']['score'] ?>) by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
+								<?php if (!empty($e2)): ?>
+									<?php if ($e->getScore() > $e2->getScore()): ?>
+										<?php if ($e2->getScore() > 0): ?>
+											<td class="score higher-score tooltipable" data-title="This title was rated lower (<?php echo $e2->getScore() ?>) by the other user." data-sorter="<?php echo $e->getScore() ?>">
 										<?php else: ?>
-											<td class="score no-score tooltipable" data-title="This title wasn&rsquo;t rated by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
+											<td class="score no-score tooltipable" data-title="This title wasn&rsquo;t rated by the other user." data-sorter="<?php echo $e->getScore() ?>">
 										<?php endif ?>
-									<?php elseif ($e['user']['score'] < $e2['user']['score']): ?>
-										<?php if ($e['user']['score'] > 0): ?>
-											<td class="score lower-score tooltipable" data-title="This title was rated higher (<?php echo $e2['user']['score'] ?>) by the other user." data-sorter="<?php echo $e['user']['score'] ?>">
+									<?php elseif ($e->getScore() < $e2->getScore()): ?>
+										<?php if ($e->getScore() > 0): ?>
+											<td class="score lower-score tooltipable" data-title="This title was rated higher (<?php echo $e2->getScore() ?>) by the other user." data-sorter="<?php echo $e->getScore() ?>">
 										<?php else: ?>
-											<td class="score no-score tooltipable" data-title="This title wasn&rsquo;t rated by this user." data-sorter="<?php echo $e['user']['score'] ?>">
+											<td class="score no-score tooltipable" data-title="This title wasn&rsquo;t rated by this user." data-sorter="<?php echo $e->getScore() ?>">
 										<?php endif ?>
 									<?php else: ?>
-										<?php if ($e['user']['score'] > 0): ?>
-											<td class="score same-score tooltipable" data-title="Both users rated this title equally." data-sorter="<?php echo $e['user']['score'] ?>">
+										<?php if ($e->getScore() > 0): ?>
+											<td class="score same-score tooltipable" data-title="Both users rated this title equally." data-sorter="<?php echo $e->getScore() ?>">
 										<?php else: ?>
-											<td class="score no-score tooltipable" data-title="None of users rated this title." data-sorter="<?php echo $e['user']['score'] ?>">
+											<td class="score no-score tooltipable" data-title="None of users rated this title." data-sorter="<?php echo $e->getScore() ?>">
 										<?php endif ?>
 									<?php endif ?>
 								<?php else: ?>
 									<?php if (count($this->users) > 1): ?>
-										<td class="score tooltipable" data-title="This title is unique to this user." data-sorter="<?php echo $e['user']['score'] ?>">
+										<td class="score tooltipable" data-title="This title is unique to this user." data-sorter="<?php echo $e->getScore() ?>">
 									<?php else: ?>
-										<td class="score" data-sorter="<?php echo $e['user']['score'] ?>">
+										<td class="score" data-sorter="<?php echo $e->getScore() ?>">
 									<?php endif ?>
 								<?php endif ?>
-									<?php if (empty($e['user']['score'])): ?>
+									<?php if (!$e->getScore()): ?>
 										-
 									<?php else: ?>
-										<?php echo $e['user']['score'] ?>
+										<?php echo $e->getScore() ?>
 									<?php endif ?>
 								</td>
 							</tr>
 						<?php endforeach ?>
 					</tbody>
 
+					<?php ChibiRegistry::getHelper('benchmark')->benchmark('/tbody') ?>
 				</table>
 			</div>
 		<?php endif ?>

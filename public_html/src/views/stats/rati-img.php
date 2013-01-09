@@ -8,11 +8,11 @@ define('TEXT_GMEANVAL', 6);
 define('TEXT_GCOUNT', 7);
 define('TEXT_GMEAN', 8);
 
-$fontPath = $this->config->chibi->runtime->rootFolder . '/media/font/verdana.ttf';
+$fontPath = ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/media/font/verdana.ttf';
 $barWidth = 220;
 $barHeight = 12 + 1;
 $barPadding = 1;
-$iconImageMask = imagecreatefrompng($this->config->chibi->runtime->rootFolder . '/media/img/export-mask.png');
+$iconImageMask = imagecreatefrompng(ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/media/img/export-mask.png');
 
 if (!function_exists('readColor')) {
 	function readColor($color) {
@@ -66,25 +66,27 @@ if (!function_exists('readColor')) {
 }
 
 $iconImage = imagecreatetruecolor(imagesx($iconImageMask), imagesy($iconImageMask));
+imagesavealpha($iconImage, true);
 imagealphablending($iconImage, false);
+imagefilledrectangle($iconImage, 0, 0, imagesx($iconImage), imagesy($iconImage), makeColor($this->colors[COLOR_BACKGROUND]));
+imagealphablending($iconImage, true);
 for ($y = 0; $y < imagesy($iconImageMask); $y ++) {
 	for ($x = 0; $x < imagesx($iconImageMask); $x ++) {
+		$c = $this->colors[COLOR_LOGO];
 		$r = imagecolorat($iconImageMask, $x, $y);
 		$r &= 0xff;
 		$r /= 255.0;
-		$c = $this->colors[COLOR_LOGO];
-		$c = mixColors($this->colors[COLOR_LOGO], $this->colors[COLOR_BACKGROUND], $r);
+		$c['a'] = 255 - (255 - $c['a']) * $r;
 		imagesetpixel($iconImage, $x, $y, makeColor($c));
 	}
 }
-imagealphablending($iconImage, true);
 
 $textSettings = array();
-foreach (array(AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA) as $am) {
+foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
 	$percentOrig = array();
 	$percentShow = array();
 	for ($score = 1; $score <= 10; $score ++) {
-		$percentOrig[$score] = $this->user[$am]['score-info']['dist-score'][$score] * 100.0 / max(1, $this->user[$am]['score-info']['rated']);
+		$percentOrig[$score] = $this->scoreDistribution[$am]->getGroupCardinality($score) * 100.0 / max(1, $this->scoreDistribution[$am]->getRatedCount());
 		$percentShow[$score] = floor($percentOrig[$score]);
 	}
 	uasort($percentOrig, function($a, $b) { return ($b-floor($b)) > ($a-floor($a)); });
@@ -111,7 +113,7 @@ foreach (array(AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA) as $am) {
 		$tc[TEXT_COUNT][$i] = array
 		(
 			'font' => $fontPath,
-			'text' => $this->user[$am]['score-info']['dist-score'][$score],
+			'text' => $this->scoreDistribution[$am]->getGroupCardinality($score),
 			'color' => $this->colors[COLOR_FONT_DARK],
 			'shiftX' => 0,
 			'shiftY' => 10,
@@ -152,7 +154,7 @@ foreach (array(AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA) as $am) {
 	$tc[TEXT_GCOUNTVAL] = array
 	(
 		'font' => $fontPath,
-		'text' => $this->user[$am]['score-info']['rated'],
+		'text' => $this->scoreDistribution[$am]->getRatedCount(),
 		'color' => $this->colors[COLOR_FONT_DARK],
 		'size' => 10.5,
 		'shiftX' => 0,
@@ -170,7 +172,7 @@ foreach (array(AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA) as $am) {
 	$tc[TEXT_GMEANVAL] = array
 	(
 		'font' => $fontPath,
-		'text' => sprintf('%.02f', $this->user[$am]['score-info']['mean-score']),
+		'text' => sprintf('%.02f', $this->scoreDistribution[$am]->getMeanScore()),
 		'color' => $this->colors[COLOR_FONT_DARK],
 		'size' => 10.5,
 		'shiftX' => 0,
@@ -202,7 +204,7 @@ foreach (array(AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA) as $am) {
 
 
 if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA) {
-	$am = $this->imageType == IMAGE_TYPE_ANIME ? AMModel::ENTRY_TYPE_ANIME : AMModel::ENTRY_TYPE_MANGA;
+	$am = $this->imageType == IMAGE_TYPE_ANIME ? AMModel::TYPE_ANIME : AMModel::TYPE_MANGA;
 	$tc = &$textSettings[$am];
 
 	$w = 330;
@@ -233,7 +235,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 		$y2 = $y1 + $barHeight - 1;
 		gradient($img, $x1, $y1 - 1, $x2, $y1 - 1, $this->colors[COLOR_BAR_GUIDES_1], $this->colors[COLOR_BAR_GUIDES_2]);
 		gradient($img, $x1, $y1, $x2, $y2, $this->colors[COLOR_BARS_1], $this->colors[COLOR_BARS_2]);
-		$x1 = $x1 + ($barWidth - 1) * $this->user[$am]['score-info']['dist-score'][$score] / max(1, $this->user[$am]['score-info']['rated-max']);
+		$x1 = $x1 + ($barWidth - 1) * $this->scoreDistribution[$am]->getGroupCardinality($score) / max(1, $this->scoreDistribution[$am]->getLargestGroupCardinalityExceptNull());
 		imagefilledrectangle ($img, $x1, $y1, $x2, $y2, makeColor($this->colors[COLOR_BACKGROUND2]));
 	}
 
@@ -255,9 +257,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 
 	$x = ($tc[TEXT_SCORE]['width'] - imagesx($iconImage)) >> 1;
 	$y = $h - imagesy($iconImage) + 1;
-	imagealphablending($img, true);
 	imagecopy($img, $iconImage, $x, $y, 0, 0, imagesx($iconImage), imagesy($iconImage));
-	imagealphablending($img, false);
 
 } else {
 
@@ -268,9 +268,9 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 	imagesavealpha($img, true);
 	imagefilledrectangle($img, 0, 0, $w, $h, makeColor($this->colors[COLOR_BACKGROUND]));
 
-	foreach (array(AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA) as $am) {
+	foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
 		$tc = &$textSettings[$am];
-		$mul = $am == AMModel::ENTRY_TYPE_ANIME ? -1 : 1;
+		$mul = $am == AMModel::TYPE_ANIME ? -1 : 1;
 
 		for ($i = 0; $i < 10; $i ++) {
 			$score = 10 - $i;
@@ -279,7 +279,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 			renderText($img, $x, $y, $tc[TEXT_SCORE][$i]);
 
 			$x = ($w >> 1) + (($tc[TEXT_SCORE]['width'] >> 1) + $tc[TEXT_SCORE]['padding'] + $barWidth + $tc[TEXT_COUNT]['padding']) * $mul;
-			if ($am == AMModel::ENTRY_TYPE_MANGA) {
+			if ($am == AMModel::TYPE_MANGA) {
 				$x += $tc[TEXT_COUNT]['width'] - $tc[TEXT_COUNT][$i]['width'];
 			} else {
 				$x -= $tc[TEXT_COUNT][$i]['width'];
@@ -287,7 +287,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 			renderText($img, $x, $y, $tc[TEXT_COUNT][$i]);
 
 			$x = ($w >> 1) + (($tc[TEXT_SCORE]['width'] >> 1) + $tc[TEXT_SCORE]['padding'] + $barWidth + $tc[TEXT_COUNT]['padding'] + $tc[TEXT_COUNT]['width'] + $tc[TEXT_PERCENT]['padding']) * $mul;
-			if ($am == AMModel::ENTRY_TYPE_ANIME) {
+			if ($am == AMModel::TYPE_ANIME) {
 				$x -= $tc[TEXT_PERCENT][$i]['width'];
 			}
 			renderText($img, $x, $y, $tc[TEXT_PERCENT][$i]);
@@ -298,30 +298,30 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 			$y2 = $y1 + $barHeight - 1;
 			gradient($img, $x1, $y1 - 1, $x2, $y1 - 1, $this->colors[COLOR_BAR_GUIDES_1], $this->colors[COLOR_BAR_GUIDES_2]);
 			gradient($img, $x1, $y1, $x2, $y2, $this->colors[COLOR_BARS_1], $this->colors[COLOR_BARS_2]);
-			$x1 += $mul * (($barWidth - 1) * $this->user[$am]['score-info']['dist-score'][$score] / max(1, $this->user[$am]['score-info']['rated-max']));
+			$x1 += $mul * (($barWidth - 1) * $this->scoreDistribution[$am]->getGroupCardinality($score) / max(1, $this->scoreDistribution[$am]->getLargestGroupCardinalityExceptNull()));
 			imagefilledrectangle ($img, $x1, $y1, $x2, $y2, makeColor($this->colors[COLOR_BACKGROUND2]));
 		}
 		$x = ($w >> 1) + (($tc[TEXT_SCORE]['width'] >> 1) + $tc[TEXT_SCORE]['padding']) * $mul;
-		if ($am == AMModel::ENTRY_TYPE_ANIME) {
+		if ($am == AMModel::TYPE_ANIME) {
 			$x -= $tc[TEXT_TITLE]['width'];
 		}
 		$y = $h;
 		renderText($img, $x, $y, $tc[TEXT_TITLE]);
-		if ($am == AMModel::ENTRY_TYPE_ANIME) {
+		if ($am == AMModel::TYPE_ANIME) {
 			$x1 = $x;
 		} else {
 			$x1 = $x + $tc[TEXT_TITLE]['width'];
 		}
 
 		$x = ($w >> 1) + (($tc[TEXT_SCORE]['width'] >> 1) + $tc[TEXT_SCORE]['padding'] + $barWidth) * $mul;
-		if ($am == AMModel::ENTRY_TYPE_MANGA) {
+		if ($am == AMModel::TYPE_MANGA) {
 			$x -= $tc[TEXT_GMEAN]['width'] + $tc[TEXT_GMEANVAL]['width'];
 		}
 		renderText($img, $x, $y, $tc[TEXT_GMEAN]);
 		$x2 = $x;
 		$x += $tc[TEXT_GMEAN]['width'];
 		renderText($img, $x, $y, $tc[TEXT_GMEANVAL]);
-		if ($am == AMModel::ENTRY_TYPE_ANIME) {
+		if ($am == AMModel::TYPE_ANIME) {
 			$x2 += $tc[TEXT_GMEAN]['width'] + $tc[TEXT_GMEANVAL]['width'];
 		}
 
@@ -332,9 +332,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 
 		$x = ($w - imagesx($iconImage)) >> 1;
 		$y = $h - imagesy($iconImage) + 1;
-		imagealphablending($img, true);
 		imagecopy($img, $iconImage, $x, $y, 0, 0, imagesx($iconImage), imagesy($iconImage));
-		imagealphablending($img, false);
 	}
 }
 

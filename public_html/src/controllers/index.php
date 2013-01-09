@@ -2,7 +2,7 @@
 require_once 'src/controllers/abstract.php';
 class IndexController extends AbstractController {
 	public function indexAction() {
-		$this->headHelper->addKeywords(['myanimelist', 'mal', 'rating', 'favorites', 'score']);
+		HeadHelper::addKeywords(['myanimelist', 'mal', 'rating', 'favorites', 'score']);
 		$this->view->userName = null;
 	}
 
@@ -47,8 +47,8 @@ class IndexController extends AbstractController {
 
 		foreach ($userNames as &$userName) {
 			$userName = trim($userName);
-			if (!preg_match('/^=?[-_0-9A-Za-z]{3,}$/', $userName)) {
-				$this->forward($this->mgHelper->constructUrl('index', 'wrong-query'));
+			if (!preg_match('/^=?[-_0-9A-Za-z]{2,}$/', $userName)) {
+				$this->forward($this->mgHelper->constructUrl('index', 'wrong-query?' . $userName));
 				return;
 			}
 		}
@@ -60,7 +60,7 @@ class IndexController extends AbstractController {
 
 	public function regenerateAction() {
 		header('Content-Type: text/plain; charset=utf-8');
-		$this->config->chibi->runtime->layoutName = null;
+		ChibiConfig::getInstance()->chibi->runtime->layoutName = null;
 
 		//discard session information to speed up things
 		$this->sessionHelper->close();
@@ -76,24 +76,24 @@ class IndexController extends AbstractController {
 
 		$modelUsers = new UserModel();
 		try {
-			$user = $modelUsers->get($key);
+			$user = $modelUsers->get($key, AbstractModel::CACHE_POLICY_DEFAULT);
 		} catch (Exception $e) {
 		}
 
-		echo $user['expires'];
+		echo $user->getExpirationTime();
 	}
 
 
 
 	public function globalsAction() {
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/highcharts.js'));
-		$this->headHelper->addScript($this->urlHelper->url('media/js/highcharts/themes/mg.js'));
-		$this->headHelper->addStylesheet($this->urlHelper->url('media/css/infobox.css'));
-		$this->headHelper->setTitle('MALgraph - global stats');
-		$this->headHelper->setDescription('Global community statistics' . MGHelper::$descSuffix);
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
+		HeadHelper::setTitle('MALgraph - global stats');
+		HeadHelper::setDescription('Global community statistics' . MGHelper::$descSuffix);
 
 		// load stats from cache
-		$path = $this->config->chibi->runtime->rootFolder . '/' . $this->config->misc->globalsCacheFile;
+		$path = ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/' . ChibiConfig::getInstance()->misc->globalsCacheFile;
 		if (file_exists($path) and ((time() - filemtime($path)) < 24 * 3600)) {
 			$globals = json_decode(file_get_contents($path), true);
 		} else {

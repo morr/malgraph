@@ -1,7 +1,7 @@
 <div class="section">
 	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
-			<?php echo $this->user['visible-name'] ?>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user->getLinkableName()) ?>">
+			<?php echo $this->user->getPublicName() ?>
 		</a>
 		&rsquo;s miscellaneous <?php echo $this->mgHelper->amText() ?> stats
 	</h2>
@@ -11,7 +11,7 @@
 
 <div class="section subtype-dist">
 	<h3>
-		<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 			<i data-title="Distribution of manga types (one-shot, novel, &hellip;)"></i>
 		<?php else: ?>
 			<i data-title="Distribution of anime types (OVA, movie, &hellip;)"></i>
@@ -19,29 +19,21 @@
 		Subtype distribution
 	</h3>
 	<div class="section-body">
-		<?php if (empty($this->user[$this->am]['dist-status'])): ?>
+		<?php if ($this->subTypeDistribution[$this->user->getID()]->getLargestGroupSize() == 0): ?>
 			<p>This user doesn&rsquo;t seem to have anything on their list. No chart here.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>
 					<div>
-						<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+						<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 							<span class="prefix">Total one-shots</span>
 							<span class="subject">
-								<?php if (empty($this->user[$this->am]['dist-subtype']['one shot'])): ?>
-									0
-								<?php else: ?>
-									<?php echo count($this->user[$this->am]['dist-subtype']['one shot']['entries']) ?>
-								<?php endif ?>
+								<?php echo intval ($this->subTypeDistribution[$this->user->getID()]->getGroupSize(MangaEntry::SUBTYPE_ONESHOT)) ?>
 							</span>
 						<?php else: ?>
 							<span class="prefix">Total movies</span>
 							<span class="subject">
-								<?php if (empty($this->user[$this->am]['dist-subtype']['movie'])): ?>
-									0
-								<?php else: ?>
-									<?php echo count($this->user[$this->am]['dist-subtype']['movie']['entries']) ?>
-								<?php endif ?>
+								<?php echo intval ($this->subTypeDistribution[$this->user->getID()]->getGroupSize(AnimeEntry::SUBTYPE_MOVIE)) ?>
 							</span>
 						<?php endif ?>
 					</div>
@@ -55,25 +47,26 @@
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->user[$this->am]['dist-subtype'] as $k => $x): ?>
-					<div class="more" data-id="<?php echo $x['text'] ?>">
+				<?php foreach ($this->subTypeDistribution[$this->user->getID()]->getGroupsKeys() as $key): ?>
+					<?php $entries = $this->subTypeDistribution[$this->user->getID()]->getGroupEntries($key) ?>
+					<div class="more" data-id="<?php echo $key ?>">
 						<p>
-							<?php echo ucfirst($x['text']) ?>
-							<?php if (!empty($x['entries'])): ?>
-								&nbsp;(<?php echo count($x['entries']) ?>)
+							<?php echo ChibiRegistry::getHelper('mg')->subTypeText($key) ?>
+							<?php if (!empty($entries)): ?>
+								&nbsp;(<?php echo count($entries) ?>)
 							<?php endif ?>
 							:
 						</p>
-						<?php if (empty($x['entries'])): ?>
+						<?php if (empty($entries)): ?>
 							<p>None!</p>
-						<?php elseif ($this->user[$this->am]['private']): ?>
+						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
-								<?php foreach ($x['entries'] as $e): ?>
+								<?php foreach ($entries as $e): ?>
 									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-											<?php echo $e['full']['title'] ?>
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
+											<?php echo $e->getAMEntry()->getTitle() ?>
 										</a>
 									</li>
 								<?php endforeach ?>
@@ -84,18 +77,19 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $this->user['user-safe-id'] ?> .subtype-dist .target').each(function() {
+				$('#user-<?php echo $this->user->getRuntimeID() ?> .subtype-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'pie', margin: 16 },
 						tooltip: { formatter: function() {
 							var text = this.key + ': ' + this.y;
-							var precent = this.y * 100.0 / <?php echo max(1, array_sum(array_map(function($x) { return count($x['entries']); }, $this->user[$this->am]['dist-subtype']))) ?>;
+							var precent = this.y * 100.0 / <?php echo max(1, $this->subTypeDistribution[$this->user->getID()]->getTotalSize()) ?>;
 							text += ' (' + Math.round(precent * 100) / 100 + '%)';
 							return text; } },
 						series: [ {
-							data: <?php echo json_encode(array_map(function($x) { return [$x['text'], count($x['entries'])]; }, array_values($this->user[$this->am]['dist-subtype']))) ?>,
-							point: { events: { click: function(e) {console.log(this);
-								toggleWithinSections($('.subtype-dist .more[data-id=\'' + this.name + '\']'), true);
+							<?php $dist = &$this->subTypeDistribution[$this->user->getID()] ?>
+							data: <?php echo json_encode(array_map(function($key) use (&$dist) { return [ChibiRegistry::getHelper('mg')->subTypeText($key), $dist->getGroupSize($key), $key]; }, $dist->getGroupsKeys())) ?>,
+							point: { events: { click: function(e) {
+								toggleWithinSections($('.subtype-dist .more[data-id=\'' + this.config[2] + '\']'), true);
 							} } }
 						} ],
 						plotOptions: { column: { pointWidth: 17 } }
@@ -110,7 +104,7 @@
 
 <div class="section length-dist">
 	<h3>
-		<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 			<i data-title="Distribution of common manga length, in chapters"></i>
 		<?php else: ?>
 			<i data-title="Distribution of common anime length, in episodes"></i>
@@ -118,24 +112,24 @@
 		Length distribution
 	</h3>
 	<div class="section-body">
-		<?php if (empty($this->user[$this->am]['dist-length'])): ?>
+		<?php if ($this->lengthDistribution[$this->user->getID()]->getLargestGroupSize() == 0): ?>
 			<p>This user doesn&rsquo;t seem to have anything completed. No chart here.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>
 					<div>
-						<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
-							<span class="prefix">Total volumes</span>
-							<span class="subject"><?php echo $this->user[$this->am]['misc']['total-volumes'] ?></span>
+						<?php if ($this->am == AMModel::TYPE_MANGA): ?>
+							<span class="prefix">Completed volumes</span>
+							<span class="subject"><?php echo $this->completedVolumes[$this->user->getID()] ?></span>
 						</div>
 					</li>
 					<li>
 						<div>
-							<span class="prefix">Total chapters</span>
-							<span class="subject"><?php echo $this->user[$this->am]['misc']['total-chapters'] ?></span>
+							<span class="prefix">Completed chapters</span>
+							<span class="subject"><?php echo $this->completedChapters[$this->user->getID()] ?></span>
 						<?php else: ?>
-							<span class="prefix">Total episodes</span>
-							<span class="subject"><?php echo $this->user[$this->am]['misc']['total-episodes'] ?></span>
+							<span class="prefix">Completed episodes</span>
+							<span class="subject"><?php echo $this->completedEpisodes[$this->user->getID()] ?></span>
 						<?php endif ?>
 					</div>
 				</li>
@@ -148,29 +142,30 @@
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->user[$this->am]['dist-length'] as $k => $x): ?>
-					<div class="more" data-id="<?php echo $x['text'] ?>">
+				<?php foreach ($this->lengthDistribution[$this->user->geTID()]->getGroupsKeys() as $key): ?>
+					<?php $entries = $this->lengthDistribution[$this->user->geTID()]->getGroupEntries($key) ?>
+					<div class="more" data-id="<?php echo $key ?>">
 						<p>
-							<?php echo ucfirst($this->mgHelper->amText()) ?> with <?php echo $x['text'] ?>&nbsp;
-							<?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'chapter' : 'episode' ?>
-							<?php if ($x['text'] != '1'): ?>
+							<?php echo ucfirst($this->mgHelper->amText()) ?> with <?php echo $key == '?' ? 'unknown number of' : $key ?>&nbsp;
+							<?php echo $this->am == AMModel::TYPE_MANGA ? 'chapter' : 'episode' ?>
+							<?php if ($key != '1'): ?>
 								s
 							<?php endif ?>
-							<?php if (!empty($x['entries'])): ?>
-								&nbsp;(<?php echo count($x['entries']) ?>)
+							<?php if (!empty($entries)): ?>
+								&nbsp;(<?php echo count($entries) ?>)
 							<?php endif ?>
 							:
 						</p>
-						<?php if (empty($x['entries'])): ?>
+						<?php if (empty($entries)): ?>
 							<p>None!</p>
-						<?php elseif ($this->user[$this->am]['private']): ?>
+						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
-								<?php foreach ($x['entries'] as $e): ?>
+								<?php foreach ($entries as $e): ?>
 									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-											<?php echo $e['full']['title'] ?>
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
+											<?php echo $e->getAMEntry()->getTitle() ?>
 										</a>
 									</li>
 								<?php endforeach ?>
@@ -181,24 +176,25 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $this->user['user-safe-id'] ?> .length-dist .target').each(function() {
+				$('#user-<?php echo $this->user->getRuntimeID() ?> .length-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'pie', margin: 16 },
 						tooltip: { formatter: function() {
 							var text = '<?php echo ucfirst($this->mgHelper->amText()) ?> with ';
-							text += this.key;
-							text += ' <?php echo $this->am == AMModel::ENTRY_TYPE_MANGA ? 'chapter' : 'episode' ?>';
+							text += this.key == '?' ? 'unknown number of' : this.key;
+							text += ' <?php echo $this->am == AMModel::TYPE_MANGA ? 'chapter' : 'episode' ?>';
 							if (this.key != '1') {
 								text += 's';
 							}
 							text += ': ' + this.y;
-							var precent = this.y * 100.0 / <?php echo max(1, array_sum(array_map(function($x) { return count($x['entries']); }, $this->user[$this->am]['dist-length']))) ?>;
+							var precent = this.y * 100.0 / <?php echo max(1, $this->lengthDistribution[$this->user->getID()]->getTotalSize()) ?>;
 							text += ' (' + Math.round(precent * 100) / 100 + '%)';
 							return text; } },
 						series: [ {
-							data: <?php echo json_encode(array_map(function($x) { return [$x['text'], count($x['entries'])]; }, array_values($this->user[$this->am]['dist-length']))) ?>,
+							<?php $dist = &$this->lengthDistribution[$this->user->getID()] ?>
+							data: <?php echo json_encode(array_map(function($key) use (&$dist) { return [strval($key), $dist->getGroupSize($key), $key]; }, $dist->getGroupsKeys())) ?>,
 							point: { events: { click: function(e) {
-								toggleWithinSections($('.length-dist .more[data-id=\'' + this.name + '\']'), true);
+								toggleWithinSections($('.length-dist .more[data-id=\'' + this.config[2] + '\']'), true);
 							} } }
 						} ],
 						plotOptions: { column: { pointWidth: 17 } }
@@ -213,7 +209,7 @@
 
 <div class="section status-dist">
 	<h3>
-		<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 			<i data-title="Distribution of manga list status (reading, completed, &hellip;)"></i>
 		<?php else: ?>
 			<i data-title="Distribution of anime list status (watching, completed, &hellip;)"></i>
@@ -221,7 +217,7 @@
 		Status distribution
 	</h3>
 	<div class="section-body">
-		<?php if (empty($this->user[$this->am]['dist-status'])): ?>
+		<?php if ($this->statusDistribution[$this->user->getID()]->getLargestGroupSize() == 0): ?>
 			<p>This user doesn&rsquo;t seem to have anything on their list. No chart here.</p>
 		<?php else: ?>
 			<div class="wrapper wrapper-target">
@@ -230,25 +226,26 @@
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->user[$this->am]['dist-status'] as $k => $x): ?>
-					<div class="more" data-id="<?php echo $x['text'] ?>">
+				<?php foreach ($this->statusDistribution[$this->user->geTID()]->getGroupsKeys() as $key): ?>
+					<?php $entries = $this->statusDistribution[$this->user->geTID()]->getGroupEntries($key) ?>
+					<div class="more" data-id="<?php echo $key ?>">
 						<p>
-							<?php echo ucfirst($x['text']) ?> <?php echo $this->mgHelper->amText() ?>
-							<?php if (!empty($x['entries'])): ?>
-								&nbsp;(<?php echo count($x['entries']) ?>)
+							<?php echo ChibiRegistry::getHelper('mg')->statusText($key) ?> <?php echo $this->mgHelper->amText() ?>
+							<?php if (!empty($entries)): ?>
+								&nbsp;(<?php echo count($entries) ?>)
 							<?php endif ?>
 							:
 						</p>
-						<?php if (empty($x['entries'])): ?>
+						<?php if (empty($entries)): ?>
 							<p>None!</p>
-						<?php elseif ($this->user[$this->am]['private']): ?>
+						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 							<p>Can&rsquo;t show you titles from a private list.</p>
 						<?php else: ?>
 							<ul>
-								<?php foreach ($x['entries'] as $e): ?>
-									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-											<?php echo $e['full']['title'] ?>
+								<?php foreach ($entries as $e): ?>
+										<li>
+											<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
+											<?php echo $e->getAMEntry()->getTitle() ?>
 										</a>
 									</li>
 								<?php endforeach ?>
@@ -259,19 +256,20 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $this->user['user-safe-id'] ?> .status-dist .target').each(function() {
+				$('#user-<?php echo $this->user->getRuntimeID() ?> .status-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'pie', margin: 16 },
 						tooltip: { formatter: function() {
 							var text = this.key + ' ' + '<?php echo $this->mgHelper->amText() ?>';
 							text += ': ' + this.y;
-							var precent = this.y * 100.0 / <?php echo max(1, array_sum(array_map(function($x) { return count($x['entries']); }, $this->user[$this->am]['dist-status']))) ?>;
+							var precent = this.y * 100.0 / <?php echo max(1, $this->statusDistribution[$this->user->getID()]->getTotalSize()) ?>;
 							text += ' (' + Math.round(precent * 100) / 100 + '%)';
 							return text; } },
 						series: [ {
-							data: <?php echo json_encode(array_map(function($x) { return [$x['text'], count($x['entries'])]; }, array_values($this->user[$this->am]['dist-status']))) ?>,
-							point: { events: { click: function(e) {console.log(this);
-								toggleWithinSections($('.status-dist .more[data-id=\'' + this.name + '\']'), true);
+							<?php $dist = &$this->statusDistribution[$this->user->getID()] ?>
+							data: <?php echo json_encode(array_map(function($key) use (&$dist) { return [ChibiRegistry::getHelper('mg')->statusText($key), $dist->getGroupSize($key), $key]; }, $dist->getGroupsKeys())) ?>,
+							point: { events: { click: function(e) {
+								toggleWithinSections($('.status-dist .more[data-id=\'' + this.config[2] + '\']'), true);
 							} } }
 						} ],
 						plotOptions: { column: { pointWidth: 17 } }

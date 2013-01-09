@@ -1,7 +1,8 @@
+<?php /**/ ?>
 <div class="section">
 	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user['link-name']) ?>">
-			<?php echo $this->user['visible-name'] ?>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user->getLinkableName()) ?>">
+			<?php echo $this->user->getPublicName() ?>
 		</a>
 		&rsquo;s <?php echo $this->mgHelper->amText() ?> favorites
 	</h2>
@@ -16,161 +17,170 @@
 	</h3>
 	<div class="section-body">
 
-		<div class="wrapper wrapper-target">
-			<div class="target"></div>
-			<div class="clear"></div>
-		</div>
+		<?php if ($this->favYears[$this->user->getID()]->getLargestGroupSize() == 0): ?>
+			<p>There is no information about any completion dates for this user.</p>
+			<p>Add a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
+		<?php else: ?>
+			<div class="wrapper wrapper-target">
+				<div class="target"></div>
+				<div class="clear"></div>
+			</div>
 
-		<div class="wrapper wrapper-more">
-			<?php foreach ($this->user[$this->am]['years'] as $k => $data): ?>
-				<div class="years more" data-id="<?php echo $k ?>">
-					<p>
-						<?php echo ucfirst($this->mgHelper->amText()) ?>
-						&nbsp;from&nbsp;
-						<?php echo $k ?>
-						<?php if (!empty($data['entries'])): ?>
-							&nbsp;(<?php echo count($data['entries']) ?>)
+			<div class="wrapper wrapper-more">
+				<?php foreach ($this->favYears[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $year): ?>
+					<?php $entries = $this->favYears[$this->user->getID()]->getGroupEntries($year) ?>
+					<div class="years more" data-id="<?php echo $year ?>">
+						<p>
+							<?php echo ucfirst($this->mgHelper->amText()) ?>
+							&nbsp;from&nbsp;
+							<?php echo $year ?>
+							<?php if (!empty($entries)): ?>
+								&nbsp;(<?php echo count($entries) ?>)
+							<?php endif ?>
+							:
+						</p>
+						<?php if (empty($entries)): ?>
+							<p>None!</p>
+						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
+							<p>Can&rsquo;t show you titles from a private list.</p>
+						<?php else: ?>
+							<ul>
+								<?php foreach ($entries as $e): ?>
+									<li>
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
+											<?php echo $e->getAMEntry()->getTitle() ?>
+										</a>
+										&nbsp;(
+										<?php if ($e->getScore() == 0): ?>
+											unrated
+										<?php else: ?>
+											rated with <?php echo $e->getScore() ?>
+										<?php endif ?>
+										)
+									</li>
+								<?php endforeach ?>
+							</ul>
 						<?php endif ?>
-						:
-					</p>
-					<?php if (empty($data['entries'])): ?>
-						<p>None!</p>
-					<?php elseif ($this->user[$this->am]['private']): ?>
-						<p>Can&rsquo;t show you titles from a private list.</p>
-					<?php else: ?>
-						<ul>
-							<?php foreach ($data['entries'] as $e): ?>
-								<li>
-									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-										<?php echo $e['full']['title'] ?>
-									</a>
-									&nbsp;(
-									<?php if ($e['user']['score'] == 0): ?>
-										unrated
-									<?php else: ?>
-										rated with <?php echo $e['user']['score'] ?>
-									<?php endif ?>
-									)
-								</li>
-							<?php endforeach ?>
-						</ul>
-					<?php endif ?>
-				</div>
-			<?php endforeach ?>
-			<?php foreach ($this->user[$this->am]['decades'] as $k => $data): ?>
-				<div class="decades more" data-id="<?php echo $k ?>">
-					<p>
-						<?php echo ucfirst($this->mgHelper->amText()) ?>
-						&nbsp;from&nbsp;
-						<?php echo $k ?>
-						s
-						<?php if (!empty($data['entries'])): ?>
-							&nbsp;(<?php echo count($data['entries']) ?>)
-						<?php endif ?>:
-					</p>
-					<?php if (empty($data['entries'])): ?>
-						<p>None!</p>
-					<?php elseif ($this->user[$this->am]['private']): ?>
-						<p>Can&rsquo;t show you titles from a private list.</p>
-					<?php else: ?>
-						<ul>
-							<?php foreach ($data['entries'] as $e): ?>
-								<li>
-									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-										<?php echo $e['full']['title'] ?>
-									</a>
-									&nbsp;(
-									<?php if ($e['user']['score'] == 0): ?>
-										unrated
-									<?php else: ?>
-										rated with <?php echo $e['user']['score'] ?>
-									<?php endif ?>
-									)
-								</li>
-							<?php endforeach ?>
-						</ul>
-					<?php endif ?>
-				</div>
-			<?php endforeach ?>
-		</div>
+					</div>
+				<?php endforeach ?>
+				<?php foreach ($this->favDecades[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $decade): ?>
+					<?php $entries = $this->favDecades[$this->user->getID()]->getGroupEntries($decade) ?>
+					<div class="decades more" data-id="<?php echo $decade ?>">
+						<p>
+							<?php echo ucfirst($this->mgHelper->amText()) ?>
+							&nbsp;from&nbsp;
+							<?php echo $decade ?>
+							s
+							<?php if (!empty($entries)): ?>
+								&nbsp;(<?php echo count($entries) ?>)
+							<?php endif ?>:
+						</p>
+						<?php if (empty($entries)): ?>
+							<p>None!</p>
+						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
+							<p>Can&rsquo;t show you titles from a private list.</p>
+						<?php else: ?>
+							<ul>
+								<?php foreach ($entries as $e): ?>
+									<li>
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
+											<?php echo $e->getAMEntry()->getTitle() ?>
+										</a>
+										&nbsp;(
+										<?php if ($e->getScore() == 0): ?>
+											unrated
+										<?php else: ?>
+											rated with <?php echo $e->getScore() ?>
+										<?php endif ?>
+										)
+									</li>
+								<?php endforeach ?>
+							</ul>
+						<?php endif ?>
+					</div>
+				<?php endforeach ?>
+			</div>
 
-		<script type="text/javascript">
-			$('#user-<?php echo $this->user['user-safe-id'] ?> .decades .target').each(function() {
-				var chart = new Highcharts.Chart({
-					chart: { renderTo: this, type: 'line', marginTop: 8 },
-					xAxis: {
-						categories: <?php echo json_encode(array_keys($this->user[$this->am]['years'])) ?>,
-						labels: { enabled: false },
-						title: { text: 'Decades', margin: 15 },
-						<?php $json = [];
-							$i = 0;
-							foreach ($this->user[$this->am]['decades'] as $decade) {
-								if ($i ++ % 2 == 0) {
-									$json []= [
-										'from' => $decade['decade'] - 0.5,
-										'to' => $decade['decade'] + 9.5,
-										'color' => 'rgba(200, 230, 255, 0.2)',
-										'label' => ['text' => $decade['decade'] . 's'],
-										'zIndex' => 3,
-									];
-								}
-							} ?>
-						plotBands: <?php echo json_encode($json) ?>
-					},
-					yAxis: { title: { text: 'Mean' } },
-					tooltip: { formatter: function() {
-						var text = 'Mean score of titles from ';
-						if (this.series.name == 'decades') {
-							text += Math.floor(this.x / 10) * 10;
-							text += 's';
-						} else {
-							text += this.x;
-						}
-						text += ': ';
-						if (this.y == 0) {
-							text += 'unrated!';
-						} else {
-							text += Math.round(this.y * 100) / 100.0;
-						}
-						return text; } },
-					series: [ {
-						name: 'years',
-						data: <?php echo json_encode(array_map(function($data) { return [$data['year'], $data['mean-score']]; }, array_values($this->user[$this->am]['years']))) ?>,
-						point: { events: { click: function(e) {
-							toggleWithinSections($('.decades .years.more[data-id=\'' + this.category + '\']'), true);
-						} } }
-					}, {
-						name: 'decades',
-						data: <?php echo json_encode(array_map(function($data) { return [$data['decade'] + 4.5, $data['mean-score']]; }, array_values($this->user[$this->am]['decades']))) ?>,
-						point: { events: { click: function(e) {
-							var decade = Math.floor(this.category / 10) * 10;
-							toggleWithinSections($('.decades .decades.more[data-id=\'' + decade + '\']'), true);
-						} } }
-					} ],
-					plotOptions: { column: { pointWidth: 17 } }
+			<script type="text/javascript">
+				$('#user-<?php echo $this->user->getRuntimeID() ?> .decades .target').each(function() {
+					var chart = new Highcharts.Chart({
+						chart: { renderTo: this, type: 'line', marginTop: 8 },
+						xAxis: {
+							categories: <?php echo json_encode($this->favYears[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY)) ?>,
+							labels: { enabled: false },
+							title: { text: 'Decades', margin: 15 },
+							<?php $json = [];
+								$i = 0;
+								foreach ($this->favDecades[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $decade) {
+									if ($i ++ % 2 == 0) {
+										$json []= [
+											'from' => $decade - 0.5,
+											'to' => $decade + 9.5,
+											'color' => 'rgba(200, 230, 255, 0.2)',
+											'label' => ['text' => $decade . 's'],
+											'zIndex' => 3,
+										];
+									}
+								} ?>
+							plotBands: <?php echo json_encode($json) ?>
+						},
+						yAxis: { title: { text: 'Mean' } },
+						tooltip: { formatter: function() {
+							var text = 'Mean score of titles from ';
+							if (this.series.name == 'decades') {
+								text += Math.floor(this.x / 10) * 10;
+								text += 's';
+							} else {
+								text += this.x;
+							}
+							text += ': ';
+							if (this.y == 0) {
+								text += 'unrated!';
+							} else {
+								text += Math.round(this.y * 100) / 100.0;
+							}
+							return text; } },
+						series: [ {
+							name: 'years',
+							data: <?php echo json_encode(array_map(function($year) { return [$year, $this->yearScores[$this->user->getID()][$year]]; }, $this->favYears[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY))) ?>,
+							point: { events: { click: function(e) {
+								toggleWithinSections($('.decades .years.more[data-id=\'' + this.category + '\']'), true);
+							} } }
+						}, {
+							name: 'decades',
+							data: <?php echo json_encode(array_map(function($decade) { return [$decade + 4.5, $this->decadeScores[$this->user->getID()][$decade]]; }, $this->favDecades[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY))) ?>,
+							point: { events: { click: function(e) {
+								var decade = Math.floor(this.category / 10) * 10;
+								toggleWithinSections($('.decades .decades.more[data-id=\'' + decade + '\']'), true);
+							} } }
+						} ],
+						plotOptions: { column: { pointWidth: 17 } }
+					});
 				});
-			});
-		</script>
+			</script>
+		<?php endif ?>
 	</div>
 </div>
 
 
 
-<div class="section producers">
+<div class="section creators">
 	<h3>
-		<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
+		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 			<i data-title="Manga authors sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
 			Authors
-		<?php else: ?>
+		<?php elseif ($this->am == AMModel::TYPE_ANIME): ?>
 			<i data-title="Anime studios sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
 			Studios
+		<?php else: ?>
+			<?php continue ?>
 		<?php endif ?>
 	</h3>
 	<div class="section-body">
 		<div class="wrapper scrollable">
 
-			<?php if (empty($this->user[$this->am]['producers'])): ?>
-				<p>Looks like there are no known producers for this user.</p>
+			<?php if ($this->favCreators[$this->user->getID()]->getLargestGroupSize() == 0): ?>
+				<p>Looks like there are no known creators for this user.</p>
 				<p>Add a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
 			<?php else: ?>
 				<table class="tablesorter">
@@ -185,33 +195,34 @@
 					</thead>
 					<tbody>
 					<?php $i = 1 ?>
-					<?php foreach ($this->user[$this->am]['producers'] as $x): ?>
+					<?php foreach ($this->favCreators[$this->user->getID()]->getGroupsKeys() as $creator): ?>
+						<?php $entries = $this->favCreators[$this->user->getID()]->getGroupEntries($creator) ?>
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
 								<a
-									<?php if ($this->am == AMModel::ENTRY_TYPE_MANGA): ?>
-										href="http://myanimelist.net/people/<?php echo $x['id'] ?>/"
+									<?php if ($this->am == AMModel::TYPE_MANGA): ?>
+										href="http://myanimelist.net/people/<?php echo $creator->getID() ?>/"
 									<?php else: ?>
-										href="http://myanimelist.net/anime.php?p=<?php echo $x['id'] ?>"
+										href="http://myanimelist.net/anime.php?p=<?php echo $creator->getID() ?>"
 									<?php endif ?>
 								>
 									<i class="icon-pop-out"></i>
 								</a>
 								&nbsp;
-								<a class="more-trigger" data-id="<?php echo $x['id'] ?>" href="#">
-									<?php echo htmlspecialchars($x['name']) ?>
+								<a class="more-trigger" data-id="<?php echo $creator->getID() ?>" href="#">
+									<?php echo htmlspecialchars($creator->getName()) ?>
 								</a>
 							</td>
-							<td class="count"><?php printf('%d', count($x['entries'])) ?></td>
+							<td class="count"><?php printf('%d', count($entries)) ?></td>
 							<td class="mean">
-								<?php if ($x['mean-score'] == 0): ?>
+								<?php if ($this->creatorScores[$this->user->getID()][$creator->getID()] == 0): ?>
 									-
 								<?php else: ?>
-									<?php printf('%.02f', $x['mean-score']) ?>
+									<?php printf('%.02f', $this->creatorScores[$this->user->getID()][$creator->getID()]) ?>
 								<?php endif ?>
 							</td>
-							<td class="time"><?php printf('%.02f', $x['total-time'] / 60.0) ?>h</td>
+							<td class="time"><?php printf('%.02f', $this->creatorTimeSpent[$this->user->getID()][$creator->getID()] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>
 				</table>
@@ -220,35 +231,36 @@
 		</div>
 
 		<div class="wrapper wrapper-more">
-			<?php foreach ($this->user[$this->am]['producers'] as $x): ?>
-				<div class="more" data-id="<?php echo $x['id'] ?>">
+			<?php foreach ($this->favCreators[$this->user->getID()]->getGroupsKeys() as $creator): ?>
+				<?php $entries = $this->favCreators[$this->user->getID()]->getGroupEntries($creator) ?>
+				<div class="more" data-id="<?php echo $creator->getID() ?>">
 					<p>
 						<?php echo ucfirst($this->mgHelper->amText()) ?>
 						&nbsp;from&nbsp;
-						<?php echo $x['name'] ?>
-						<?php if (!empty($x['entries'])): ?>
-							&nbsp;(<?php echo count($x['entries']) ?>)
+						<?php echo $creator->getName() ?>
+						<?php if (!empty($entries)): ?>
+							&nbsp;(<?php echo count($entries) ?>)
 						<?php endif ?>
 						:
 					</p>
-					<?php if (empty($x['entries'])): ?>
+					<?php if (empty($entries)): ?>
 						<p>None!</p>
-					<?php elseif ($this->user[$this->am]['private']): ?>
+					<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 						<p>Can&rsquo;t show you titles from a private list.</p>
 					<?php else: ?>
 						<ul>
-							<?php foreach ($x['entries'] as $e): ?>
+							<?php foreach ($entries as $e): ?>
 								<li>
-									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-										<?php echo $e['full']['title'] ?>
+									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
+										<?php echo $e->getAMEntry()->getTitle() ?>
 									</a>
 									&nbsp;<span class="info">(
-										<?php if ($e['user']['score'] == 0): ?>
+										<?php if ($e->getScore() == 0): ?>
 											unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
 										<?php else: ?>
-											rated&nbsp;with&nbsp;<?php echo $e['user']['score'] ?>
+											rated&nbsp;with&nbsp;<?php echo $e->getScore() ?>
 										<?php endif ?>
-									, <?php echo $e['user']['total-time'] ?>&nbsp;min.)</span>
+									, <?php echo $e->getCompletedDuration() ?>&nbsp;min.)</span>
 								</li>
 							<?php endforeach ?>
 						</ul>
@@ -270,7 +282,7 @@
 	<div class="section-body">
 		<div class="wrapper scrollable">
 
-			<?php if (empty($this->user[$this->am]['genres'])): ?>
+			<?php if ($this->favGenres[$this->user->getID()]->getLargestGroupSize() == 0): ?>
 				<p>Looks like there are no known genres for this user.</p>
 				<p>Add a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
 			<?php else: ?>
@@ -286,27 +298,28 @@
 					</thead>
 					<tbody>
 					<?php $i = 1 ?>
-					<?php foreach ($this->user[$this->am]['genres'] as $x): ?>
+					<?php foreach ($this->favGenres[$this->user->getID()]->getGroupsKeys() as $genre): ?>
+						<?php $entries = $this->favGenres[$this->user->getID()]->getGroupEntries($genre) ?>
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
-								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>.php?genre[]=<?php echo $x['id'] ?>">
+								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>.php?genre[]=<?php echo $genre->getID() ?>">
 									<i class="icon-pop-out"></i>
 								</a>
 								&nbsp;
-								<a class="more-trigger" data-id="<?php echo $x['id'] ?>" href="#">
-									<?php echo htmlspecialchars(ucfirst($x['name'])) ?>
+								<a class="more-trigger" data-id="<?php echo $genre->getID() ?>" href="#">
+									<?php echo htmlspecialchars(ucfirst($genre->getName())) ?>
 								</a>
 							</td>
-							<td class="count"><?php printf('%d', count($x['entries'])) ?></td>
+							<td class="count"><?php printf('%d', count($entries)) ?></td>
 							<td class="mean">
-								<?php if ($x['mean-score'] == 0): ?>
+								<?php if ($this->genreScores[$this->user->getID()][$genre->getID()] == 0): ?>
 									-
 								<?php else: ?>
-									<?php printf('%.02f', $x['mean-score']) ?>
+									<?php printf('%.02f', $this->genreScores[$this->user->getID()][$genre->getID()]) ?>
 								<?php endif ?>
 							</td>
-							<td class="time"><?php printf('%.02f', $x['total-time'] / 60.0) ?>h</td>
+							<td class="time"><?php printf('%.02f', $this->genreTimeSpent[$this->user->getID()][$genre->getID()] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>
 				</table>
@@ -315,35 +328,36 @@
 		</div>
 
 		<div class="wrapper wrapper-more">
-			<?php foreach ($this->user[$this->am]['genres'] as $x): ?>
-				<div class="more" data-id="<?php echo $x['id'] ?>">
+			<?php foreach ($this->favGenres[$this->user->getID()]->getGroupsKeys() as $genre): ?>
+				<?php $entries = $this->favGenres[$this->user->getID()]->getGroupEntries($genre) ?>
+				<div class="more" data-id="<?php echo $genre->getID() ?>">
 					<p>
 						<?php echo ucfirst($this->mgHelper->amText()) ?>
 						&nbsp;tagged as&nbsp;
-						<?php echo ucfirst($x['name']) ?>
-						<?php if (!empty($x['entries'])): ?>
-							&nbsp;(<?php echo count($x['entries']) ?>)
+						<?php echo ucfirst($genre->getName()) ?>
+						<?php if (!empty($entries)): ?>
+							&nbsp;(<?php echo count($entries) ?>)
 						<?php endif ?>
 						:
 					</p>
-					<?php if (empty($x['entries'])): ?>
+					<?php if (empty($entries)): ?>
 						<p>None!</p>
-					<?php elseif ($this->user[$this->am]['private']): ?>
+					<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 						<p>Can&rsquo;t show you titles from a private list.</p>
 					<?php else: ?>
 						<ul>
-							<?php foreach ($x['entries'] as $e): ?>
+							<?php foreach ($entries as $e): ?>
 								<li>
-									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']['id'] ?>">
-										<?php echo $e['full']['title'] ?>
+									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
+										<?php echo $e->getAMEntry()->getTitle() ?>
 									</a>
 									&nbsp;<span class="info">(
-										<?php if ($e['user']['score'] == 0): ?>
+										<?php if ($e->getScore() == 0): ?>
 											unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
 										<?php else: ?>
-											rated&nbsp;with&nbsp;<?php echo $e['user']['score'] ?>
+											rated&nbsp;with&nbsp;<?php echo $e->getScore() ?>
 										<?php endif ?>
-									, <?php echo $e['user']['total-time'] ?>&nbsp;min.)</span>
+									, <?php echo $e->getCompletedDuration() ?>&nbsp;min.)</span>
 								</li>
 							<?php endforeach ?>
 						</ul>
@@ -358,11 +372,9 @@
 
 
 <script type="text/javascript">
-	$('#user-<?php echo $this->user['user-safe-id'] ?> .more-trigger').click(function(e) {
+	$('#user-<?php echo $this->user->getRuntimeID() ?> .more-trigger').click(function(e) {
 		e.preventDefault();
 		var k = $(this).attr('data-id');
-		/*var target = $('.section .more[data-id=\'' + k + '\']');
-		toggleWithinSections(target, true);*/
 		var selBase = '.' + $(this).parents('.section').attr('class').replace(/\s+/g, '.');
 		var selFinal = [];
 		$(selBase).each(function() {
@@ -402,3 +414,4 @@
 		});
 	</script>
 <?php endif ?>
+<?php /**/ ?>
