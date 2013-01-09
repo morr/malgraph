@@ -59,8 +59,16 @@ class UserData {
 		return $this->vip;
 	}
 
+	public function setVIP($vip) {
+		$this->vip = $vip;
+	}
+
 	public function isBlocked() {
 		return $this->blocked;
+	}
+
+	public function setBlocked($blocked) {
+		$this->blocked = $blocked;
 	}
 
 	public function getGender() {

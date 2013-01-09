@@ -19,7 +19,7 @@ class AdminController extends AbstractController {
 		if ($this->loggedIn()) {
 			return false;
 		}
-		if (sha1($credentials) == $this->config->misc->adminPassword) {
+		if (sha1($credentials) == ChibiConfig::getInstance()->misc->adminPassword) {
 			$_SESSION['loggedIn'] = true;
 			return true;
 		}
@@ -32,7 +32,7 @@ class AdminController extends AbstractController {
 		parent::init();
 
 		if (!$this->loggedIn() and $this->view->actionName != 'login') {
-			$this->forward($this->urlHelper->url('/a/login'));
+			$this->forward(UrlHelper::url('/a/login'));
 		}
 	}
 
@@ -49,7 +49,7 @@ class AdminController extends AbstractController {
 		$this->logIn($entered);
 		if ($this->loggedIn()) {
 			//setcookie('password', $entered, time() + 3600 * 24 * 30, '/');
-			$this->forward($this->urlHelper->url('/a/index'));
+			$this->forward(UrlHelper::url('/a/index'));
 			$this->mgHelper->log('Correct password');
 		} else {
 			$this->view->entered = $entered;
@@ -60,7 +60,7 @@ class AdminController extends AbstractController {
 	public function logoutAction() {
 		//setcookie('password', '', time() - 3600, '/');
 		$this->logOut();
-		$this->forward($this->urlHelper->url(''));
+		$this->forward(UrlHelper::url(''));
 	}
 
 
@@ -75,7 +75,7 @@ class AdminController extends AbstractController {
 
 	private function success($message) {
 		$_SESSION['message'] = $message;
-		$this->forward($this->urlHelper->url('a/index'));
+		$this->forward(UrlHelper::url('a/index'));
 		exit();
 	}
 
@@ -107,7 +107,7 @@ class AdminController extends AbstractController {
 				$c1 = 0;
 				$c2 = 0;
 				foreach ($ids as $id) {
-					if (!$model->cacheExists($userName)) {
+					if (!$model->cacheExists($id)) {
 						$c2 ++;
 					} else {
 						$model->delete($id);
@@ -155,9 +155,9 @@ class AdminController extends AbstractController {
 				break;
 			case 'toggle-vip':
 				$user = $model->get($userName);
-				$user['vip'] = !$user['vip'];
+				$user->getUserData()->setVIP(!$user->getUserData()->isVIP());
 				$model->put($userName, $user);
-				if ($user['vip']) {
+				if ($user->getUserData()->isVIP()) {
 					$this->success($userName . ' marked is now VIP');
 				} else {
 					$this->success($userName . ' marked is no longer VIP');
@@ -165,9 +165,9 @@ class AdminController extends AbstractController {
 				break;
 			case 'toggle-block':
 				$user = $model->get($userName);
-				$user['blocked'] = !$user['blocked'];
+				$user->getUserData()->setBlocked(!$user->getUserData()->isBlocked());
 				$model->put($userName, $user);
-				if ($user['blocked']) {
+				if ($user->getUserData()->isBlocked()) {
 					$this->success($userName . ' marked is now blocked');
 				} else {
 					$this->success($userName . ' marked is no longer blocked');
@@ -175,8 +175,7 @@ class AdminController extends AbstractController {
 				break;
 			case 'refresh':
 				$start = microtime(true);
-				$model = new UserModel(false);
-				$model->get($userName, true);
+				$model->get($userName, AbstractModel::CACHE_POLICY_FORCE_REAL);
 				$time = microtime(true) - $start;
 				$this->success($userName . ' refreshed in ' . sprintf('%.02f', $time) . 's');
 				break;

@@ -5,7 +5,7 @@
 	</script>
 <?php endif ?>
 
-<a class="btn logout" href="<?php echo $this->urlHelper->url('a/logout') ?>">Get me outta here</a>
+<a class="btn logout" href="<?php echo UrlHelper::url('a/logout') ?>">Get me outta here</a>
 <h1>Admin panel!</h1>
 
 <p>Just don’t do stupid things. Useful links:</p>
@@ -14,7 +14,7 @@
 	<li><a href="myanimelist.net/forum/?topicid=140439">Recent anime DB removals and merges</a></li>
 </ul>
 
-<form class="aligned" action="<?php echo $this->urlHelper->url('a/am') ?>">
+<form class="aligned" action="<?php echo UrlHelper::url('a/am') ?>">
 	<fieldset>
 		<legend>Anime/manga manipulation center</legend>
 
@@ -60,7 +60,7 @@
 	</fieldset>
 </form>
 
-<form class="aligned" action="<?php echo $this->urlHelper->url('a/user') ?>">
+<form class="aligned" action="<?php echo UrlHelper::url('a/user') ?>">
 	<fieldset>
 		<legend>User manipulation center</legend>
 
