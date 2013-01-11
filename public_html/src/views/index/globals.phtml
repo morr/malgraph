@@ -4,9 +4,9 @@
 <p>This means they will be different each time they&rsquo;re generated (every 24 h), but not different enough for you to miss the fact that either people only watch what they know they will like, or 7s and 8s are overused and most users don&rsquo;t know how to use the 1-10 scale.</p>
 <p>We&rsquo;ll leave it for you to decide which one is true.</p>
 
-<?php foreach ([AMModel::ENTRY_TYPE_ANIME, AMModel::ENTRY_TYPE_MANGA] as $am): ?>
+<?php foreach (AMModel::getTypes() as $am): ?>
 	<div class="section <?php echo $am ?>-score-dist">
-		<h2>Score distribution (<?php echo ChibiRegistry::getInstance('mg')->amText($am) ?>)</h2>
+		<h2>Score distribution (<?php echo ChibiRegistry::getHelper('mg')->amText($am) ?>)</h2>
 		<div class="section-body">
 			<ul class="infobox">
 				<li>

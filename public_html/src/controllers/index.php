@@ -1,5 +1,7 @@
 <?php
 require_once 'src/controllers/abstract.php';
+require_once 'src/models/user/listservice.php';
+
 class IndexController extends AbstractController {
 	public function indexAction() {
 		HeadHelper::addKeywords(['myanimelist', 'mal', 'rating', 'favorites', 'score']);
@@ -102,9 +104,10 @@ class IndexController extends AbstractController {
 			$goal = 500;
 			$users = [];
 			$allUsers = $modelUsers->getKeys();
+			$goal = min($goal, count($allUsers));
 
 			$globals = [];
-			foreach ([AMModel::ENTRY_TYPE_MANGA, AMModel::ENTRY_TYPE_ANIME] as $am) {
+			foreach (AMModel::getTypes() as $am) {
 				$globals[$am] = [
 					'dist-score' => array_fill_keys(range(10, 0), 0)
 				];
@@ -127,10 +130,10 @@ class IndexController extends AbstractController {
 
 				// all the work with single user goes here
 				foreach (array_keys($globals) as $am) {
-					foreach ($user[$am]['entries'] as $e) {
-						if ($e['status'] == UserModel::USER_LIST_STATUS_COMPLETED) {
-							$globals[$am]['dist-score'][$e['score']] ++;
-						}
+					$filter = UserListFilters::getCompleted();
+					$entries = $user->getList($am)->getEntries($filter);
+					foreach ($entries as $e) {
+						$globals[$am]['dist-score'][$e->getScore()] ++;
 					}
 				}
 
@@ -138,7 +141,7 @@ class IndexController extends AbstractController {
 			}
 
 			// postprocess global stats
-			foreach ([AMModel::ENTRY_TYPE_MANGA, AMModel::ENTRY_TYPE_ANIME] as $am) {
+			foreach (AMModel::getTypes() as $am) {
 				$globals[$am]['rated'] = array_sum($globals[$am]['dist-score']);
 				$globals[$am]['unrated'] = $globals[$am]['dist-score'][0];
 				$globals[$am]['mean-score'] = array_sum(array_map(function($s) use (&$globals, $am) { return $globals[$am]['dist-score'][$s] * $s; }, array_keys($globals[$am]['dist-score']))) / max(1, $globals[$am]['rated']);
