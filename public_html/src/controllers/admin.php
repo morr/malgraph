@@ -123,7 +123,7 @@ class AdminController extends AbstractController {
 			case 'refresh':
 				$start = microtime(true);
 				foreach ($ids as $id) {
-					$model->get($id, true);
+					$model->get($id, AbstractModel::CACHE_POLICY_FORCE_REAL);
 				}
 				$time = microtime(true) - $start;
 				$this->success(count($ids) . ' entries refreshed in ' . sprintf('%.02f', $time) . 's');
