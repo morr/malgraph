@@ -28,6 +28,7 @@ switch (strtolower($type)) {
 		$model = new MangaModel();
 		break;
 	case 'user':
+		require_once dirname(__FILE__) . '/../public_html/src/models/am.php';
 		require_once dirname(__FILE__) . '/../public_html/src/models/user.php';
 		$model = new UserModel();
 		break;
