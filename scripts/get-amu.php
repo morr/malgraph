@@ -4,7 +4,6 @@ require_once dirname(__FILE__) . '/../public_html/lib/router.php';
 ChibiConfig::load(dirname(__FILE__) . '/../conf.ini');
 $config = ChibiConfig::getInstance();
 $config->chibi->runtime->rootFolder = dirname(__FILE__) . '/../public_html';
-ChibiRegistry::getInstance()->loadHelper('mg');
 
 if (count($argv) < 3) {
 	die('Usage: ' . basename(__FILE__) . ' anime|manga id' . PHP_EOL);
