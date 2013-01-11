@@ -55,8 +55,12 @@ class MangaModel extends AMModel {
 		$mangaEntry->setGenerationTime(time());
 		$mangaEntry->setExpirationTime(time() + 3600 * 24 * 21);
 
-		$this->loadCommon($mangaEntry, $doc);
-		$this->loadManga($mangaEntry, $doc);
+		try {
+			$this->loadCommon($mangaEntry, $doc);
+			$this->loadManga($mangaEntry, $doc);
+		} catch (InvalidEntryException $e) {
+			$animeEntry->invalidate(true);
+		}
 
 		return $mangaEntry;
 	}

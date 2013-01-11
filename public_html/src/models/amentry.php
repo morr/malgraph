@@ -143,8 +143,28 @@ abstract class AMEntry extends AbstractModelEntry {
 	private $genres = [];
 	private $tags = [];
 	private $relations = [];
+	private $valid;
 
 	public abstract function getType();
+
+	public function invalidate($invalid) {
+		$this->valid = !$invalid;
+		if ($invalid) {
+			$this->subType = null;
+			$this->status = null;
+			$this->title = null;
+			$this->ranking = null;
+			$this->airedFrom = null;
+			$this->airedTo = null;
+			$this->genres = [];
+			$this->tags = [];
+			$this->relations = [];
+		}
+	}
+
+	public function isValid($valid) {
+		return $this->valid;
+	}
 
 	public function __construct($id) {
 		$this->id = $id;
