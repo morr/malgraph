@@ -100,7 +100,7 @@ class IndexController extends AbstractController {
 			$globals = json_decode(file_get_contents($path), true);
 		} else {
 			// regenerate cache
-			$modelUsers = new UserModel(true);
+			$modelUsers = new UserModel();
 			$goal = 500;
 			$users = [];
 			$allUsers = $modelUsers->getKeys();
@@ -118,7 +118,7 @@ class IndexController extends AbstractController {
 				if (isset($users[$userName])) {
 					continue;
 				}
-				$user = $modelUsers->get($userName);
+				$user = $modelUsers->get($userName, AbstractModel::CACHE_POLICY_FORCE_CACHE);
 
 				/*
 				// ignore users with profile younger than one year
