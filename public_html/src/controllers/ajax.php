@@ -158,6 +158,7 @@ class AjaxController extends AbstractController {
 				$filter = UserListFilters::combine($filter1, $filter2);
 				$this->view->monthPeriod = $monthPeriod;
 				$this->view->entries = $list->getEntries($filter);
+				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
 		}
 	}
