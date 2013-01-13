@@ -143,6 +143,7 @@ h1, h2 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 		margin-top: 0;
 	}
 
+/* user layout */
 div.users {
 	padding-bottom: 1.5em;
 }
@@ -175,10 +176,20 @@ div.user {
 				margin-right: 4px;
 				padding-right: 1em;
 			}
+
+	/* "more" divs */
 	.wrapper-more {
 		margin-top: 2em;
 	}
+		.more {
+			margin-top: 1em !important;
+			display: none;
+		}
+			.more ul {
+				margin-bottom: 0;
+			}
 
+	/* switcher */
 	#switcher {
 		position: absolute;
 		left: 50%;

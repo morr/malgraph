@@ -7,20 +7,35 @@ ul.infobox {
 	height: 15em;
 }
 
-.export {
-	width: 35em !important;
-	top: 20% !important;
+#popup-wrapper .export {
+	width: 35em;
+	top: 20%;
 }
-	.export select {
-		float: left;
-		margin: 0 1em 0 0;
-		width: auto;
-		max-width: 40%;
+	.export .header {
+		display: inline-block;
+		margin: 0 auto;
 	}
-		.export select[name='type'] {
-			max-width: 25%;
-			width: auto;
+		.export .header p {
+			float: left;
+			margin: 0 1em 0 0;
 		}
+		.export .header {
+			line-height: 2em;
+			vertical-align: middle;
+		}
+		.export .header select {
+			float: left;
+			margin: 0 1em 0 0;
+			width: auto;
+			max-width: 40%;
+		}
+			.export select[name='type'] {
+				max-width: 25%;
+				width: auto;
+			}
+			.export select[name='theme'] {
+				margin-right: 0;
+			}
 	.export button {
 		margin: 0;
 		float: left;
@@ -29,16 +44,31 @@ ul.infobox {
 		margin-top: 1em;
 		width: 100%;
 		height: 7em;
+		cursor: text !important;
 		/* fix right padding problem */
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 
-	.export .preview {
+	.export .body {
 		text-align: center;
 	}
+		.export .body p {
+			margin-top: 0;
+		}
 		.export .preview img {
 			max-width: 100%;
 			max-height: 159px;
 		}
+
+	.export .body-wrapper {
+		float: left;
+		width: 34em;
+	}
+	.export .custom-theme {
+		float: right;
+		border-left: 1px solid #eee;
+		padding-left: 1em;
+		display: none;
+	}

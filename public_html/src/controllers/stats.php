@@ -140,8 +140,6 @@ class StatsController extends AbstractController {
 
 
 	public function achiAction() {
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
-
 		foreach ($this->view->users as $i => $u) {
 			$groups = [];
 			foreach ($u->getList($this->view->am)->getEntries() as $entry) {
@@ -248,7 +246,8 @@ class StatsController extends AbstractController {
 		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/popups.css'));
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
+		HeadHelper::addScript(UrlHelper::url('media/js/jquery.farbtastic.js'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/jquery.farbtastic.css'));
 
 		//prepare info for view
 		$this->view->scoreDistribution = [];
@@ -370,7 +369,6 @@ class StatsController extends AbstractController {
 		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
 		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
 		foreach ($this->view->users as $i => $u) {
 			$actiInfo = [
@@ -488,7 +486,6 @@ class StatsController extends AbstractController {
 		HeadHelper::addScript(UrlHelper::url('media/js/jquery.tablesorter.min.js'));
 		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
 		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
 		foreach ($this->view->users as $user) {
 			$filter = UserListFilters::getNonPlanned();
