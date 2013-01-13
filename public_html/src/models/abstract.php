@@ -1,4 +1,6 @@
 <?php
+ini_set('memory_limit', '120M');
+
 class InvalidEntryException extends Exception {}
 class DownloadException extends Exception {
 	public function __construct($url) {
