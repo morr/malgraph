@@ -22,13 +22,18 @@
 			<table>
 				<thead>
 					<tr>
-						<td>Suggested&hellip;</td>
-						<td>&hellip;because of:</td>
+						<td>You've <?php echo $this->am == AMModel::TYPE_ANIME ? 'watched' : 'read' ?> this&hellip;</td>
+						<td>&hellip;so you might want to check this:</td>
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach ($this->proposedEntries[$user->getID()] as $data): ?>
 						<tr id="sug-row-<?php echo $this->am ?>-<?php echo $data['entry']->getID() ?>">
+							<td class="subject">
+								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $data['entry']->getID() ?>">
+									<?php echo htmlspecialchars($data['entry']->getAMEntry()->getTitle()) ?>
+								</a>
+							</td>
 							<td class="proposed">
 								<ul>
 									<?php foreach ($data['entries'] as $subEntry): ?>
@@ -43,11 +48,6 @@
 										<?php endif ?>
 									<?php endforeach ?>
 								</ul>
-							</td>
-							<td class="subject">
-								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $data['entry']->getID() ?>">
-									<?php echo htmlspecialchars($data['entry']->getAMEntry()->getTitle()) ?>
-								</a>
 							</td>
 						</tr>
 					<?php endforeach ?>
