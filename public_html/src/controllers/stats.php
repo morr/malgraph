@@ -329,11 +329,16 @@ class StatsController extends AbstractController {
 		foreach ($defs as $key => $constant) {
 			if (isset($_GET[$constant])) {
 				$value = $_GET[$constant];
-				if (strlen($value) != 8) {
-					throw new Exception('Wrong length for ' . $constant . ' (expected 8 characters)');
+				if (strlen($value) != 6 and strlen($value) != 8) {
+					throw new Exception('Wrong length for ' . $constant . ' (expected 8 or 6 characters)');
 				}
 				$value = array_map('hexdec', str_split($value, 2));
-				list($a, $r, $g, $b) = $value;
+				if (count($value) == 4) {
+					list($a, $r, $g, $b) = $value;
+				} else {
+					$a = 0;
+					list($r, $g, $b) = $value;
+				}
 				$this->view->colors[$key] = array('a' => $a, 'r' => $r, 'g' => $g, 'b' => $b);
 			}
 		}

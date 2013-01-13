@@ -64,13 +64,13 @@
 				<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 					<div class="user-pics">
 						<?php foreach (ChibiRegistry::getView()->users as $user): ?>
-							<div class="user<-?php echo $user->getRuntimeID() ?>">
+							<div class="user-pic-wrapper user<?php echo $user->getRuntimeID() ?>">
 								<div class="user-pic">
 									<a href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile') ?>">
 									<?php if ($user->isAnonymous() or $user->getUserData()->getProfilePictureURL() == null): ?>
 										<img class="profile unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
 									<?php else: ?>
-										<img class="profile" alt="<?php echo $user->getPublicName() ?>&rsquo;s profile picture" src="<?php echo $user->getUserData()->getProfilePictureURL() ?>">
+										<img class="profile" alt="<?php echo $user->getPublicName() ?>&rsquo;s profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>" style="background-image: url('<?php echo $user->getUserData()->getProfilePictureURL() ?>')">
 									<?php endif ?>
 									</a>
 								</div>
@@ -81,6 +81,10 @@
 								</p>
 							</div>
 						<?php endforeach ?>
+						<div class="clear"></div>
+					</div>
+
+					<div class="am-actions">
 						<?php
 							$menu = [
 								['controller' => 'stats', 'action' => 'list', 'text' => 'List'],
@@ -91,9 +95,6 @@
 								['controller' => 'stats', 'action' => 'achi', 'text' => 'Achievements'],
 							];
 						?>
-					</div>
-
-					<div class="am-actions">
 						<?php foreach (AMModeL::getTypes() as $am): ?>
 							<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($am)) ?></p>
 							<ul class="action">

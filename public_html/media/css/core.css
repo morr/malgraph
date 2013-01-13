@@ -64,28 +64,27 @@ h1, h2 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 			}
 
 	#menu .user-pic {
-		background: white;
 		text-align: center;
 	}
 		#menu .user-pic a {
-			display: inline-block;
-			width: 100%; /* fix for ie concerning fluid image width */
+			font-size: 0;
+			line-height: 0;
+			margin: 0;
+			padding: 0;
 		}
 		#menu .user-pic img {
 			border: 1px solid gray;
 			padding: 0;
 			margin: 0 auto;
-			min-width: 30%;
-			max-width: 100%;
-			max-height: 120px;
+			background-color: rgba(255, 255, 255, 0.6);
+			background-size: cover;
+			width: 120px;
+			height: 160px;
 		}
 		#menu .user-pic img.unavailable {
 			background-image: url('../img/anon.png');
 			background-repeat: no-repeat;
-			background-size: contain;
 			background-position: top center;
-			height: 186px;
-			width: 130px;
 		}
 
 	#menu .user-nick {
@@ -98,6 +97,23 @@ h1, h2 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 			overflow: hidden;
 			text-overflow: ellipsis;
 			display: inline-block;
+		}
+
+	.compare-mode #menu .user-pics {
+		position: relative;
+	}
+		.compare-mode #menu .user-pic img {
+			width: 80px;
+			height: 100px;
+		}
+		.compare-mode #menu .user-pic-wrapper {
+			position: absolute;
+			float: left;
+		}
+		.compare-mode #menu .user-pic-wrapper:nth-child(2) {
+			position: relative;
+			margin-top: 2em;
+			float: right;
 		}
 
 	#menu .share ul {
