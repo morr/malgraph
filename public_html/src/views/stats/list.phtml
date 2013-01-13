@@ -1,10 +1,15 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section">
 	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-			<?php echo $user->getPublicName() ?>
-		</a>
-		&rsquo;s <?php echo $this->mgHelper->amText() ?> list
+		<?php if (count($this->users) > 1): ?>
+			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+				<?php echo $user->getPublicName() ?>
+			</a>
+			&rsquo;s <?php echo $this->mgHelper->amText() ?> list
+			&rsquo;s rating distribution
+		<?php else: ?>
+			<?php echo ucfirst($this->mgHelper->amText()) ?> list
+		<?php endif ?>
 	</h2>
 
 	<?php $showUnique = ((count($this->users) > 1) and (!$otherUser->getList($this->am)->isPrivate())) ?>

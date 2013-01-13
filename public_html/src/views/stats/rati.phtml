@@ -55,6 +55,7 @@
 					</div>
 					<div class="body">
 						<div class="custom-theme">
+							<p><br>Choose element to edit:</p>
 							<form>
 								<?php $options = [
 									'bar1' => 'Bar gradient (1)',
@@ -75,12 +76,7 @@
 							</form>
 						</div>
 						<div class="body-wrapper">
-							<?php if ($user->isAnonymous()): ?>
-								<p>You can export your rating distribution as an image, which updates automatically every 24h. You can put it on your MAL profile.<br>
-								However, <strong>this code will link back to an anonymized profile.</strong><br>Are you sure you want to do this?</p>
-							<?php else: ?>
-								<p>You can export your rating distribution as an image, which updates automatically every 24h. How about putting it on your MAL profile?</p>
-							<?php endif ?>
+							<p>You can export your rating distribution as an image, which updates automatically every 24h. How about putting it on your MAL profile?</p>
 							<div class="header">
 								<p>Layout:</p>
 								<select class="type" name="type"></select>
@@ -90,6 +86,9 @@
 							</div>
 							<div>
 								<textarea readonly="readonly" name="bbcode">[center][url=http://<?php echo $_SERVER['SERVER_NAME'] ?>/<?php echo $user->getLinkableName() ?>][img]http://<?php echo $_SERVER['SERVER_NAME'] ?>/export/<?php echo $user->getLinkableName() ?>?type=1[/img][/url][/center]</textarea>
+								<?php if ($user->isAnonymous()): ?>
+									<p><strong>This code will link back to an anonymized profile.</strong><br>Are you sure you want to do this?</p>
+								<?php endif ?>
 							</div>
 							<div class="preview">
 								<p>Preview (may be scaled):</p>
@@ -298,7 +297,7 @@
 				if ($(this).find('option:selected').text() == 'Custom') {
 					target.find('select.color').trigger('change'); /*update colorpicker on theme change*/
 					target.data('interval', window.setInterval(function() { updatePreview(target); }, 750));
-					target.animate({width: '55em'}, function() {
+					target.animate({width: '54em'}, function() {
 						target.find('.custom-theme').show();
 					});
 				} else {

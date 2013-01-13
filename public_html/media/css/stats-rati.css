@@ -73,3 +73,12 @@ ul.infobox {
 		float: right;
 		display: none;
 	}
+		.export .custom-theme p {
+			text-align: left;
+		}
+		.export .custom-theme .color-picker {
+			text-align: center;
+		}
+		.export .custom-theme .farbtastic {
+			margin: 0 auto;
+		}
