@@ -236,28 +236,6 @@ abstract class AMEntry extends AbstractModelEntry {
 		$this->airedTo = $airDate;
 	}
 
-	public function getAiredYear() {
-		$yearA = intval(substr($this->getAiredFrom(), 0, 4));
-		$yearB = intval(substr($this->getAiredTo(), 0, 4));
-		if (!$yearA and !$yearB) {
-			return 0;
-		} elseif (!$yearA) {
-			$year = $yearB;
-		} elseif (!$yearB) {
-			$year = $yearA;
-		} else {
-			//$year = ($yearA + $yearB) >> 1;
-			$year = $yearA;
-		}
-		return $year;
-	}
-
-	public function getAiredDecade() {
-		$year = $this->getAiredYear();
-		$decade = floor($year / 10) * 10;
-		return $decade;
-	}
-
 	public function getGenres() {
 		return $this->genres;
 	}

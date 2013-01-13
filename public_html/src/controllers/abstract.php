@@ -25,6 +25,7 @@ class AbstractController extends ChibiController {
 		HeadHelper::setFavicon(UrlHelper::url('media/img/favicon.png'));
 
 		//stylesheets
+		HeadHelper::addStylesheet('http://fonts.googleapis.com/css?family=Open+Sans|Ubuntu');
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/bootstrap.min.css'));
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/jquery.jscrollpane.css'));
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/core.css'));
@@ -40,17 +41,14 @@ class AbstractController extends ChibiController {
 		HeadHelper::addScript(UrlHelper::url('media/js/jquery.mousewheel.min.js'));
 		HeadHelper::addScript(UrlHelper::url('media/js/jquery.jscrollpane.min.js'));
 		HeadHelper::addScript(UrlHelper::url('media/js/jquery.ui.position.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/core.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/glider.js'));
 		if (file_exists($p = 'media/js/' . $this->view->controllerName . '.js')) {
 			HeadHelper::addScript(UrlHelper::url($p));
 		}
 		if (file_exists($p = 'media/js/' . $this->view->controllerName . '-' . $this->view->actionName . '.js')) {
 			HeadHelper::addScript(UrlHelper::url($p));
 		}
-		//load core script after dynamic scripts, since it works with some special css classes
-		//and dynamic scripts linked above might want to set/unset such classes first.
-		HeadHelper::addScript(UrlHelper::url('media/js/core.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/sections.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/glider.js'));
 
 	}
 

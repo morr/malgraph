@@ -5,8 +5,6 @@ require_once 'src/models/user/listservice.php';
 class StatsController extends AbstractController {
 	public function init() {
 		parent::init();
-
-		//discard session information to speed up things
 		$this->sessionHelper->close();
 
 		//no user specified
@@ -32,7 +30,6 @@ class StatsController extends AbstractController {
 		}
 		$this->view->am = $am;
 
-		//make sure only two users are compared
 		if (count($this->view->userNames) > 2) {
 			throw new Exception('Sorry. We haven\'t implemented this.');
 		}
@@ -114,94 +111,24 @@ class StatsController extends AbstractController {
 	}
 
 
-	/*
-	 * Sort given array of entries according to params
-	 */
-	private static function sortEntries(array &$subject, $sortColumn = null, $sortDir = 0) {
-		if (empty($subject)) {
-			return;
-		}
-
-		//some common sorting flavours
-		$defs = [];
-		$defs['score'] = [0, function($e) { return $e->getScore(); }];
-		$defs['status'] = [1, function($e) {
-			//sort statuses like MAL order
-			$statuses = array_flip([
-				UserListEntry::STATUS_WATCHING,
-				UserListEntry::STATUS_COMPLETED,
-				UserListEntry::STATUS_ONHOLD,
-				UserListEntry::STATUS_DROPPED,
-				UserListEntry::STATUS_PLANNED,
-				UserListEntry::STATUS_UNKNOWN,
-			]);
-			return $statuses[$e->getStatus()];
-		}];
-		$defs['length'] = [0, function($e) { return $e->getType() == AMModel::TYPE_MANGA ? $e->getAMEntry()->getVolumeCount() : $e->getAMEntry()->getEpisodeCount(); }];
-		$defs['title'] = [1, function($e) { return strtolower($e->getAMEntry()->getTitle()); }];
-		$defs['start-date'] = [1, function($e) { return $e->getStartDate(); }];
-		$defs['finish-date'] = [1, function($e) { return $e->getFinishDate(); }];
-
-		//do sort
-		$sort = array_fill_keys(array_keys($defs), []);
-		$sortDirs = [];
-		foreach ($defs as $key => $def) {
-			list($defDefaultDir, $defFunc) = $def;
-			$sortDirs[$key] = $defDefaultDir;
-		}
-
-		foreach ($subject as $k => &$e) {
-			foreach ($defs as $defK => $def) {
-				list($defDefaultDir, $defFunc) = $def;
-				$sort[$defK][$k] = $defFunc($e);
-			}
-		}
-		if (empty($defs[$sortColumn])) {
-			$sortColumn = array_keys($defs)[0];
-		}
-
-		array_multisort($sort[$sortColumn], $sortDirs[$sortColumn] ^ $sortDir ? SORT_ASC : SORT_DESC, $sort['title'], SORT_ASC, $subject);
-	}
-
-
-	/*
-	 * Calculate for each group of entries some basic statistics
-	 */
-	private static function evaluateGroups(&$groups) {
-		$global = [];
-		$global['mean-score'] = 0;
-		$global['unrated'] = 0;
-		$global['rated'] = 0;
-		$global['rated-max'] = 0; //maximum rating COUNT within group
-		foreach ($groups as &$group) {
-			$group['rated'] = 0;
-			$group['unrated'] = 0;
-			$group['mean-score'] = 0;
-			$group['total-time'] = 0;
-			foreach ($group['entries'] as &$entry) {
-				$score = $entry['user']['score'];
-				if ($score > 0) {
-					$group['rated'] ++;
-					$group['mean-score'] += $score;
-					$global['rated'] ++;
-					$global['mean-score'] += $score;
-				} else {
-					$group['unrated'] ++;
-					$global['unrated'] ++;
-				}
-				$time = $entry['user']['total-time'];
-				$group['total-time'] += $time;
-			}
-			$group['mean-score'] /= max(1, $group['rated']);
-			$global['rated-max'] = max($group['rated'], $global['rated-max']);
-		}
-		$global['mean-score'] /= max(1, $global['rated']);
-	}
-
-
-
-
 	public function profileAction() {
+		foreach ($this->view->users as $u) {
+			$filter = null;//UserListFilters::getNonPlanned();
+			$entries = $u->getList($this->view->am)->getEntries($filter);
+			$this->view->subTypeDistribution[$u->getID()] = UserListService::getSubTypeDistribution($entries);
+			$this->view->statusDistribution[$u->getID()] = UserListService::getStatusDistribution($entries);
+			$this->view->lengthDistribution[$u->getID()] = UserListService::getLengthDistribution($entries);
+
+			switch ($this->view->am) {
+				case AMModel::TYPE_ANIME:
+					$this->view->completedEpisodes[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedEpisodes(); }, $entries));
+					break;
+				case AMModel::TYPE_MANGA:
+					$this->view->completedChapters[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedChapters(); }, $entries));
+					$this->view->completedVolumes[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedVolumes(); }, $entries));
+					break;
+			}
+		}
 	}
 
 
@@ -222,44 +149,6 @@ class StatsController extends AbstractController {
 			}
 
 			$achievements = [];
-
-			// MAL's database has 7310 anime and 21260 manga as of 06 sep 2012
-			/*$thresholds = [[
-				'count' => 6000,
-				'desc' => 'Are you having fun, breaking all the rules?',
-				'level' => ucfirst($this->mgHelper->amText()) . ' obsession'
-			], [
-				'count' => 3000,
-				'desc' => 'This deserves no further comment.',
-				'level' => ucfirst($this->mgHelper->amText()) . ' maniac'
-			], [
-				'count' => 1500,
-				'desc' => 'Are you even human? This is not possible for mere mortal beings.',
-				'level' => 'The Collector',
-			], [
-				'count' => 700,
-				'desc' => 'You should lean back and think about your life for a while&hellip;',
-				'level' => 'Basement dweller',
-			], [
-				'count' => 400,
-				'desc' => 'That\'s&hellip; a lot. You can be proud of yourself, that\'s for sure.',
-				'level' => 'A lot of free time',
-			], [
-				'count' => 100,
-				'desc' => 'You bought all of them, right?',
-				'level' => 'Casual ' . ($this->view->am == AMModel::TYPE_MANGA ? 'reader' : 'watcher'),
-			]];
-			$count = count($groups[UserListEntry::STATUS_COMPLETED]);
-			foreach ($thresholds as $threshold) {
-				if ($count > $threshold['count']) {
-					$achievements []= [
-						'id' => 'numbers-' . $this->mgHelper->amText() . $threshold['count'],
-						'title' => 'Completed over ' . $threshold['count'] . ' titles',
-						'level' => $threshold['level'],
-						'desc' => "You've completed over " . $threshold['count'] . " " . $this->mgHelper->amText() . ". " . $threshold['desc'],
-					];
-				}
-			}*/
 
 			$achList = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile), true);
 			if ($this->view->am == AMModel::TYPE_ANIME) {
@@ -284,7 +173,7 @@ class StatsController extends AbstractController {
 						}
 					}
 				}
-				self::sortEntries($entriesOwned, 'title');
+				uasort($entriesOwned, UserListSorters::getByTitle());
 				//give corresponding achievement (make sure it has correct threshold)
 				uasort($groupData['achievements'], function($a, $b) { return $a['threshold'] > $b['threshold'] ? -1 : 1; });
 				foreach ($groupData['achievements'] as $ach) {
@@ -354,8 +243,10 @@ class StatsController extends AbstractController {
 
 
 	public function ratiAction() {
+		HeadHelper::addScript(UrlHelper::url('media/js/popups.js'));
 		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
 		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		HeadHelper::addStylesheet(UrlHelper::url('media/css/popups.css'));
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
@@ -497,19 +388,7 @@ class StatsController extends AbstractController {
 			$filter = UserListFilters::getCompleted();
 			$entries = $u->getList($this->view->am)->getEntries($filter);
 			foreach ($entries as $e) {
-				$finishedA = explode('-', $e->getStartDate());
-				$finishedB = explode('-', $e->getFinishDate());
-				$yearA = intval($finishedA[0]);
-				$yearB = intval($finishedB[0]);
-				$monthA = isset($finishedA[1]) ? intval($finishedA[1]) : false;
-				$monthB = isset($finishedB[1]) ? intval($finishedB[1]) : false;
-				if ($yearB and $monthB) {
-					$monthPeriod = sprintf('%04d-%02d', $yearB, $monthB);
-				} elseif ($yearA and $monthA) {
-					$monthPeriod = sprintf('%04d-%02d', $yearA, $monthA);
-				} else {
-					$monthPeriod = '?';
-				}
+				$monthPeriod = UserListService::getMonthPeriod($e);
 				if (!isset($actiInfo['month-periods'][$monthPeriod])) {
 					$actiInfo['month-periods'][$monthPeriod] = [
 						'duration' => 0,
@@ -592,13 +471,9 @@ class StatsController extends AbstractController {
 			$models[AMModel::TYPE_ANIME] = new AnimeModel();
 			$models[AMModel::TYPE_MANGA] = new MangaModel();
 			for ($daysBack = 21; $daysBack >= 0; $daysBack --) {
-				$day = date('Y-m-d', mktime(-24 * $daysBack));
 				$dayPeriod = [];
-				$dayPeriod['entries'] = [];
-				foreach ($u->getHistory($this->view->am)->getEntries() as $historyEntry) {
-					if ($historyEntry->getDate() == $day) {
-						$dayPeriod['entries'] []= ['user' => $historyEntry, 'full' => $historyEntry->getAMEntry()];
-					}
+				foreach ($u->getHistory($this->view->am)->getEntriesByDaysAgo($daysBack) as $entry) {
+					$dayPeriod []= $entry;
 				}
 				$actiInfo['day-periods'][$daysBack] = $dayPeriod;
 			}
@@ -615,32 +490,33 @@ class StatsController extends AbstractController {
 		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
 		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
 
-		$excludedCreators = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedCreatorsDefFile), true);
-		$excludedCreatorIds = array_map(function($e) { return $e['id']; }, $excludedCreators[$this->mgHelper->amText()]);
-
-		$excludedGenres = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedGenresDefFile), true);
-		$excludedGenreIds = array_map(function($e) { return $e['id']; }, $excludedGenres[$this->mgHelper->amText()]);
-
 		foreach ($this->view->users as $user) {
 			$filter = UserListFilters::getNonPlanned();
 			$entries = $user->getList($this->view->am)->getEntries($filter);
 
+			ChibiRegistry::getHelper('benchmark')->benchmark('start');
 			$this->view->favCreators[$user->getID()] = UserListService::getCreatorDistribution($entries);
+			ChibiRegistry::getHelper('benchmark')->benchmark('creators');
 			$this->view->favGenres[$user->getID()] = UserListService::getGenreDistribution($entries);
+			ChibiRegistry::getHelper('benchmark')->benchmark('genres');
 			$this->view->favYears[$user->getID()] = UserListService::getYearDistribution($entries);
+			ChibiRegistry::getHelper('benchmark')->benchmark('years');
 			$this->view->favDecades[$user->getID()] = UserListService::getDecadeDistribution($entries);
+			ChibiRegistry::getHelper('benchmark')->benchmark('decades');
 
 			$this->view->yearScores[$user->getID()] = [];
 			foreach ($this->view->favYears[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $this->view->favYears[$user->getID()]->getGroupEntries($key);
 				$this->view->yearScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
+			ChibiRegistry::getHelper('benchmark')->benchmark('years');
 
 			$this->view->decadeScores[$user->getID()] = [];
 			foreach ($this->view->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $this->view->favDecades[$user->getID()]->getGroupEntries($key);
 				$this->view->decadeScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
+			ChibiRegistry::getHelper('benchmark')->benchmark('decades');
 
 			$this->view->creatorScores[$user->getID()] = [];
 			$this->view->creatorTimeSpent[$user->getID()] = [];
@@ -649,6 +525,7 @@ class StatsController extends AbstractController {
 				$this->view->creatorScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
 				$this->view->creatorTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
+			ChibiRegistry::getHelper('benchmark')->benchmark('creators');
 
 			$this->view->genreScores[$user->getID()] = [];
 			$this->view->genreTimeSpent[$user->getID()] = [];
@@ -657,33 +534,8 @@ class StatsController extends AbstractController {
 				$this->view->genreScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
 				$this->view->genreTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
-		}
-	}
+			ChibiRegistry::getHelper('benchmark')->benchmark('genres');
 
-
-
-	public function miscAction() {
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/more.css'));
-
-		foreach ($this->view->users as $u) {
-			$filter = null;//UserListFilters::getNonPlanned();
-			$entries = $u->getList($this->view->am)->getEntries($filter);
-			$this->view->subTypeDistribution[$u->getID()] = UserListService::getSubTypeDistribution($entries);
-			$this->view->statusDistribution[$u->getID()] = UserListService::getStatusDistribution($entries);
-			$this->view->lengthDistribution[$u->getID()] = UserListService::getLengthDistribution($entries);
-
-			switch ($this->view->am) {
-				case AMModel::TYPE_ANIME:
-					$this->view->completedEpisodes[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedEpisodes(); }, $entries));
-					break;
-				case AMModel::TYPE_MANGA:
-					$this->view->completedChapters[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedChapters(); }, $entries));
-					$this->view->completedVolumes[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedVolumes(); }, $entries));
-					break;
-			}
 		}
 	}
 

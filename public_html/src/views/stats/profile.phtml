@@ -1,24 +1,16 @@
-<div class="user-pic">
-	<!-- profile picture -->
-	<?php if ($this->user->isAnonymous() or $this->user->getUserData()->getProfilePictureURL() == null): ?>
-		<img class="unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
-	<?php else: ?>
-		<img alt="Profile picture" src="<?php echo $this->user->getUserData()->getProfilePictureURL() ?>">
-	<?php endif ?>
-</div>
-
-
-
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section basic">
 	<!-- user name -->
 	<h2>
-		<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], $this->user->getLinkableName()) ?>">
-			<?php echo $this->user->getPublicName() ?>
+		<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+			<?php echo $user->getPublicName() ?>
 		</a>
+		&rsquo;s profile
 
 		<span class="updated tooltipable" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
-			<?php echo date('M d, H:i', $this->user->getGenerationTime()) ?> UTC
+			<?php echo date('M d, H:i', $user->getGenerationTime()) ?> UTC
 		</span>
+		<div class="clear"></div><!-- fix for small pages -->
 	</h2>
 
 	<div class="section-body">
@@ -26,10 +18,10 @@
 		<dl>
 
 			<dt>Gender</dt>
-			<?php if (!$this->user->isAnonymous()): ?>
-				<?php if ($this->user->getUserData()->getGender() == UserData::GENDER_FEMALE): ?>
+			<?php if (!$user->isAnonymous()): ?>
+				<?php if ($user->getUserData()->getGender() == UserData::GENDER_FEMALE): ?>
 					<dd>Female</dd>
-				<?php elseif ($this->user->getUserData()->getGender() == UserData::GENDER_MALE): ?>
+				<?php elseif ($user->getUserData()->getGender() == UserData::GENDER_MALE): ?>
 					<dd>Male</dd>
 				<?php else: ?>
 					<dd>Unknown</dd>
@@ -39,12 +31,12 @@
 			<?php endif ?>
 
 			<dt>List views</dt>
-			<dd><?php echo $this->user->getList($this->am)->getViewCount() ?></dd>
+			<dd><?php echo $user->getList($this->am)->getViewCount() ?></dd>
 
 			<dt>Time on MAL</dt>
-			<?php if (intval($this->user->getUserData()->getJoinDate())): ?>
+			<?php if (intval($user->getUserData()->getJoinDate())): ?>
 				<?php
-					list ($year, $month, $day) = explode ('-', $this->user->getUserData()->getJoinDate());
+					list ($year, $month, $day) = explode ('-', $user->getUserData()->getJoinDate());
 					$time = mktime(0, 0, 0, $month, $day, $year);
 					$diff = time() - $time;
 					$diff /= 3600 * 24;
@@ -58,7 +50,7 @@
 
 		<!-- links to mal -->
 		<ul class="mal">
-			<?php if ($this->user->isAnonymous()): ?>
+			<?php if ($user->isAnonymous()): ?>
 				<li>
 					<a href="#">
 						<i class="icon-pop-out"></i>
@@ -80,19 +72,19 @@
 
 			<?php else: ?>
 				<li>
-					<a href="http://myanimelist.net/profile/<?php echo $this->user->getUserName() ?>">
+					<a href="http://myanimelist.net/profile/<?php echo $user->getUserName() ?>">
 						<i class="icon-pop-out"></i>
 						MAL profile
 					</a>
 				</li>
 				<li>
-					<a href="http://myanimelist.net/animelist/<?php echo $this->user->getUserName() ?>">
+					<a href="http://myanimelist.net/animelist/<?php echo $user->getUserName() ?>">
 						<i class="icon-pop-out"></i>
 						MAL anime list
 					</a>
 				</li>
 				<li>
-					<a href="http://myanimelist.net/mangalist/<?php echo $this->user->getUserName() ?>">
+					<a href="http://myanimelist.net/mangalist/<?php echo $user->getUserName() ?>">
 						<i class="icon-pop-out"></i>
 						MAL manga list
 					</a>
@@ -103,29 +95,28 @@
 	</div>
 	<div class="clear"></div>
 </div>
-		<div class="clear"></div>
+<?php }); ?>
 
 
 
 <!-- friends -->
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section">
-	<h3>Friends (<?php echo count($this->user->getFriends()) ?>)</h3>
+	<h3>Friends (<?php echo count($user->getFriends()) ?>)</h3>
 	<div class="section-body">
-		<?php if (count($this->user->getFriends()) == 0): ?>
+		<?php if (count($user->getFriends()) == 0): ?>
 			<p>This user has no friends on MAL. :(</p>
-		<?php elseif ($this->user->isAnonymous()): ?>
-			<p>This user wanted to be anonymous, so their friend aren&rsquo;t shown.</p>
+		<?php elseif ($user->isAnonymous()): ?>
+			<p>This user wanted to be anonymous, so their friends aren&rsquo;t shown.</p>
 		<?php else: ?>
 			<div class="friends scrollable">
-				<?php $friends = $this->user->getFriends() ?>
+				<?php $friends = $user->getFriends() ?>
 				<?php usort($friends, function($a, $b) { return strlen($a->getName()) > strlen($b->getName()); }) ?>
 				<ul>
 					<?php foreach ($friends as $friend): ?>
 						<li>
 							<a class="mg waitable" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [reset($this->userNames), $friend->getName()]) ?>">
 								<i class="icon-mg"></i>
-							</a>
-							<a class="mal" href="http://myanimelist.net/profile/<?php echo $friend->getName() ?>">
 								<span><?php echo $friend->getName() ?></span>
 							</a>
 						</li>
@@ -135,20 +126,22 @@
 		<?php endif ?>
 	</div>
 </div>
+<?php }); ?>
 
 
 
 <!-- clubs -->
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section">
-	<h3>Clubs (<?php echo count($this->user->getClubs()) ?>)</h3>
+	<h3>Clubs (<?php echo count($user->getClubs()) ?>)</h3>
 	<div class="section-body">
-		<?php if (count($this->user->getClubs()) == 0): ?>
+		<?php if (count($user->getClubs()) == 0): ?>
 			<p>This user doesn&rsquo;t belong to any clubs.</p>
-		<?php elseif ($this->user->isAnonymous()): ?>
-			<p>Neither wlil we tell you their clubs.</p>
+		<?php elseif ($user->isAnonymous()): ?>
+			<p>Neither will we tell you their clubs.</p>
 		<?php else: ?>
 			<div class="clubs scrollable">
-				<?php $clubs = $this->user->getClubs() ?>
+				<?php $clubs = $user->getClubs() ?>
 				<?php usort($clubs, function($a, $b) { return strlen($a->getName()) > strlen($b->getName()); }) ?>
 				<ul>
 					<?php foreach ($clubs as $club): ?>
@@ -164,3 +157,4 @@
 		<?php endif ?>
 	</div>
 </div>
+<?php }); ?>

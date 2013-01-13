@@ -1,32 +1,29 @@
-<div class="section">
-	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user->getLinkableName()) ?>">
-			<?php echo $this->user->getPublicName() ?>
-		</a>
-		&rsquo;s <?php echo $this->mgHelper->amText() ?> activity
-	</h2>
-</div>
-
-
-
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section acti-line-daily">
-	<h3>
+	<h2>
 		<i data-title="Number of titles you've completed within given day. Shows last three weeks with 24h accuracy." class="tooltipable icon-tooltip"></i>
-		Activity timeline (daily)
-	</h3>
+		<?php if (count($this->users) > 1): ?>
+			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+				<?php echo $user->getPublicName() ?>
+			</a>
+			&rsquo;s activity timeline (daily)
+		<?php else: ?>
+			Activity timeline (daily)
+		<?php endif ?>
+	</h2>
 	<div class="section-body">
 		<ul class="infobox">
 			<li>
 				<div>
 					<span class="prefix">Total time</span>
-					<span class="subject"><?php printf('%.02f', $this->actiInfo[$this->user->getID()]['total-time'] / 60.0 / 24.0) ?></span>
+					<span class="subject"><?php printf('%.02f', $this->actiInfo[$user->getID()]['total-time'] / 60.0 / 24.0) ?></span>
 					<span class="suffix">days</span>
 				</div>
 			</li>
 			<li>
 				<div>
 					<span class="prefix">Average time</span>
-					<span class="subject tooltipable" data-title="Earliest time user started or finished <?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL, was on <?php echo date('Y-m-d', $this->actiInfo[$this->user->getID()]['earliest-time']) ?>"><?php printf('%.02f', $this->actiInfo[$this->user->getID()]['mean-time']) ?></span>
+					<span class="subject tooltipable" data-title="Earliest time user started or finished <?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL, was on <?php echo date('Y-m-d', $this->actiInfo[$user->getID()]['earliest-time']) ?>"><?php printf('%.02f', $this->actiInfo[$user->getID()]['mean-time']) ?></span>
 					<span class="suffix">min/day</span>
 				</div>
 			</li>
@@ -38,53 +35,13 @@
 		</div>
 
 		<div class="wrapper wrapper-more">
-			<?php foreach ($this->actiInfo[$this->user->getID()]['day-periods'] as $k => $x): ?>
-				<div class="more" data-id="<?php echo $k ?>">
-					<p>
-						<?php echo $this->am == AMModel::TYPE_MANGA ? 'Chapters' : 'Episodes' ?>
-						&nbsp;from&nbsp;
-						<?php if ($k == 0): ?>
-							today
-						<?php elseif ($k == 1): ?>
-							yesterday
-						<?php else: ?>
-							<?php echo $k ?> days ago
-						<?php endif ?>
-						<?php if (!empty($x['entries'])): ?>
-							&nbsp;(<?php echo count($x['entries']) ?>)
-						<?php endif ?>
-						:
-					</p>
-					<?php if (empty($x['entries'])): ?>
-						<p>None!</p>
-					<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
-						<p>Can&rsquo;t show you titles from a private list.</p>
-					<?php else: ?>
-						<ul>
-							<?php foreach ($x['entries'] as $e): ?>
-								<li>
-									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e['full']->getID() ?>">
-										<?php echo $e['full']->getTitle() ?>
-									</a>
-									&nbsp;&ndash;&nbsp;
-									<?php if ($e['full']->getType() == AMModel::TYPE_MANGA): ?>
-										chap. <?php echo $e['user']->getChapter() ?>
-									<?php else: ?>
-										ep. <?php echo $e['user']->getEpisode() ?>
-									<?php endif ?>
-								</li>
-							<?php endforeach ?>
-						</ul>
-					<?php endif ?>
-				</div>
-			<?php endforeach ?>
 		</div>
 
 		<script type="text/javascript">
-			$('#user-<?php echo $this->user->getRuntimeID() ?> .acti-line-daily .target').each(function() {
+			$('#user-<?php echo $user->getRuntimeID() ?> .acti-line-daily .target').each(function() {
 				var chart = new Highcharts.Chart({
 					chart: { renderTo: this, type: 'column', marginTop: 8 },
-					xAxis: { categories: <?php echo json_encode(array_keys($this->actiInfo[$this->user->getID()]['day-periods'])) ?>, title: { text: 'Days ago', margin: 15 }, labels: { style: { fontSize: '10px !important' } } },
+					xAxis: { categories: <?php echo json_encode(array_keys($this->actiInfo[$user->getID()]['day-periods'])) ?>, title: { text: 'Days ago', margin: 15 }, labels: { style: { fontSize: '10px !important' } } },
 					yAxis: { title: { text: 'Count' }, min: 0 },
 					tooltip: { formatter: function() {
 						var text = '<?php echo $this->am == AMModel::TYPE_MANGA ? 'Chapters' : 'Episodes' ?> completed ';
@@ -98,9 +55,20 @@
 						text += ': ' + this.y;
 						return text; } },
 					series: [ {
-						data: <?php echo json_encode(array_map(function($p) { return count($p['entries']); }, array_values($this->actiInfo[$this->user->getID()]['day-periods']))) ?>,
+						data: <?php echo json_encode(array_map(function($p) { return count($p); }, array_values($this->actiInfo[$user->getID()]['day-periods']))) ?>,
 						point: { events: { click: function(e) {
-							toggleWithinSections($('.acti-line-daily .more[data-id=\'' + this.category + '\']'), true);
+							var target = $('#user-<?php echo $user->getRuntimeID() ?> .acti-line-daily .wrapper-more');
+							var category = this.category;
+							toggleMoreDiv(target, category, function(postCallback) {
+								var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
+								var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
+								data['reason'] = 'daily-activity';
+								data['days-ago'] = category;
+								$.get(url, data, function(response) {
+									$(target).html(response);
+									postCallback();
+								});
+							});
 						} } }
 					} ],
 					plotOptions: { column: { pointWidth: 17 } }
@@ -109,62 +77,46 @@
 		</script>
 	</div>
 </div>
+<?php }); ?>
 
 
 
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section acti-line-monthly">
-	<h3>
+	<h2>
 		<i data-title="Number of titles you've completed within given month." class="tooltipable icon-tooltip"></i>
-		Activity timeline (monthly)
-	</h3>
+		<?php if (count($this->users) > 1): ?>
+			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+				<?php echo $user->getPublicName() ?>
+			</a>
+			&rsquo;s activity timeline (monthly)
+		<?php else: ?>
+			Activity timeline (monthly)
+		<?php endif ?>
+	</h2>
 	<div class="section-body">
-		<?php if (empty($this->actiInfo[$this->user->getID()]['month-periods'])): ?>
+		<?php if (empty($this->actiInfo[$user->getID()]['month-periods'])): ?>
 			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified.<br>
 			This graph won&rsquo;t work without this data.</p>
-		<?php elseif (count($this->actiInfo[$this->user->getID()]['month-periods']) == 1): ?>
-			<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo reset(array_keys($this->actiInfo[$this->user->getID()]['month-periods'])) ?>, so a graph isn&rsquo;t needed.</p>
+		<?php elseif (count($this->actiInfo[$user->getID()]['month-periods']) == 1): ?>
+			<?php $p = array_keys($this->actiInfo[$user->getID()]['month-periods'])[0] ?>
+			<?php if ($p == '?'): ?>
+				<p>No information was found about long-term completion date of your titles.</p>
+			<?php else: ?>
+				<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo array_keys($this->actiInfo[$user->getID()]['month-periods'])[0] ?>, so a graph isn&rsquo;t needed.</p>
+			<?php endif ?>
 		<?php else: ?>
 			<div class="wrapper wrapper-target">
-				<div style="width: <?php echo count($this->actiInfo[$this->user->getID()]['month-periods']) * 30 + 100 ?>px" class="target"></div>
+				<div style="width: <?php echo count($this->actiInfo[$user->getID()]['month-periods']) * 30 + 100 ?>px" class="target"></div>
 				<div class="clear"></div>
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->actiInfo[$this->user->getID()]['month-periods'] as $k => $x): ?>
-					<div class="more" data-id="<?php echo $k ?>">
-						<p>
-							<?php if ($k == '?'): ?>
-								Titles with unspecified completion or start date
-							<?php else: ?>
-								Titles from <?php echo $k ?>
-							<?php endif ?>
-							<?php if (!empty($x['entries'])): ?>
-								&nbsp;(<?php echo count($x['entries']) ?>)
-							<?php endif ?>
-							:
-						</p>
-						<?php if (empty($x['entries'])): ?>
-							<p>None!</p>
-						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
-							<p>Can&rsquo;t show you titles from a private list.</p>
-						<?php else: ?>
-							<ul>
-								<?php foreach ($x['entries'] as $e): ?>
-									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
-											<?php echo $e->getAMEntry()->getTitle() ?>
-										</a>
-									</li>
-								<?php endforeach ?>
-							</ul>
-						<?php endif ?>
-					</div>
-				<?php endforeach ?>
 			</div>
 
 			<?php
 				$max = 0;
-				foreach ($this->actiInfo[$this->user->getID()]['month-periods'] as $key => $x2) {
+				foreach ($this->actiInfo[$user->getID()]['month-periods'] as $key => $x2) {
 					if ($key != '?' and count($x2['entries']) > $max) {
 						$max = count($x2['entries']);
 					}
@@ -173,10 +125,10 @@
 			?>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $this->user->getRuntimeID() ?> .acti-line-monthly .target').each(function() {
+				$('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'line', marginTop: 8, marginBottom: 56 },
-						xAxis: { categories: <?php echo json_encode(array_keys($this->actiInfo[$this->user->getID()]['month-periods'])) ?>, labels: { rotation: -45, align: 'right' } },
+						xAxis: { categories: <?php echo json_encode(array_keys($this->actiInfo[$user->getID()]['month-periods'])) ?>, labels: { rotation: -45, align: 'right' } },
 						yAxis: { title: {text: 'Count'}, min: 0, max: <?php echo $real_max ?> },
 						tooltip: { formatter: function() {
 							var text = 'Titles ';
@@ -188,24 +140,49 @@
 							return text; } },
 						series: [ {
 							data:
-								<?php echo json_encode(array_map(function($key) {
-									$x = $this->actiInfo[$this->user->getID()]['month-periods'][$key];
-									return count($x['entries']);
-								}, array_keys($this->actiInfo[$this->user->getID()]['month-periods'])))
+								<?php echo json_encode(array_map(function($key) use ($user, $real_max) {
+									$x = $this->actiInfo[$user->getID()]['month-periods'][$key];
+									return [
+										'y' => min(count($x['entries']), $real_max),
+										'real_y' => count($x['entries'])
+									];
+								}, array_keys($this->actiInfo[$user->getID()]['month-periods'])))
 								?>,
 							point: { events: { click: function(e) {
-								toggleWithinSections($('.acti-line-monthly .more[data-id=\'' + this.category + '\']'), true);
+								var target = $('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .wrapper-more');
+								var category = this.category;
+								toggleMoreDiv(target, category, function(postCallback) {
+									var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
+									var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
+									data['reason'] = 'monthly-activity';
+									data['month'] = category;
+									$.get(url, data, function(response) {
+										$(target).html(response);
+										postCallback();
+									});
+								});
 							} } }
 						}, {
 							data: <?php
-								$x = &$this->actiInfo[$this->user->getID()]['month-periods']['?'];
+								$x = &$this->actiInfo[$user->getID()]['month-periods']['?'];
 								echo json_encode([ [
 									'y' => min(count($x['entries']), $real_max),
 									'real_y' => count($x['entries'])
 								] ] )
 								?>,
 							point: { events: { click: function(e) {
-								toggleWithinSections($('.acti-line-monthly .more[data-id=\'' + this.category + '\']'), true);
+								var target = $('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .wrapper-more');
+								var category = this.category;
+								toggleMoreDiv(target, category, function(postCallback) {
+									var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
+									var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
+									data['reason'] = 'monthly-activity';
+									data['month'] = category;
+									$.get(url, data, function(response) {
+										$(target).html(response);
+										postCallback();
+									});
+								});
 							} } }
 						}],
 					});
@@ -215,13 +192,12 @@
 
 	</div>
 </div>
+<?php }); ?>
 
 
 
-<?php if ($this->isFinal): ?>
-	<script type="text/javascript">
-		$(function() {
-			$('.acti-line-monthly .wrapper-target').jScrollPane();
-		});
-	</script>
-<?php endif ?>
+<script type="text/javascript">
+	$(function() {
+		$('.acti-line-monthly .wrapper-target').jScrollPane();
+	});
+</script>

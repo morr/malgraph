@@ -87,7 +87,7 @@ $(function() {
 });
 
 // fluid menu position
-$(function() {
+/*$(function() {
 	var menu = $('#menu');
 	var content = $('#content');
 	if (menu.length == 0) {
@@ -106,4 +106,23 @@ $(function() {
 		}
 		menu.css('left', (content.offset().left - $(window).scrollLeft() - x_delta) + 'px');
 	});
-});
+});*/
+
+function toggleMoreDiv(targets, uniqueId, showCallback) {
+	$(targets).each(function() {
+		var target = $(this);
+		if (target.data('unique-id') == uniqueId) {
+			if (target.is(':visible')) {
+				target.stop(true, true).slideUp('fast');
+			} else {
+				target.stop(true, true).slideDown('slow');
+			}
+			return;
+		}
+		target.data('unique-id', uniqueId);
+		target.hide();
+		showCallback(function() {
+			target.stop(true, true).slideDown('slow');
+		});
+	});
+}

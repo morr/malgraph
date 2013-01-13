@@ -19,12 +19,23 @@ class UserListSorters {
 }
 
 class UserListFilters {
+	public static function combine() {
+		$filters = func_get_args();
+		return function (UserListEntry $entry) use ($filters) {
+			foreach ($filters as $f) {
+				if (!$f($entry)) {
+					return false;
+				}
+			}
+			return true;
+		};
+	}
 	public static function getScore($score) {
 		return function (UserListEntry $entry) use ($score) { return $entry->getScore() == $score; };
 	}
 
 	public static function getGenre($genreId) {
-		return function (UserListEntry $entry) use ($genreId) { 
+		return function (UserListEntry $entry) use ($genreId) {
 			foreach ($entry->getAMEntry()->getGenres() as $genre) {
 				if ($genreId == $genre->getID()) {
 					return true;
@@ -35,7 +46,7 @@ class UserListFilters {
 	}
 
 	public static function getCreator($creatorId) {
-		return function (UserListEntry $entry) use ($creatorId) { 
+		return function (UserListEntry $entry) use ($creatorId) {
 			foreach ($entry->getAMEntry()->getCreators() as $creator) {
 				if ($creatorId == $creator->getID()) {
 					return true;
@@ -43,14 +54,6 @@ class UserListFilters {
 			}
 			return false;
 		};
-	}
-
-	public static function getAiredYear($year) {
-		return function (UserListEntry $entry) use ($year) { return $entry->getAMEntry()->getAiredYear() == $year; };
-	}
-
-	public static function getAiredDecade($decade) {
-		return function (UserListEntry $entry) use ($decade) { return $entry->getAMEntry()->getAiredDecade() == $decade; };
 	}
 
 	public static function getNonPlanned() {
@@ -81,6 +84,45 @@ class UserListService {
 			$sum += $entry->getCompletedDuration();
 		}
 		return $sum;
+	}
+
+	public static function getMonthPeriod(UserListEntry $entry) {
+		$finishedA = explode('-', $entry->getStartDate());
+		$finishedB = explode('-', $entry->getFinishDate());
+		$yearA = intval($finishedA[0]);
+		$yearB = intval($finishedB[0]);
+		$monthA = isset($finishedA[1]) ? intval($finishedA[1]) : false;
+		$monthB = isset($finishedB[1]) ? intval($finishedB[1]) : false;
+		if ($yearB and $monthB) {
+			$monthPeriod = sprintf('%04d-%02d', $yearB, $monthB);
+		} elseif ($yearA and $monthA) {
+			$monthPeriod = sprintf('%04d-%02d', $yearA, $monthA);
+		} else {
+			$monthPeriod = '?';
+		}
+		return $monthPeriod;
+	}
+
+	public static function getAiredYear(UserListEntry $entry) {
+		$yearA = intval(substr($entry->getAMEntry()->getAiredFrom(), 0, 4));
+		$yearB = intval(substr($entry->getAMEntry()->getAiredTo(), 0, 4));
+		if (!$yearA and !$yearB) {
+			return 0;
+		} elseif (!$yearA) {
+			$year = $yearB;
+		} elseif (!$yearB) {
+			$year = $yearA;
+		} else {
+			//$year = ($yearA + $yearB) >> 1;
+			$year = $yearA;
+		}
+		return $year;
+	}
+
+	public static function getAiredDecade(UserListEntry $entry) {
+		$year = self::getAiredYear($entry);
+		$decade = floor($year / 10) * 10;
+		return $decade;
 	}
 
 	public static function getScoreDistribution(array $entries) {
@@ -460,7 +502,7 @@ class YearDistribution extends Distribution {
 	public function __construct(array $entries) {
 		parent::__construct(0);
 		foreach ($entries as $entry) {
-			$this->addToGroup($entry->getAMEntry()->getAiredYear(), $entry);
+			$this->addToGroup(UserListService::getAiredYear($entry), $entry);
 		}
 		$this->finalize();
 	}
@@ -476,7 +518,7 @@ class DecadeDistribution extends Distribution {
 	public function __construct(array $entries) {
 		parent::__construct(0);
 		foreach ($entries as $entry) {
-			$this->addToGroup($entry->getAMEntry()->getAiredDecade(), $entry);
+			$this->addToGroup(UserListService::getAiredDecade($entry), $entry);
 		}
 		$this->finalize();
 	}

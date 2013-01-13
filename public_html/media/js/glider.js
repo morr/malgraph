@@ -28,12 +28,8 @@ function attachGlider(elems, event) {
 	elems.each(function() {
 		var target = $(this);
 		target.bind(event, function(e, data) {
-			if (data == 'fire') {
-				return true;
-			}
 			showGliderDelayed();
-			taget.trigger(e, ['fire']);
-			return false;
+			return true;
 		});
 	});
 }

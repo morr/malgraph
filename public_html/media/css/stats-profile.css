@@ -1,32 +1,9 @@
-.user-pic {
-	background: white;
-	margin: 0 10px 10px 0;
-	position: relative;
-	float: left;
-}
-	.user-pic img {
-		border: 1px solid gray;
-		width: 130px;
-		max-height: 200px;
-	}
-	.user-pic img.unavailable {
-		background-image: url('../img/gfx.png');
-		background-repeat: no-repeat;
-		background-position: -384px -32px;
-		height: 186px;
-		width: 130px;
-	}
-
 .user.anonymous .mal li {
 	text-decoration: line-through;
 }
 
-div.basic h3 {
-	padding-left: 142px;
-}
 div.basic .section-body {
-	padding-left: 142px;
-	padding-bottom: 10px;
+	padding-bottom: 1em;
 }
 
 .updated {
@@ -37,14 +14,14 @@ div.basic .section-body {
 }
 
 
-#content ul {
+#main ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	line-height: 1.5em;
 }
 	.clubs, .friends {
-		max-height: 200px;
+		max-height: 15em;
 	}
 		.friends ul {
 			columns: auto 3;
@@ -52,23 +29,9 @@ div.basic .section-body {
 			-moz-columns: auto 3;
 		}
 			.friends li {
-				width: 140px;
 				overflow: hidden;
 				display: block;
 				text-overflow: ellipsis;
-			}
-			.friends a.mg {
-				display: inline;
-				width: 16px;
-				height: 16px;
-				position: relative;
-			}
-			.friends a.mg i {
-				position: absolute;
-			}
-			.friends a.mal {
-				display: inline-block;
-				margin-left: 21px;
 			}
 
 
@@ -78,25 +41,26 @@ div.basic .section-body {
 			-moz-columns: auto 2;
 		}
 			.clubs li {
-				width: 210px;
 				overflow: hidden;
 				display: block;
 				text-overflow: ellipsis;
 			}
 
-			.clubs a {
-				position: relative;
-			}
-			.clubs i {
-				position: absolute;
-			}
-			.friends a.mal,
-			.clubs span {
-				display: inline-block;
-				margin-left: 21px;
-			}
+	.friends a,
+	.clubs a {
+		position: relative;
+	}
+	.friends i,
+	.clubs i {
+		position: absolute;
+	}
+	.friends span,
+	.clubs span {
+		display: inline-block;
+		margin-left: 21px;
+	}
 
-#content [class^='icon-'] {
+#main [class^='icon-'] {
 	margin-right: 5px;
 }
 

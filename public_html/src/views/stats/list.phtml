@@ -1,18 +1,22 @@
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section">
 	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user->getLinkableName()) ?>">
-			<?php echo $this->user->getPublicName() ?>
+		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+			<?php echo $user->getPublicName() ?>
 		</a>
 		&rsquo;s <?php echo $this->mgHelper->amText() ?> list
 	</h2>
 
+	<?php $showUnique = ((count($this->users) > 1) and (!$otherUser->getList($this->am)->isPrivate())) ?>
+
 	<div class="section-body">
-		<?php if (count($this->user->getList($this->am)->getEntries()) == 0): ?>
-			<p>Sadly, <?php echo $this->user['visible-name'] ?>&rsquo;s <?php echo $this->mgHelper->amText() ?> list is empty.<br>
+		<?php if (count($user->getList($this->am)->getEntries()) == 0): ?>
+			<p>Sadly, <?php echo $user['visible-name'] ?>&rsquo;s <?php echo $this->mgHelper->amText() ?> list is empty.<br>
 			If this is your list, add (and rate) something and come back in 24 hours.</p>
-		<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
+		<?php elseif ($user->getList($this->am)->isPrivate()): ?>
 			<p><?php echo ucfirst($this->mgHelper->amText()) ?> list of this user is private.<br>Each of us has some dirty secrets, isn&rsquo;t that right?</p>
 		<?php else: ?>
+
 			<div class="table">
 				<table class="tablesorter">
 					<thead>
@@ -25,7 +29,7 @@
 								S
 							</th>
 
-							<?php if (count($this->users) > 1): ?>
+							<?php if ($showUnique): ?>
 								<th class="unique tooltipable"
 									data-title="Unique - marked with &bdquo;+&rdquo; if only this user has given title in their list."
 									data-position-my="center bottom"
@@ -39,8 +43,12 @@
 								Title
 							</th>
 
-							<th class="score">
-								Score
+							<th class="score tooltipable"
+								data-title="Rating"
+								data-position-my="center bottom"
+								data-position-at="center top"
+							>
+								R
 							</th>
 						</tr>
 					</thead>
@@ -49,84 +57,40 @@
 
 					<tbody>
 						<?php $k = 1 ?>
-						<?php foreach ($this->user->getList($this->am)->getEntries() as $e): ?>
+						<?php foreach ($user->getList($this->am)->getEntries() as $e): ?>
 							<?php $e2 = null ?>
-							<?php if (!empty($this->otherUser)): ?>
-								<?php $e2 = $this->otherUser->getList($this->am)->getEntryByID($e->getID()) ?>
-							<?php endif ?>
-							<?php if (empty($e2)): ?>
-								<tr class="unique">
+							<?php if ($showUnique): ?>
+								<?php $e2 = $otherUser->getList($this->am)->getEntryByID($e->getID()) ?>
+								<?php if (empty($e2)): ?>
+									<tr class="unique">
+								<?php else: ?>
+									<tr class="not-unique">
+								<?php endif ?>
 							<?php else: ?>
 								<tr>
 							<?php endif ?>
-								<?php switch($e->getStatus()) {
-									case UserListEntry::STATUS_PLANNED: ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="4">
-										<i class="icon-schedule"></i>
-								<?php break; case UserListEntry::STATUS_DROPPED: ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="5">
-										<i class="icon-cross"></i>
-								<?php break; case UserListEntry::STATUS_WATCHING: ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="1">
-										<i class="icon-eye"></i>
-								<?php break; case UserListEntry::STATUS_ONHOLD: ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="3">
-										<i class="icon-hourglass"></i>
-								<?php break; case UserListEntry::STATUS_COMPLETED: ?>
-									<td class="status tooltipable" data-title="<?php echo $this->mgHelper->statusText($e->getStatus()) ?>" data-sorter="2">
-										<i class="icon-tick"></i>
-								<?php break; } ?>
-								</td>
+								<td class="status status-<?php echo $e->getStatus() ?>"></td>
 
-								<?php if (count(ChibiRegistry::getView()->users) > 1): ?>
-									<?php if (empty($e2)): ?>
-										<td class="unique tooltipable" data-title="Only this user has this title on his list" data-sorter="1">
-											<i class="icon-plus"></i>
-									<?php else: ?>
-										<td class="unique tooltipable" data-title="Both users have this title on their lists" data-sorter="0">
-											<i class="icon-dot"></i>
-									<?php endif ?>
-									</td>
+								<?php if ($showUnique): ?>
+									<td class="unique tooltipable"></td>
 								<?php endif ?>
 
 								<td class="title" data-sorter="<?php echo $e->getAMEntry()->getTitle() ?>">
 									<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->amText() ?>/<?php echo $e->getID() ?>">
-										<?php echo $e->getAMEntry()->getTitle() ?>
+										<?php if (!$e->getAMEntry()->getTitle()): ?>
+											Unknown Entry ID <?php echo $e->getID() ?>
+										<?php else: ?>
+											<?php echo $e->getAMEntry()->getTitle() ?>
+										<?php endif ?>
 									</a>
 								</td>
 
-								<?php if (!empty($e2)): ?>
-									<?php if ($e->getScore() > $e2->getScore()): ?>
-										<?php if ($e2->getScore() > 0): ?>
-											<td class="score higher-score tooltipable" data-title="This title was rated lower (<?php echo $e2->getScore() ?>) by the other user." data-sorter="<?php echo $e->getScore() ?>">
-										<?php else: ?>
-											<td class="score no-score tooltipable" data-title="This title wasn&rsquo;t rated by the other user." data-sorter="<?php echo $e->getScore() ?>">
-										<?php endif ?>
-									<?php elseif ($e->getScore() < $e2->getScore()): ?>
-										<?php if ($e->getScore() > 0): ?>
-											<td class="score lower-score tooltipable" data-title="This title was rated higher (<?php echo $e2->getScore() ?>) by the other user." data-sorter="<?php echo $e->getScore() ?>">
-										<?php else: ?>
-											<td class="score no-score tooltipable" data-title="This title wasn&rsquo;t rated by this user." data-sorter="<?php echo $e->getScore() ?>">
-										<?php endif ?>
-									<?php else: ?>
-										<?php if ($e->getScore() > 0): ?>
-											<td class="score same-score tooltipable" data-title="Both users rated this title equally." data-sorter="<?php echo $e->getScore() ?>">
-										<?php else: ?>
-											<td class="score no-score tooltipable" data-title="None of users rated this title." data-sorter="<?php echo $e->getScore() ?>">
-										<?php endif ?>
-									<?php endif ?>
+								<?php if (empty($e2)): ?>
+									<td class="score tooltipable" data-score1="<?php echo $e->getScore() ?>" data-score2="0">
 								<?php else: ?>
-									<?php if (count($this->users) > 1): ?>
-										<td class="score tooltipable" data-title="This title is unique to this user." data-sorter="<?php echo $e->getScore() ?>">
-									<?php else: ?>
-										<td class="score" data-sorter="<?php echo $e->getScore() ?>">
-									<?php endif ?>
+									<td class="score tooltipable" data-score1="<?php echo $e->getScore() ?>" data-score2="<?php echo $e2->getScore() ?>">
 								<?php endif ?>
-									<?php if (!$e->getScore()): ?>
-										-
-									<?php else: ?>
-										<?php echo $e->getScore() ?>
-									<?php endif ?>
+									<?php echo !$e->getScore() ? '-' : $e->getScore() ?>
 								</td>
 							</tr>
 						<?php endforeach ?>
@@ -139,22 +103,53 @@
 
 	</div>
 </div>
+<?php }); ?>
 
 
 
-<?php if ($this->isFinal): ?>
-	<script type="text/javascript">
-		$(function() {
-			$('table').tablesorter({
-				textExtraction: function(node) {
-					return $(node).attr('data-sorter');
-				},
-				<?php if (count($this->users) > 1): ?>
-					sortList: [[1,0],[2,0]]
-				<?php else: ?>
-					sortList: [[2,1],[1,0]]
-				<?php endif ?>
-			});
+<script type="text/javascript">
+	/* add some attributes to cells - we do it here to save output html size */
+	<?php
+		$icons = [
+			UserListEntry::STATUS_PLANNED => [4, 'schedule'],
+			UserListEntry::STATUS_DROPPED => [5, 'cross'],
+			UserListEntry::STATUS_WATCHING => [1, 'eye'],
+			UserListEntry::STATUS_ONHOLD => [3, 'hourglass'],
+			UserListEntry::STATUS_COMPLETED => [2, 'tick']];
+		foreach ($icons as $status => $info): ?>
+		$('.status-<?php echo $status ?>').addClass('tooltipable').attr({'data-title': '<?php echo $this->mgHelper->statusText($status) ?>', 'data-sorter': <?php echo $info[0] ?>}).append($('<i class="icon-<?php echo $info[1] ?>"/>'));
+	<?php endforeach ?>
+
+	var uniqueRows = $('tr.unique');
+	var ununiqueRows = $('tr.not-unique');
+
+	uniqueRows.find('td.unique').attr({'data-title': 'Only this user has this title on list', 'data-sorter': 1}).append($('<i class="icon-plus"/>'));
+	ununiqueRows.find('td.unique').attr({'data-title': 'Both users have this title on their lists', 'data-sorter': 0}).append($('<i class="icon-dot"/>'));
+
+	$('tr td.score').each(function() { $(this).attr('data-sorter', $(this).attr('data-score1')); });
+	var quot = $('<div/>').html('&rsquo;').text();
+	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') > $(this).attr('data-score2') && $(this).attr('data-score2') > 0; }).each(function() { $(this).addClass('higher-score').attr('data-title', 'This title was rated lower (' + $(this).attr('data-score2') + ' by the other user.'); });
+	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') > $(this).attr('data-score2') && $(this).attr('data-score2') == 0; }).each(function() { $(this).addClass('no-score').attr('data-title', 'This title wasn' + quot + 't rated by the other user.'); });
+	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') < $(this).attr('data-score2') && $(this).attr('data-score1') > 0; }).each(function() { $(this).addClass('lower-score').attr('data-title', 'This title was rated higher (' + $(this).attr('data-score2') + ' by the other user.'); });
+	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') < $(this).attr('data-score2') && $(this).attr('data-score1') == 0; }).each(function() { $(this).addClass('no-score').attr('data-title', 'This title wasn' + quot + 't rated by this user.'); });
+	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') == $(this).attr('data-score2') && $(this).attr('data-score1') > 0; }).each(function() { $(this).addClass('same-score').attr('data-title', 'Both users rated this title equally.'); });
+	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') == $(this).attr('data-score2') && $(this).attr('data-score1') == 0; }).each(function() { $(this).addClass('no-score').attr('data-title', 'This title was rated by neither of users.'); });
+	uniqueRows.find('td.score').attr('data-title', 'This title is unique to this user.');
+
+	$(function() {
+		if ($('th.unique').length > 0) {
+			sortList = [[1,0],[2,0]];
+		} else {
+			sortList = [[2,1],[1,0]];
+		}
+		$('table').tablesorter({
+			textExtraction: function(node) {
+				return $(node).attr('data-sorter');
+			},
+			sortList : sortList
 		});
-	</script>
-<?php endif ?>
+
+		$(window).trigger('resize');
+	});
+
+</script>

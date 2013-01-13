@@ -25,6 +25,13 @@ abstract class UserHistory {
 		}
 	}
 
+	public function getEntriesByDaysAgo($daysBack) {
+		$day = date('Y-m-d', mktime(-24 * $daysBack));
+		return $this->getEntries(function (UserHistoryEntry $a) use ($day) {
+			return $a->getDate() == $day;
+		});
+	}
+
 	public function addEntry(UserHistoryEntry $e) {
 		$this->entries []= $e;
 	}

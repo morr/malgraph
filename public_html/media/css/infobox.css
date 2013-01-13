@@ -1,6 +1,11 @@
+.wrapper-target {
+	width: 80%;
+}
 ul.infobox {
 	float: right;
-	width: 100px;
+	width: 20%;
+	max-width: 20%;
+	overflow: hidden;
 	list-style-type: none;
 	text-align: center;
 	display: table;
@@ -8,7 +13,7 @@ ul.infobox {
 	margin: 0;
 }
 	ul.infobox li {
-		margin-bottom: 30px;
+		margin-bottom: 1em;
 		display: table-row;
 	}
 		ul.infobox li div {

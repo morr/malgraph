@@ -1,0 +1,114 @@
+<p>
+	<?php if ($this->reason == AjaxController::REASON_SCORE or $this->reason == AjaxController::REASON_SCORE_TIME): ?>
+		<?php if ($this->score == 0): ?>
+			Unrated titles
+		<?php else: ?>
+			Titles rated with <?php echo $this->score ?>
+		<?php endif ?>
+
+	<?php elseif ($this->reason == AjaxController::REASON_YEAR or $this->reason == AjaxController::REASON_DECADE): ?>
+		<?php echo ucfirst($this->mgHelper->amText()) ?>
+		&nbsp;from&nbsp;
+		<?php if ($this->reason == AjaxController::REASON_YEAR): ?>
+			<?php if (!$this->year): ?>
+				unknown year
+			<?php else: ?>
+				<?php echo $this->year ?>
+			<?php endif ?>
+		<?php else: ?>
+			<?php if (!$this->decade): ?>
+				unknown decade
+			<?php else: ?>
+				<?php echo $this->decade ?>s
+			<?php endif ?>
+		<?php endif ?>
+
+	<?php elseif ($this->reason == AjaxController::REASON_GENRE): ?>
+		<?php echo ucfirst($this->mgHelper->amText()) ?>
+		&nbsp;tagged as&nbsp;
+		<?php echo ucfirst($this->genre->getName()) ?>
+
+	<?php elseif ($this->reason == AjaxController::REASON_CREATOR): ?>
+		<?php echo ucfirst($this->mgHelper->amText()) ?>
+		&nbsp;from&nbsp;
+		<?php echo $this->creator->getName() ?>
+
+	<?php elseif ($this->reason == AjaxController::REASON_DAILY_ACTIVITY): ?>
+		<?php echo $this->am == AMModel::TYPE_MANGA ? 'Chapters' : 'Episodes' ?>
+		&nbsp;from&nbsp;
+		<?php if ($this->daysAgo == 0): ?>
+			today
+		<?php elseif ($this->daysAgo == 1): ?>
+			yesterday
+		<?php else: ?>
+			<?php echo $this->daysAgo ?> days ago
+		<?php endif ?>
+
+	<?php elseif ($this->reason == AjaxController::REASON_MONTHLY_ACTIVITY): ?>
+		<?php if ($this->monthPeriod == '?'): ?>
+			Titles with unspecified completion or start date
+		<?php else: ?>
+			Titles from <?php echo $this->monthPeriod ?>
+		<?php endif ?>
+	<?php endif ?>
+
+	<?php if (!empty($this->entries)): ?>
+		&nbsp;(<?php echo count($this->entries) ?>
+			<?php if (isset($this->meanScore)): ?>
+				<?php if (!$this->meanScore): ?>
+					, none rated
+				<?php else: ?>
+					, mean rating: <?php echo sprintf('%.02f', $this->meanScore) ?>
+				<?php endif ?>
+			<?php endif ?>
+		)
+	<?php endif ?>:
+</p>
+
+
+<?php if (empty($this->entries)): ?>
+	<?php if (($this->reason == AjaxController::REASON_SCORE or $this->reason == AjaxController::REASON_SCORE_TIME) and $this->score == 0): ?>
+		<p>Horray! No unrated titles.</p>
+	<?php else: ?>
+		<p>None!</p>
+	<?php endif ?>
+<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
+	<p>Can&rsquo;t show you titles from a private list.</p>
+<?php else: ?>
+	<ul>
+		<?php foreach ($this->entries as $entry): ?>
+			<?php $amEntry = $entry->getAMEntry() ?>
+			<li>
+				<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
+					<?php echo $amEntry->getTitle() ?>
+				</a>
+				<?php if ($this->reason == AjaxController::REASON_SCORE or $this->reason == AjaxController::REASON_SCORE_TIME): ?>
+					&nbsp;(<?php echo $entry->getCompletedDuration() ?> min.)
+				<?php elseif ($this->reason == AjaxController::REASON_YEAR or $this->reason == AjaxController::REASON_DECADE): ?>
+					&nbsp;(
+					<?php if ($entry->getScore() == 0): ?>
+						unrated
+					<?php else: ?>
+						rated with <?php echo $entry->getScore() ?>
+					<?php endif ?>
+					)
+				<?php elseif ($this->reason == AjaxController::REASON_GENRE or $this->reason == AjaxController::REASON_CREATOR): ?>
+					&nbsp;(
+						<?php if ($entry->getScore() == 0): ?>
+							unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
+						<?php else: ?>
+							rated&nbsp;with&nbsp;<?php echo $entry->getScore() ?>
+						<?php endif ?>
+					, <?php echo $entry->getCompletedDuration() ?>&nbsp;min.)
+				<?php elseif ($this->reason == AjaxController::REASON_DAILY_ACTIVITY): ?>
+					&nbsp;&ndash;&nbsp;
+					<?php if ($entry->getType() == AMModel::TYPE_MANGA): ?>
+						chap. <?php echo $entry->getChapter() ?>
+					<?php else: ?>
+						ep. <?php echo $entry->getEpisode() ?>
+					<?php endif ?>
+				<?php endif ?>
+			</li>
+		<?php endforeach ?>
+	</ul>
+<?php endif ?>

@@ -86,7 +86,7 @@ foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
 	$percentOrig = array();
 	$percentShow = array();
 	for ($score = 1; $score <= 10; $score ++) {
-		$percentOrig[$score] = $this->scoreDistribution[$am]->getGroupCardinality($score) * 100.0 / max(1, $this->scoreDistribution[$am]->getRatedCount());
+		$percentOrig[$score] = $this->scoreDistribution[$am]->getGroupSize($score) * 100.0 / max(1, $this->scoreDistribution[$am]->getRatedCount());
 		$percentShow[$score] = floor($percentOrig[$score]);
 	}
 	uasort($percentOrig, function($a, $b) { return ($b-floor($b)) > ($a-floor($a)); });
@@ -113,7 +113,7 @@ foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
 		$tc[TEXT_COUNT][$i] = array
 		(
 			'font' => $fontPath,
-			'text' => $this->scoreDistribution[$am]->getGroupCardinality($score),
+			'text' => $this->scoreDistribution[$am]->getGroupSize($score),
 			'color' => $this->colors[COLOR_FONT_DARK],
 			'shiftX' => 0,
 			'shiftY' => 10,
@@ -235,7 +235,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 		$y2 = $y1 + $barHeight - 1;
 		gradient($img, $x1, $y1 - 1, $x2, $y1 - 1, $this->colors[COLOR_BAR_GUIDES_1], $this->colors[COLOR_BAR_GUIDES_2]);
 		gradient($img, $x1, $y1, $x2, $y2, $this->colors[COLOR_BARS_1], $this->colors[COLOR_BARS_2]);
-		$x1 = $x1 + ($barWidth - 1) * $this->scoreDistribution[$am]->getGroupCardinality($score) / max(1, $this->scoreDistribution[$am]->getLargestGroupCardinalityExceptNull());
+		$x1 = $x1 + ($barWidth - 1) * $this->scoreDistribution[$am]->getGroupSize($score) / max(1, $this->scoreDistribution[$am]->getLargestGroupSize(Distribution::IGNORE_NULL_KEY));
 		imagefilledrectangle ($img, $x1, $y1, $x2, $y2, makeColor($this->colors[COLOR_BACKGROUND2]));
 	}
 
@@ -298,7 +298,7 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 			$y2 = $y1 + $barHeight - 1;
 			gradient($img, $x1, $y1 - 1, $x2, $y1 - 1, $this->colors[COLOR_BAR_GUIDES_1], $this->colors[COLOR_BAR_GUIDES_2]);
 			gradient($img, $x1, $y1, $x2, $y2, $this->colors[COLOR_BARS_1], $this->colors[COLOR_BARS_2]);
-			$x1 += $mul * (($barWidth - 1) * $this->scoreDistribution[$am]->getGroupCardinality($score) / max(1, $this->scoreDistribution[$am]->getLargestGroupCardinalityExceptNull()));
+			$x1 += $mul * (($barWidth - 1) * $this->scoreDistribution[$am]->getGroupSize($score) / max(1, $this->scoreDistribution[$am]->getLargestGroupSize(Distribution::IGNORE_NULL_KEY)));
 			imagefilledrectangle ($img, $x1, $y1, $x2, $y2, makeColor($this->colors[COLOR_BACKGROUND2]));
 		}
 		$x = ($w >> 1) + (($tc[TEXT_SCORE]['width'] >> 1) + $tc[TEXT_SCORE]['padding']) * $mul;

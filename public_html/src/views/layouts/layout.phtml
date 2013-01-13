@@ -5,7 +5,7 @@
 	<?php echo HeadHelper::render() ?>
 	<meta property="og:title" content="<?php echo HeadHelper::getTitle() ?>">
 	<meta property="og:description" content="<?php echo HeadHelper::getDescription() ?>">
-	<meta property="og:image" content="<?php echo UrlHelper::url('media/img/logo.png') ?>">
+	<meta property="og:image" content="<?php echo UrlHelper::url('media/img/logo3.png') ?>">
 	<meta property="og:url" content="<?php echo ChibiRegistry::getHelper('mg')->currentUrl() ?>">
 	<meta property="og:site_name" content="MALgraph" />
 </head>
@@ -18,13 +18,18 @@
 <?php else: ?>
 	<body>
 <?php endif ?>
-	<div id="main-wrapper">
-		<div id="header">
-			<h1>
-				<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'index') ?>">
-					<span>MALgraph</span>
-				</a>
-			</h1>
+	<div id="header">
+		<div class="main-wrapper">
+			<ul id="top-nav">
+				<li id="logo">
+					<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'index') ?>">
+						<span>MALgraph</span>
+					</a>
+				</li>
+				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'about') ?>">About</a></li>
+				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'privacy') ?>">Privacy</a></li>
+				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'globals') ?>">Globals</a></li>
+			</ul>
 			<form class="waitable" id="search" action="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'search') ?>" method="post">
 				<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 					<?php foreach (ChibiRegistry::getView()->userNames as $userName): ?>
@@ -50,136 +55,151 @@
 			</form>
 			<div class="clear"></div>
 		</div>
+	</div>
+
+
+	<div class="main-wrapper">
+		<div id="menu-wrapper">
+			<div id="menu">
+				<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
+					<div class="user-pics">
+						<?php foreach (ChibiRegistry::getView()->users as $user): ?>
+							<div class="user<-?php echo $user->getRuntimeID() ?>">
+								<div class="user-pic">
+									<a href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile') ?>">
+									<?php if ($user->isAnonymous() or $user->getUserData()->getProfilePictureURL() == null): ?>
+										<img class="profile unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
+									<?php else: ?>
+										<img class="profile" alt="<?php echo $user->getPublicName() ?>&rsquo;s profile picture" src="<?php echo $user->getUserData()->getProfilePictureURL() ?>">
+									<?php endif ?>
+									</a>
+								</div>
+								<p class="user-nick">
+									<a href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile') ?>">
+										<?php echo $user->getPublicName() ?>
+									</a>
+								</p>
+							</div>
+						<?php endforeach ?>
+						<?php
+							$menu = [
+								['controller' => 'stats', 'action' => 'list', 'text' => 'List'],
+								['controller' => 'stats', 'action' => 'rati', 'text' => 'Ratings'],
+								['controller' => 'stats', 'action' => 'acti', 'text' => 'Activity'],
+								['controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'],
+								['controller' => 'stats', 'action' => 'sug', 'text' => 'Suggestions'],
+								['controller' => 'stats', 'action' => 'achi', 'text' => 'Achievements'],
+							];
+						?>
+					</div>
+
+					<div class="am-actions">
+						<?php foreach (AMModeL::getTypes() as $am): ?>
+							<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($am)) ?></p>
+							<ul class="action">
+								<?php foreach ($menu as $item): ?>
+									<?php if (ChibiRegistry::getView()->actionName == $item['action'] and ChibiRegistry::getView()->am == $am): ?>
+										<li class="active">
+									<?php else: ?>
+										<li>
+									<?php endif ?>
+										<a class="waitable" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('stats', $item['action'], [], null, $am) ?>">
+											<?php echo $item['text'] ?>
+										</a>
+									</li>
+								<?php endforeach ?>
+							</ul>
+						<?php endforeach ?>
+					</div>
+
+					<div class="share">
+						<p>Share:</p>
+						<ul>
+							<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
+								<li>
+									<a class="tooltipable"
+										data-title="Anonymize current profile (for anonymous sharing)"
+										data-position-my="center bottom"
+										data-position-at="center top"
+										href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], array_map(function($u) { return $u->getAnonymousName(); }, ChibiRegistry::getView()->users)) ?>">
+										<i class="icon-anonymize"></i>
+									</a>
+								</li>
+							<?php endif ?>
+							<li>
+								<a class="tooltipable"
+									data-position-my="center bottom"
+									data-position-at="center top"
+									data-title="Share on Twitter"
+									href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode(ChibiRegistry::getHelper('mg')->currenturl()) ?>">
+									<i class="icon-twitter"></i>
+								</a>
+							</li>
+							<li>
+								<a class="tooltipable"
+									data-position-my="center bottom"
+									data-position-at="center top"
+									data-title="Share on Facebook"
+									href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode(ChibiRegistry::getHelper('mg')->currentUrl()) ?>&amp;t=Share+MALgraph">
+									<i class="icon-facebook"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+
+				<?php else: ?>
+					<ul class="action">
+						<li class="back">
+							<a href="javascript:history.go(-1)">Back</a>
+						</li>
+					</ul>
+				<?php endif ?>
+			</div>
+		</div>
 
 		<div id="main">
 			<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
-				<div id="menu">
-					<ul class="am">
-						<?php foreach ([AMModel::TYPE_ANIME, AMModel::TYPE_MANGA] as $type): ?>
-							<li data-title="<?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($type)) ?> stats" data-position-my="center top" data-position-at="center bottom"
-								<?php if (ChibiRegistry::getView()->am == $type): ?>
-									class="active tooltipable"
-								<?php else: ?>
-									class="tooltipable"
-								<?php endif ?>
-								><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], null, $type) ?>">
-									<i class="icon-<?php echo $type ?>"></i>
-								</a>
-							</li>
-						<?php endforeach ?>
-					</ul>
-					<?php
-						$menu = [
-							['controller' => 'stats', 'action' => 'profile', 'text' => 'Profile'],
-							['controller' => 'stats', 'action' => 'list', 'text' => 'List'],
-							['controller' => 'stats', 'action' => 'rati', 'text' => 'Ratings'],
-							['controller' => 'stats', 'action' => 'acti', 'text' => 'Activity'],
-							['controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'],
-							['controller' => 'stats', 'action' => 'misc', 'text' => 'Miscellaneous'],
-							['controller' => 'stats', 'action' => 'sug', 'text' => 'Suggestions'],
-							['controller' => 'stats', 'action' => 'achi', 'text' => 'Achievements'],
-						];
-					?>
-					<ul class="action">
-						<?php foreach ($menu as $item): ?>
-							<?php if (ChibiRegistry::getView()->actionName == $item['action']): ?>
-								<li class="active">
-							<?php else: ?>
-								<li>
-							<?php endif ?>
-								<a class="waitable" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('stats', $item['action']) ?>">
-									<?php echo $item['text'] ?>
-								</a>
-							</li>
-						<?php endforeach ?>
-					</ul>
-				</div>
-
-				<div id="content">
-					<?php if (count(ChibiRegistry::getView()->users) > 1): ?>
-						<div id="switcher">
-							<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [end(ChibiRegistry::getView()->userNames), reset(ChibiRegistry::getView()->userNames)]) ?>">
-								<i class="icon-switch"></i>
-							</a>
-						</div>
-					<?php endif ?>
-
-					<div class="users">
-						<?php $keys = array_keys(ChibiRegistry::getView()->users) ?>
-						<?php foreach ($keys as $i => $k): ?>
-							<?php $u = ChibiRegistry::getView()->users[$k] ?>
-							<?php if ($u->isAnonymous()): ?>
-								<div class="user anonymous" id="user-<?php echo $u->getRuntimeID() ?>">
-							<?php else: ?>
-								<div class="user" id="user-<?php echo $u->getRuntimeID() ?>">
-							<?php endif ?>
-								<?php ChibiRegistry::getView()->isFinal = $i == count($keys) - 1 ?>
-								<?php ChibiRegistry::getView()->user = $u ?>
-								<?php if (count(ChibiRegistry::getview()->users) > 1): ?>
-									<?php ChibiRegistry::getView()->otherUser = ChibiRegistry::getView()->users[$keys[1 - $i]] ?>
-								<?php else: ?>
-									<?php ChibiRegistry::getView()->otherUser = null ?>
-								<?php endif ?>
-								<?php ChibiRegistry::getView()->userName = ChibiRegistry::getView()->userNames[$i] ?>
-								<?php echo ChibiRegistry::getView()->render() ?>
-							</div>
-						<?php endforeach ?>
-					<div class="clear"></div>
-					</div>
-				</div>
-
-
-			<?php else: ?>
-				<div id="content">
-					<?php echo ChibiRegistry::getView()->render() ?>
-				</div>
-			<?php endif ?>
-
-
-			<div class="clear"></div>
-		</div>
-
-		<div id="footer">
-			<ul class="left">
-				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'about') ?>">About</a></li>
-				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'privacy') ?>">Privacy policy</a></li>
-				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'globals') ?>">Global stats</a></li>
-				<li><?php printf('%.02f', microtime(true) - ChibiConfig::getInstance()->chibi->runtime->timeStarted) ?>s</li>
-			</ul>
-			<ul class="right">
-				<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
-					<li>
-						<a class="tooltipable"
-							data-title="Anonymize current profile (for anonymous sharing)"
-							data-position-my="center bottom"
-							data-position-at="center top"
-							href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], array_map(function($u) { return $u->getAnonymousName(); }, ChibiRegistry::getView()->users)) ?>">
-							<i class="icon-anonymize"></i>
-						</a>
-					</li>
+				<?php if (count(ChibiRegistry::getView()->users) > 1): ?>
+					<a id="switcher" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [end(ChibiRegistry::getView()->userNames), reset(ChibiRegistry::getView()->userNames)]) ?>">
+						<i class="icon-switch"></i>
+					</a>
 				<?php endif ?>
-				<li>
-					<a class="tooltipable"
-						data-position-my="center bottom"
-						data-position-at="center top"
-						data-title="Share on Twitter"
-						href="https://twitter.com/intent/tweet?url=<?php echo rawurlencode(ChibiRegistry::getHelper('mg')->currenturl()) ?>">
-						<i class="icon-twitter"></i>
-					</a>
-				</li>
-				<li>
-					<a class="tooltipable"
-						data-position-my="center bottom"
-						data-position-at="center top"
-						data-title="Share on Facebook"
-						href="http://www.facebook.com/sharer.php?u=<?php echo rawurlencode(ChibiRegistry::getHelper('mg')->currentUrl()) ?>&amp;t=Share+MALgraph">
-						<i class="icon-facebook"></i>
-					</a>
-				</li>
-			</ul>
-			<div class="clear"></div>
+
+				<?php function iterateUsers($callback) {
+					$keys = array_reverse(array_keys(ChibiRegistry::getView()->users));
+					echo '<div class="users">';
+					foreach ($keys as $i => $k) {
+						$user = ChibiRegistry::getView()->users[$k];
+						if (count(ChibiRegistry::getview()->users) > 1) {
+							$otherUser = ChibiRegistry::getView()->users[$keys[1 - $i]];
+						} else {
+							$otherUser = null;
+						}
+						echo '<div class="user-wrapper">';
+						if ($user->isAnonymous()) {
+							echo '<div class="user anonymous" id="user-' . $user->getRuntimeID() . '">';
+						} else {
+							echo '<div class="user" id="user-' . $user->getRuntimeID() . '">';
+						}
+						$callback($user, $otherUser);
+						echo '</div>';
+						echo '</div>';
+					}
+					echo '<div class="clear"></div>';
+					echo '</div>';
+				} ?>
+
+				<?php echo ChibiRegistry::getView()->render() ?>
+			<?php else: ?>
+				<?php echo ChibiRegistry::getView()->render() ?>
+			<?php endif ?>
 		</div>
+
+		<div class="clear"></div>
+
 	</div>
+
+	Load: <?php printf('%.02f', microtime(true) - ChibiConfig::getInstance()->chibi->runtime->timeStarted) ?>s
 
 	<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 		<script type="text/javascript">
@@ -197,5 +217,7 @@
 			<p></p>
 		</div>
 	</div>
+
+	<span id="preloader"></span>
 </body>
 </html>

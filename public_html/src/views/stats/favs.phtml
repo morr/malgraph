@@ -1,23 +1,20 @@
-<?php /**/ ?>
-<div class="section">
-	<h2>
-		<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $this->user->getLinkableName()) ?>">
-			<?php echo $this->user->getPublicName() ?>
-		</a>
-		&rsquo;s <?php echo $this->mgHelper->amText() ?> favorites
-	</h2>
-</div>
-
-
+<?php iterateUsers(function($user, $otherUser) { ?>
 
 <div class="section decades">
-	<h3>
+	<h2>
 		<i data-title="Shows your mean score of titles from any year or decade." class="tooltipable icon-tooltip"></i>
-		Decades
-	</h3>
+		<?php if (count($this->users) > 1): ?>
+			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+				<?php echo $user->getPublicName() ?>
+			</a>
+			&rsquo;s favorite decades
+		<?php else: ?>
+			Favorite decades
+		<?php endif ?>
+	</h2>
 	<div class="section-body">
 
-		<?php if ($this->favYears[$this->user->getID()]->getLargestGroupSize() == 0): ?>
+		<?php if ($this->favYears[$user->getID()]->getLargestGroupSize() == 0): ?>
 			<p>There is no information about any completion dates for this user.</p>
 			<p>Add a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
 		<?php else: ?>
@@ -27,91 +24,19 @@
 			</div>
 
 			<div class="wrapper wrapper-more">
-				<?php foreach ($this->favYears[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $year): ?>
-					<?php $entries = $this->favYears[$this->user->getID()]->getGroupEntries($year) ?>
-					<div class="years more" data-id="<?php echo $year ?>">
-						<p>
-							<?php echo ucfirst($this->mgHelper->amText()) ?>
-							&nbsp;from&nbsp;
-							<?php echo $year ?>
-							<?php if (!empty($entries)): ?>
-								&nbsp;(<?php echo count($entries) ?>)
-							<?php endif ?>
-							:
-						</p>
-						<?php if (empty($entries)): ?>
-							<p>None!</p>
-						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
-							<p>Can&rsquo;t show you titles from a private list.</p>
-						<?php else: ?>
-							<ul>
-								<?php foreach ($entries as $e): ?>
-									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
-											<?php echo $e->getAMEntry()->getTitle() ?>
-										</a>
-										&nbsp;(
-										<?php if ($e->getScore() == 0): ?>
-											unrated
-										<?php else: ?>
-											rated with <?php echo $e->getScore() ?>
-										<?php endif ?>
-										)
-									</li>
-								<?php endforeach ?>
-							</ul>
-						<?php endif ?>
-					</div>
-				<?php endforeach ?>
-				<?php foreach ($this->favDecades[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $decade): ?>
-					<?php $entries = $this->favDecades[$this->user->getID()]->getGroupEntries($decade) ?>
-					<div class="decades more" data-id="<?php echo $decade ?>">
-						<p>
-							<?php echo ucfirst($this->mgHelper->amText()) ?>
-							&nbsp;from&nbsp;
-							<?php echo $decade ?>
-							s
-							<?php if (!empty($entries)): ?>
-								&nbsp;(<?php echo count($entries) ?>)
-							<?php endif ?>:
-						</p>
-						<?php if (empty($entries)): ?>
-							<p>None!</p>
-						<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
-							<p>Can&rsquo;t show you titles from a private list.</p>
-						<?php else: ?>
-							<ul>
-								<?php foreach ($entries as $e): ?>
-									<li>
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
-											<?php echo $e->getAMEntry()->getTitle() ?>
-										</a>
-										&nbsp;(
-										<?php if ($e->getScore() == 0): ?>
-											unrated
-										<?php else: ?>
-											rated with <?php echo $e->getScore() ?>
-										<?php endif ?>
-										)
-									</li>
-								<?php endforeach ?>
-							</ul>
-						<?php endif ?>
-					</div>
-				<?php endforeach ?>
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $this->user->getRuntimeID() ?> .decades .target').each(function() {
+				$('#user-<?php echo $user->getRuntimeID() ?> .decades .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'line', marginTop: 8 },
 						xAxis: {
-							categories: <?php echo json_encode($this->favYears[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY)) ?>,
+							categories: <?php echo json_encode(array_reverse($this->favYears[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY))) ?>,
 							labels: { enabled: false },
 							title: { text: 'Decades', margin: 15 },
 							<?php $json = [];
 								$i = 0;
-								foreach ($this->favDecades[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $decade) {
+								foreach ($this->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $decade) {
 									if ($i ++ % 2 == 0) {
 										$json []= [
 											'from' => $decade - 0.5,
@@ -142,16 +67,41 @@
 							return text; } },
 						series: [ {
 							name: 'years',
-							data: <?php echo json_encode(array_map(function($year) { return [$year, $this->yearScores[$this->user->getID()][$year]]; }, $this->favYears[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY))) ?>,
+							data: <?php echo json_encode(array_reverse(array_map(function($year) use ($user) {
+								return [$year, $this->yearScores[$user->getID()][$year]];
+							}, $this->favYears[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY)))) ?>,
 							point: { events: { click: function(e) {
-								toggleWithinSections($('.decades .years.more[data-id=\'' + this.category + '\']'), true);
+								var target = $('#user-<?php echo $user->getRuntimeID() ?> .decades .wrapper-more');
+								var category = this.category;
+								toggleMoreDiv(target, category, function(postCallback) {
+									var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
+									var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
+									data['reason'] = 'year';
+									data['year'] = category;
+									$.get(url, data, function(response) {
+										$(target).html(response);
+										postCallback();
+									});
+								});
 							} } }
 						}, {
 							name: 'decades',
-							data: <?php echo json_encode(array_map(function($decade) { return [$decade + 4.5, $this->decadeScores[$this->user->getID()][$decade]]; }, $this->favDecades[$this->user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY))) ?>,
+							data: <?php echo json_encode(array_reverse(array_map(function($decade) use ($user) {
+								return [$decade + 4.5, $this->decadeScores[$user->getID()][$decade]]; },
+							$this->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY)))) ?>,
 							point: { events: { click: function(e) {
-								var decade = Math.floor(this.category / 10) * 10;
-								toggleWithinSections($('.decades .decades.more[data-id=\'' + decade + '\']'), true);
+								var target = $('#user-<?php echo $user->getRuntimeID() ?> .decades .wrapper-more');
+								var category = Math.floor(this.category / 10) * 10;
+								toggleMoreDiv(target, category, function(postCallback) {
+									var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
+									var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
+									data['reason'] = 'decade';
+									data['decade'] = category;
+									$.get(url, data, function(response) {
+										$(target).html(response);
+										postCallback();
+									});
+								});
 							} } }
 						} ],
 						plotOptions: { column: { pointWidth: 17 } }
@@ -161,25 +111,41 @@
 		<?php endif ?>
 	</div>
 </div>
+<?php }); ?>
 
 
 
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section creators">
-	<h3>
+	<h2>
 		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 			<i data-title="Manga authors sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
-			Authors
+			<?php if (count($this->users) > 1): ?>
+				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+					<?php echo $user->getPublicName() ?>
+				</a>
+				&rsquo;s favorite authors
+			<?php else: ?>
+				Favorite authors
+			<?php endif ?>
 		<?php elseif ($this->am == AMModel::TYPE_ANIME): ?>
 			<i data-title="Anime studios sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
-			Studios
+			<?php if (count($this->users) > 1): ?>
+				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+					<?php echo $user->getPublicName() ?>
+				</a>
+				&rsquo;s favorite studios
+			<?php else: ?>
+				Favorite studios
+			<?php endif ?>
 		<?php else: ?>
 			<?php continue ?>
 		<?php endif ?>
-	</h3>
+	</h2>
 	<div class="section-body">
 		<div class="wrapper scrollable">
 
-			<?php if ($this->favCreators[$this->user->getID()]->getLargestGroupSize() == 0): ?>
+			<?php if ($this->favCreators[$user->getID()]->getLargestGroupSize() == 0): ?>
 				<p>Looks like there are no known creators for this user.</p>
 				<p>Add a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
 			<?php else: ?>
@@ -195,8 +161,8 @@
 					</thead>
 					<tbody>
 					<?php $i = 1 ?>
-					<?php foreach ($this->favCreators[$this->user->getID()]->getGroupsKeys() as $creator): ?>
-						<?php $entries = $this->favCreators[$this->user->getID()]->getGroupEntries($creator) ?>
+					<?php foreach ($this->favCreators[$user->getID()]->getGroupsKeys() as $creator): ?>
+						<?php $entries = $this->favCreators[$user->getID()]->getGroupEntries($creator) ?>
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
@@ -216,13 +182,13 @@
 							</td>
 							<td class="count"><?php printf('%d', count($entries)) ?></td>
 							<td class="mean">
-								<?php if ($this->creatorScores[$this->user->getID()][$creator->getID()] == 0): ?>
+								<?php if ($this->creatorScores[$user->getID()][$creator->getID()] == 0): ?>
 									-
 								<?php else: ?>
-									<?php printf('%.02f', $this->creatorScores[$this->user->getID()][$creator->getID()]) ?>
+									<?php printf('%.02f', $this->creatorScores[$user->getID()][$creator->getID()]) ?>
 								<?php endif ?>
 							</td>
-							<td class="time"><?php printf('%.02f', $this->creatorTimeSpent[$this->user->getID()][$creator->getID()] / 60.0) ?>h</td>
+							<td class="time"><?php printf('%.02f', $this->creatorTimeSpent[$user->getID()][$creator->getID()] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>
 				</table>
@@ -231,58 +197,48 @@
 		</div>
 
 		<div class="wrapper wrapper-more">
-			<?php foreach ($this->favCreators[$this->user->getID()]->getGroupsKeys() as $creator): ?>
-				<?php $entries = $this->favCreators[$this->user->getID()]->getGroupEntries($creator) ?>
-				<div class="more" data-id="<?php echo $creator->getID() ?>">
-					<p>
-						<?php echo ucfirst($this->mgHelper->amText()) ?>
-						&nbsp;from&nbsp;
-						<?php echo $creator->getName() ?>
-						<?php if (!empty($entries)): ?>
-							&nbsp;(<?php echo count($entries) ?>)
-						<?php endif ?>
-						:
-					</p>
-					<?php if (empty($entries)): ?>
-						<p>None!</p>
-					<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
-						<p>Can&rsquo;t show you titles from a private list.</p>
-					<?php else: ?>
-						<ul>
-							<?php foreach ($entries as $e): ?>
-								<li>
-									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
-										<?php echo $e->getAMEntry()->getTitle() ?>
-									</a>
-									&nbsp;<span class="info">(
-										<?php if ($e->getScore() == 0): ?>
-											unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
-										<?php else: ?>
-											rated&nbsp;with&nbsp;<?php echo $e->getScore() ?>
-										<?php endif ?>
-									, <?php echo $e->getCompletedDuration() ?>&nbsp;min.)</span>
-								</li>
-							<?php endforeach ?>
-						</ul>
-					<?php endif ?>
-				</div>
-			<?php endforeach ?>
-			<div class="more" data-id="null"></div>
 		</div>
 	</div>
 </div>
 
+<script type="text/javascript">
+	$('#user-<?php echo $user->getRuntimeID() ?> .creators .more-trigger').click(function(e) {
+		e.preventDefault();
+		var target = $('#user-<?php echo $user->getRuntimeID() ?> .creators .wrapper-more');
+		var category = $(this).attr('data-id');
+		toggleMoreDiv(target, category, function(postCallback) {
+			var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
+			var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
+			data['reason'] = 'creator';
+			data['creator'] = category;
+			$.get(url, data, function(response) {
+				$(target).html(response);
+				postCallback();
+			});
+		});
+	});
+</script>
+<?php }); ?>
 
 
+
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section genres">
-	<h3>
+	<h2>
 		<i data-title="Top genres and demographics, sorted by count on your <?php echo $this->mgHelper->amText() ?> list." class="tooltipable icon-tooltip"></i>
-		Genres
-	</h3>
+		<?php if (count($this->users) > 1): ?>
+			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
+				<?php echo $user->getPublicName() ?>
+			</a>
+			&rsquo;s favorite genres
+		<?php else: ?>
+			Favorite genres
+		<?php endif ?>
+	</h2>
 	<div class="section-body">
 		<div class="wrapper scrollable">
 
-			<?php if ($this->favGenres[$this->user->getID()]->getLargestGroupSize() == 0): ?>
+			<?php if ($this->favGenres[$user->getID()]->getLargestGroupSize() == 0): ?>
 				<p>Looks like there are no known genres for this user.</p>
 				<p>Add a few titles and come back in 24 hours.<br>We'll be waiting for you.</p>
 			<?php else: ?>
@@ -298,8 +254,8 @@
 					</thead>
 					<tbody>
 					<?php $i = 1 ?>
-					<?php foreach ($this->favGenres[$this->user->getID()]->getGroupsKeys() as $genre): ?>
-						<?php $entries = $this->favGenres[$this->user->getID()]->getGroupEntries($genre) ?>
+					<?php foreach ($this->favGenres[$user->getID()]->getGroupsKeys() as $genre): ?>
+						<?php $entries = $this->favGenres[$user->getID()]->getGroupEntries($genre) ?>
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
@@ -313,13 +269,13 @@
 							</td>
 							<td class="count"><?php printf('%d', count($entries)) ?></td>
 							<td class="mean">
-								<?php if ($this->genreScores[$this->user->getID()][$genre->getID()] == 0): ?>
+								<?php if ($this->genreScores[$user->getID()][$genre->getID()] == 0): ?>
 									-
 								<?php else: ?>
-									<?php printf('%.02f', $this->genreScores[$this->user->getID()][$genre->getID()]) ?>
+									<?php printf('%.02f', $this->genreScores[$user->getID()][$genre->getID()]) ?>
 								<?php endif ?>
 							</td>
-							<td class="time"><?php printf('%.02f', $this->genreTimeSpent[$this->user->getID()][$genre->getID()] / 60.0) ?>h</td>
+							<td class="time"><?php printf('%.02f', $this->genreTimeSpent[$user->getID()][$genre->getID()] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>
 				</table>
@@ -328,90 +284,46 @@
 		</div>
 
 		<div class="wrapper wrapper-more">
-			<?php foreach ($this->favGenres[$this->user->getID()]->getGroupsKeys() as $genre): ?>
-				<?php $entries = $this->favGenres[$this->user->getID()]->getGroupEntries($genre) ?>
-				<div class="more" data-id="<?php echo $genre->getID() ?>">
-					<p>
-						<?php echo ucfirst($this->mgHelper->amText()) ?>
-						&nbsp;tagged as&nbsp;
-						<?php echo ucfirst($genre->getName()) ?>
-						<?php if (!empty($entries)): ?>
-							&nbsp;(<?php echo count($entries) ?>)
-						<?php endif ?>
-						:
-					</p>
-					<?php if (empty($entries)): ?>
-						<p>None!</p>
-					<?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
-						<p>Can&rsquo;t show you titles from a private list.</p>
-					<?php else: ?>
-						<ul>
-							<?php foreach ($entries as $e): ?>
-								<li>
-									<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $e->getID() ?>">
-										<?php echo $e->getAMEntry()->getTitle() ?>
-									</a>
-									&nbsp;<span class="info">(
-										<?php if ($e->getScore() == 0): ?>
-											unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
-										<?php else: ?>
-											rated&nbsp;with&nbsp;<?php echo $e->getScore() ?>
-										<?php endif ?>
-									, <?php echo $e->getCompletedDuration() ?>&nbsp;min.)</span>
-								</li>
-							<?php endforeach ?>
-						</ul>
-					<?php endif ?>
-				</div>
-			<?php endforeach ?>
-			<div class="more" data-id="null"></div>
 		</div>
 	</div>
 </div>
 
+<script type="text/javascript">
+	$('#user-<?php echo $user->getRuntimeID() ?> .genres .more-trigger').click(function(e) {
+		e.preventDefault();
+		var target = $('#user-<?php echo $user->getRuntimeID() ?> .genres .wrapper-more');
+		var category = $(this).attr('data-id');
+		toggleMoreDiv(target, category, function(postCallback) {
+			var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
+			var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
+			data['reason'] = 'genre';
+			data['genre'] = category;
+			$.get(url, data, function(response) {
+				$(target).html(response);
+				postCallback();
+			});
+		});
+	});
+</script>
+<?php }); ?>
+
 
 
 <script type="text/javascript">
-	$('#user-<?php echo $this->user->getRuntimeID() ?> .more-trigger').click(function(e) {
-		e.preventDefault();
-		var k = $(this).attr('data-id');
-		var selBase = '.' + $(this).parents('.section').attr('class').replace(/\s+/g, '.');
-		var selFinal = [];
-		$(selBase).each(function() {
-			var selSubBase = '#' + $(this).parents('.user').attr('id') + ' ' + selBase;
-			var sel1 = selSubBase + ' .more[data-id=\'' + k + '\']';
-			var sel2 = selSubBase + ' .more[data-id=\'null\']';
-			var target = $(sel1);
-			if (!target.length) {
-				selFinal.push(sel2);
-			} else {
-				selFinal.push(sel1);
+	$(function() {
+		$.tablesorter.addWidget({
+			id: 'ord',
+			format: function(table) {
+				for (var i = 0; i < table.tBodies[0].rows.length; i ++) {
+					$('tbody tr:eq(' + i + ') td:first', table).text(i + 1);
+				}
 			}
 		});
-		selFinal = selFinal.join(',');
-		console.log(selFinal);
-		toggleWithinSections($(selFinal), true);
+
+		$('table').tablesorter({
+			headers: { 0: { sorter: false }, 4: { sorter: 'percent' } },
+			widgets: ['ord'],
+			sortList: [[2,1],[3,1]]
+		});
 	});
 </script>
-
-<?php if ($this->isFinal): ?>
-	<script type="text/javascript">
-		$(function() {
-			$.tablesorter.addWidget({
-				id: 'ord',
-				format: function(table) {
-					for (var i = 0; i < table.tBodies[0].rows.length; i ++) {
-						$('tbody tr:eq(' + i + ') td:first', table).text(i + 1);
-					}
-				}
-			});
-
-			$('table').tablesorter({
-				headers: { 0: { sorter: false }, 4: { sorter: 'percent' } },
-				widgets: ['ord'],
-				sortList: [[2,1],[3,1]]
-			});
-		});
-	</script>
-<?php endif ?>
-<?php /**/ ?>
