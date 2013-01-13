@@ -1,9 +1,9 @@
 <?php
 require_once 'abstract.php';
-require_once 'amentry.php';
-require_once 'genre.php';
-require_once 'tag.php';
-require_once 'relation.php';
+require_once 'am/entry.php';
+require_once 'am/genreentry.php';
+require_once 'am/tagentry.php';
+require_once 'am/relationentry.php';
 
 abstract class AMModel extends AbstractModel {
 	const URL = 'http://myanimelist.net/{type}/{id}';

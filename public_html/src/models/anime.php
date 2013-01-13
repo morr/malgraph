@@ -1,6 +1,6 @@
 <?php
 require_once 'am.php';
-require_once 'producer.php';
+require_once 'am/creatorentry.php';
 
 class AnimeModel extends AMModel {
 	public function getType() {

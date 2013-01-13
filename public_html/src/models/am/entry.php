@@ -49,6 +49,10 @@ class AnimeEntry extends AMEntry {
 		return $this->producers;
 	}
 
+	public function getCreators() {
+		return $this->getProducers();
+	}
+
 	public function addProducer(AnimeProducerEntry $producer) {
 		$this->producers []= $producer;
 	}
@@ -113,6 +117,10 @@ class MangaEntry extends AMEntry {
 
 	public function getAuthors() {
 		return $this->authors;
+	}
+
+	public function getCreators() {
+		return $this->getAuthors();
 	}
 
 	public function addAuthor(MangaAuthorEntry $author) {
@@ -210,6 +218,8 @@ abstract class AMEntry extends AbstractModelEntry {
 		$this->ranking = $ranking;
 	}
 
+	abstract public function getCreators();
+
 	public function getAiredFrom() {
 		return $this->airedFrom;
 	}
@@ -224,6 +234,28 @@ abstract class AMEntry extends AbstractModelEntry {
 
 	public function setAiredTo($airDate) {
 		$this->airedTo = $airDate;
+	}
+
+	public function getAiredYear() {
+		$yearA = intval(substr($this->getAiredFrom(), 0, 4));
+		$yearB = intval(substr($this->getAiredTo(), 0, 4));
+		if (!$yearA and !$yearB) {
+			return 0;
+		} elseif (!$yearA) {
+			$year = $yearB;
+		} elseif (!$yearB) {
+			$year = $yearA;
+		} else {
+			//$year = ($yearA + $yearB) >> 1;
+			$year = $yearA;
+		}
+		return $year;
+	}
+
+	public function getAiredDecade() {
+		$year = $this->getAiredYear();
+		$decade = floor($year / 10) * 10;
+		return $decade;
 	}
 
 	public function getGenres() {
@@ -263,4 +295,3 @@ abstract class AMEntry extends AbstractModelEntry {
 	}
 
 }
-?>

@@ -23,6 +23,36 @@ class UserListFilters {
 		return function (UserListEntry $entry) use ($score) { return $entry->getScore() == $score; };
 	}
 
+	public static function getGenre($genreId) {
+		return function (UserListEntry $entry) use ($genreId) { 
+			foreach ($entry->getAMEntry()->getGenres() as $genre) {
+				if ($genreId == $genre->getID()) {
+					return true;
+				}
+			}
+			return false;
+		};
+	}
+
+	public static function getCreator($creatorId) {
+		return function (UserListEntry $entry) use ($creatorId) { 
+			foreach ($entry->getAMEntry()->getCreators() as $creator) {
+				if ($creatorId == $creator->getID()) {
+					return true;
+				}
+			}
+			return false;
+		};
+	}
+
+	public static function getAiredYear($year) {
+		return function (UserListEntry $entry) use ($year) { return $entry->getAMEntry()->getAiredYear() == $year; };
+	}
+
+	public static function getAiredDecade($decade) {
+		return function (UserListEntry $entry) use ($decade) { return $entry->getAMEntry()->getAiredDecade() == $decade; };
+	}
+
 	public static function getNonPlanned() {
 		return function (UserListEntry $entry) { return $entry->getStatus() != UserListENTRY::STATUS_PLANNED; };
 	}
@@ -421,22 +451,6 @@ class GenreDistribution extends Distribution {
 }
 
 class YearDistribution extends Distribution {
-	public static function getYear($entry) {
-		$yearA = intval(substr($entry->getAMEntry()->getAiredFrom(), 0, 4));
-		$yearB = intval(substr($entry->getAMEntry()->getAiredTo(), 0, 4));
-		if (!$yearA and !$yearB) {
-			return 0;
-		} elseif (!$yearA) {
-			$year = $yearB;
-		} elseif (!$yearB) {
-			$year = $yearA;
-		} else {
-			//$year = ($yearA + $yearB) >> 1;
-			$year = $yearA;
-		}
-		return $year;
-	}
-
 	protected function sortGroups() {
 		krsort($this->keys, SORT_NUMERIC);
 		krsort($this->groups, SORT_NUMERIC);
@@ -446,8 +460,7 @@ class YearDistribution extends Distribution {
 	public function __construct(array $entries) {
 		parent::__construct(0);
 		foreach ($entries as $entry) {
-			$year = self::getYear($entry);
-			$this->addToGroup($year, $entry);
+			$this->addToGroup($entry->getAMEntry()->getAiredYear(), $entry);
 		}
 		$this->finalize();
 	}
@@ -463,9 +476,7 @@ class DecadeDistribution extends Distribution {
 	public function __construct(array $entries) {
 		parent::__construct(0);
 		foreach ($entries as $entry) {
-			$year = YearDistribution::getYear($entry);
-			$decade = floor($year / 10) * 10;
-			$this->addToGroup($decade, $entry);
+			$this->addToGroup($entry->getAMEntry()->getAiredDecade(), $entry);
 		}
 		$this->finalize();
 	}

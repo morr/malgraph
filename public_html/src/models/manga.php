@@ -1,7 +1,7 @@
 <?php
 require_once 'am.php';
-require_once 'serialization.php';
-require_once 'author.php';
+require_once 'am/serializationentry.php';
+require_once 'am/creatorentry.php';
 
 class MangaModel extends AMModel {
 	public function getType() {
