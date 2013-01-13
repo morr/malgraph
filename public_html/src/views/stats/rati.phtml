@@ -84,12 +84,10 @@
 								<select class="theme" name="theme"></select>
 								<div class="clear"></div>
 							</div>
-							<div>
-								<textarea readonly="readonly" name="bbcode">[center][url=http://<?php echo $_SERVER['SERVER_NAME'] ?>/<?php echo $user->getLinkableName() ?>][img]http://<?php echo $_SERVER['SERVER_NAME'] ?>/export/<?php echo $user->getLinkableName() ?>?type=1[/img][/url][/center]</textarea>
-								<?php if ($user->isAnonymous()): ?>
-									<p><strong>This code will link back to an anonymized profile.</strong><br>Are you sure you want to do this?</p>
-								<?php endif ?>
-							</div>
+							<textarea readonly="readonly" name="bbcode">[center][url=http://<?php echo $_SERVER['SERVER_NAME'] ?>/<?php echo $user->getLinkableName() ?>][img]http://<?php echo $_SERVER['SERVER_NAME'] ?>/export/<?php echo $user->getLinkableName() ?>?type=1[/img][/url][/center]</textarea>
+							<?php if ($user->isAnonymous()): ?>
+								<p class="warning"><strong>This code will link back to an anonymized profile.</strong><br>Are you sure you want to do this?</p>
+							<?php endif ?>
 							<div class="preview">
 								<p>Preview (may be scaled):</p>
 								<img alt="Preview">

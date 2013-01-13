@@ -57,6 +57,9 @@ ul.infobox {
 		.export .body p {
 			margin-top: 0;
 		}
+		.export .preview p {
+			margin-top: 1em;
+		}
 		.export .preview img {
 			max-width: 100%;
 			max-height: 159px;
