@@ -19,6 +19,10 @@ class UserListSorters {
 }
 
 class UserListFilters {
+	public static function getScore($score) {
+		return function (UserListEntry $entry) use ($score) { return $entry->getScore() == $score; };
+	}
+
 	public static function getNonPlanned() {
 		return function (UserListEntry $entry) { return $entry->getStatus() != UserListENTRY::STATUS_PLANNED; };
 	}
@@ -31,10 +35,14 @@ class UserListFilters {
 class UserListService {
 	public static function getMeanScore(array $entries) {
 		$sum = 0;
+		$count = 0;
 		foreach ($entries as $entry) {
-			$sum += $entry->getScore();
+			if ($entry->getScore()) {
+				$sum += $entry->getScore();
+				$count ++;
+			}
 		}
-		return $sum / max(1, count($entries));
+		return $sum / max(1, $count);
 	}
 
 	public static function getTimeSpent(array $entries) {
@@ -364,6 +372,8 @@ class CreatorDistribution extends Distribution {
 			return;
 		}
 		$type = reset($entries)->getType();
+		$excluded = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedCreatorsDefFile), true);
+		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$type]);
 		foreach ($entries as $entry) {
 			switch ($type) {
 				case AMModel::TYPE_ANIME:
@@ -374,7 +384,9 @@ class CreatorDistribution extends Distribution {
 					break;
 			}
 			foreach ($creators as $creator) {
-				$this->addToGroup($creator, $entry);
+				if (!in_array($creator->getID(), $excludedIDs)) {
+					$this->addToGroup($creator, $entry);
+				}
 			}
 		}
 		$this->finalize();
@@ -390,10 +402,18 @@ class GenreDistribution extends Distribution {
 
 	public function __construct(array $entries) {
 		parent::__construct(0);
+		if (count($entries) == 0) {
+			return;
+		}
+		$type = reset($entries)->getType();
+		$excluded = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedGenresDefFile), true);
+		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$type]);
 		foreach ($entries as $entry) {
 			$genres = $entry->getAMEntry()->getGenres();
 			foreach ($genres as $genre) {
-				$this->addToGroup($genre, $entry);
+				if (!in_array($genre->getID(), $excludedIDs)) {
+					$this->addToGroup($genre, $entry);
+				}
 			}
 		}
 		$this->finalize();
@@ -405,7 +425,7 @@ class YearDistribution extends Distribution {
 		$yearA = intval(substr($entry->getAMEntry()->getAiredFrom(), 0, 4));
 		$yearB = intval(substr($entry->getAMEntry()->getAiredTo(), 0, 4));
 		if (!$yearA and !$yearB) {
-			return null;
+			return 0;
 		} elseif (!$yearA) {
 			$year = $yearB;
 		} elseif (!$yearB) {
@@ -424,7 +444,7 @@ class YearDistribution extends Distribution {
 	}
 
 	public function __construct(array $entries) {
-		parent::__construct(null);
+		parent::__construct(0);
 		foreach ($entries as $entry) {
 			$year = self::getYear($entry);
 			$this->addToGroup($year, $entry);
@@ -441,7 +461,7 @@ class DecadeDistribution extends Distribution {
 	}
 
 	public function __construct(array $entries) {
-		parent::__construct(null);
+		parent::__construct(0);
 		foreach ($entries as $entry) {
 			$year = YearDistribution::getYear($entry);
 			$decade = floor($year / 10) * 10;
