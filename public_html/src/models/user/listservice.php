@@ -447,14 +447,7 @@ class CreatorDistribution extends Distribution {
 		$excluded = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedCreatorsDefFile), true);
 		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$type]);
 		foreach ($entries as $entry) {
-			switch ($type) {
-				case AMModel::TYPE_ANIME:
-					$creators = $entry->getAMEntry()->getProducers();
-					break;
-				case AMModel::TYPE_ANIME:
-					$creators = $entry->getAMEntry()->getAuthors();
-					break;
-			}
+			$creators = $entry->getAMEntry()->getCreators();
 			foreach ($creators as $creator) {
 				if (!in_array($creator->getID(), $excludedIDs)) {
 					$this->addToGroup($creator, $entry);
