@@ -2,4 +2,7 @@
 <?php if (!empty($_SESSION['wrong-user'])): ?>
 	<p>&bdquo;<?php echo ucfirst($_SESSION['wrong-user']) ?>&rdquo;? Never heard that name.</p>
 <?php endif ?>
-<p>Check the spelling, return to main page and try again. You can do it!</p>
+<p>Check the spelling and try again. You can do it!</p>
+<script type="text/javascript">
+	$('#header input').focus();
+</script>

@@ -262,34 +262,35 @@ div.user {
 	#logo a {
 		display: inline-block;
 		vertical-align: middle;
-		background-image: url('../img/logo2.png');
+		background-image: url('../img/logo2a.png');
 		width: 170px;
 		height: 30px;
+		text-decoration: none;
 	}
 		#logo  span {
 			opacity: 0;
 		}
 
-	#search {
+	#header .search {
 		float: right;
 		text-align: middle;
 		line-height: 30px;
 	}
-		#search input {
+		.search input {
 			width: 175px;
-			padding: 1px 4px 1px 4px;
-			margin: 0 -1px 0 0;
+			padding: 1px 4px 1px 4px !important;
+			margin: 0 -1px 0 0 !important;
 			vertical-align: bottom;
 			height: 25px;
 		}
-		#search button {
+		.search button {
 			display: inline-block;
-			padding: 1px 12px;
-			margin: 0 -1px 0 0;
+			padding: 1px 12px !important;
+			margin: 0 -1px 0 0 !important;
 			height: 25px;
-			vertical-align: bottom;
+			vertical-align: bottom !important;
 		}
-		#search input, #search button {
+		.search input, .search button {
 			/* fix round corners on chrome */
 			-webkit-appearance: none;
 			/* fix height-padding problem */

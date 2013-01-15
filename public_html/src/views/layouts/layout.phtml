@@ -30,7 +30,7 @@
 				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'privacy') ?>">Privacy</a></li>
 				<li><a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'globals') ?>">Globals</a></li>
 			</ul>
-			<form class="waitable" id="search" action="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'search') ?>" method="post">
+			<form class="waitable search" action="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'search') ?>" method="post">
 				<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 					<?php foreach (ChibiRegistry::getView()->userNames as $userName): ?>
 						<input type="hidden" name="user-names[]" value="<?php echo $userName ?>">

@@ -1,7 +1,37 @@
-<h1>Welcome!</h1>
-<p>MALgraph is an extension of your <a href="http://myanimelist.net">MyAnimeList</a> profile. It displays more stats than you probably need, including rating distribution, favorite studios and suggestions.</p>
-<p>Not convinced? Give it a try and enter your MAL username on the top of the page or <a href="<?php echo UrlHelper::url('/rr-') ?>">click here</a> to view example profile.</p>
-<script type="text/javascript">
-	$('input').focus();
-</script>
+<div class="center padded">
+	<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'index') ?>">
+		<img alt="logo" src="<?php echo UrlHelper::url('media/img/logo2b.png') ?>">
+	</a>
 
+	<p>MALgraph is an extension of your <a href="http://myanimelist.net">MyAnimeList</a> profile.</p>
+	<p>It displays more stats than you need&nbsp;&ndash;&nbsp;including rating distribution,<br>
+	favorite studios and personalized anime and manga recommendations.</p>
+
+	<p class="padded">Give it a&nbsp;try and enter your MAL username below.</p>
+
+	<form class="waitable search" action="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'search') ?>" method="post">
+		<div class="control-group input-append">
+			<input type="search" name="user-names[]">
+			<button data-title="Search" data-position-my="center top" data-position-at="center bottom" name="submit" value="search" type="submit" class="tooltipable btn"><i class="icon-search"></i></button>
+		</div>
+	</form>
+
+	<div class="links padded">
+		<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('stats', null, array(), mt_rand() & 1 ? 'fri' : 'rr-') ?>">Show me an example!</a>
+		<span class="bull">&bull;</span>
+		<a href="#" class="about-mal">What is MyAnimeList?</a>
+	</div>
+
+</div>
+
+<div class="about-mal">
+	<p><a href="http://myanimelist.net">MyAnimeList</a> (abbreviated as MAL) is a&nbsp;site for anime/manga fans, which allows them to make a&nbsp;list of titles they completed or plan to watch in the future. Its users can rate their anime and manga, write <em>sophisticated</em> recommendations and hang out on forums.</p>
+	<p>Some people like the social part of MAL, but don&rsquo;t worry&nbsp;&ndash;&nbsp;if you don&rsquo;t want anyone to know your real nickname, we&rsquo;ve got you covered.</p>
+	<p>If you don&rsquo;t have a&nbsp;MyAnimeList account yet, you can <a href="http://myanimelist.net/register.php">create one on this page</a>. Start cataloguing your anime and manga, rate some series and visit us again!</p>
+</div>
+
+<script type="text/javascript">
+	$('a.about-mal').click(function() {
+		$('div.about-mal').slideToggle('slow');
+	});
+</script>
