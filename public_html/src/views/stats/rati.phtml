@@ -198,7 +198,7 @@
 							} else {
 								text = 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
 							}
-							var percent = this.y * 100.0 / <?php echo max(1, $this->scoreDurationDistribution[$user->getID()]->getTotalSize()) ?>;
+							var percent = this.y * 100.0 / <?php echo max(1, $this->scoreDurationDistribution[$user->getID()]->getTotalSize() / 60.) ?>;
 							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
 							return text
 						} },
