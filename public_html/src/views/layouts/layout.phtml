@@ -95,7 +95,7 @@
 								['controller' => 'stats', 'action' => 'achi', 'text' => 'Achievements'],
 							];
 						?>
-						<?php foreach (AMModeL::getTypes() as $am): ?>
+						<?php foreach (AMModel::getTypes() as $am): ?>
 							<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($am)) ?></p>
 							<ul class="action">
 								<?php foreach ($menu as $item): ?>
