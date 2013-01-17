@@ -197,13 +197,21 @@ div.user {
 	.wrapper-more {
 		margin-top: 2em;
 	}
-		.more {
+		.wrapper-more {
 			margin-top: 1em !important;
 			display: none;
 		}
-			.more ul {
+			.wrapper-more ul {
 				margin-bottom: 0;
 			}
+		.wrapper-more .close {
+			float: right;
+			font-size: 20pt;
+			line-height: 20pt;
+			text-decoration: none;
+			color: silver;
+			cursor: pointer;
+		}
 
 	/* switcher */
 	#switcher {

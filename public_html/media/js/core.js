@@ -126,3 +126,10 @@ function toggleMoreDiv(targets, uniqueId, showCallback) {
 		});
 	});
 }
+$(function() {
+	$('.wrapper-more .close').live('click', function(e) {
+		e.preventDefault();
+		var target = $(this).parents('.wrapper-more');
+		target.stop(true, true).slideUp('fast');
+	});
+});
