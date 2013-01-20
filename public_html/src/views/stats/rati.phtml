@@ -1,5 +1,5 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section score-dist" data-user-name="<?php echo $user->getLinkableName() ?>">
+<div class="section score-dist">
 	<h2>
 		<i data-title="Count of all entries scored with given rating, in a bar chart form" class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
@@ -132,7 +132,8 @@
 
 
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section score-time-dist" data-user-name="<?php echo $user->getLinkableName() ?>">
+<div class="sections">
+<div class="section score-time-dist">
 	<h2>
 		<i data-title="How much time have you spent on titles rated with given score?" class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
@@ -202,6 +203,7 @@
 			</script>
 		<?php endif ?>
 	</div>
+</div>
 </div>
 <?php }); ?>
 

@@ -1,6 +1,5 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
-
-<div class="section">
+<div class="section achi">
 	<h2>
 		<?php if (count($this->users) > 1): ?>
 			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
@@ -80,5 +79,4 @@
 		e.preventDefault();
 	});
 </script>
-
 <?php }); ?>

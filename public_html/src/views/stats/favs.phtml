@@ -1,6 +1,5 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
-
-<div class="section decades" data-user-name="<?php echo $user->getLinkableName() ?>">
+<div class="section decades">
 	<h2>
 		<i data-title="Shows your mean score of titles from any year or decade." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
@@ -94,7 +93,7 @@
 
 
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section creators" data-user-name="<?php echo $user->getLinkableName() ?>">
+<div class="section creators">
 	<h2>
 		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 			<i data-title="Manga authors sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
@@ -190,7 +189,7 @@
 
 
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section genres" data-user-name="<?php echo $user->getLinkableName() ?>">
+<div class="section genres">
 	<h2>
 		<i data-title="Top genres and demographics, sorted by count on your <?php echo $this->mgHelper->amText() ?> list." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>

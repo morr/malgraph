@@ -186,9 +186,9 @@
 						}
 						echo '<div class="user-wrapper">';
 						if ($user->isAnonymous()) {
-							echo '<div class="user anonymous" id="user-' . $user->getRuntimeID() . '">';
+							echo '<div class="user anonymous" id="user-' . $user->getRuntimeID() . '" data-user-name="' . $user->getLinkableName() . '">';
 						} else {
-							echo '<div class="user" id="user-' . $user->getRuntimeID() . '">';
+							echo '<div class="user" id="user-' . $user->getRuntimeID() . '" data-user-name="' . $user->getLinkableName() . '">';
 						}
 						$callback($user, $otherUser);
 						echo '</div>';

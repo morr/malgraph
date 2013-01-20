@@ -2,10 +2,14 @@ $.fn.hasAttr = function(name) {
 	return this.attr(name) !== undefined;
 };
 
+
+
 // scroll scrollable elements
 $(function() {
 	$('.scrollable').jScrollPane({horizontalDragMaxWidth: 0});
 });
+
+
 
 // tooltips
 $(function() {
@@ -76,6 +80,9 @@ $(function() {
 	});
 });
 
+
+
+// "more" wrappers
 function toggleMoreWrappers(targets, data, ajax) {
 	if (typeof ajax == 'undefined') {
 		ajax = true;
@@ -83,7 +90,7 @@ function toggleMoreWrappers(targets, data, ajax) {
 	var url = '/ajax/ajax';
 	$(targets).each(function() {
 		var target = $(this);
-		data['u'] = target.parents('.section').attr('data-user-name');
+		data['u'] = target.parents('.user').attr('data-user-name');
 		data['am'] = target.parents('body').attr('data-am');
 		var uniqueId = JSON.stringify(data);
 		if (target.data('unique-id') == uniqueId) {
@@ -109,7 +116,6 @@ function toggleMoreWrappers(targets, data, ajax) {
 $(function() {
 	$('.wrapper-more .close').live('click', function(e) {
 		e.preventDefault();
-		var target = $(this).parents('.wrapper-more');
-		target.stop(true, true).slideUp('fast');
+		$(this).parents('.users').find('.wrapper-more').stop(true, true).slideUp('fast');
 	});
 });

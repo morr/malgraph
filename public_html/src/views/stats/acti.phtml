@@ -1,5 +1,5 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section acti-line-daily" data-user-name="<?php echo $user->getLinkableName() ?>">
+<div class="section acti-line-daily">
 	<h2>
 		<i data-title="Number of titles you've completed within given day. Shows last three weeks with 24h accuracy." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
@@ -71,7 +71,7 @@
 
 
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section acti-line-monthly" data-user-name="<?php echo $user->getLinkableName() ?>">
+<div class="section acti-line-monthly">
 	<h2>
 		<i data-title="Number of titles you've completed within given month." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
