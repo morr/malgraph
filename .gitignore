@@ -1,0 +1,13 @@
+#cache stuff
+logs
+scripts
+public_html/data/cache
+public_html/data/mirror
+public_html/data/anons.json
+public_html/data/globals.json
+public_html/data/mg.log
+
+#ide
+tags
+cscope*
+*.swp
