@@ -49,7 +49,7 @@ class IndexController extends AbstractController {
 
 		foreach ($userNames as &$userName) {
 			$userName = trim($userName);
-			if (!preg_match('/^=?[-_0-9A-Za-z]{2,}$/', $userName)) {
+			if (!preg_match('/^=?[-_0-9A-Za-z]{2,16}$/', $userName)) {
 				$this->forward($this->mgHelper->constructUrl('index', 'wrong-query?' . $userName));
 				return;
 			}
