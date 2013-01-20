@@ -470,9 +470,6 @@ class StatsController extends AbstractController {
 			$actiInfo['mean-time'] = $actiInfo['total-time'] / ((time() - $earliest) / (24. * 3600.0));
 
 			//day periods
-			$models = [];
-			$models[AMModel::TYPE_ANIME] = new AnimeModel();
-			$models[AMModel::TYPE_MANGA] = new MangaModel();
 			for ($daysBack = 21; $daysBack >= 0; $daysBack --) {
 				$dayPeriod = [];
 				foreach ($u->getHistory($this->view->am)->getEntriesByDaysAgo($daysBack) as $entry) {
