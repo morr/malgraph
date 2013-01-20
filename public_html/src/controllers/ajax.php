@@ -125,6 +125,14 @@ class AjaxController extends AbstractController {
 							$this->view->creator = $creatorEntry;
 						}
 					}
+				} else {
+					foreach ($list->getAMModel()->getKeys() as $key) {
+						foreach ($list->getAMModel()->get($key, AbstractModel::CACHE_POLICY_FORCE_CACHE)->getCreators() as $creatorEntry) {
+							if ($creatorEntry->getID() == $creator) {
+								$this->view->creator = $creatorEntry;
+							}
+						}
+					}
 				}
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
@@ -133,12 +141,19 @@ class AjaxController extends AbstractController {
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getGenre($genre);
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->genre = $genre;
 				$this->view->entries = $list->getEntries($filter);
 				if (!empty($this->view->entries)) {
 					foreach (reset($this->view->entries)->getAMEntry()->getGenres() as $genreEntry) {
 						if ($genreEntry->getID() == $genre) {
 							$this->view->genre = $genreEntry;
+						}
+					}
+				} else {
+					foreach ($list->getAMModel()->getKeys() as $key) {
+						foreach ($list->getAMModel()->get($key, AbstractModel::CACHE_POLICY_FORCE_CACHE)->getGenres() as $genreEntry) {
+							if ($genreEntry->getID() == $genre) {
+								$this->view->genre = $genreEntry;
+							}
 						}
 					}
 				}
