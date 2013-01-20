@@ -84,33 +84,36 @@
 						<div class="clear"></div>
 					</div>
 
-					<div class="am-actions">
-						<?php
-							$menu = [
-								['controller' => 'stats', 'action' => 'list', 'text' => 'List'],
-								['controller' => 'stats', 'action' => 'rati', 'text' => 'Ratings'],
-								['controller' => 'stats', 'action' => 'acti', 'text' => 'Activity'],
-								['controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'],
-								['controller' => 'stats', 'action' => 'sug', 'text' => 'Suggestions'],
-								['controller' => 'stats', 'action' => 'achi', 'text' => 'Achievements'],
-							];
-						?>
+					<?php
+						$menu = [
+							['controller' => 'stats', 'action' => 'list', 'text' => 'List'],
+							['controller' => 'stats', 'action' => 'rati', 'text' => 'Ratings'],
+							['controller' => 'stats', 'action' => 'acti', 'text' => 'Activity'],
+							['controller' => 'stats', 'action' => 'favs', 'text' => 'Favorites'],
+							['controller' => 'stats', 'action' => 'sug', 'text' => 'Suggestions'],
+							['controller' => 'stats', 'action' => 'achi', 'text' => 'Achievements'],
+						];
+					?>
+					<div class="actions">
 						<?php foreach (AMModel::getTypes() as $am): ?>
-							<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($am)) ?></p>
-							<ul class="action">
-								<?php foreach ($menu as $item): ?>
-									<?php if (ChibiRegistry::getView()->actionName == $item['action'] and ChibiRegistry::getView()->am == $am): ?>
-										<li class="active">
-									<?php else: ?>
-										<li>
-									<?php endif ?>
-										<a class="waitable" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('stats', $item['action'], [], null, $am) ?>">
-											<?php echo $item['text'] ?>
-										</a>
-									</li>
-								<?php endforeach ?>
-							</ul>
+							<div>
+								<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($am)) ?></p>
+								<ul class="action">
+									<?php foreach ($menu as $item): ?>
+										<?php if (ChibiRegistry::getView()->actionName == $item['action'] and ChibiRegistry::getView()->am == $am): ?>
+											<li class="active">
+										<?php else: ?>
+											<li>
+										<?php endif ?>
+											<a class="waitable" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('stats', $item['action'], [], null, $am) ?>">
+												<?php echo $item['text'] ?>
+											</a>
+										</li>
+									<?php endforeach ?>
+								</ul>
+							</div>
 						<?php endforeach ?>
+						<div class="clear"></div>
 					</div>
 
 					<div class="share">
@@ -159,6 +162,8 @@
 					</ul>
 				<?php endif ?>
 			</div>
+
+			<div class="clear"></div>
 		</div>
 
 		<div id="main">
