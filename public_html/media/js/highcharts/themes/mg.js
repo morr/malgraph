@@ -85,9 +85,13 @@ Highcharts.theme = {
 	},
 
 	tooltip: {
+		backgroundColor: 'auto',
 		style: {
 			pointerEvents: 'none'
-		}
+		},
+		useHTML: true,
+		shadow: false,
+		borderWidth: 0
 	}
 
 };
