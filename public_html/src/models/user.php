@@ -373,18 +373,12 @@ class UserModel extends AbstractModel {
 		if ($key{0} == '=') {
 			if (AnonService::getByAnonName($key)) {
 				$userEntry = parent::get(AnonService::getByAnonName($key), $cachePolicy);
-				if (empty($userEntry)) {
-					throw new InvalidEntryException($key);
-				}
 				$userEntry->setAnonymous(true);
 			} else {
 				throw new InvalidEntryException($key);
 			}
 		} else {
 			$userEntry = parent::get($key, $cachePolicy);
-			if (empty($userEntry)) {
-				return null;
-			}
 			$userEntry->setAnonymous(false);
 		}
 
