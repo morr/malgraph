@@ -293,7 +293,7 @@
 			var target = this.target;
 			var key = target.parents('.export').find('select.color').val();
 			var textarea = target.parents('.export').find('textarea');
-			textarea.val(textarea.val().replace(new RegExp(key + '=([a-f0-9]+)'), key + '=00' + color.substr(1)));
+			textarea.val(textarea.val().replace(new RegExp(key + '=([a-f0-9]+)'), key + '=' + color.substr(1)));
 		}
 
 		/* custom theme editing */
@@ -305,8 +305,8 @@
 			var textarea = $(this).parents('.export').find('textarea');
 			var colorpicker = $(this).parents('.export').find('.colorpicker');
 			var key = $(this).val();
-			var matches = textarea.val().match(new RegExp(key + '=([a-f0-9]+)'));
-			$.farbtastic(colorpicker).setColor('#' + matches[1]);
+			var matches = textarea.val().match(new RegExp(key + '=([a-f0-9]{2})?([a-f0-9]{6})'));
+			$.farbtastic(colorpicker).setColor('#' + matches[2]);
 		});
 
 	});
