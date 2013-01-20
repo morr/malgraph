@@ -140,18 +140,22 @@
 							point: { events: { click: function(e) {
 								toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'reason': 'monthly-activity', 'month': this.category});
 							} } }
-						}, {
-							data: <?php
-								$x = &$this->actiInfo[$user->getID()]['month-periods']['?'];
-								echo json_encode([ [
-									'y' => min(count($x['entries']), $real_max),
-									'real_y' => count($x['entries'])
-								] ] )
-								?>,
-							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'reason': 'monthly-activity', 'month': this.category});
-							} } }
-						}],
+						},
+						<?php if (!empty($this->actiInfo[$user->getID()]['month-periods']['?'])): ?>
+							{
+								data: <?php
+									$x = &$this->actiInfo[$user->getID()]['month-periods']['?'];
+									echo json_encode([ [
+										'y' => min(count($x['entries']), $real_max),
+										'real_y' => count($x['entries'])
+									] ] )
+									?>,
+								point: { events: { click: function(e) {
+									toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'reason': 'monthly-activity', 'month': this.category});
+								} } }
+							}
+						<?php endif ?>
+						],
 					});
 					});
 			</script>
