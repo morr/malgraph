@@ -71,7 +71,7 @@
 								return [$year, $this->yearScores[$user->getID()][$year]];
 							}, $this->favYears[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY)))) ?>,
 							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.decades .wrapper-more'), {'reason': 'year', 'year': this.category});
+								toggleMoreWrappers($('.decades .wrapper-more'), {'sender': 'year', 'year': this.category});
 							} } }
 						}, {
 							name: 'decades',
@@ -79,7 +79,7 @@
 								return [$decade + 4.5, $this->decadeScores[$user->getID()][$decade]]; },
 							$this->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY)))) ?>,
 							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.decades .wrapper-more'), {'reason': 'decade', 'decade': Math.floor(this.category / 10) * 10});
+								toggleMoreWrappers($('.decades .wrapper-more'), {'sender': 'decade', 'decade': Math.floor(this.category / 10) * 10});
 							} } }
 						} ],
 						plotOptions: { column: { pointWidth: 17 } }
@@ -182,7 +182,7 @@
 <script type="text/javascript">
 	$('#user-<?php echo $user->getRuntimeID() ?> .creators .more-trigger').click(function(e) {
 		e.preventDefault();
-		toggleMoreWrappers($('.creators .wrapper-more'), {'reason': 'creator', 'creator': $(this).attr('data-id')});
+		toggleMoreWrappers($('.creators .wrapper-more'), {'sender': 'creator', 'creator': $(this).attr('data-id')});
 	});
 </script>
 <?php }); ?>
@@ -258,7 +258,7 @@
 <script type="text/javascript">
 	$('#user-<?php echo $user->getRuntimeID() ?> .genres .more-trigger').click(function(e) {
 		e.preventDefault();
-		toggleMoreWrappers($('.genres .wrapper-more'), {'reason': 'genre', 'genre': $(this).attr('data-id')});
+		toggleMoreWrappers($('.genres .wrapper-more'), {'sender': 'genre', 'genre': $(this).attr('data-id')});
 	});
 </script>
 <?php }); ?>

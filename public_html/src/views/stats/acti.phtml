@@ -57,7 +57,7 @@
 					series: [ {
 						data: <?php echo json_encode(array_map(function($p) { return count($p); }, array_values($this->actiInfo[$user->getID()]['day-periods']))) ?>,
 						point: { events: { click: function(e) {
-							toggleMoreWrappers($('.acti-line-daily .wrapper-more'), {'reason': 'daily-activity', 'days-ago': this.category});
+							toggleMoreWrappers($('.acti-line-daily .wrapper-more'), {'sender': 'daily-activity', 'days-ago': this.category});
 						} } }
 					} ],
 					plotOptions: { column: { pointWidth: 17 } }
@@ -138,7 +138,7 @@
 								}, array_keys($this->actiInfo[$user->getID()]['month-periods'])))
 								?>,
 							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'reason': 'monthly-activity', 'month': this.category});
+								toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'sender': 'monthly-activity', 'month': this.category});
 							} } }
 						},
 						<?php if (!empty($this->actiInfo[$user->getID()]['month-periods']['?'])): ?>
@@ -151,7 +151,7 @@
 									] ] )
 									?>,
 								point: { events: { click: function(e) {
-									toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'reason': 'monthly-activity', 'month': this.category});
+									toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'sender': 'monthly-activity', 'month': this.category});
 								} } }
 							}
 						<?php endif ?>

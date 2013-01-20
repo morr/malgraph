@@ -3,27 +3,27 @@ require_once 'src/controllers/abstract.php';
 require_once 'src/models/user/listservice.php';
 
 class AjaxController extends AbstractController {
-	const REASON_SCORE = 'score';
-	const REASON_SCORE_TIME = 'score-time';
-	const REASON_YEAR = 'year';
-	const REASON_DECADE = 'decade';
-	const REASON_CREATOR = 'creator';
-	const REASON_GENRE = 'genre';
-	const REASON_DAILY_ACTIVITY = 'daily-activity';
-	const REASON_MONTHLY_ACTIVITY = 'monthly-activity';
-	const REASON_UNKNOWN = 'unknown';
+	const SENDER_SCORE = 'score';
+	const SENDER_SCORE_TIME = 'score-time';
+	const SENDER_YEAR = 'year';
+	const SENDER_DECADE = 'decade';
+	const SENDER_CREATOR = 'creator';
+	const SENDER_GENRE = 'genre';
+	const SENDER_DAILY_ACTIVITY = 'daily-activity';
+	const SENDER_MONTHLY_ACTIVITY = 'monthly-activity';
+	const SENDER_UNKNOWN = 'unknown';
 
-	public static function getReasons() {
+	public static function getSenders() {
 		return [
-			self::REASON_SCORE,
-			self::REASON_SCORE_TIME,
-			self::REASON_YEAR,
-			self::REASON_DECADE,
-			self::REASON_CREATOR,
-			self::REASON_GENRE,
-			self::REASON_DAILY_ACTIVITY,
-			self::REASON_MONTHLY_ACTIVITY,
-			self::REASON_UNKNOWN
+			self::SENDER_SCORE,
+			self::SENDER_SCORE_TIME,
+			self::SENDER_YEAR,
+			self::SENDER_DECADE,
+			self::SENDER_CREATOR,
+			self::SENDER_GENRE,
+			self::SENDER_DAILY_ACTIVITY,
+			self::SENDER_MONTHLY_ACTIVITY,
+			self::SENDER_UNKNOWN
 		];
 	}
 
@@ -60,11 +60,11 @@ class AjaxController extends AbstractController {
 			throw new Exception('User is blocked');
 		}
 
-		$reason = ChibiRegistry::getHelper('input')->getStringSafe('reason');
-		if (!in_array($reason, self::getReasons())) {
-			$reason = self::REASON_UNKNOWN;
+		$sender = ChibiRegistry::getHelper('input')->getStringSafe('sender');
+		if (!in_array($sender, self::getSenders())) {
+			$sender = self::SENDER_UNKNOWN;
 		}
-		$this->view->reason = $reason;
+		$this->view->sender = $sender;
 	}
 
 
@@ -74,8 +74,8 @@ class AjaxController extends AbstractController {
 		$filter = null;
 		$list = $this->view->user->getList($this->view->am);
 
-		switch ($this->view->reason) {
-			case self::REASON_SCORE:
+		switch ($this->view->sender) {
+			case self::SENDER_SCORE:
 				$score = $this->inputHelper->getInt('score');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getScore($score);
@@ -83,7 +83,7 @@ class AjaxController extends AbstractController {
 				$this->view->score = $score;
 				$this->view->entries = $list->getEntries($filter);
 				break;
-			case self::REASON_SCORE_TIME:
+			case self::SENDER_SCORE_TIME:
 				$score = $this->inputHelper->getInt('score');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getScore($score);
@@ -91,7 +91,7 @@ class AjaxController extends AbstractController {
 				$this->view->score = $score;
 				$this->view->entries = $list->getEntries($filter);
 				break;
-			case self::REASON_YEAR:
+			case self::SENDER_YEAR:
 				$year = $this->inputHelper->getInt('year');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = function(UserListEntry $entry) use ($year) {
@@ -102,7 +102,7 @@ class AjaxController extends AbstractController {
 				$this->view->entries = $list->getEntries($filter);
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
-			case self::REASON_DECADE:
+			case self::SENDER_DECADE:
 				$decade = $this->inputHelper->getInt('decade');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = function(UserListEntry $entry) use ($decade) {
@@ -113,7 +113,7 @@ class AjaxController extends AbstractController {
 				$this->view->entries = $list->getEntries($filter);
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
-			case self::REASON_CREATOR:
+			case self::SENDER_CREATOR:
 				$creator = $this->inputHelper->getInt('creator');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getCreator($creator);
@@ -136,7 +136,7 @@ class AjaxController extends AbstractController {
 				}
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
-			case self::REASON_GENRE:
+			case self::SENDER_GENRE:
 				$genre = $this->inputHelper->getInt('genre');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getGenre($genre);
@@ -159,12 +159,12 @@ class AjaxController extends AbstractController {
 				}
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
-			case self::REASON_DAILY_ACTIVITY:
+			case self::SENDER_DAILY_ACTIVITY:
 				$daysAgo = $this->inputHelper->getInt('days-ago');
 				$this->view->daysAgo = $daysAgo;
 				$this->view->entries = $this->view->user->getHistory($this->view->am)->getEntriesByDaysAgo($daysAgo);
 				break;
-			case self::REASON_MONTHLY_ACTIVITY:
+			case self::SENDER_MONTHLY_ACTIVITY:
 				$monthPeriod = $this->inputHelper->getStringSafe('month');
 				$filter1 = UserListFilters::getCompleted();
 				$filter2 = function(UserListEntry $e) use ($monthPeriod) {

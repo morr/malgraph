@@ -118,7 +118,7 @@
 						series: [ {
 							data: <?php echo json_encode(array_values($this->scoreDistribution[$user->getID()]->getGroupsSizes())) ?>,
 							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.score-dist .wrapper-more'), {'reason': 'score', 'score': this.category});
+								toggleMoreWrappers($('.score-dist .wrapper-more'), {'sender': 'score', 'score': this.category});
 							} } }
 						} ]
 					});
@@ -194,7 +194,7 @@
 						series: [ {
 							data: <?php echo json_encode(array_map(function($x) { return $x / 60.; }, array_values($this->scoreDurationDistribution[$user->getID()]->getGroupsSizes()))) ?>,
 							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.score-time-dist .wrapper-more'), {'reason': 'score-time', 'score': this.category});
+								toggleMoreWrappers($('.score-time-dist .wrapper-more'), {'sender': 'score-time', 'score': this.category});
 							} } }
 						} ]
 					});

@@ -1,16 +1,16 @@
 <p>
 	<a class="close">&times;</a>
-	<?php if ($this->reason == AjaxController::REASON_SCORE or $this->reason == AjaxController::REASON_SCORE_TIME): ?>
+	<?php if ($this->sender == AjaxController::SENDER_SCORE or $this->sender == AjaxController::SENDER_SCORE_TIME): ?>
 		<?php if ($this->score == 0): ?>
 			Unrated titles
 		<?php else: ?>
 			Titles rated with <?php echo $this->score ?>
 		<?php endif ?>
 
-	<?php elseif ($this->reason == AjaxController::REASON_YEAR or $this->reason == AjaxController::REASON_DECADE): ?>
+	<?php elseif ($this->sender == AjaxController::SENDER_YEAR or $this->sender == AjaxController::SENDER_DECADE): ?>
 		<?php echo ucfirst($this->mgHelper->amText()) ?>
 		&nbsp;from&nbsp;
-		<?php if ($this->reason == AjaxController::REASON_YEAR): ?>
+		<?php if ($this->sender == AjaxController::SENDER_YEAR): ?>
 			<?php if (!$this->year): ?>
 				unknown year
 			<?php else: ?>
@@ -24,17 +24,17 @@
 			<?php endif ?>
 		<?php endif ?>
 
-	<?php elseif ($this->reason == AjaxController::REASON_GENRE): ?>
+	<?php elseif ($this->sender == AjaxController::SENDER_GENRE): ?>
 		<?php echo ucfirst($this->mgHelper->amText()) ?>
 		&nbsp;tagged as&nbsp;
 		<?php echo ucfirst($this->genre->getName()) ?>
 
-	<?php elseif ($this->reason == AjaxController::REASON_CREATOR): ?>
+	<?php elseif ($this->sender == AjaxController::SENDER_CREATOR): ?>
 		<?php echo ucfirst($this->mgHelper->amText()) ?>
 		&nbsp;from&nbsp;
 		<?php echo $this->creator->getName() ?>
 
-	<?php elseif ($this->reason == AjaxController::REASON_DAILY_ACTIVITY): ?>
+	<?php elseif ($this->sender == AjaxController::SENDER_DAILY_ACTIVITY): ?>
 		<?php echo $this->am == AMModel::TYPE_MANGA ? 'Chapters' : 'Episodes' ?>
 		&nbsp;from&nbsp;
 		<?php if ($this->daysAgo == 0): ?>
@@ -45,7 +45,7 @@
 			<?php echo $this->daysAgo ?> days ago
 		<?php endif ?>
 
-	<?php elseif ($this->reason == AjaxController::REASON_MONTHLY_ACTIVITY): ?>
+	<?php elseif ($this->sender == AjaxController::SENDER_MONTHLY_ACTIVITY): ?>
 		<?php if ($this->monthPeriod == '?'): ?>
 			Titles with unspecified completion or start date
 		<?php else: ?>
@@ -68,7 +68,7 @@
 
 
 <?php if (empty($this->entries)): ?>
-	<?php if (($this->reason == AjaxController::REASON_SCORE or $this->reason == AjaxController::REASON_SCORE_TIME) and $this->score == 0): ?>
+	<?php if (($this->sender == AjaxController::SENDER_SCORE or $this->sender == AjaxController::SENDER_SCORE_TIME) and $this->score == 0): ?>
 		<p>Horray! No unrated titles.</p>
 	<?php else: ?>
 		<p>None!</p>
@@ -83,9 +83,9 @@
 				<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
 					<?php echo $amEntry->getTitle() ?>
 				</a>
-				<?php if ($this->reason == AjaxController::REASON_SCORE or $this->reason == AjaxController::REASON_SCORE_TIME): ?>
+				<?php if ($this->sender == AjaxController::SENDER_SCORE or $this->sender == AjaxController::SENDER_SCORE_TIME): ?>
 					&nbsp;(<?php echo $entry->getCompletedDuration() ?> min.)
-				<?php elseif ($this->reason == AjaxController::REASON_YEAR or $this->reason == AjaxController::REASON_DECADE): ?>
+				<?php elseif ($this->sender == AjaxController::SENDER_YEAR or $this->sender == AjaxController::SENDER_DECADE): ?>
 					&nbsp;(
 					<?php if ($entry->getScore() == 0): ?>
 						unrated
@@ -93,7 +93,7 @@
 						rated with <?php echo $entry->getScore() ?>
 					<?php endif ?>
 					)
-				<?php elseif ($this->reason == AjaxController::REASON_GENRE or $this->reason == AjaxController::REASON_CREATOR): ?>
+				<?php elseif ($this->sender == AjaxController::SENDER_GENRE or $this->sender == AjaxController::SENDER_CREATOR): ?>
 					&nbsp;(
 						<?php if ($entry->getScore() == 0): ?>
 							not rated
@@ -101,14 +101,14 @@
 							rated&nbsp;with&nbsp;<?php echo $entry->getScore() ?>
 						<?php endif ?>
 					, <?php echo $entry->getCompletedDuration() ?>&nbsp;min.)
-				<?php elseif ($this->reason == AjaxController::REASON_DAILY_ACTIVITY): ?>
+				<?php elseif ($this->sender == AjaxController::SENDER_DAILY_ACTIVITY): ?>
 					&nbsp;&ndash;&nbsp;
 					<?php if ($entry->getType() == AMModel::TYPE_MANGA): ?>
 						chap. <?php echo $entry->getChapter() ?>
 					<?php else: ?>
 						ep. <?php echo $entry->getEpisode() ?>
 					<?php endif ?>
-				<?php elseif ($this->reason == AjaxController::REASON_MONTHLY_ACTIVITY): ?>
+				<?php elseif ($this->sender == AjaxController::SENDER_MONTHLY_ACTIVITY): ?>
 					&nbsp;(<?php echo $entry->getStartDate() ?>&nbsp;&mdash;&nbsp;<?php echo $entry->getFinishDate() ?>)
 				<?php endif ?>
 			</li>
