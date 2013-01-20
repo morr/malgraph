@@ -51,7 +51,7 @@
 		<?php else: ?>
 			Titles from <?php echo $this->monthPeriod ?>
 		<?php endif ?>
-	<?php endif ?>
+	<?php endif ?>:
 
 	<?php if (!empty($this->entries)): ?>
 		&nbsp;(<?php echo count($this->entries) ?>
@@ -59,11 +59,11 @@
 				<?php if (!$this->meanScore): ?>
 					, none rated
 				<?php else: ?>
-					, mean rating: <?php echo sprintf('%.02f', $this->meanScore) ?>
+					, mean score: <?php echo sprintf('%.02f', $this->meanScore) ?>
 				<?php endif ?>
 			<?php endif ?>
 		)
-	<?php endif ?>:
+	<?php endif ?>
 </p>
 
 
@@ -96,7 +96,7 @@
 				<?php elseif ($this->reason == AjaxController::REASON_GENRE or $this->reason == AjaxController::REASON_CREATOR): ?>
 					&nbsp;(
 						<?php if ($entry->getScore() == 0): ?>
-							unknown&nbsp;rating&nbsp;&ndash; assumed&nbsp;mean
+							not rated
 						<?php else: ?>
 							rated&nbsp;with&nbsp;<?php echo $entry->getScore() ?>
 						<?php endif ?>
