@@ -1,5 +1,5 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section acti-line-daily">
+<div class="section acti-line-daily" data-user-name="<?php echo $user->getLinkableName() ?>">
 	<h2>
 		<i data-title="Number of titles you've completed within given day. Shows last three weeks with 24h accuracy." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
@@ -57,18 +57,7 @@
 					series: [ {
 						data: <?php echo json_encode(array_map(function($p) { return count($p); }, array_values($this->actiInfo[$user->getID()]['day-periods']))) ?>,
 						point: { events: { click: function(e) {
-							var target = $('#user-<?php echo $user->getRuntimeID() ?> .acti-line-daily .wrapper-more');
-							var category = this.category;
-							toggleMoreDiv(target, category, function(postCallback) {
-								var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
-								var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
-								data['reason'] = 'daily-activity';
-								data['days-ago'] = category;
-								$.get(url, data, function(response) {
-									$(target).html(response);
-									postCallback();
-								});
-							});
+							toggleMoreWrappers($('.acti-line-daily .wrapper-more'), {'reason': 'daily-activity', 'days-ago': this.category});
 						} } }
 					} ],
 					plotOptions: { column: { pointWidth: 17 } }
@@ -82,7 +71,7 @@
 
 
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section acti-line-monthly">
+<div class="section acti-line-monthly" data-user-name="<?php echo $user->getLinkableName() ?>">
 	<h2>
 		<i data-title="Number of titles you've completed within given month." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
@@ -149,18 +138,7 @@
 								}, array_keys($this->actiInfo[$user->getID()]['month-periods'])))
 								?>,
 							point: { events: { click: function(e) {
-								var target = $('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .wrapper-more');
-								var category = this.category;
-								toggleMoreDiv(target, category, function(postCallback) {
-									var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
-									var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
-									data['reason'] = 'monthly-activity';
-									data['month'] = category;
-									$.get(url, data, function(response) {
-										$(target).html(response);
-										postCallback();
-									});
-								});
+								toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'reason': 'monthly-activity', 'month': this.category});
 							} } }
 						}, {
 							data: <?php
@@ -171,18 +149,7 @@
 								] ] )
 								?>,
 							point: { events: { click: function(e) {
-								var target = $('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .wrapper-more');
-								var category = this.category;
-								toggleMoreDiv(target, category, function(postCallback) {
-									var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
-									var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
-									data['reason'] = 'monthly-activity';
-									data['month'] = category;
-									$.get(url, data, function(response) {
-										$(target).html(response);
-										postCallback();
-									});
-								});
+								toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'reason': 'monthly-activity', 'month': this.category});
 							} } }
 						}],
 					});

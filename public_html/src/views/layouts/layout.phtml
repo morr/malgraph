@@ -11,9 +11,9 @@
 </head>
 <?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 	<?php if (count(ChibiRegistry::getView()->userNames) > 1): ?>
-		<body class="user-mode compare-mode">
+		<body class="user-mode compare-mode" data-am="<?php echo ChibiRegistry::getView()->am ?>">
 	<?php else: ?>
-		<body class="user-mode">
+		<body class="user-mode" data-am="<?php echo ChibiRegistry::getView()->am ?>">
 	<?php endif ?>
 <?php else: ?>
 	<body>

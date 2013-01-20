@@ -1,5 +1,5 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section score-dist">
+<div class="section score-dist" data-user-name="<?php echo $user->getLinkableName() ?>">
 	<h2>
 		<i data-title="Count of all entries scored with given rating, in a bar chart form" class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
@@ -40,15 +40,15 @@
 				</li>
 			</ul>
 
-			<div class="wrapper wrapper-target">
+			<div class="wrapper-target">
 				<div class="target"></div>
 				<div class="clear"></div>
 			</div>
 
-			<div class="wrapper wrapper-more">
+			<div class="wrapper-more">
 			</div>
 
-			<div class="wrapper wrapper-export">
+			<div class="wrapper-export">
 				<div class="popup export">
 					<div class="title">
 						<p>Export your rating distribution</p>
@@ -118,18 +118,7 @@
 						series: [ {
 							data: <?php echo json_encode(array_values($this->scoreDistribution[$user->getID()]->getGroupsSizes())) ?>,
 							point: { events: { click: function(e) {
-								var target = $('#user-<?php echo $user->getRuntimeID() ?> .score-dist .wrapper-more');
-								var category = this.category;
-								toggleMoreDiv(target, category, function(postCallback) {
-									var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
-									var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
-									data['reason'] = 'score';
-									data['score'] = category;
-									$.get(url, data, function(response) {
-										$(target).html(response);
-										postCallback();
-									});
-								});
+								toggleMoreWrappers($('.score-dist .wrapper-more'), {'reason': 'score', 'score': this.category});
 							} } }
 						} ]
 					});
@@ -143,7 +132,7 @@
 
 
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section score-time-dist">
+<div class="section score-time-dist" data-user-name="<?php echo $user->getLinkableName() ?>">
 	<h2>
 		<i data-title="How much time have you spent on titles rated with given score?" class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
@@ -177,12 +166,12 @@
 				</li>
 			</ul>
 
-			<div class="wrapper wrapper-target">
+			<div class="wrapper-target">
 				<div class="target"></div>
 				<div class="clear"></div>
 			</div>
 
-			<div class="wrapper wrapper-more">
+			<div class="wrapper-more">
 			</div>
 
 			<script type="text/javascript">
@@ -205,18 +194,7 @@
 						series: [ {
 							data: <?php echo json_encode(array_map(function($x) { return $x / 60.; }, array_values($this->scoreDurationDistribution[$user->getID()]->getGroupsSizes()))) ?>,
 							point: { events: { click: function(e) {
-								var target = $('#user-<?php echo $user->getRuntimeID() ?> .score-time-dist .wrapper-more');
-								var category = this.category;
-								toggleMoreDiv(target, category, function(postCallback) {
-									var url = '<?php echo UrlHelper::url('ajax/ajax') ?>';
-									var data = <?php echo json_encode(['u' => $user->getLinkableName(), 'am' => $this->am]) ?>;
-									data['reason'] = 'score-time';
-									data['score'] = category;
-									$.get(url, data, function(response) {
-										$(target).html(response);
-										postCallback();
-									});
-								});
+								toggleMoreWrappers($('.score-time-dist .wrapper-more'), {'reason': 'score-time', 'score': this.category});
 							} } }
 						} ]
 					});
