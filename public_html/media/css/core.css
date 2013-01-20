@@ -294,7 +294,7 @@ a { color: #1969CB; text-decoration: none; }
 		color: white !important;
 		border-radius: 0.5em;
 		font-size: 8pt !important;
-		line-height: 14pt !important;
+		line-height: 150% !important;
 		text-align: center;
 		font-weight: normal;
 		padding: 4px 8px !important;

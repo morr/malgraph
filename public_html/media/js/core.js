@@ -48,17 +48,7 @@ $(function() {
 			var posAt = $(target).hasAttr('data-position-at') ? $(target).attr('data-position-at') : 'center bottom';
 
 			var timeout = window.setTimeout(function() {
-				var length = title.length;
-				if (length < 30) {
-					c = 'short';
-				} else if (length < 70) {
-					c = 'medium';
-				} else if (length < 110) {
-					c = 'big';
-				} else {
-					c = 'big';
-				}
-				var div = $('<div class="tooltip"/>').addClass(c).append($('<div>').text(title));
+				var div = $('<div class="tooltip"/>').append($('<div>').text(title));
 				$(target).data('tooltip', div);
 
 				if ($(target).is('th') || $(target).is('td')) {
