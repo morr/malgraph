@@ -108,6 +108,7 @@
 					<?php else: ?>
 						ep. <?php echo $entry->getEpisode() ?>
 					<?php endif ?>
+					&nbsp;(<?php echo date('Y-m-d H:i', $entry->getTimestamp()) ?>&nbsp;UTC)
 				<?php elseif ($this->sender == AjaxController::SENDER_MONTHLY_ACTIVITY): ?>
 					&nbsp;(<?php echo $entry->getStartDate() ?>&nbsp;&mdash;&nbsp;<?php echo $entry->getFinishDate() ?>)
 				<?php endif ?>

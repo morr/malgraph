@@ -30,9 +30,9 @@ class UserModel extends AbstractModel {
 		foreach (AMModel::getTypes() as $type) {
 			$list = $userEntry->getList($type);
 			if ($type == AMModel::TYPE_ANIME) {
-				$contents = $documents[self::URL_ANIME2];
+				list(, $contents) = $documents[self::URL_ANIME2];
 			} else {
-				$contents = $documents[self::URL_MANGA2];
+				list(, $contents) = $documents[self::URL_MANGA2];
 			}
 
 			if (strpos($contents, 'This list has been made private by the owner') !== false) {
@@ -45,9 +45,9 @@ class UserModel extends AbstractModel {
 		foreach (AMModel::getTypes() as $type) {
 			$list = $userEntry->getList($type);
 			if ($type == AMModel::TYPE_ANIME) {
-				$contents = $documents[self::URL_ANIME1];
+				list(, $contents) = $documents[self::URL_ANIME1];
 			} else {
-				$contents = $documents[self::URL_MANGA1];
+				list(, $contents) = $documents[self::URL_MANGA1];
 			}
 
 			$doc = new DOMDocument;
@@ -101,7 +101,7 @@ class UserModel extends AbstractModel {
 	}
 
 	protected function loadProfile(UserEntry &$userEntry, array &$documents) {
-		$contents = $documents[self::URL_PROFILE];
+		list(, $contents) = $documents[self::URL_PROFILE];
 
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
@@ -254,7 +254,7 @@ class UserModel extends AbstractModel {
 	}
 
 	protected function loadHistory(UserEntry &$userEntry, array &$documents) {
-		$contents = $documents[self::URL_HISTORY];
+		list($headers, $contents) = $documents[self::URL_HISTORY];
 
 		$doc = new DOMDocument;
 		$doc->preserveWhiteSpace = false;
@@ -285,13 +285,19 @@ class UserModel extends AbstractModel {
 
 			//parse time
 			//That's what MAL servers output for MG client
+			if (isset($headers['Date'])) {
+				date_default_timezone_set('UTC');
+				$now = strtotime($headers['Date']);
+			} else {
+				$now = time();
+			}
 			date_default_timezone_set('America/Los_Angeles');
-			$hour =   date('H');
-			$minute = date('i');
-			$second = date('s');
-			$day =    date('d');
-			$month =  date('m');
-			$year =   date('Y');
+			$hour =   date('H', $now);
+			$minute = date('i', $now);
+			$second = date('s', $now);
+			$day =    date('d', $now);
+			$month =  date('m', $now);
+			$year =   date('Y', $now);
 			$dateString = $node->childNodes->item(2)->nodeValue;
 			if (preg_match('/(\d*) seconds? ago/', $dateString, $matches)) {
 				$second -= intval($matches[1]);
