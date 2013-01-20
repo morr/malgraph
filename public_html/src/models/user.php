@@ -198,7 +198,7 @@ class UserModel extends AbstractModel {
 	protected function loadClubs(UserEntry &$userEntry) {
 		$userEntry->resetClubs();
 		$url = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_CLUBS, ['user-id' => $userEntry->getID()]);
-		$contents = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
+		list(, $contents) = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
 		if (empty($contents)) {
 			throw new DownloadException($url);
 		}
@@ -227,7 +227,7 @@ class UserModel extends AbstractModel {
 		$page = 6 * 7;
 		do {
 			$url = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_FRIENDS, ['user-id' => $userEntry->getID(), 'shift' => $shift]);
-			$contents = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
+			list(, $contents) = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
 			if (empty($contents)) {
 				throw new DownloadException($url);
 			}
@@ -350,7 +350,8 @@ class UserModel extends AbstractModel {
 		$urls[self::URL_HISTORY] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_HISTORY, ['user' => $userEntry->getUserName()]);
 
 		$documents = ChibiRegistry::getInstance()->getHelper('mg')->downloadMulti($urls);
-		foreach ($documents as $type => $contents) {
+		foreach ($documents as $type => $result) {
+			list(, $contents) = $result;
 			if (empty($contents)) {
 				throw new DownloadException($urls[$type]);
 			}

@@ -152,6 +152,30 @@ class MGHelper extends ChibiHelper {
 		return $documents[0];
 	}
 
+	private function parseDownloadResult($result) {
+		list($headerLines, $contents) = explode("\r\n\r\n", $result, 2);
+		$headers = [];
+		$headerLines = explode("\r\n", $headerLines);
+		array_shift($headerLines);
+		foreach ($headerLines as $line) {
+			list($key, $value) = explode(': ', $line);
+			if (!isset($headers[$key])) {
+				$headers[$key] = $value;
+			} elseif (is_array($headers[$key])) {
+				$headers[$key] []= $value;
+			} else {
+				$headers[$key] = [$headers[$key]];
+				$headers[$key] []= $value;
+			}
+		}
+
+		$contents = '<?xml encoding="utf-8" ?>' . $contents;
+		//別ハックは、	Another hack
+		//私は静かに	makes me
+		//泣きます		quietly weep
+		return [$headers, $contents];
+	}
+
 	public function downloadMulti(array $urls) {
 		$documents = [];
 
@@ -163,7 +187,8 @@ class MGHelper extends ChibiHelper {
 				$mirror = implode(DIRECTORY_SEPARATOR, [ChibiConfig::getInstance()->chibi->runtime->rootFolder, ChibiConfig::getInstance()->misc->mirrorDir, $mirror . '.dat']);
 				$mirrors[$key] = $mirror;
 				if (file_exists($mirror)) {
-					$documents[$key] = file_get_contents($mirror);
+					$result = file_get_contents($mirror);
+					$documents[$key] = self::parseDownloadResult($result);
 					unset($nurls[$key]);
 				}
 			}
@@ -193,6 +218,7 @@ class MGHelper extends ChibiHelper {
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 			curl_setopt($ch, CURLOPT_AUTOREFERER, 0);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_HEADER, 1);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 			curl_multi_add_handle($multicurl, $ch);
@@ -216,19 +242,13 @@ class MGHelper extends ChibiHelper {
 		foreach ($urls as $key => $url) {
 			$ch = $chs[$key];
 			curl_multi_remove_handle($multicurl, $ch);
-			$documents[$key] = curl_multi_getcontent($ch);
+			$result = curl_multi_getcontent($ch);
+			$documents[$key] = self::parseDownloadResult($result);
 			if (!empty(ChibiConfig::getInstance()->misc->mirrorDir)) {
-				file_put_contents($mirrors[$key], $documents[$key]);
+				file_put_contents($mirrors[$key], $result);
 			}
 		}
 		curl_multi_close($multicurl);
-
-		foreach (array_keys($documents) as $key) {
-			$documents[$key] = '<?xml encoding="utf-8" ?>' . $documents[$key];
-			//別ハックは、	Another hack
-			//私は静かに	makes me
-			//泣きます		quietly weep
-		}
 
 		return $documents;
 	}

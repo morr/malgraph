@@ -24,7 +24,7 @@ abstract class AMModel extends AbstractModel {
 		$url = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL, ['type' => $type, 'id' => $id]);
 		$document = new DOMDocument;
 		$document->preserveWhiteSpace = false;
-		$contents = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
+		list(, $contents) = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
 		ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
 		if (empty($contents)) {
 			throw new DownloadException($url);
