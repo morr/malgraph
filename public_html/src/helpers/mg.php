@@ -153,7 +153,9 @@ class MGHelper extends ChibiHelper {
 	}
 
 	private function parseDownloadResult($result) {
-		list($headerLines, $contents) = explode("\r\n\r\n", $result, 2);
+		$pos = strpos($result, "\r\n\r\n");
+		$headerLines = substr($result, 0, $pos);
+		$contents = substr($result, $pos + 4);
 		$headers = [];
 		$headerLines = explode("\r\n", $headerLines);
 		array_shift($headerLines);
