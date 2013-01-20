@@ -85,42 +85,49 @@ class MGHelper extends ChibiHelper {
 	}
 
 	public function fixDate($str) {
-		$str = str_replace('  ', ' ', $str);
-		if($str == '?' or $str == 'Not available')
+		$str = trim(str_replace('  ', ' ', $str));
+		$monthNames = array_merge(
+			array_flip([1 => 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']),
+			array_flip([1 => 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'])
+		);
+		$day = null;
+		$month = null;
+		$year = null;
+		if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $str, $matches)) {
+			list(, $year, $month, $day) = $matches;
+		} elseif (preg_match('/^(\w{3,}) (\d{1,2})(\w*,?) (\d{4})$/', $str, $matches)) {
+			list (, $month, $day, , $year) = $matches;
+		} elseif (preg_match('/^(\d{1,2})(\w*) (\w{3,}),? (\d{4})$/', $str, $matches)) {
+			list (, $day, , $month, $year) = $matches;
+		} elseif (preg_match('/^(\d{4}),? (\w{3,}),? (\d{1,2})(\w*)$/', $str, $matches)) {
+			list (, $year, $month, $day) = $matches;
+		} elseif (preg_match('/^(\w{3,}),? (\d{4})$/', $str, $matches)) {
+			$month = $matches[1];
+			$year = $matches[2];
+		} elseif (preg_match('/^(\d{4})$/', $str, $matches)) {
+			$year = $matches[1];
+		}
+
+		if (!($month >= 1 and $month <= 12)) {
+			if (isset($monthNames[strtolower($month)])) {
+				$month = $monthNames[strtolower($month)];
+			} else {
+				$month = null;
+			}
+		}
+		$year = intval($year);
+		$day = intval($day);
+
+		if (!$year) {
 			return '?';
-		$monthNames = [
-			['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-			['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-		];
-		$x = explode(' ', $str);
-		if (count($x) == 3) {
-			$month = trim($x[0], ',');
-			$day = $x[1];
-			$year = $x[2];
-			foreach ($monthNames as $t) {
-				$i = array_search($month, $t);
-				if ($i !== false) {
-					$month = $i + 1;
-				}
-			}
-			return sprintf('%04d-%02d-%02d', $year, $month, $day);
-		} elseif(count($x) == 2) {
-			$month = trim($x[0], ',');
-			$year = $x[1];
-			foreach ($monthNames as $t) {
-				$i = array_search($month, $t);
-				if ($i !== false) {
-					$month = $i + 1;
-				}
-			}
-			return sprintf('%04d-%02d-?', $year, $month);
-		} elseif (count($x) == 1 and intval($x[0]) > 0) {
-			if (strpos($x[0], '-') !== false)
-				return $x[0];
-			$year = intval($x[0]);
+		}
+		if (!$month) {
 			return sprintf('%04d-?-?', $year);
 		}
-		return '?';
+		if (!$day) {
+			return sprintf('%04d-%02d-?', $year, $month);
+		}
+		return sprintf('%04d-%02d-%02d', $year, $month, $day);
 	}
 
 	public function parseURL($url) {

@@ -87,8 +87,8 @@ class UserListService {
 	}
 
 	public static function getMonthPeriod(UserListEntry $entry) {
-		$finishedA = explode('-', $entry->getStartDate());
-		$finishedB = explode('-', $entry->getFinishDate());
+		$finishedB = explode('-', $entry->getStartDate());
+		$finishedA = explode('-', $entry->getFinishDate());
 		$yearA = intval($finishedA[0]);
 		$yearB = intval($finishedB[0]);
 		$monthA = isset($finishedA[1]) ? intval($finishedA[1]) : false;

@@ -123,7 +123,7 @@ abstract class UserListEntry {
 	}
 
 	public function setFinishDate($finishDate) {
-		return $this->finishDate;
+		$this->finishDate = $finishDate;
 	}
 
 	public function getAMEntry() {

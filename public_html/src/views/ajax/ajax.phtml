@@ -108,6 +108,8 @@
 					<?php else: ?>
 						ep. <?php echo $entry->getEpisode() ?>
 					<?php endif ?>
+				<?php elseif ($this->reason == AjaxController::REASON_MONTHLY_ACTIVITY): ?>
+					&nbsp;(<?php echo $entry->getStartDate() ?>&nbsp;&mdash;&nbsp;<?php echo $entry->getFinishDate() ?>)
 				<?php endif ?>
 			</li>
 		<?php endforeach ?>
