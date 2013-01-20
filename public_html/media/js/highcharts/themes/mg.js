@@ -1,5 +1,5 @@
 Highcharts.theme = {
-	colors: ['#1969CB', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+	colors: ['#1969CB', '#ED561B', '#50B432', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
 
 	credits: {'enabled': false},
 

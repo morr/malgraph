@@ -116,7 +116,7 @@
 			<script type="text/javascript">
 				$('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .target').each(function() {
 					var chart = new Highcharts.Chart({
-						chart: { renderTo: this, type: 'line', marginTop: 8, marginBottom: 56 },
+						chart: { renderTo: this, type: 'area', marginTop: 8, marginBottom: 56 },
 						xAxis: { categories: <?php echo json_encode(array_keys($this->actiInfo[$user->getID()]['month-periods'])) ?>, labels: { rotation: -45, align: 'right' } },
 						yAxis: { title: {text: 'Count'}, min: 0, max: <?php echo $real_max ?> },
 						tooltip: { formatter: function() {
