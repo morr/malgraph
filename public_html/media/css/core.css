@@ -104,10 +104,10 @@ div.user { background: white; }
 		position: relative;
 	}
 	.compare-mode div.user-wrapper { width: 50%; }
-		.compare-mode div.user-wrapper:first-child { float: right; }
-		.compare-mode div.user-wrapper:nth-child(2) { float: left; }
-			.compare-mode div.user-wrapper:first-child div.user { margin-left: 4px; padding-left: 1em; }
-			.compare-mode div.user-wrapper:nth-child(2) div.user { margin-right: 4px; padding-right: 1em; }
+		.compare-mode div.user-wrapper:first-child { float: left; }
+		.compare-mode div.user-wrapper:nth-child(2) { float: right; }
+			.compare-mode div.user-wrapper:first-child div.user { margin-right: 4px; padding-right: 1em; }
+			.compare-mode div.user-wrapper:nth-child(2) div.user { margin-left: 4px; padding-left: 1em; }
 
 	/* "more" divs */
 	.wrapper-more { margin-top: 1em; display: none; }

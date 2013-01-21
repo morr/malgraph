@@ -175,7 +175,7 @@
 				<?php endif ?>
 
 				<?php function iterateUsers($callback) {
-					$keys = array_reverse(array_keys(ChibiRegistry::getView()->users));
+					$keys = (array_keys(ChibiRegistry::getView()->users));
 					echo '<div class="users">';
 					foreach ($keys as $i => $k) {
 						$user = ChibiRegistry::getView()->users[$k];
