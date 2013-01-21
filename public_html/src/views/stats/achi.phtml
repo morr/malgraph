@@ -41,15 +41,17 @@
 					<a href="#" class="more-trigger">See related titles.</a>
 
 					<div class="wrapper wrapper-more">
-						<?php if ($user->getList($this->am)->isPrivate()): ?>
-							<p>Can&rsquo;t show you titles from a private list.</p>
-						<?php else: ?>
-							<p>
+						<p>
+							<a class="close">&times;</a>
+							<?php if ($user->getList($this->am)->isPrivate()): ?>
+								Can&rsquo;t show you titles from a private list.</p>
+							<?php else: ?>
 								Earned because you
-								&nbsp;<?php echo $this->am == AMModel::TYPE_MANGA ? 'read' : 'watched' ?>
+								&nbsp;<?php echo $this->am == AMModel::TYPE_MANGA ? 'read' : 'watched' ?>:
 								&nbsp;(<?php echo count($ach['entries']) ?>)
-								:
-							</p>
+							<?php endif ?>
+						</p>
+						<?php if (!$user->getList($this->am)->isPrivate()): ?>
 							<ul>
 								<?php foreach ($ach['entries'] as $e): ?>
 									<li>
