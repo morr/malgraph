@@ -55,11 +55,7 @@ $(function() {
 				var div = $('<div class="tooltip"/>').append($('<div>').text(title));
 				$(target).data('tooltip', div);
 
-				if ($(target).is('th') || $(target).is('td')) {
-					$(target).append(div);
-				} else {
-					$(target).after(div);
-				}
+				$('body').append(div);
 				$(div).position({of: $(target), my: posMy, at: posAt, collision: 'fit fit'})
 					.mouseenter(function() { stopTooltipRemoval(target); })
 					.mouseleave(function() { startTooltipRemoval(target); })
