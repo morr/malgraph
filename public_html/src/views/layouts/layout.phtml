@@ -208,7 +208,7 @@
 
 	</div>
 
-	Load: <?php printf('%.02f', microtime(true) - ChibiConfig::getInstance()->chibi->runtime->timeStarted) ?>s
+	<p class="load-time"><?php printf('%.02f', microtime(true) - ChibiConfig::getInstance()->chibi->runtime->timeStarted) ?>s</p>
 
 	<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 		<script type="text/javascript">
