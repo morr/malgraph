@@ -79,7 +79,7 @@ h1, h2, h3 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 					#menu .actions div { float: left; }
 					#menu .actions div:first-child { margin-right: 1em; }
 				#menu .share { clear: both; }
-			.compare-mode div.users { background: none; }
+			.compare-mode div.users { background: none !important; }
 				.compare-mode div.user-wrapper { width: 100% !important; }
 				.compare-mode div.user { margin: 0 !important; padding: 1em; }
 				#switcher { display: none; }
