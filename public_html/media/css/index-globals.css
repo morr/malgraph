@@ -1,12 +1,3 @@
-.target {
-	width: 400px;
-	height: 210px;
-}
-
-ul.infobox {
-	height: 160px;
-}
-
-h2 {
-	font-weight: normal;
-}
+.target { width: 400px; height: 210px; }
+ul.infobox { height: 160px; }
+h2 { font-weight: normal; }

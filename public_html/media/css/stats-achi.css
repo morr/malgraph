@@ -1,17 +1,5 @@
-#main img {
-	float: left;
-	padding: 0 1em 0 0;
-}
+#main img { float: left; padding: 0 1em 0 0; }
 
-p.level {
-	margin: 0;
-	font-size: 8pt;
-	color: gray;
-	display: inline-block;
-}
-	p.level:before {
-		content: '\a0(';
-	}
-	p.level:after {
-		content: ')';
-	}
+p.level { margin: 0; font-size: 8pt; color: gray; display: inline-block; }
+	p.level:before { content: '\a0('; }
+	p.level:after { content: ')'; }

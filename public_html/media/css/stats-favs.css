@@ -1,24 +1,11 @@
-.decades .target {
-	height: 300px;
-	width: 100%;
-}
+.decades .target { height: 300px; width: 100%; }
 
 table .title { width: 100%; }
 table .ord { text-align: center; }
 table .mean, table .time, table .count { text-align: right; }
 
-table.tablesorter thead th:first-child {
-	padding-left: 6px;
-	padding-right: 6px;
-}
+table.tablesorter thead th:first-child { padding-left: 6px; padding-right: 6px; }
 
-span.info {
-	font-size: 7pt;
-	color: gray;
-}
+span.info { font-size: 7pt; color: gray; }
 
-.scrollable {
-	height: 30em;
-	overflow: auto;
-	box-shadow: inset 0 -2em 1em -1em #eee;
-}
+.scrollable { height: 30em; overflow: auto; box-shadow: inset 0 -2em 1em -1em #eee; }

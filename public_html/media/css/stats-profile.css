@@ -1,86 +1,25 @@
-.user.anonymous .mal li {
-	text-decoration: line-through;
-}
+.user.anonymous .mal li { text-decoration: line-through; }
 
-div.basic .section-body {
-	padding-bottom: 1em;
-}
+div.basic .section-body { padding-bottom: 1em; }
 
-.updated {
-	float: right;
-	font-size: 65%;
-	padding-top: 0.25em;
-	opacity: .25;
-}
+.updated { float: right; font-size: 65%; padding-top: 0.25em; opacity: .25; }
 
 
-#main ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	line-height: 1.5em;
-}
-	.clubs, .friends {
-		max-height: 15em;
-	}
-		.friends ul {
-			columns: auto 3;
-			-webkit-columns: auto 3;
-			-moz-columns: auto 3;
-		}
-			.friends li {
-				overflow: hidden;
-				display: block;
-				text-overflow: ellipsis;
-			}
+#main ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
+	.clubs, .friends { max-height: 15em; }
+		.friends ul { columns: auto 3; -webkit-columns: auto 3; -moz-columns: auto 3; }
+		.clubs ul { columns: auto 2; -webkit-columns: auto 2; -moz-columns: auto 2; }
+			.friends li { overflow: hidden; display: block; text-overflow: ellipsis; }
+			.clubs li { overflow: hidden; display: block; text-overflow: ellipsis; }
 
+	.friends a, .clubs a { position: relative; }
+	.friends i, .clubs i { position: absolute; }
+	.friends span, .clubs span { display: inline-block; margin-left: 21px; }
 
-		.clubs ul {
-			columns: auto 2;
-			-webkit-columns: auto 2;
-			-moz-columns: auto 2;
-		}
-			.clubs li {
-				overflow: hidden;
-				display: block;
-				text-overflow: ellipsis;
-			}
+#main [class^='icon-'] { margin-right: 5px; }
 
-	.friends a,
-	.clubs a {
-		position: relative;
-	}
-	.friends i,
-	.clubs i {
-		position: absolute;
-	}
-	.friends span,
-	.clubs span {
-		display: inline-block;
-		margin-left: 21px;
-	}
-
-#main [class^='icon-'] {
-	margin-right: 5px;
-}
-
-dl {
-	display: inline-block;
-	margin-bottom: 1em;
-	margin-top: 0;
-}
-	dt {
-		clear: left;
-		font-weight: bold;
-		width: 10em;
-		float: left;
-	}
-		dt:after {
-			content: ': ';
-		}
-		dd {
-			float: left;
-			margin: 0;
-			padding: 0;
-		}
+dl { display: inline-block; margin-bottom: 1em; margin-top: 0; }
+	dt { clear: left; font-weight: bold; width: 10em; float: left; }
+		dt:after { content: ': '; }
+		dd { float: left; margin: 0; padding: 0; }
 

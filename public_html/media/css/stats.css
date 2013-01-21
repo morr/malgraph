@@ -1,15 +1,6 @@
-div.section+div.section {
-	margin-top: 1.5em;
-}
+div.section+div.section { margin-top: 1.5em; }
 
 	h2 .icon-tooltip,
-	h3 .icon-tooltip {
-		float: right;
-		margin-top: -3px !important;
-		margin-right: -10px !important;
-		display: block;
-	}
-	.section .section-body p {
-		margin: 6px 10px;
-	}
+	h3 .icon-tooltip { float: right; margin-top: -3px !important; margin-right: -10px !important; display: block; }
+	.section .section-body p { margin: 6px 10px; }
 
