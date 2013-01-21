@@ -1,4 +1,4 @@
-<div class="center padded">
+<div class="center">
 	<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'index') ?>">
 		<img alt="logo" src="<?php echo UrlHelper::url('media/img/logo2b.png') ?>">
 	</a>
@@ -7,16 +7,15 @@
 	<p>It displays more stats than you need&nbsp;&ndash;&nbsp;including rating distribution,<br>
 	favorite studios and personalized anime and manga recommendations.</p>
 
-	<p class="padded">Give it a&nbsp;try and enter your MAL username below.</p>
-
 	<form class="waitable search" action="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'search') ?>" method="post">
+		<p>Start here:</p>
 		<div class="control-group input-append">
-			<input type="search" name="user-names[]">
+			<input type="search" name="user-names[]" placeholder="your MAL username">
 			<button data-title="Search" data-position-my="center top" data-position-at="center bottom" name="submit" value="search" type="submit" class="tooltipable btn"><i class="icon-search"></i></button>
 		</div>
 	</form>
 
-	<div class="links padded">
+	<div class="links">
 		<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('stats', null, array(), mt_rand() & 1 ? 'fri' : 'rr-') ?>">Show me an example!</a>
 		<span class="bull">&bull;</span>
 		<a href="#" class="about-mal">What is MyAnimeList?</a>

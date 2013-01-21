@@ -2,9 +2,13 @@
 #main { font-size: 11pt; width: 100%; }
 #logo { opacity: .5; }
 
-.center { text-align: center; }
-.padded { padding-top: 3em; }
-	.center .padded { padding-top: 1.5em; }
+.center { text-align: center; padding-top: 3em; }
+	.center form { padding-top: 2em; }
+	.center .links { padding-top: 5em; }
 
 div.about-mal { display: none; margin-top: 1em; }
 span.bull { margin: 0 1em; display: inline-block; }
+
+#main form p { display: inline-block; margin: 0 2em 0 0; vertical-align: middle; }
+#main form div { display: inline-block; box-shadow: 0 0 4px rgba(25, 105, 203, 0.5); margin: 0; vertical-align: middle; }
+#main form input, #main form button { margin: 0; border: 1px solid #1969cb; }
