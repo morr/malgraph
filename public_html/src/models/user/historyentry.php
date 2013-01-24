@@ -1,10 +1,7 @@
 <?php
 class UserAnimeHistoryEntry extends UserHistoryEntry {
+	use AnimeModelDecorator;
 	private $episode = null;
-
-	public function getType() {
-		return AMModel::TYPE_ANIME;
-	}
 
 	public function setEpisode($episode) {
 		$this->episode = $episode;
@@ -16,11 +13,8 @@ class UserAnimeHistoryEntry extends UserHistoryEntry {
 }
 
 class UserMangaHistoryEntry extends UserHistoryEntry {
+	use MangaModelDecorator;
 	private $chapter = null;
-
-	public function getType() {
-		return AMModel::TYPE_MANGA;
-	}
 
 	public function setChapter($chapter) {
 		$this->chapter = $chapter;
@@ -80,6 +74,6 @@ class UserHistoryEntry {
 	}
 
 	public function getAMEntry() {
-		return AMEntryRuntimeCacheService::lookup($this->getHistory()->getAMModel(), $this->getID());
+		return AMEntryRuntimeCacheService::lookup($this->getAMModel(), $this->getID());
 	}
 }

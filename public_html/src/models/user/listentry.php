@@ -1,10 +1,8 @@
 <?php
 class UserAnimeListEntry extends UserListEntry {
-	private $episodes;
+	use AnimeModelDecorator;
 
-	public function getType() {
-		return AMModel::TYPE_ANIME;
-	}
+	private $episodes;
 
 	public function getCompletedDuration() {
 		return $this->getCompletedEpisodes() * $this->getAMEntry()->getDuration();
@@ -20,9 +18,7 @@ class UserAnimeListEntry extends UserListEntry {
 }
 
 class UserMangaListEntry extends UserListEntry {
-	public function getType() {
-		return AMModel::TYPE_MANGA;
-	}
+	use MangaModelDecorator;
 
 	public function getCompletedDuration() {
 		return $this->getCompletedChapters() * $this->getAMEntry()->getDuration();
@@ -68,8 +64,6 @@ abstract class UserListEntry {
 	private $startDate = null;
 	private $finishDate = null;
 	private $list = null;
-
-	public abstract function getType();
 
 	public function __construct(UserList $parentList, $id) {
 		$this->list = $parentList;
@@ -127,7 +121,7 @@ abstract class UserListEntry {
 	}
 
 	public function getAMEntry() {
-		return AMEntryRuntimeCacheService::lookup($this->getList()->getAMModel(), $this->getID());
-		return $this->getList()->getAMModel()->get($this->getID());
+		return AMEntryRuntimeCacheService::lookup($this->getAMModel(), $this->getID());
+		return $this->getAMModel()->get($this->getID());
 	}
 }

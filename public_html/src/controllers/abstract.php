@@ -1,7 +1,5 @@
 <?php
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
-require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/anime.php';
-require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/manga.php';
 
 class AbstractController extends ChibiController {
 	public function init() {

@@ -1,14 +1,10 @@
 <?php
 class UserAnimeList extends UserList {
-	public function getType() {
-		return AMModel::TYPE_ANIME;
-	}
+	use AnimeModelDecorator;
 }
 
 class UserMangaList extends UserList {
-	public function getType() {
-		return AMModel::TYPE_MANGA;
-	}
+	use MangaModelDecorator;
 }
 
 abstract class UserList {
@@ -16,8 +12,6 @@ abstract class UserList {
 	private $private = false;
 	private $timeSpent = 0;
 	private $entries = [];
-
-	public abstract function getType();
 
 	public function getViewCount() {
 		return $this->viewCount;
@@ -62,20 +56,5 @@ abstract class UserList {
 		$this->timeSpent = $timeSpent;
 	}
 
-	public function getAMModel() {
-		static $model = null;
-		if ($model === null) {
-			switch ($this->getType()) {
-				case AMModel::TYPE_ANIME:
-					$model = new AnimeModel();
-					break;
-				case AMModel::TYPE_MANGA:
-					$model = new MangaModel();
-					break;
-				default:
-					throw new Exception('Bad type');
-			}
-		}
-		return $model;
-	}
+	abstract public function getAMModel();
 }

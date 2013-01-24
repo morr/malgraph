@@ -1,13 +1,15 @@
 <?php
-require_once 'anon.php';
-require_once 'abstract.php';
-require_once 'user/entry.php';
-require_once 'user/clubentry.php';
-require_once 'user/friendentry.php';
-require_once 'user/list.php';
-require_once 'user/listentry.php';
-require_once 'user/history.php';
-require_once 'user/historyentry.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/anon.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/abstract.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/entry.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/clubentry.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/friendentry.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/list.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listentry.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/history.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/historyentry.php';
+
 
 class UserModel extends AbstractModel {
 	const URL_ANIME1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all';

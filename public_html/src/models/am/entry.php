@@ -1,5 +1,7 @@
 <?php
 class AnimeEntry extends AMEntry {
+	use AnimeModelDecorator;
+
 	const SUBTYPE_OVA = 'ova';
 	const SUBTYPE_ONA = 'ona';
 	const SUBTYPE_TV = 'tv';
@@ -17,10 +19,6 @@ class AnimeEntry extends AMEntry {
 
 	public function getTotalDuration() {
 		return $this->getEpisodeCount() * $this->getDuration();
-	}
-
-	public function getType() {
-		return AMModel::TYPE_ANIME;
 	}
 
 	public function getEpisodeCount() {
@@ -63,6 +61,8 @@ class AnimeEntry extends AMEntry {
 }
 
 class MangaEntry extends AMEntry {
+	use MangaModelDecorator;
+
 	const SUBTYPE_MANGA = 'manga';
 	const SUBTYPE_MANHWA = 'manhwa';
 	const SUBTYPE_MANHUA = 'manhua';
@@ -85,10 +85,6 @@ class MangaEntry extends AMEntry {
 
 	public function getDuration() {
 		return 10 /* 10 minutes per chapter */;
-	}
-
-	public function getType() {
-		return AMModel::TYPE_MANGA;
 	}
 
 	public function getVolumeCount() {
@@ -153,8 +149,6 @@ abstract class AMEntry extends AbstractModelEntry {
 	private $relations = [];
 	private $valid;
 
-	public abstract function getType();
-
 	public function invalidate($invalid) {
 		$this->valid = !$invalid;
 		if ($invalid) {
@@ -176,6 +170,16 @@ abstract class AMEntry extends AbstractModelEntry {
 
 	public function __construct($id) {
 		$this->id = $id;
+	}
+
+	public function isDead() {
+		return empty($this->title);
+	}
+
+	public function setDead($dead) {
+		if ($dead) {
+			$this->title = null;
+		}
 	}
 
 	public function getTitle() {

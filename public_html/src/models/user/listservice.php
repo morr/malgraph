@@ -164,19 +164,21 @@ class UserListService {
 
 
 
-class Distribution {
-	protected $groups;
-	protected $entries;
+abstract class Distribution {
+	protected $groups = [];
+	protected $entries = [];
+	protected $keys = [];
 
 	const IGNORE_NULL_KEY = 1;
 
-	public function __construct($nullGroupValue = null) {
-		$this->groups = [];
-		$this->entries = [];
-		$this->keys = [];
-
-		$this->nullGroupValue = $nullGroupValue;
+	public function __construct(array $entries = []) {
+		foreach ($entries as $entry) {
+			$this->addEntry($entry);
+		}
+		$this->finalize();
 	}
+
+	public abstract function addEntry(UserListEntry $entry);
 
 	protected function sortEntries() {
 		foreach ($this->entries as $group => $entries) {
@@ -193,7 +195,7 @@ class Distribution {
 	}
 
 	public function getNullGroupKey() {
-		return $this->nullGroupValue;
+		return null;
 	}
 
 	protected function addGroup($key) {
@@ -202,13 +204,13 @@ class Distribution {
 		$this->entries[(string)$key] = [];
 	}
 
-	public function addToGroup($key, $entry) {
+	public function addToGroup($key, $entry, $weight = 1) {
 		if (!isset($this->groups[(string)$key])) {
 			$this->keys[(string)$key] = $key;
 			$this->groups[(string)$key] = 0;
 			$this->entries[(string)$key] = [];
 		}
-		$this->groups[(string)$key] ++;
+		$this->groups[(string)$key] += $weight;
 		$this->entries[(string)$key] []= $entry;
 	}
 
@@ -277,15 +279,15 @@ class Distribution {
 
 
 class ScoreDistribution extends Distribution {
-	public function __construct(array $entries) {
-		parent::__construct(0);
+	public function __construct(array $entries = []) {
 		foreach (range(10, 0) as $x) {
 			$this->addGroup($x);
 		}
-		foreach ($entries as $entry) {
-			$this->addToGroup($entry->getScore(), $entry);
-		}
-		$this->finalize();
+		parent::__construct($entries);
+	}
+
+	public function addEntry(UserListEntry $entry) {
+		$this->addToGroup($entry->getScore(), $entry);
 	}
 
 	protected function sortGroups() {
@@ -333,13 +335,8 @@ class ScoreDistribution extends Distribution {
 }
 
 class ScoreDurationDistribution extends ScoreDistribution {
-	public function addToGroup($key, $entry) {
-		if (!isset($this->groups[$key])) {
-			$this->groups[$key] = 0;
-			$this->entries[$key] = [];
-		}
-		$this->groups[$key] += $entry->getCompletedDuration();
-		$this->entries[$key] []= $entry;
+	public function addEntry(UserListEntry $entry) {
+		$this->addToGroup($entry->getScore(), $entry, $entry->getCompletedDuration());
 	}
 
 	public function getTotalTime() {
@@ -348,22 +345,22 @@ class ScoreDurationDistribution extends ScoreDistribution {
 }
 
 class SubTypeDistribution extends Distribution {
-	public function __construct(array $entries) {
-		parent::__construct(0);
-		foreach ($entries as $entry) {
-			$this->addToGroup($entry->getAMEntry()->getSubType(), $entry);
-		}
-		$this->finalize();
+	public function getNullGroupKey() {
+		return 0;
+	}
+
+	public function addEntry(UserListEntry $entry) {
+		$this->addToGroup($entry->getAMEntry()->getSubType(), $entry);
 	}
 }
 
 class StatusDistribution extends Distribution {
-	public function __construct(array $entries) {
-		parent::__construct(0);
-		foreach ($entries as $entry) {
-			$this->addToGroup($entry->getStatus(), $entry);
-		}
-		$this->finalize();
+	public function getNullGroupKey() {
+		return 0;
+	}
+
+	public function addEntry(UserListEntry $entry) {
+		$this->addToGroup($entry->getStatus(), $entry);
 	}
 }
 
@@ -374,12 +371,12 @@ class LengthDistribution extends Distribution {
 		ksort($this->entries, SORT_NUMERIC);
 	}
 
-	public function __construct(array $entries) {
-		parent::__construct(0);
-		if (count($entries) == 0) {
-			return;
-		}
-		$type = reset($entries)->getType();
+	public function getNullGroupKey() {
+		return 0;
+	}
+
+	public function addEntry(UserListEntry $entry) {
+		$type = $entry->getType();
 		switch ($type) {
 			case AMModel::TYPE_ANIME:
 				$thresholds = [1, 6, 13, 26, 52, 100];
@@ -392,42 +389,38 @@ class LengthDistribution extends Distribution {
 		$thresholds = array_reverse($thresholds);
 		$thresholds []= 0;
 
-		foreach ($entries as $entry) {
-			switch ($type) {
-				case AMModel::TYPE_ANIME:
-					$length = $entry->getAMEntry()->getEpisodeCount();
-					break;
-				case AMModel::TYPE_MANGA:
-					$length = $entry->getAMEntry()->getChapterCount();
-					break;
-				default:
-					continue;
-			}
-			$group = '?';
-			if ($length > 0) {
-				foreach ($thresholds as $i => $threshold) {
-					//var_dump($length . ' vs ' . $threshold);
-					if ($length > $threshold) {
-						if ($i  == 0) {
-							$group = strval($threshold + 1) . '+';
+		switch ($type) {
+			case AMModel::TYPE_ANIME:
+				$length = $entry->getAMEntry()->getEpisodeCount();
+				break;
+			case AMModel::TYPE_MANGA:
+				$length = $entry->getAMEntry()->getChapterCount();
+				break;
+			default:
+				return;
+		}
+		$group = '?';
+		if ($length > 0) {
+			foreach ($thresholds as $i => $threshold) {
+				//var_dump($length . ' vs ' . $threshold);
+				if ($length > $threshold) {
+					if ($i  == 0) {
+						$group = strval($threshold + 1) . '+';
+					} else {
+						$a = $thresholds[$i - 1];
+						$b = $threshold + 1;
+						if ($a == $b or $threshold == 0) {
+							$group = strval($a);
 						} else {
-							$a = $thresholds[$i - 1];
-							$b = $threshold + 1;
-							if ($a == $b or $threshold == 0) {
-								$group = strval($a);
-							} else {
-								$group = strval($b) . '-' . strval($a);
-							}
+							$group = strval($b) . '-' . strval($a);
 						}
-						break;
 					}
+					break;
 				}
 			}
-			//echo '; group: ' . $group . '<br>';
-
-			$this->addToGroup($group, $entry);
 		}
-		$this->finalize();
+
+		$this->addToGroup($group, $entry);
 	}
 }
 
@@ -438,23 +431,20 @@ class CreatorDistribution extends Distribution {
 		}
 	}
 
-	public function __construct(array $entries) {
-		parent::__construct(0);
-		if (count($entries) == 0) {
-			return;
-		}
-		$type = reset($entries)->getType();
+	public function getNullGroupKey() {
+		return 0;
+	}
+
+	public function addEntry(UserListEntry $entry) {
+		$type = $entry->getType();
 		$excluded = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedCreatorsDefFile), true);
 		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$type]);
-		foreach ($entries as $entry) {
-			$creators = $entry->getAMEntry()->getCreators();
-			foreach ($creators as $creator) {
-				if (!in_array($creator->getID(), $excludedIDs)) {
-					$this->addToGroup($creator, $entry);
-				}
+		$creators = $entry->getAMEntry()->getCreators();
+		foreach ($creators as $creator) {
+			if (!in_array($creator->getID(), $excludedIDs)) {
+				$this->addToGroup($creator, $entry);
 			}
 		}
-		$this->finalize();
 	}
 }
 
@@ -465,23 +455,20 @@ class GenreDistribution extends Distribution {
 		}
 	}
 
-	public function __construct(array $entries) {
-		parent::__construct(0);
-		if (count($entries) == 0) {
-			return;
-		}
-		$type = reset($entries)->getType();
+	public function getNullGroupKey() {
+		return 0;
+	}
+
+	public function addEntry(UserListEntry $entry) {
+		$type = $entry->getType();
 		$excluded = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedGenresDefFile), true);
 		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$type]);
-		foreach ($entries as $entry) {
-			$genres = $entry->getAMEntry()->getGenres();
-			foreach ($genres as $genre) {
-				if (!in_array($genre->getID(), $excludedIDs)) {
-					$this->addToGroup($genre, $entry);
-				}
+		$genres = $entry->getAMEntry()->getGenres();
+		foreach ($genres as $genre) {
+			if (!in_array($genre->getID(), $excludedIDs)) {
+				$this->addToGroup($genre, $entry);
 			}
 		}
-		$this->finalize();
 	}
 }
 
@@ -492,12 +479,12 @@ class YearDistribution extends Distribution {
 		krsort($this->entries, SORT_NUMERIC);
 	}
 
-	public function __construct(array $entries) {
-		parent::__construct(0);
-		foreach ($entries as $entry) {
-			$this->addToGroup(UserListService::getAiredYear($entry), $entry);
-		}
-		$this->finalize();
+	public function getNullGroupKey() {
+		return 0;
+	}
+
+	public function addEntry(UserListEntry $entry) {
+		$this->addToGroup(UserListService::getAiredYear($entry), $entry);
 	}
 }
 
@@ -508,11 +495,11 @@ class DecadeDistribution extends Distribution {
 		krsort($this->entries, SORT_NUMERIC);
 	}
 
-	public function __construct(array $entries) {
-		parent::__construct(0);
-		foreach ($entries as $entry) {
-			$this->addToGroup(UserListService::getAiredDecade($entry), $entry);
-		}
-		$this->finalize();
+	public function getNullGroupKey() {
+		return 0;
+	}
+
+	public function addEntry(UserListEntry $entry) {
+		$this->addToGroup(UserListService::getAiredDecade($entry), $entry);
 	}
 }
