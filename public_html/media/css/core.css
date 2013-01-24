@@ -95,9 +95,9 @@ h1, h2, h3 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 
 
 /* user layout */
-div.users { padding-bottom: 1.5em; }
+div.users { padding-bottom: 2em; }
 div.user { background: white; }
-	div.user h2 { margin-bottom: 0.3em; }
+	div.user h2 { margin-bottom: 0.7em; padding-left: 0.3em; }
 	.compare-mode div.users {
 		background-image: url('../img/switcher.png');
 		background-repeat: repeat-y;
