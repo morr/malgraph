@@ -22,6 +22,14 @@ abstract class AMModel extends AbstractModel {
 		return self::$entryTypes;
 	}
 
+	public static function factory($type) {
+		switch ($type) {
+			case AMModel::TYPE_ANIME: return new AnimeModel();
+			case AMModel::TYPE_MANGA: return new MangaModel();
+		}
+		throw new Exception('Unknown entry type');
+	}
+
 	protected function getXML($type, $id) {
 		$url = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL, ['type' => $type, 'id' => $id]);
 		$document = new DOMDocument;
@@ -242,7 +250,7 @@ class AnimeModel extends AMModel {
 
 trait MangaModelDecorator {
 	public function getType() {
-		return AMModel::TYPE_ANIME;
+		return AMModel::TYPE_MANGA;
 	}
 
 	public function getAMModel() {

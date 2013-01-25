@@ -27,4 +27,9 @@ class AMRelationEntry {
 	public function setRelation($relation) {
 		$this->relation = $relation;
 	}
+
+	public function getAMEntry() {
+		$model = AMModel::factory($this->type);
+		return $model->get($this->id);
+	}
 }

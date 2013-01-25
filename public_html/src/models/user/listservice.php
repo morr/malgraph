@@ -125,40 +125,59 @@ class UserListService {
 		return $decade;
 	}
 
-	public static function getScoreDistribution(array $entries) {
-		return new ScoreDistribution($entries);
-	}
+	public static function getFranchises(array $entries) {
+		$all = [];
 
-	public static function getScoreDurationDistribution(array $entries) {
-		return new ScoreDurationDistribution($entries);
-	}
+		$visited = [];
+		$stack = [];
+		foreach ($entries as $entry) {
+			$obj = new StdClass;
+			$obj->entry = $entry->getAMEntry();
+			$obj->group = $obj->entry->getID();
+			$obj->userEntry = $entry;
+			$stack = [$obj];
 
-	public static function getSubTypeDistribution(array $entries) {
-		return new SubTypeDistribution($entries);
-	}
+			while (!empty($stack)) {
+				$obj = array_shift($stack);
+				if (isset($visited[$obj->entry->getID()])) {
+					continue;
+				}
+				$visited[$obj->entry->getID()] = $obj;
+				$all []= $obj;
+				foreach ($obj->entry->getRelations() as $relation) {
+					if ($relation->getType() != $obj->entry->getType()) {
+						continue;
+					}
+					$childObj = new StdClass;
+					$childObj->entry = $relation->getAMEntry();
+					if (isset($visited[$childObj->entry->getID()])) {
+						continue;
+					}
+					$childObj->group = $obj->group;
+					$childObj->userEntry = null;
+					if (isset($entries[$childObj->entry->getID()])) {
+						$childObj->userEntry = $entries[$childObj->entry->getID()];
+					}
+					array_push($stack, $childObj);
+				}
+			}
 
-	public static function getStatusDistribution(array $entries) {
-		return new StatusDistribution($entries);
-	}
+			$visited[$obj->entry->getID()] = $obj;
+		}
 
-	public static function getLengthDistribution(array $entries) {
-		return new LengthDistribution($entries);
-	}
+		$franchises = [];
+		foreach ($all as $obj) {
+			if (empty($obj->userEntry)) {
+				continue;
+			}
+			if (!isset($franchises[$obj->group])) {
+				$franchises[$obj->group] = [];
+			}
+			$franchises[$obj->group] []= $obj->userEntry;
+		}
 
-	public static function getCreatorDistribution(array $entries) {
-		return new CreatorDistribution($entries);
-	}
-
-	public static function getGenreDistribution(array $entries) {
-		return new GenreDistribution($entries);
-	}
-
-	public static function getYearDistribution(array $entries) {
-		return new YearDistribution($entries);
-	}
-
-	public static function getDecadeDistribution(array $entries) {
-		return new DecadeDistribution($entries);
+		uasort($franchises, function($a, $b) { return count($b) - count($a); });
+		return $franchises;
 	}
 }
 
@@ -280,12 +299,23 @@ abstract class Distribution {
 
 	public function getLargestGroupSize($flags = 0) {
 		$x = $this->getGroupsSizes($flags);
+		if (empty($x)) {
+			return 0;
+		}
 		return max($x);
+	}
+
+	public function getLargestGroupKey($flags = 0) {
+		return array_search($this->getLargestGroupSize($flags), $this->groups);
 	}
 
 	public function getSmallestGroupSize($flags = 0) {
 		$x = $this->getGroupsSizes($flags);
 		return min($x);
+	}
+
+	public function getSmallestGroupKey($flags = 0) {
+		return array_search($this->getSmallestGroupSize($flags), $this->groups);
 	}
 
 	public function getTotalSize($flags = 0) {
@@ -399,29 +429,25 @@ class LengthDistribution extends Distribution {
 		return 0;
 	}
 
+	public static function getThresholds($type) {
+		switch ($type) {
+			case AMModel::TYPE_ANIME: return [1, 6, 13, 26, 52, 100];
+			case AMModel::TYPE_MANGA: return [1, 10, 25, 50, 100, 200];
+		}
+		 throw new Exception('Invalid type');
+	}
+
+
 	public function addEntry(UserListEntry $entry) {
 		$type = $entry->getType();
-		switch ($type) {
-			case AMModel::TYPE_ANIME:
-				$thresholds = [1, 6, 13, 26, 52, 100];
-				break;
-			case AMModel::TYPE_MANGA:
-				$thresholds = [1, 10, 25, 50, 100, 200];
-				break;
-		}
-
+		$thresholds = self::getThresholds($type);
 		$thresholds = array_reverse($thresholds);
 		$thresholds []= 0;
 
 		switch ($type) {
-			case AMModel::TYPE_ANIME:
-				$length = $entry->getAMEntry()->getEpisodeCount();
-				break;
-			case AMModel::TYPE_MANGA:
-				$length = $entry->getAMEntry()->getChapterCount();
-				break;
-			default:
-				return;
+			case AMModel::TYPE_ANIME: $length = $entry->getAMEntry()->getEpisodeCount(); break;
+			case AMModel::TYPE_MANGA: $length = $entry->getAMEntry()->getChapterCount(); break;
+			default: return;
 		}
 		$group = '?';
 		if ($length > 0) {
