@@ -135,7 +135,7 @@
 							type: 'pie',
 							data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ChibiRegistry::getHelper('mg')->subTypeText($key), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
 							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category});
+								toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category, 'am': <?php echo json_encode($type) ?>});
 							} } }
 						} ]
 					});

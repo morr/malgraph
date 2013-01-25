@@ -87,7 +87,9 @@ function toggleMoreWrappers(targets, data, ajax) {
 	$(targets).each(function() {
 		var target = $(this);
 		data['u'] = target.parents('.user').attr('data-user-name');
-		data['am'] = target.parents('body').attr('data-am');
+		if (!data['am']) {
+			data['am'] = target.parents('body').attr('data-am');
+		}
 		var uniqueId = JSON.stringify(data);
 		if (target.data('unique-id') == uniqueId) {
 			if (target.is(':visible')) {
