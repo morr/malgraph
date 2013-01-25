@@ -253,9 +253,12 @@ a { color: #1969CB; text-decoration: none; }
 		font-size: 8pt !important;
 		line-height: 150% !important;
 		text-align: center;
-		font-weight: normal;
 		padding: 4px 8px !important;
-		max-width: 20em !important;
+		max-width: 20em;
+	}
+	.highcharts-tooltip span {
+		position: relative !important;
+		white-space: normal !important;
 	}
 
 
