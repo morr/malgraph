@@ -80,10 +80,6 @@ h1, h2, h3 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 					#menu .actions div { float: left; }
 					#menu .actions div:first-child { margin-right: 1em; }
 				#menu .share { clear: both; }
-			.compare-mode div.users { background: none !important; }
-				.compare-mode div.user-wrapper { width: 100% !important; }
-				.compare-mode div.user { margin: 0 !important; padding: 1em; }
-				#switcher { display: none; }
 	}
 	/* big screens */
 	@media (min-width: 801px) {
@@ -91,47 +87,6 @@ h1, h2, h3 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 	}
 
 #main *:first-child { margin-top: 0; }
-
-
-
-/* user layout */
-div.users { padding-bottom: 2em; }
-div.user { background: white; }
-	div.user h2 { margin-bottom: 0.7em; padding-left: 0.3em; }
-	.compare-mode div.users {
-		background-image: url('../img/switcher.png');
-		background-repeat: repeat-y;
-		background-position: center top;
-		position: relative;
-	}
-	.compare-mode div.user-wrapper { width: 50%; }
-		.compare-mode div.user-wrapper:first-child { float: left; }
-		.compare-mode div.user-wrapper:nth-child(2) { float: right; }
-			.compare-mode div.user-wrapper:first-child div.user { margin-right: 4px; padding-right: 1em; }
-			.compare-mode div.user-wrapper:nth-child(2) div.user { margin-left: 4px; padding-left: 1em; }
-
-	/* "more" divs */
-	.wrapper-more { margin-top: 1em; display: none; }
-		.wrapper-more ul { margin-bottom: 0; }
-		.wrapper-more .close {
-			float: right;
-			font-size: 20pt;
-			line-height: 20pt;
-			text-decoration: none;
-			color: silver;
-			cursor: pointer;
-		}
-
-	/* switcher */
-	#switcher {
-		position: absolute;
-		left: 50%;
-		top: 0.5em;
-		z-index: 3;
-		background-color: white;
-		margin-left: -8px;
-	}
-		#switcher i { margin: 0 !important; }
 
 
 
