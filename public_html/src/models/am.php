@@ -238,8 +238,12 @@ class AnimeModel extends AMModel {
 		try {
 			$this->loadCommon($animeEntry, $doc);
 			$this->loadAnime($animeEntry, $doc);
+			if ($animeEntry->getStatus() != AMEntry::STATUS_FINISHED) {
+				$animeEntry->setExpirationTime(time() + 3600 * 24 * 7);
+			}
 		} catch (InvalidEntryException $e) {
 			$animeEntry->invalidate(true);
+			$animeEntry->setExpirationTime(time() + 3600 * 24 * 3);
 		}
 
 		return $animeEntry;
@@ -313,8 +317,12 @@ class MangaModel extends AMModel {
 		try {
 			$this->loadCommon($mangaEntry, $doc);
 			$this->loadManga($mangaEntry, $doc);
+			if ($mangaEntry->getStatus() != AMEntry::STATUS_FINISHED) {
+				$mangaEntry->setExpirationTime(time() + 3600 * 24 * 7);
+			}
 		} catch (InvalidEntryException $e) {
 			$mangaEntry->invalidate(true);
+			$mangaEntry->setExpirationTime(time() + 3600 * 24 * 3);
 		}
 
 		return $mangaEntry;
