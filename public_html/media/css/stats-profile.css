@@ -1,9 +1,6 @@
-.user.anonymous .mal li { text-decoration: line-through; }
-
-div.basic .section-body { padding-bottom: 1em; }
-
+.user.anonymous .mal-links li { text-decoration: line-through; }
 .updated { float: right; font-size: 65%; padding-top: 0.25em; opacity: .25; }
-
+.list-views .suffix { margin-left: 0.67em; color: gray; }
 
 #main ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
 	.clubs, .friends { max-height: 15em; }
@@ -17,9 +14,13 @@ div.basic .section-body { padding-bottom: 1em; }
 	.friends span, .clubs span { display: inline-block; margin-left: 21px; }
 
 #main [class^='icon-'] { margin-right: 5px; }
+.basic dl { margin-bottom: 1em; }
 
-dl { display: inline-block; margin-bottom: 1em; margin-top: 0; }
+dl { display: inline-block; margin: 0; }
 	dt { clear: left; font-weight: bold; width: 10em; float: left; }
 		dt:after { content: ': '; }
 		dd { float: left; margin: 0; padding: 0; }
 
+.wrapper-target { float: right; width: 40%; margin-left: 1em; }
+.target { height: 15em; }
+.target text { pointer-events: none !important; }

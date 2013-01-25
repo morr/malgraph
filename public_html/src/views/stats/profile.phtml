@@ -1,6 +1,5 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section basic">
-	<!-- user name -->
 	<h2>
 		<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], $user->getLinkableName()) ?>">
 			<?php echo $user->getPublicName() ?>
@@ -14,7 +13,6 @@
 	</h2>
 
 	<div class="section-body">
-		<!-- basic information -->
 		<dl>
 
 			<dt>Gender</dt>
@@ -31,7 +29,14 @@
 			<?php endif ?>
 
 			<dt>List views</dt>
-			<dd><?php echo $user->getList($this->am)->getViewCount() ?></dd>
+			<dd class="list-views">
+				<?php echo $user->getList(AMModel::TYPE_ANIME)->getViewCount() + $user->getList(AMModel::TYPE_MANGA)->getViewCount() ?>&nbsp;
+				<span class="suffix">(
+					<span class="tooltipable" data-title="Anime list view count"><?php echo $user->getList(AMModel::TYPE_ANIME)->getViewCount() ?></span>
+					+
+					<span class="tooltipable" data-title="Manga list view count"><?php echo $user->getList(AMModel::TYPE_MANGA)->getViewCount() ?></span>
+				)</span>
+			</dd>
 
 			<dt>Time on MAL</dt>
 			<?php if (intval($user->getUserData()->getJoinDate())): ?>
@@ -48,8 +53,7 @@
 
 		</dl>
 
-		<!-- links to mal -->
-		<ul class="mal">
+		<ul class="mal-links">
 			<?php if ($user->isAnonymous()): ?>
 				<li>
 					<a href="#">
@@ -99,9 +103,120 @@
 
 
 
-<!-- friends -->
+<?php foreach (AMModel::getTypes() as $type): ?>
+	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
+	<?php $profileInfo = $this->profileInfo[$user->getRuntimeID()][$type] ?>
+	<div class="section <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats">
+		<h3><?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($type)) ?> summary</h3>
+
+		<?php if ($profileInfo->completed > 0): ?>
+			<div class="wrapper-target">
+				<div class="target"></div>
+				<div class="clear"></div>
+			</div>
+
+			<script type="text/javascript">
+				$('#user-<?php echo $user->getRuntimeID() ?> .<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .target').each(function() {
+					var chart = new Highcharts.Chart({
+						chart: { renderTo: this, spacingTop: 0, spacingBottom: 0, spacingLeft: 0, spacingRight: 0 },
+						yAxis: { title: { text: 'Count' } },
+						plotOptions: {
+							pie: {
+								size: '100%',
+								dataLabels: { enabled: true, formatter: function() { return this.percentage < 10 ? '' : this.key; }, distance: -30, color: 'white' },
+						} },
+						tooltip: { formatter: function() {
+							var text = this.key + ': ' + this.y;
+							var percent = this.y * 100.0 / <?php echo max(1, $profileInfo->subTypeDistribution->getTotalSize()) ?>;
+							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
+							return text;
+						} },
+						series: [ {
+							type: 'pie',
+							data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ChibiRegistry::getHelper('mg')->subTypeText($key), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
+							point: { events: { click: function(e) {
+								toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category});
+							} } }
+						} ]
+					});
+				});
+			</script>
+		<?php endif ?>
+
+		<dl>
+			<dt>Completed</dt>
+			<dd><?php echo $profileInfo->completed ?></dd>
+
+			<dt class="tooltipable" data-title="Number of groups of related <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>">Franchises</dt>
+			<dd><?php echo count($profileInfo->franchises) ?></dd>
+
+			<?php if ($type == AMModel::TYPE_ANIME): ?>
+				<dt>Episodes</dt>
+				<dd><?php echo $profileInfo->episodes ?></dd>
+			<?php elseif ($type == AMModel::TYPE_MANGA): ?>
+				<dt>Chapters</dt>
+				<dd><?php echo $profileInfo->chapters ?></dd>
+			<?php endif ?>
+
+			<dt>Mean score</dt>
+			<dd>
+				<?php if ($profileInfo->scoreDistribution->getRatedCount() == 0): ?>
+					-
+				<?php else: ?>
+					<?php printf('%.02f', $profileInfo->scoreDistribution->getMeanScore()) ?>
+				<?php endif ?>
+			</dd>
+
+		</dl>
+
+		<p>You've&#32;
+			<?php if ($type == AMModel::TYPE_ANIME): ?>
+				watched
+			<?php elseif ($type == AMModel::TYPE_MANGA): ?>
+				read
+			<?php endif ?>&#32;
+			<?php $diff = $profileInfo->scoreDistribution->getMeanScore() - $this->globalInfo->getAMData($type)->getScoreDistribution()->getMeanScore() ?>
+			<strong><?php printf('%.02f', $profileInfo->completed * 100.0 / $this->globalInfo->getAMData($type)->getDBSize()) ?>%</strong> of all <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?> on MAL
+			<?php if ($profileInfo->scoreDistribution->getRatedCount() > 0): ?>
+				&#32;and your ratings are <strong><?php printf('%.02f', abs($diff)) ?></strong> points <strong><?php echo $diff < 0 ? 'lower' : 'higher' ?></strong> than global average.
+			<?php else: ?>
+				.
+			<?php endif ?>
+		</p>
+
+		<?php if ($profileInfo->completed > 0 and $profileInfo->lengthDistribution->getLargestGroupSize() > 0 /* only titles of unknown length */): ?>
+			<p>
+				Most common&#32;
+				<?php if ($type == AMModel::TYPE_ANIME): ?>
+					TV series
+				<?php elseif ($type == AMModel::TYPE_MANGA): ?>
+					manga
+				<?php endif ?>&#32;
+				length:&nbsp;
+					<strong><?php echo str_replace('-', '&nbsp;to&nbsp;', $profileInfo->lengthDistribution->getLargestGroupKey()) ?></strong>&nbsp;
+				<?php if ($type == AMModel::TYPE_ANIME): ?>
+					episodes
+				<?php elseif ($type == AMModel::TYPE_MANGA): ?>
+					chapters
+				<?php endif ?>
+			</p>
+		<?php endif ?>
+
+		<div class="clear"></div>
+	</div>
+	<?php }); ?>
+	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
+	<div class="section <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats">
+		<div class="wrapper-more">
+		</div>
+	</div>
+	<?php }); ?>
+<?php endforeach ?>
+
+
+
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section">
+<div class="section friends">
 	<h3>Friends (<?php echo count($user->getFriends()) ?>)</h3>
 	<div class="section-body">
 		<?php if (count($user->getFriends()) == 0): ?>
@@ -130,9 +245,8 @@
 
 
 
-<!-- clubs -->
 <?php iterateUsers(function($user, $otherUser) { ?>
-<div class="section">
+<div class="section clubs">
 	<h3>Clubs (<?php echo count($user->getClubs()) ?>)</h3>
 	<div class="section-body">
 		<?php if (count($user->getClubs()) == 0): ?>

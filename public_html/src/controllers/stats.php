@@ -1,6 +1,6 @@
 <?php
-require_once 'src/controllers/abstract.php';
-require_once 'src/models/user/listservice.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/controllers/abstract.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
 class StatsController extends AbstractController {
 	public function init() {
@@ -36,7 +36,7 @@ class StatsController extends AbstractController {
 
 		//try to load requested users
 		$anons = [];
-		$modelUsers = new UserModel(true);
+		$modelUsers = new UserModel();
 		$this->view->users = [];
 		foreach ($this->view->userNames as $userName) {
 			try {
@@ -112,23 +112,58 @@ class StatsController extends AbstractController {
 
 
 	public function profileAction() {
-		foreach ($this->view->users as $u) {
-			$filter = null;//UserListFilters::getNonPlanned();
-			$entries = $u->getList($this->view->am)->getEntries($filter);
-			$this->view->subTypeDistribution[$u->getID()] = UserListService::getSubTypeDistribution($entries);
-			$this->view->statusDistribution[$u->getID()] = UserListService::getStatusDistribution($entries);
-			$this->view->lengthDistribution[$u->getID()] = UserListService::getLengthDistribution($entries);
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts-more.js'));
+		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		$this->view->profileInfo = [];
 
-			switch ($this->view->am) {
-				case AMModel::TYPE_ANIME:
-					$this->view->completedEpisodes[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedEpisodes(); }, $entries));
-					break;
-				case AMModel::TYPE_MANGA:
-					$this->view->completedChapters[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedChapters(); }, $entries));
-					$this->view->completedVolumes[$u->getID()] = array_sum(array_map(function($entry) { return $entry->getCompletedVolumes(); }, $entries));
-					break;
+		foreach ($this->view->users as $u) {
+			$info = [];
+			foreach (AMModel::getTypes() as $type) {
+				$info[$type] = new StdClass;
+				$info[$type]->completed = 0;
+				if ($type == AMModel::TYPE_ANIME) {
+					$info[$type]->episodes = 0;
+				} elseif ($type == AMModel::TYPE_MANGA) {
+					$info[$type]->chapters = 0;
+				}
+
+				$filter = UserListFilters::getCompleted();
+				$entries = $u->getList($type)->getEntries();
+				$scoreDistribution = new ScoreDistribution();
+				$lengthDistribution = new LengthDistribution();
+				$subTypeDistribution = new SubTypeDistribution();
+				$completedEntries = [];
+				foreach ($entries as $entry) {
+					if (!$filter($entry)) {
+						continue;
+					}
+					$completedEntries[$entry->getID()] = $entry;
+					$info[$type]->completed += 1;
+					if ($type == AMModel::TYPE_ANIME) {
+						$info[$type]->episodes += $entry->getAMEntry()->getEpisodeCount();
+					} else {
+						$info[$type]->chapters += $entry->getAMEntry()->getChapterCount();
+					}
+					$scoreDistribution->addEntry($entry);
+					if ($entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE) {
+						$lengthDistribution->addEntry($entry);
+					}
+					$subTypeDistribution->addEntry($entry);
+				}
+				$subTypeDistribution->finalize();
+				$info[$type]->lengthDistribution = $lengthDistribution;
+				$info[$type]->scoreDistribution = $scoreDistribution;
+				$info[$type]->subTypeDistribution = $subTypeDistribution;
+				$info[$type]->franchises = UserListService::getFranchises($completedEntries);
 			}
+			$this->view->profileInfo[$u->getRuntimeID()] = $info;
+
 		}
+
+		require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/globals.php';
+		$this->view->globalInfo = GlobalsModel::getData();
+
 	}
 
 
@@ -149,13 +184,8 @@ class StatsController extends AbstractController {
 			$achievements = [];
 
 			$achList = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile), true);
-			if ($this->view->am == AMModel::TYPE_ANIME) {
-				$model = new AnimeModel();
-				$AM = 'anime';
-			} else {
-				$model = new MangaModel();
-				$AM = 'manga';
-			}
+			$AM = $this->view->am;
+			$model = AMModel::factory($this->view->am);
 
 			//achievments from json
 			foreach ($achList[$AM] as $group => $groupData) {
@@ -256,8 +286,8 @@ class StatsController extends AbstractController {
 			$filter = UserListFilters::getNonPlanned();
 			$entries = $userEntry->getList($this->view->am)->getEntries($filter);
 
-			$this->view->scoreDistribution[$userEntry->getID()] = UserListService::getScoreDistribution($entries);
-			$this->view->scoreDurationDistribution[$userEntry->getID()] = UserListService::getScoreDurationDistribution($entries);
+			$this->view->scoreDistribution[$userEntry->getID()] = new ScoreDistribution($entries);
+			$this->view->scoreDurationDistribution[$userEntry->getID()] = new ScoreDurationDistribution($entries);
 		}
 	}
 
@@ -272,7 +302,7 @@ class StatsController extends AbstractController {
 		foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
 			$filter = UserListFilters::getNonPlanned();
 			$entries = $user->getList($am)->getEntries($filter);
-			$this->view->scoreDistribution[$am] = UserListService::getScoreDistribution($entries);
+			$this->view->scoreDistribution[$am] = new ScoreDistribution($entries);
 		}
 
 		//define some handy constants
@@ -494,13 +524,13 @@ class StatsController extends AbstractController {
 			$entries = $user->getList($this->view->am)->getEntries($filter);
 
 			ChibiRegistry::getHelper('benchmark')->benchmark('start');
-			$this->view->favCreators[$user->getID()] = UserListService::getCreatorDistribution($entries);
+			$this->view->favCreators[$user->getID()] = new CreatorDistribution($entries);
 			ChibiRegistry::getHelper('benchmark')->benchmark('creators');
-			$this->view->favGenres[$user->getID()] = UserListService::getGenreDistribution($entries);
+			$this->view->favGenres[$user->getID()] = new GenreDistribution($entries);
 			ChibiRegistry::getHelper('benchmark')->benchmark('genres');
-			$this->view->favYears[$user->getID()] = UserListService::getYearDistribution($entries);
+			$this->view->favYears[$user->getID()] = new YearDistribution($entries);
 			ChibiRegistry::getHelper('benchmark')->benchmark('years');
-			$this->view->favDecades[$user->getID()] = UserListService::getDecadeDistribution($entries);
+			$this->view->favDecades[$user->getID()] = new DecadeDistribution($entries);
 			ChibiRegistry::getHelper('benchmark')->benchmark('decades');
 
 			$this->view->yearScores[$user->getID()] = [];
@@ -564,11 +594,7 @@ class StatsController extends AbstractController {
 							'entries' => [],
 						];
 					}
-					if ($this->view->am == AMModel::TYPE_ANIME) {
-						$model = new AnimeModel();
-					} else {
-						$model = new MangaModel();
-					}
+					$model = AMModel::factory($this->view->am);
 					$entry2 = $model->get($relation->getID());
 					$proposedEntries[$entry->getID()]['entries'] []= $entry2;
 				}

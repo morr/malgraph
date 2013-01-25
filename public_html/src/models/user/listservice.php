@@ -34,6 +34,10 @@ class UserListFilters {
 		return function (UserListEntry $entry) use ($score) { return $entry->getScore() == $score; };
 	}
 
+	public static function getSubType($subType) {
+		return function (UserListEntry $entry) use ($subType) { return $entry->getAMEntry()->getSubType() == $subType; };
+	}
+
 	public static function getGenre($genreId) {
 		return function (UserListEntry $entry) use ($genreId) {
 			foreach ($entry->getAMEntry()->getGenres() as $genre) {
