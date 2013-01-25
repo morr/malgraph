@@ -4,6 +4,7 @@ require_once dirname(__FILE__) . '/../public_html/lib/router.php';
 ChibiConfig::load(dirname(__FILE__) . '/../conf.ini');
 $config = ChibiConfig::getInstance();
 $config->chibi->runtime->rootFolder = dirname(__FILE__) . '/../public_html';
+require_once dirname(__FILE__) . '/../public_html/src/models/abstract.php';
 
 if (count($argv) < 3) {
 	die('Usage: ' . basename(__FILE__) . ' anime|manga id' . PHP_EOL);
@@ -17,18 +18,33 @@ if (count($argv)) {
 } else {
 	$id2 = null;
 }
+if (count($argv)) {
+	$cachePolicy = array_shift($argv);
+	switch (strtolower($cachePolicy)) {
+		case 'cache':
+		case 'cached':
+			$cachePolicy = AbstractModel::CACHE_POLICY_FORCE_CACHE;
+			break;
+		case 'real':
+			$cachePolicy = AbstractModel::CACHE_POLICY_FORCE_REAL;
+			break;
+		default:
+			die('Unknown cache policy: ' . $cachePolicy . PHP_EOL);
+	}
+} else {
+	$cachePolicy = AbstractModel::CACHE_POLICY_DEFAULT;
+}
 
 switch (strtolower($type)) {
 	case 'anime':
-		require_once dirname(__FILE__) . '/../public_html/src/models/anime.php';
+		require_once dirname(__FILE__) . '/../public_html/src/models/am.php';
 		$model = new AnimeModel();
 		break;
 	case 'manga':
-		require_once dirname(__FILE__) . '/../public_html/src/models/manga.php';
+		require_once dirname(__FILE__) . '/../public_html/src/models/am.php';
 		$model = new MangaModel();
 		break;
 	case 'user':
-		require_once dirname(__FILE__) . '/../public_html/src/models/am.php';
 		require_once dirname(__FILE__) . '/../public_html/src/models/user.php';
 		$model = new UserModel();
 		break;
@@ -36,13 +52,13 @@ switch (strtolower($type)) {
 		die('Unknown type: ' . $type . PHP_EOL);
 }
 
-function get($model, $id) {
+function get($model, $cachePolicy, $id) {
 	$start = microtime(true);
 	$entry = null;
 
 	echo sprintf('%+16s: ', $id);
 	try {
-		$entry = $model->get($id);
+		$entry = $model->get($id, $cachePolicy);
 	} catch (InvalidEntryException $x) {
 	} catch (DownloadException $x) {
 	}
@@ -54,8 +70,8 @@ function get($model, $id) {
 
 if (!empty($id2)) {
 	for ($id = $id1; $id <= $id2; $id ++) {
-		get($model, $id);
+		get($model, $cachePolicy, $id);
 	}
 } else {
-	get($model, $id1);
+	get($model, $cachePolicy, $id1);
 }

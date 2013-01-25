@@ -9,5 +9,5 @@ if [[ "$type" != anime && "$type" != manga ]]; then
 fi
 seq $min $max|xargs -n 1 -P 20 -I {} sh -c "{
 	echo -n \"{} \";
-	php \"$dir/get-amu.php\" \"$type\" \"{}\" >/dev/null
+	php \"$dir/get-amu.php\" \"$type\" \"{}\" "cache" >/dev/null
 }"
