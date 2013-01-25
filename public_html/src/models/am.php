@@ -5,6 +5,7 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am/tagentry.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am/relationentry.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am/creatorentry.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am/serializationentry.php';
 
 abstract class AMModel extends AbstractModel {
 	const URL = 'http://myanimelist.net/{type}/{id}';
@@ -46,11 +47,11 @@ abstract class AMModel extends AbstractModel {
 		//title
 		$node1 = $xpath->query('//h1')->item(0);
 		if (empty($node1)) {
-			throw new Exception('Title node broken');
+			throw new InvalidEntryException('Title node broken (1)');
 		}
 		$node2 = $node1->childNodes->item(1);
 		if (empty($node2)) {
-			throw new Exception('Title node broken');
+			throw new InvalidEntryException('Title node broken (2)');
 		}
 		$entry->setTitle(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node2->textContent));
 
@@ -305,7 +306,7 @@ class MangaModel extends AMModel {
 			$this->loadCommon($mangaEntry, $doc);
 			$this->loadManga($mangaEntry, $doc);
 		} catch (InvalidEntryException $e) {
-			$animeEntry->invalidate(true);
+			$mangaEntry->invalidate(true);
 		}
 
 		return $mangaEntry;
