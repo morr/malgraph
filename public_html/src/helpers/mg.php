@@ -290,13 +290,13 @@ class MGHelper extends ChibiHelper {
 				$userNames = [$userNames];
 			}
 			$url = join(',', $userNames);
-			if ($actionName != 'profile' or $am == AMModel::TYPE_MANGA) {
+			if ($actionName != 'profile') {
 				$url .= '/';
 				$url .= $actionName;
-			}
-			if ($am != AMModel::TYPE_ANIME) {
-				$url .= ',';
-				$url .= $am;
+				if ($am != AMModel::TYPE_ANIME) {
+					$url .= ',';
+					$url .= $am;
+				}
 			}
 		} elseif ($controllerName == 'index') {
 			if (empty($actionName)) {
