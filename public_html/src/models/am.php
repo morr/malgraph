@@ -233,7 +233,7 @@ class AnimeModel extends AMModel {
 
 		$animeEntry = new AnimeEntry($id);
 		$animeEntry->setGenerationTime(time());
-		$animeEntry->setExpirationTime(time() + 3600 * 24 * 21);
+		$animeEntry->setExpirationTime(time() + 3600 * 24 * (30 + mt_rand() % 30));
 
 		try {
 			$this->loadCommon($animeEntry, $doc);
@@ -312,7 +312,7 @@ class MangaModel extends AMModel {
 
 		$mangaEntry = new MangaEntry($id);
 		$mangaEntry->setGenerationTime(time());
-		$mangaEntry->setExpirationTime(time() + 3600 * 24 * 21);
+		$mangaEntry->setExpirationTime(time() + 3600 * 24 * (30 + mt_rand() % 30));
 
 		try {
 			$this->loadCommon($mangaEntry, $doc);
