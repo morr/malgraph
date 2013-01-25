@@ -169,6 +169,14 @@ abstract class Distribution {
 	protected $entries = [];
 	protected $keys = [];
 
+	public function disableEntries() {
+		$this->entries = null;
+	}
+
+	public function entriesEnabled() {
+		return $this->entries !== null;
+	}
+
 	const IGNORE_NULL_KEY = 1;
 
 	public function __construct(array $entries = []) {
@@ -201,20 +209,29 @@ abstract class Distribution {
 	protected function addGroup($key) {
 		$this->keys[(string)$key] = $key;
 		$this->groups[(string)$key] = 0;
-		$this->entries[(string)$key] = [];
+		if ($this->entries !== null) {
+			$this->entries[(string)$key] = [];
+		}
 	}
 
 	public function addToGroup($key, $entry, $weight = 1) {
 		if (!isset($this->groups[(string)$key])) {
 			$this->keys[(string)$key] = $key;
 			$this->groups[(string)$key] = 0;
-			$this->entries[(string)$key] = [];
+			if ($this->entriesEnabled()) {
+				$this->entries[(string)$key] = [];
+			}
 		}
 		$this->groups[(string)$key] += $weight;
-		$this->entries[(string)$key] []= $entry;
+		if ($this->entriesEnabled()) {
+			$this->entries[(string)$key] []= $entry;
+		}
 	}
 
 	public function getGroupEntries($key) {
+		if (!$this->entriesenabled()) {
+			return null;
+		}
 		if (!isset($this->entries[(string)$key])) {
 			return null;
 		}
@@ -240,6 +257,9 @@ abstract class Distribution {
 	}
 
 	public function getGroupsEntries($flags = 0) {
+		if (!$this->entriesEnabled()) {
+			return null;
+		}
 		$x = $this->entries;
 		if ($flags & self::IGNORE_NULL_KEY) {
 			unset($x[(string)$this->getNullGroupKey()]);
@@ -284,6 +304,10 @@ class ScoreDistribution extends Distribution {
 			$this->addGroup($x);
 		}
 		parent::__construct($entries);
+	}
+
+	public function getNullGroupKey() {
+		return 0;
 	}
 
 	public function addEntry(UserListEntry $entry) {

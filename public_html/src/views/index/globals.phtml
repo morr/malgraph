@@ -7,18 +7,19 @@
 <?php foreach (AMModel::getTypes() as $am): ?>
 	<div class="section <?php echo $am ?>-score-dist">
 		<h2>Score distribution (<?php echo ChibiRegistry::getHelper('mg')->amText($am) ?>)</h2>
+		<?php $scoreDistribution = $this->globals->getAMData($am)->getScoredistribution() ?>
 		<div class="section-body">
 			<ul class="infobox">
 				<li>
 					<div>
 						<span class="prefix">Total unrated</span>
-						<span class="subject"><?php printf('%.02f', $this->globals[$am]['unrated'] * 100.0 / ($this->globals[$am]['rated'] + $this->globals[$am]['unrated'])) ?>%</span>
+						<span class="subject"><?php printf('%.02f', $scoreDistribution->getUnratedCount() * 100.0 / ($scoreDistribution->getRatedCount() + $scoreDistribution->getUnratedCount())) ?>%</span>
 					</div>
 				</li>
 				<li>
 					<div>
 						<span class="prefix">Mean score</span>
-						<span class="subject"><?php printf('%.02f', $this->globals[$am]['mean-score']) ?></span>
+						<span class="subject"><?php printf('%.02f', $scoreDistribution->getMeanScore()) ?></span>
 					</div>
 				</li>
 			</ul>
@@ -32,7 +33,7 @@
 				$('.<?php echo $am ?>-score-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 35 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_keys($this->globals[$am]['dist-score']))) ?>, title: { text: 'Rating' } },
+						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, array_values($scoreDistribution->getGroupsKeys(Distribution::IGNORE_NULL_KEY)))) ?>, title: { text: 'Rating' } },
 						yAxis: { title: { text: 'Count', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
@@ -41,12 +42,12 @@
 							} else {
 								text = 'Titles rated with ' + this.x + ': ';
 							}
-							var percent = this.y * 100.0 / <?php echo max(1, $this->globals[$am]['rated']) ?>;
+							var percent = this.y * 100.0 / <?php echo max(1, $scoreDistribution->getRatedCount()) ?>;
 							text += (Math.round(percent * 100.0) / 100.0) + '%';
 							return text;
 						} },
 						series: [ {
-							data: <?php echo json_encode(array_values($this->globals[$am]['dist-score'])) ?>,
+							data: <?php echo json_encode(array_values($scoreDistribution->getGroupsSizes(Distribution::IGNORE_NULL_KEY))) ?>,
 						} ]
 					});
 				});

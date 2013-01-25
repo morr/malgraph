@@ -94,63 +94,7 @@ class IndexController extends AbstractController {
 		HeadHelper::setTitle('MALgraph - global stats');
 		HeadHelper::setDescription('Global community statistics' . MGHelper::$descSuffix);
 
-		// load stats from cache
-		$path = ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/' . ChibiConfig::getInstance()->misc->globalsCacheFile;
-		if (file_exists($path) and ((time() - filemtime($path)) < 24 * 3600)) {
-			$globals = json_decode(file_get_contents($path), true);
-		} else {
-			// regenerate cache
-			$modelUsers = new UserModel();
-			$goal = 500;
-			$users = [];
-			$allUsers = $modelUsers->getKeys();
-			$goal = min($goal, count($allUsers));
-
-			$globals = [];
-			foreach (AMModel::getTypes() as $am) {
-				$globals[$am] = [
-					'dist-score' => array_fill_keys(range(10, 0), 0)
-				];
-			}
-
-			while (count($users) < $goal) {
-				$userName = $allUsers[mt_rand() % count($allUsers)];
-				if (isset($users[$userName])) {
-					continue;
-				}
-				$user = $modelUsers->get($userName, AbstractModel::CACHE_POLICY_FORCE_CACHE);
-
-				/*
-				// ignore users with profile younger than one year
-				list($year, $month, $day) = explode('-', $user['join-date']);
-				if (time() - mktime(0, 0, 0, $month, $day, $year) < 365 * 24 * 3600) {
-					continue;
-				}
-				*/
-
-				// all the work with single user goes here
-				foreach (array_keys($globals) as $am) {
-					$filter = UserListFilters::getCompleted();
-					$entries = $user->getList($am)->getEntries($filter);
-					foreach ($entries as $e) {
-						$globals[$am]['dist-score'][$e->getScore()] ++;
-					}
-				}
-
-				$users[$userName] = true;
-			}
-
-			// postprocess global stats
-			foreach (AMModel::getTypes() as $am) {
-				$globals[$am]['rated'] = array_sum($globals[$am]['dist-score']);
-				$globals[$am]['unrated'] = $globals[$am]['dist-score'][0];
-				$globals[$am]['mean-score'] = array_sum(array_map(function($s) use (&$globals, $am) { return $globals[$am]['dist-score'][$s] * $s; }, array_keys($globals[$am]['dist-score']))) / max(1, $globals[$am]['rated']);
-				unset ($globals[$am]['dist-score'][0]);
-			}
-
-			file_put_contents($path, json_encode($globals));
-		}
-
-		$this->view->globals = $globals;
+		require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/globals.php';
+		$this->view->globals = GlobalsModel::getData();
 	}
 }
