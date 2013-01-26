@@ -11,17 +11,9 @@
 		<?php echo ucfirst($this->mgHelper->amText()) ?>
 		&nbsp;from&nbsp;
 		<?php if ($this->sender == AjaxController::SENDER_YEAR): ?>
-			<?php if (!$this->year): ?>
-				unknown year
-			<?php else: ?>
-				<?php echo $this->year ?>
-			<?php endif ?>
+			<?php echo $this->year ?: 'unknown year' ?>
 		<?php else: ?>
-			<?php if (!$this->decade): ?>
-				unknown decade
-			<?php else: ?>
-				<?php echo $this->decade ?>s
-			<?php endif ?>
+			<?php echo $this->decade ? $this->decade . 's' : 'unknown decade' ?>
 		<?php endif ?>
 
 	<?php elseif ($this->sender == AjaxController::SENDER_GENRE): ?>
@@ -97,9 +89,9 @@
 						</a>
 						<span class="details">&nbsp;(
 							<?php if ($this->am == AMModel::TYPE_ANIME): ?>
-								<?php echo $amEntry->getEpisodeCount() ?>&nbsp;eps
+								<?php echo $amEntry->getEpisodeCount() ?: $entry->getCompletedEpisodes() . '+' ?>&nbsp;eps
 							<?php elseif ($this->am == AMModel::TYPE_MANGA): ?>
-								<?php echo $amEntry->getChapterCount() ?>&nbsp;chaps
+								<?php echo $amEntry->getChapterCount() ?: $entry->getCompletedChapters() . '+' ?>&nbsp;chaps
 							<?php endif ?>,&nbsp;
 							<?php if ($entry->getScore() == 0): ?>
 								not rated

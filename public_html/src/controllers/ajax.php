@@ -188,7 +188,7 @@ class AjaxController extends AbstractController {
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
 			case self::SENDER_FRANCHISES:
-				$filter = UserListFilters::getCompleted();
+				$filter = UserListFilters::getNonPlanned();
 				$entries = $list->getEntries($filter);
 				$this->view->entries = UserListService::getFranchises($entries);
 				break;

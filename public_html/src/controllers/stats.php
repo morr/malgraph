@@ -133,12 +133,10 @@ class StatsController extends AbstractController {
 				$scoreDistribution = new ScoreDistribution();
 				$lengthDistribution = new LengthDistribution();
 				$subTypeDistribution = new SubTypeDistribution();
-				$completedEntries = [];
 				foreach ($entries as $entry) {
 					if (!$filter($entry)) {
 						continue;
 					}
-					$completedEntries[$entry->getID()] = $entry;
 					$info[$type]->completed += 1;
 					if ($type == AMModel::TYPE_ANIME) {
 						$info[$type]->episodes += $entry->getAMEntry()->getEpisodeCount();
@@ -155,7 +153,7 @@ class StatsController extends AbstractController {
 				$info[$type]->lengthDistribution = $lengthDistribution;
 				$info[$type]->scoreDistribution = $scoreDistribution;
 				$info[$type]->subTypeDistribution = $subTypeDistribution;
-				$info[$type]->franchises = UserListService::getFranchises($completedEntries);
+				$info[$type]->franchises = UserListService::getFranchises($u->getList($type)->getEntries(UserListFilters::getNonPlanned()));
 			}
 			$this->view->profileInfo[$u->getRuntimeID()] = $info;
 
