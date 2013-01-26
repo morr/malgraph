@@ -147,8 +147,8 @@
 			<dt>Completed</dt>
 			<dd><?php echo $profileInfo->completed ?></dd>
 
-			<dt class="tooltipable" data-title="Number of groups of related <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>">Franchises</dt>
-			<dd><?php echo count($profileInfo->franchises) ?></dd>
+			<dt>Franchises</dt>
+			<dd><?php echo count($profileInfo->franchises) ?> <a class="franchises" href="#">(show full list)</a></dd>
 
 			<?php if ($type == AMModel::TYPE_ANIME): ?>
 				<dt>Episodes</dt>
@@ -166,8 +166,14 @@
 					<?php printf('%.02f', $profileInfo->scoreDistribution->getMeanScore()) ?>
 				<?php endif ?>
 			</dd>
-
 		</dl>
+
+		<script type="text/javascript">
+			$('.franchises').click(function(e) {
+				toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'franchises', 'am': <?php echo json_encode($type) ?>});
+				e.preventDefault();
+			});
+		</script>
 
 		<p>You've&#32;
 			<?php if ($type == AMModel::TYPE_ANIME): ?>

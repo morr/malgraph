@@ -11,8 +11,9 @@ class AjaxController extends AbstractController {
 	const SENDER_GENRE = 'genre';
 	const SENDER_DAILY_ACTIVITY = 'daily-activity';
 	const SENDER_MONTHLY_ACTIVITY = 'monthly-activity';
-	const SENDER_UNKNOWN = 'unknown';
+	const SENDER_FRANCHISES = 'franchises';
 	const SENDER_SUB_TYPE = 'sub-type';
+	const SENDER_UNKNOWN = 'unknown';
 
 	public static function getSenders() {
 		return [
@@ -25,6 +26,7 @@ class AjaxController extends AbstractController {
 			self::SENDER_DAILY_ACTIVITY,
 			self::SENDER_MONTHLY_ACTIVITY,
 			self::SENDER_SUB_TYPE,
+			self::SENDER_FRANCHISES,
 			self::SENDER_UNKNOWN
 		];
 	}
@@ -184,6 +186,11 @@ class AjaxController extends AbstractController {
 				$this->view->monthPeriod = $monthPeriod;
 				$this->view->entries = $list->getEntries($filter);
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
+				break;
+			case self::SENDER_FRANCHISES:
+				$filter = UserListFilters::getCompleted();
+				$entries = $list->getEntries($filter);
+				$this->view->entries = UserListService::getFranchises($entries);
 				break;
 		}
 	}

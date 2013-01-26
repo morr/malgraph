@@ -184,15 +184,12 @@ class UserListService {
 			$franchises[$obj->group]->duration += $obj->userEntry->getCompletedDuration();
 		}
 
-		//remove groups smaller than 15 minutes
+		//remove groups with less than 2 titles
 		$franchises = array_filter($franchises, function($f) {
-			if ($f->duration <= 15) {
-				return false;
-			}
-			return true;
+			return count($f->entries) > 1;
 		});
 
-		uasort($franchises, function($a, $b) { return count($b) - count($a); });
+		uasort($franchises, function($a, $b) { return count($b->entries) - count($a->entries); });
 		return $franchises;
 	}
 }

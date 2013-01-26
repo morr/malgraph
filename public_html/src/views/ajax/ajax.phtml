@@ -57,6 +57,9 @@
 		<?php else: ?>
 			Titles from <?php echo $this->monthPeriod ?>
 		<?php endif ?>
+
+	<?php elseif ($this->sender == AjaxController::SENDER_FRANCHISES): ?>
+		Franchises consisting of at least two titles
 	<?php endif ?>:
 
 	<?php if (!empty($this->entries)): ?>
@@ -82,41 +85,71 @@
 <?php elseif ($this->user->getList($this->am)->isPrivate()): ?>
 	<p>Can&rsquo;t show you titles from a private list.</p>
 <?php else: ?>
-	<ul>
-		<?php foreach ($this->entries as $entry): ?>
-			<?php $amEntry = $entry->getAMEntry() ?>
-			<li>
-				<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
-					<?php echo $amEntry->getTitle() ?>
-				</a>
-				<span class="details">&nbsp;(
-					<?php if ($this->sender == AjaxController::SENDER_SCORE or $this->sender == AjaxController::SENDER_SCORE_TIME): ?>
-						<?php echo $entry->getCompletedDuration() ?> min.
-					<?php elseif ($this->sender == AjaxController::SENDER_YEAR or $this->sender == AjaxController::SENDER_DECADE): ?>
-						<?php if ($entry->getScore() == 0): ?>
-							unrated
-						<?php else: ?>
-							rated with <?php echo $entry->getScore() ?>
+
+	<?php if ($this->sender == AjaxController::SENDER_FRANCHISES): ?>
+		<ul class="franchises">
+			<?php foreach ($this->entries as $franchise): ?>
+				<li>
+					<?php foreach ($franchise->entries as $entry): ?>
+						<?php $amEntry = $entry->getAMEntry(); ?>
+						<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
+							<?php echo $amEntry->getTitle() ?>
+						</a>
+						<span class="details">&nbsp;(
+							<?php if ($this->am == AMModel::TYPE_ANIME): ?>
+								<?php echo $amEntry->getEpisodeCount() ?>&nbsp;eps
+							<?php elseif ($this->am == AMModel::TYPE_MANGA): ?>
+								<?php echo $amEntry->getChapterCount() ?>&nbsp;chaps
+							<?php endif ?>,&nbsp;
+							<?php if ($entry->getScore() == 0): ?>
+								not rated
+							<?php else: ?>
+								rated&nbsp;with&nbsp;<?php echo $entry->getScore() ?>
+							<?php endif ?>
+						)</span><br>
+					<?php endforeach ?>
+				</li>
+			<?php endforeach ?>
+		</ul>
+
+	<?php else: ?>
+		<ul>
+			<?php foreach ($this->entries as $entry): ?>
+				<?php $amEntry = $entry->getAMEntry() ?>
+				<li>
+					<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
+						<?php echo $amEntry->getTitle() ?>
+					</a>
+					<span class="details">&nbsp;(
+						<?php if ($this->sender == AjaxController::SENDER_SCORE or $this->sender == AjaxController::SENDER_SCORE_TIME): ?>
+							<?php echo $entry->getCompletedDuration() ?> min.
+						<?php elseif ($this->sender == AjaxController::SENDER_YEAR or $this->sender == AjaxController::SENDER_DECADE): ?>
+							<?php if ($entry->getScore() == 0): ?>
+								not rated
+							<?php else: ?>
+								rated with <?php echo $entry->getScore() ?>
+							<?php endif ?>
+						<?php elseif ($this->sender == AjaxController::SENDER_GENRE or $this->sender == AjaxController::SENDER_CREATOR or $this->sender == AjaxController::SENDER_SUB_TYPE): ?>
+							<?php echo $entry->getCompletedDuration() ?>&nbsp;min.,&nbsp;
+							<?php if ($entry->getScore() == 0): ?>
+								not rated
+							<?php else: ?>
+								rated&nbsp;with&nbsp;<?php echo $entry->getScore() ?>
+							<?php endif ?>
+						<?php elseif ($this->sender == AjaxController::SENDER_DAILY_ACTIVITY): ?>
+							<?php if ($entry->getType() == AMModel::TYPE_MANGA): ?>
+								chap. <?php echo $entry->getChapter() ?>
+							<?php else: ?>
+								ep. <?php echo $entry->getEpisode() ?>
+							<?php endif ?>
+							&nbsp;&ndash;&nbsp;<?php echo date('M jS, H:i', $entry->getTimestamp()) ?>&nbsp;UTC
+						<?php elseif ($this->sender == AjaxController::SENDER_MONTHLY_ACTIVITY): ?>
+							<?php echo $entry->getStartDate() ?>&nbsp;&mdash;&nbsp;<?php echo $entry->getFinishDate() ?>
 						<?php endif ?>
-					<?php elseif ($this->sender == AjaxController::SENDER_GENRE or $this->sender == AjaxController::SENDER_CREATOR or $this->sender == AjaxController::SENDER_SUB_TYPE): ?>
-						<?php echo $entry->getCompletedDuration() ?>&nbsp;min.,&nbsp;
-						<?php if ($entry->getScore() == 0): ?>
-							not rated
-						<?php else: ?>
-							rated&nbsp;with&nbsp;<?php echo $entry->getScore() ?>
-						<?php endif ?>
-					<?php elseif ($this->sender == AjaxController::SENDER_DAILY_ACTIVITY): ?>
-						<?php if ($entry->getType() == AMModel::TYPE_MANGA): ?>
-							chap. <?php echo $entry->getChapter() ?>
-						<?php else: ?>
-							ep. <?php echo $entry->getEpisode() ?>
-						<?php endif ?>
-						&nbsp;&ndash;&nbsp;<?php echo date('M jS, H:i', $entry->getTimestamp()) ?>&nbsp;UTC
-					<?php elseif ($this->sender == AjaxController::SENDER_MONTHLY_ACTIVITY): ?>
-						<?php echo $entry->getStartDate() ?>&nbsp;&mdash;&nbsp;<?php echo $entry->getFinishDate() ?>
-					<?php endif ?>
-				)</span>
-			</li>
-		<?php endforeach ?>
-	</ul>
+					)</span>
+				</li>
+			<?php endforeach ?>
+		</ul>
+
+	<?php endif ?>
 <?php endif ?>
