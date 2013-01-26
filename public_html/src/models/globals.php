@@ -1,5 +1,6 @@
 <?php
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/abstract.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
 class GlobalAnimeData extends GlobalAMData {
@@ -50,10 +51,22 @@ abstract class GlobalAMData {
 
 class GlobalData extends AbstractModelEntry {
 	private $amData;
+	private $userCount;
 
 	public function __construct() {
 		$this->amData[AMModel::TYPE_ANIME] = new GlobalAnimeData();
 		$this->amData[AMModel::TYPE_MANGA] = new GlobalMangaData();
+
+		$this->userCount = 0;
+		$model = new UserModel();
+		foreach ($model->getKeys() as $id) {
+			//$entry = $model->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
+			$this->userCount ++;
+		}
+	}
+
+	public function getUserCount() {
+		return $this->userCount;
 	}
 
 	public function isFresh() {
@@ -80,6 +93,8 @@ class GlobalsModel extends AbstractModel {
 
 	public function getReal($key) {
 		$globalData = new GlobalData();
+		$globalData->setGenerationTime(time());
+		$globalData->setExpirationTime(null);
 		$modelUsers = new UserModel();
 		$allUsers = $modelUsers->getKeys();
 		/*$goal = 500;

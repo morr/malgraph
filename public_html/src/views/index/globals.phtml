@@ -1,8 +1,7 @@
 <h1>Global statistics</h1>
 
-<p>These graphs are based on a group of randomly picked 500 users, as generating them for the whole database would take so long you&rsquo;d fall asleep.</p>
-<p>This means they will be different each time they&rsquo;re generated (every 24 h), but not different enough for you to miss the fact that either people only watch what they know they will like, or 7s and 8s are overused and most users don&rsquo;t know how to use the 1-10 scale.</p>
-<p>We&rsquo;ll leave it for you to decide which one is true.</p>
+<p>These graphs are based on all MALgraph users&rsquo; data. Here you can see some basic average user&rsquo;s stats: how many anime or manga they completed or how skewed their ratings are.</p>
+<p>As of <?php echo date('M d Y, H:i', $this->globals->getGenerationTime()) ?> UTC we have <?php echo $this->globals->getUserCount() ?> users, <?php echo $this->globals->getAMData(AMModel::TYPE_ANIME)->getDBSize() ?> anime and <?php echo $this->globals->getAMData(AMModel::TYPE_MANGA)->getDBSize() ?> manga entries in the database.</p>
 
 <?php foreach (AMModel::getTypes() as $am): ?>
 	<div class="section <?php echo $am ?>-score-dist">
