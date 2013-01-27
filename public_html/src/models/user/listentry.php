@@ -20,6 +20,9 @@ class UserAnimeListEntry extends UserListEntry {
 class UserMangaListEntry extends UserListEntry {
 	use MangaModelDecorator;
 
+	private $volumes;
+	private $chapters;
+
 	public function getCompletedDuration() {
 		return $this->getCompletedChapters() * $this->getAMEntry()->getDuration();
 	}

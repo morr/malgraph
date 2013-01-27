@@ -4,7 +4,13 @@ class SessionHelper extends ChibiHelper {
 	private static $oldData = [];
 	private static $oldId = '';
 
-	public function close() {
+	public static function init() {
+		if (!session_id()) {
+			self::$stopped = true;
+		}
+	}
+
+	public static function close() {
 		if (!self::$stopped) {
 			self::$stopped = true;
 			self::$oldData = $_SESSION;
@@ -13,7 +19,7 @@ class SessionHelper extends ChibiHelper {
 		}
 	}
 
-	public function restore() {
+	public static function restore() {
 		if (self::$stopped) {
 			ini_set('session.use_only_cookies', false);
 			ini_set('session.use_cookies', false);
@@ -26,3 +32,5 @@ class SessionHelper extends ChibiHelper {
 		}
 	}
 }
+
+SessionHelper::init();
