@@ -12,7 +12,7 @@
 				@$b['class'],
 				@$b['type'],
 				$b['function'],
-				join(', ', array_map(function($x) { return @json_encode($x); }, empty($b['args']) ? array() : $b['args'])),
+				'...', //join(', ', array_map(function($x) { return @json_encode($x); }, empty($b['args']) ? array() : $b['args'])),
 				empty($b['file']) ? '[anonymous function]' : $b['file'],
 				@$b['line']
 			);
