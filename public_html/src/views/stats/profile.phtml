@@ -182,7 +182,7 @@
 				read
 			<?php endif ?>&#32;
 			<?php $diff = $profileInfo->scoreDistribution->getMeanScore() - $this->globalInfo->getAMData($type)->getScoreDistribution()->getMeanScore() ?>
-			<strong><?php printf('%.02f', $profileInfo->completed * 100.0 / $this->globalInfo->getAMData($type)->getDBSize()) ?>%</strong> of all <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?> on MAL
+			<strong><?php printf('%.02f', $profileInfo->completed * 100.0 / max(1, $this->globalInfo->getAMData($type)->getDBSize())) ?>%</strong> of all <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?> on MAL
 			<?php if ($profileInfo->scoreDistribution->getRatedCount() > 0): ?>
 				&#32;and your ratings are <strong><?php printf('%.02f', abs($diff)) ?></strong> points <strong><?php echo $diff < 0 ? 'lower' : 'higher' ?></strong> than global average.
 			<?php else: ?>
@@ -225,10 +225,10 @@
 <div class="section friends">
 	<h3>Friends (<?php echo count($user->getFriends()) ?>)</h3>
 	<div class="section-body">
-		<?php if (count($user->getFriends()) == 0): ?>
-			<p>This user has no friends on MAL. :(</p>
-		<?php elseif ($user->isAnonymous()): ?>
+		<?php if ($user->isAnonymous()): ?>
 			<p>This user wanted to be anonymous, so their friends aren&rsquo;t shown.</p>
+		<?php elseif (count($user->getFriends()) == 0): ?>
+			<p>This user has no friends on MAL. :(</p>
 		<?php else: ?>
 			<div class="friends scrollable">
 				<?php $friends = $user->getFriends() ?>
@@ -255,10 +255,10 @@
 <div class="section clubs">
 	<h3>Clubs (<?php echo count($user->getClubs()) ?>)</h3>
 	<div class="section-body">
-		<?php if (count($user->getClubs()) == 0): ?>
-			<p>This user doesn&rsquo;t belong to any clubs.</p>
-		<?php elseif ($user->isAnonymous()): ?>
+		<?php if ($user->isAnonymous()): ?>
 			<p>Neither will we tell you their clubs.</p>
+		<?php elseif (count($user->getClubs()) == 0): ?>
+			<p>This user doesn&rsquo;t belong to any clubs.</p>
 		<?php else: ?>
 			<div class="clubs scrollable">
 				<?php $clubs = $user->getClubs() ?>
