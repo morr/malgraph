@@ -467,7 +467,7 @@ class LengthDistribution extends Distribution {
 			foreach ($thresholds as $i => $threshold) {
 				//var_dump($length . ' vs ' . $threshold);
 				if ($length > $threshold) {
-					if ($i  == 0) {
+					if ($i == 0) {
 						$group = strval($threshold + 1) . '+';
 					} else {
 						$a = $thresholds[$i - 1];

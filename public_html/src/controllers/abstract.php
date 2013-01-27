@@ -18,7 +18,7 @@ class AbstractController extends ChibiController {
 
 		//hash for prevention of race condition in ajax-driven user cache refreshing
 		if (!isset($_SESSION['unique-hash'])) {
-			$uniqueHash =  md5('pepper-' . microtime(true) . mt_rand());
+			$uniqueHash = md5('pepper-' . microtime(true) . mt_rand());
 			$_SESSION['unique-hash'] = $uniqueHash;
 		}
 		$this->view->uniqueHash = $_SESSION['unique-hash'];
