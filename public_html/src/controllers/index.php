@@ -17,9 +17,11 @@ class IndexController extends AbstractController {
 	}
 
 	public function aboutAction() {
+		HeadHelper::setTitle('MALgraph - about');
 	}
 
 	public function privacyAction() {
+		HeadHelper::setTitle('MALgraph - privacy policy');
 	}
 
 	public function netDownAction() {
