@@ -1,5 +1,5 @@
 #!/bin/bash
-dir=`dirname "$0"`
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 type=$1; shift
 min=$1; shift
 max=$1; shift
