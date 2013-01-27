@@ -205,7 +205,6 @@
 		</div>
 
 		<div class="clear"></div>
-
 	</div>
 
 	<p class="load-time"><?php printf('%.02f', microtime(true) - ChibiConfig::getInstance()->chibi->runtime->timeStarted) ?>s</p>
@@ -214,7 +213,7 @@
 		<script type="text/javascript">
 			window.setTimeout(function() {
 				var url = <?php echo json_encode(ChibiRegistry::getHelper('mg')->constructUrl('index', 'regenerate')) ?>;
-				var data = <?php echo json_encode(['user-name' => reset(ChibiRegistry::getView()->userNames)]) ?>;
+				var data = <?php echo json_encode(['user-name' => reset(ChibiRegistry::getView()->userNames), 'unique-hash' => ChibiRegistry::getView()->uniqueHash]) ?>;
 				$.get(url, data, function(response) { /*alert(response);*/ });
 			}, 1500);
 		</script>

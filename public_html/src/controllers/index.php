@@ -64,6 +64,13 @@ class IndexController extends AbstractController {
 		header('Content-Type: text/plain; charset=utf-8');
 		ChibiConfig::getInstance()->chibi->runtime->layoutName = null;
 
+		//confirm hash
+		if ($_SESSION['unique-hash'] != $this->inputHelper->getStringSafe('unique-hash')) {
+			echo 'invalid hash. (expected: ' . $_SESSION['unique-hash'] . ', got ' . $this->inputHelper->getStringSafe('unique-hash') . ')';
+			return;
+		}
+		unset ($_SESSION['unique-hash']);
+
 		//discard session information to speed up things
 		$this->sessionHelper->close();
 
