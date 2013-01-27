@@ -18,34 +18,42 @@ abstract class GlobalAMData {
 	public function __construct() {
 		$this->scoreDistribution = new ScoreDistribution();
 		$this->scoreDistribution->disableEntries();
-
 		$this->dbSize = 0;
-		$model = $this->getAMModel();
-		foreach ($model->getKeys() as $id) {
-			$entry = $model->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
-			if ($entry->isDead()) {
-				continue;
-			}
-			$this->dbSize ++;
-		}
 	}
 
 	public function getDBSize() {
 		return $this->dbSize;
 	}
 
-	public function addEntry(UserListEntry $entry) {
-		$filter = UserListFilters::getCompleted();
-		if ($filter($entry)) {
-			$this->scoreDistribution->addEntry($entry);
+	public function getScoreDistribution() {
+		return $this->scoreDistribution;
+	}
+
+
+	protected function updateDBSize() {
+		$this->dbSize = 0;
+		$model = AMModel::factory($this->getType());
+		$x = microtime(true);
+		foreach ($model->getKeys() as $key) {
+			/*if ($model->get($key, AbstractModel::CACHE_POLICY_FORCE_CACHE)->isValid())*/ {
+				$this->dbSize ++;
+			}
 		}
 	}
 
-	public function finalize() {
+	public function addUser(UserEntry $user) {
+		$filter = UserListFilters::getCompleted();
+		foreach ($user->getList($this->getType())->getEntries($filter) as $entry) {
+			$this->scoreDistribution->addEntry($entry);
+		}
+		$this->updateDBSize();
 	}
 
-	public function getScoreDistribution() {
-		return $this->scoreDistribution;
+	public function delUser(UserEntry $user) {
+		$filter = UserListFilters::getCompleted();
+		foreach ($user->getList($this->getType())->getEntries($filter) as $entry) {
+			$this->scoreDistribution->addToGroup($entry->getScore(), $entry, -1); //heh
+		}
 	}
 }
 
@@ -58,11 +66,6 @@ class GlobalData extends AbstractModelEntry {
 		$this->amData[AMModel::TYPE_MANGA] = new GlobalMangaData();
 
 		$this->userCount = 0;
-		$model = new UserModel();
-		foreach ($model->getKeys() as $id) {
-			//$entry = $model->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
-			$this->userCount ++;
-		}
 	}
 
 	public function getUserCount() {
@@ -84,6 +87,32 @@ class GlobalData extends AbstractModelEntry {
 	public function getAMData($type) {
 		return $this->amData[$type];
 	}
+
+
+
+	public function addUser(UserEntry $user) {
+		if (!$user->getID()) {
+			return;
+		}
+		$this->userCount ++;
+		foreach (AMModel::getTypes() as $type) {
+			$this->getAMData($type)->addUser($user);
+		}
+		$this->setGenerationTime(time());
+	}
+
+	public function delUser(UserEntry $user) {
+		if (!$user->getID()) {
+			return;
+		}
+		$this->userCount --;
+		foreach (AMModel::getTypes() as $type) {
+			$this->getAMData($type)->delUser($user);
+		}
+		$this->setGenerationTime(time());
+	}
+
+
 }
 
 class GlobalsModel extends AbstractModel {
@@ -97,39 +126,6 @@ class GlobalsModel extends AbstractModel {
 		$globalData->setExpirationTime(null);
 		$modelUsers = new UserModel();
 		$allUsers = $modelUsers->getKeys();
-		/*$goal = 500;
-		$users = [];
-		$goal = min($goal, count($allUsers));
-
-		/*while (count($users) < $goal) {
-			$userName = next($allUsers);
-			$allUsers[mt_rand() % count($allUsers)];
-			if (isset($users[$userName])) {
-				continue;
-			}*/
-		foreach ($allUsers as $userName) {
-			$user = $modelUsers->get($userName, AbstractModel::CACHE_POLICY_FORCE_CACHE);
-
-			/*
-			// ignore users with profile younger than one year
-			list($year, $month, $day) = explode('-', $user['join-date']);
-			if (time() - mktime(0, 0, 0, $month, $day, $year) < 365 * 24 * 3600) {
-				continue;
-			}
-			*/
-
-			// all the work with single user goes here
-			foreach (AMModel::getTypes() as $type) {
-				$amData = $globalData->getAMData($type);
-				$entries = $user->getList($type)->getEntries();
-				foreach ($entries as $entry) {
-					$amData->addEntry($entry);
-				}
-				$amData->finalize();
-			}
-
-			$users[$userName] = true;
-		}
 
 		return $globalData;
 	}
@@ -138,4 +134,50 @@ class GlobalsModel extends AbstractModel {
 		return (new self())->get(null);
 	}
 
+	public static function putData($data) {
+		return (new self())->put(null, $data);
+	}
+
+	private static $fp = null;
+	private static function specialRead() {
+		$path = (new self())->keyToPath(null);
+		$fp = fopen($path, 'c+b');
+		self::$fp = $fp;
+		if (flock($fp, LOCK_EX)) {
+			fseek($fp, 0, SEEK_END);
+			$size = ftell($fp);
+			fseek($fp, 0, SEEK_SET);
+			if ($size == 0) {
+				$return = (new self())->getReal(null);
+			} else {
+				$data = fread($fp, $size);
+				$return = unserialize($data);
+			}
+		} else {
+			throw new Exception('Couldn\'t acquire lock for ' . $path);
+		}
+		return $return;
+	}
+
+	private static function specialPut($data) {
+		$fp = self::$fp;
+		fseek($fp, 0, SEEK_SET);
+		ftruncate($fp, 0);
+		fwrite($fp, serialize($data));
+		fflush($fp);
+		flock($fp, LOCK_UN);
+		fclose($fp);
+	}
+
+	public static function addUser(UserEntry $user) {
+		$data = self::specialRead();
+		$data->addUser($user);
+		self::specialPut($data);
+	}
+
+	public static function delUser(UserEntry $user) {
+		$data = self::specialRead();
+		$data->delUser($user);
+		self::specialPut($data);
+	}
 }

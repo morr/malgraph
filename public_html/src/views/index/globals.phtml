@@ -12,7 +12,7 @@
 				<li>
 					<div>
 						<span class="prefix">Total unrated</span>
-						<span class="subject"><?php printf('%.02f', $scoreDistribution->getUnratedCount() * 100.0 / ($scoreDistribution->getRatedCount() + $scoreDistribution->getUnratedCount())) ?>%</span>
+						<span class="subject"><?php printf('%.02f', $scoreDistribution->getUnratedCount() * 100.0 / max(1, $scoreDistribution->getRatedCount() + $scoreDistribution->getUnratedCount())) ?>%</span>
 					</div>
 				</li>
 				<li>
@@ -39,10 +39,10 @@
 							if (this.x == '-') {
 								text = 'Unrated titles: ';
 							} else {
-								text = 'Titles rated with ' + this.x + ': ';
+								text = 'Titles rated with ' + this.x + ': ' + this.y;
 							}
 							var percent = this.y * 100.0 / <?php echo max(1, $scoreDistribution->getRatedCount()) ?>;
-							text += (Math.round(percent * 100.0) / 100.0) + '%';
+							text += ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
 							return text;
 						} },
 						series: [ {

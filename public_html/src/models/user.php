@@ -9,6 +9,7 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listentry.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/history.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/historyentry.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/globals.php';
 
 
 class UserModel extends AbstractModel {
@@ -332,11 +333,21 @@ class UserModel extends AbstractModel {
 	}
 
 
+	private function beforeUpdate(UserEntry $userEntry) {
+		GlobalsModel::delUser($userEntry);
+	}
+
+	private function afterUpdate(UserEntry $userEntry) {
+		GlobalsModel::addUser($userEntry);
+	}
+
+
 	public function getReal($userName) {
 		$userEntry = $this->getCached($userName);
 		if (empty($userEntry)) {
 			$userEntry = new UserEntry($userName);
 		}
+		$this->beforeUpdate($userEntry);
 
 		$userEntry->setGenerationTime(time());
 		if ($userEntry->getUserData()->isVIP()) {
@@ -368,6 +379,8 @@ class UserModel extends AbstractModel {
 		$this->loadLists($userEntry, $documents);
 		$this->loadProfile($userEntry, $documents);
 		$this->loadHistory($userEntry, $documents);
+
+		$this->afterUpdate($userEntry);
 		return $userEntry;
 	}
 
