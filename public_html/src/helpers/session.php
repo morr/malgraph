@@ -4,11 +4,11 @@ class SessionHelper extends ChibiHelper {
 	private static $oldData = [];
 	private static $oldId = '';
 
-	public static function init() {
+	/*public static function init() {
 		if (!session_id()) {
 			self::$stopped = true;
 		}
-	}
+	}*/
 
 	public static function close() {
 		if (!self::$stopped) {
@@ -33,4 +33,4 @@ class SessionHelper extends ChibiHelper {
 	}
 }
 
-SessionHelper::init();
+#SessionHelper::init();
