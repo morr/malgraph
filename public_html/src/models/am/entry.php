@@ -164,22 +164,12 @@ abstract class AMEntry extends AbstractModelEntry {
 		}
 	}
 
-	public function isValid($valid) {
+	public function isValid() {
 		return $this->valid;
 	}
 
 	public function __construct($id) {
 		$this->id = $id;
-	}
-
-	public function isDead() {
-		return empty($this->title);
-	}
-
-	public function setDead($dead) {
-		if ($dead) {
-			$this->title = null;
-		}
 	}
 
 	public function getTitle() {
