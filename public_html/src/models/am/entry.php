@@ -152,14 +152,12 @@ abstract class AMEntry extends AbstractModelEntry {
 	public function getFranchise() {
 		$franchise = [];
 		$stack = [$this];
-		$all = [];
 		while (!empty($stack)) {
 			$entry = array_shift($stack);
 			if (isset($visited[$entry->getID()])) {
 				continue;
 			}
-			$visited[$entry->getID()] = true;
-			$all []= $entry;
+			$visited[$entry->getID()] = $entry;
 			foreach ($entry->getRelations() as $relation) {
 				if ($relation->getType() != $this->getType()) {
 					continue;
@@ -168,10 +166,10 @@ abstract class AMEntry extends AbstractModelEntry {
 			}
 		}
 		$franchise = new StdClass;
-		$ids = array_map(function($entry) { return $entry->getID(); }, $all);
+		$ids = array_map(function($entry) { return $entry->getID(); }, $visited);
 		sort($ids, SORT_NUMERIC);
 		$franchise->uniqueID = md5(join(',', $ids));
-		$franchise->entries = $all;
+		$franchise->entries = $visited;
 		return $franchise;
 	}
 
@@ -196,6 +194,7 @@ abstract class AMEntry extends AbstractModelEntry {
 
 	public function __construct($id) {
 		$this->id = $id;
+		$this->valid = true;
 	}
 
 	public function getTitle() {
