@@ -84,31 +84,38 @@ function toggleMoreWrappers(targets, data, ajax) {
 		ajax = true;
 	}
 	var url = '/ajax/ajax';
+
 	$(targets).each(function() {
 		var target = $(this);
 		data['u'] = target.parents('.user').attr('data-user-name');
 		if (!data['am']) {
 			data['am'] = target.parents('body').attr('data-am');
 		}
+
 		var uniqueId = JSON.stringify(data);
 		if (target.data('unique-id') == uniqueId) {
 			if (target.is(':visible')) {
 				target.stop(true, true).slideUp('fast');
 			} else {
-				target.stop(true, true).slideDown('slow');
+				target.stop(true, true).slideDown();
 			}
 			return;
 		}
+
+		$('body').css('min-height', $('body').height() + 'px');
+		var resetHeight = function() { $('body').css('min-height', 'auto'); }
+
 		target.data('unique-id', uniqueId);
-		target.hide();
-		if (ajax) {
-			$.get(url, data, function(response) {
-				target.html(response);
-				target.stop(true, true).slideDown('slow');
-			});
-		} else {
-			target.stop(true, true).slideDown('slow');
-		}
+		target.slideUp('fast', function() {
+			if (ajax) {
+				$.get(url, data, function(response) {
+					target.html(response);
+					target.stop(true, true).slideDown(resetHeight);
+				});
+			} else {
+				target.stop(true, true).slideDown(resetHeight);
+			}
+		});
 	});
 }
 $(function() {
