@@ -129,7 +129,7 @@ class UserListService {
 		return $decade;
 	}
 
-	public static function getFranchises(array $entries) {
+	public static function getFranchises(array $entries, $filter = 'default') {
 		$all = [];
 
 		$franchises = [];
@@ -147,9 +147,14 @@ class UserListService {
 		}
 
 		//remove groups with less than 2 titles
-		$franchises = array_filter($franchises, function($f) {
-			return count($f->ownEntries) > 1;
-		});
+		if ($filter == 'default') {
+			$filter = function($f) { return count($f->ownEntries) > 1; };
+		} elseif ($filter === null) {
+			$filter = function($f) { return count($f->ownEntries) > 0; };
+		}
+		if (!empty($filter)) {
+			$franchises = array_filter($franchises, $filter);
+		}
 
 		uasort($franchises, function($a, $b) { return count($b->ownEntries) - count($a->ownEntries); });
 		return $franchises;

@@ -572,33 +572,26 @@ class StatsController extends AbstractController {
 		foreach ($this->view->users as $u) {
 			$proposedEntries = array();
 
-			//self::sortEntries($u[$this->view->am]['entries'], 'score');
-
 			$filter = UserListFilters::getCompleted();
 			$entries = $u->getList($this->view->am)->getEntries($filter);
-			foreach ($entries as $entry) {
-				foreach ($entry->getAMEntry()->getRelations() as $relation) {
-					//proposed entry is already on user's list
-					if ($u->getList($this->view->am)->getEntryByID($relation->getID()) != null) {
-						continue;
-					}
-					if ($this->view->am != $relation->getType()) {
-						continue;
-					}
 
-					if (!isset($proposedEntries[$entry->getID()])) {
-						$proposedEntries[$entry->getID()] = [
-							'entry' => $entry,
-							'entries' => [],
-						];
-					}
-					$model = AMModel::factory($this->view->am);
-					$entry2 = $model->get($relation->getID());
-					$proposedEntries[$entry->getID()]['entries'] []= $entry2;
+			$proposedEntries = UserListService::getFranchises($entries, null);
+			foreach ($proposedEntries as $franchise) {
+				foreach ($franchise->ownEntries as $ownEntry) {
+					unset($franchise->entries[$ownEntry->getID()]);
 				}
 			}
+			$proposedEntries = array_filter($proposedEntries, function($a) {
+				return count($a->entries) > 0;
+			});
 
-			uasort($proposedEntries, function($a, $b) { return $b['entry']->getScore() - $a['entry']->getScore(); });
+			foreach ($proposedEntries as $franchise) {
+				$franchise->meanScore = UserListService::getMeanScore($franchise->ownEntries);
+				uasort($franchise->entries, function($a, $b) {
+					return $a->getID() - $b->getID();
+				});
+			}
+			uasort($proposedEntries, function($a, $b) { return $b->meanScore - $a->meanScore; });
 
 			$this->view->proposedEntries[$u->getID()] = $proposedEntries;
 		}

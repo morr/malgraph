@@ -22,27 +22,33 @@
 			<table>
 				<thead>
 					<tr>
-						<td>You've <?php echo $this->am == AMModel::TYPE_ANIME ? 'watched' : 'read' ?> this&hellip;</td>
-						<td>&hellip;so you might want to check this:</td>
+						<th class="subject">You've <?php echo $this->am == AMModel::TYPE_ANIME ? 'watched' : 'read' ?> this&hellip;</th>
+						<th class="proposed">&hellip;so you might want to check this:</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($this->proposedEntries[$user->getID()] as $data): ?>
-						<tr id="sug-row-<?php echo $this->am ?>-<?php echo $data['entry']->getID() ?>">
+					<?php foreach ($this->proposedEntries[$user->getID()] as $franchise): ?>
+						<tr data-ids="<?php echo join(' ', array_map(function($entry) { return $entry->getID(); }, $franchise->ownEntries)) ?>">
 							<td class="subject">
-								<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $data['entry']->getID() ?>">
-									<?php echo htmlspecialchars($data['entry']->getAMEntry()->getTitle()) ?>
-								</a>
+								<ul>
+								<?php foreach ($franchise->ownEntries as $entry): ?>
+									<li data-id="<?php echo $entry->getID() ?>">
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $entry->getID() ?>">
+											<?php echo htmlspecialchars($entry->getAMEntry()->getTitle()) ?>
+										</a>
+									</li>
+								<?php endforeach ?>
+								</ul>
 							</td>
 							<td class="proposed">
 								<ul>
-									<?php foreach ($data['entries'] as $subEntry): ?>
-										<?php if (!$subEntry->getTitle()): ?>
+									<?php foreach ($franchise->entries as $entry): ?>
+										<?php if (!$entry->isValid()): ?>
 											<?php continue ?>
 										<?php else: ?>
-											<li id="sug-elem-<?php echo $this->mgHelper->amText() ?>-<?php echo $subEntry->getID() ?>">
-												<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $subEntry->getID() ?>">
-													<?php echo htmlspecialchars($subEntry->getTitle()) ?>
+											<li data-id="<?php echo $entry->getID() ?>">
+												<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $entry->getID() ?>">
+													<?php echo htmlspecialchars($entry->getTitle()) ?>
 												</a>
 											</li>
 										<?php endif ?>
