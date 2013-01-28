@@ -26,8 +26,8 @@
 						<th class="proposed">&hellip;so you might want to check this:</th>
 					</tr>
 				</thead>
-				<tbody>
-					<?php foreach ($this->proposedEntries[$user->getID()] as $franchise): ?>
+				<?php foreach ($this->proposedEntries[$user->getID()] as $franchise): ?>
+					<tbody>
 						<tr data-ids="<?php echo join(' ', array_map(function($entry) { return $entry->getID(); }, $franchise->ownEntries)) ?>">
 							<td class="subject">
 								<ul>
@@ -56,11 +56,48 @@
 								</ul>
 							</td>
 						</tr>
-					<?php endforeach ?>
-				</tbody>
+					</tbody>
+				<?php endforeach ?>
 			</table>
 		<?php endif ?>
 
 	</div>
 </div>
 <?php }); ?>
+
+<script type="text/javascript">
+	$('.missing tr').each(function() {
+		var num1 = 8;
+		var num2 = 5;
+
+		var tr = $(this);
+		var ul = tr.find('ul');
+		var doCollapse = false;
+		ul.each(function() {
+			var li = $(this).children('li');
+			if (li.length > num1) {
+				doCollapse = true;
+			}
+		});
+
+		if (doCollapse) {
+			ul.each(function() {
+				var ul2 = $('<ul class="expand"/>');
+				$(this).find('li').each(function(i) {
+					if (i > num2) {
+						ul2.append($(this));
+					}
+				});
+				ul2.insertAfter($(this)).hide();
+			});
+			var newTr = $('<tr><td colspan="2"/></tr>');
+			var link = $('<a class="more" href="#">(more)</a>').click(function(e) {
+				e.preventDefault();
+				tr.find('.expand').slideDown(function() {
+					link.slideUp();
+				});
+			});
+			newTr.insertAfter(tr).find('td').append(link);
+		}
+	});
+</script>
