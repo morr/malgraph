@@ -82,7 +82,7 @@
 		<ul class="franchises">
 			<?php foreach ($this->entries as $franchise): ?>
 				<li>
-					<?php foreach ($franchise->entries as $entry): ?>
+					<?php foreach ($franchise->ownEntries as $entry): ?>
 						<?php $amEntry = $entry->getAMEntry(); ?>
 						<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
 							<?php echo $amEntry->getTitle() ?>

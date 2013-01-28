@@ -149,6 +149,32 @@ abstract class AMEntry extends AbstractModelEntry {
 	private $relations = [];
 	private $valid;
 
+	public function getFranchise() {
+		$franchise = [];
+		$stack = [$this];
+		$all = [];
+		while (!empty($stack)) {
+			$entry = array_shift($stack);
+			if (isset($visited[$entry->getID()])) {
+				continue;
+			}
+			$visited[$entry->getID()] = true;
+			$all []= $entry;
+			foreach ($entry->getRelations() as $relation) {
+				if ($relation->getType() != $this->getType()) {
+					continue;
+				}
+				array_push($stack, $relation->getAMEntry());
+			}
+		}
+		$franchise = new StdClass;
+		$ids = array_map(function($entry) { return $entry->getID(); }, $all);
+		sort($ids, SORT_NUMERIC);
+		$franchise->uniqueID = md5(join(',', $ids));
+		$franchise->entries = $all;
+		return $franchise;
+	}
+
 	public function invalidate($invalid) {
 		$this->valid = !$invalid;
 		if ($invalid) {

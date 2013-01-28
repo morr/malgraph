@@ -30,6 +30,7 @@ class AMRelationEntry {
 
 	public function getAMEntry() {
 		$model = AMModel::factory($this->type);
+		return AMEntryRuntimeCacheService::lookup($model, $this->id);
 		return $model->get($this->id);
 	}
 }

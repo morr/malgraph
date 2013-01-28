@@ -133,63 +133,25 @@ class UserListService {
 		$all = [];
 
 		$franchises = [];
-		$visited = [];
-		$stack = [];
 		foreach ($entries as $entry) {
-			$obj = new StdClass;
-			$obj->entry = $entry->getAMEntry();
-			$obj->group = $obj->entry->getID();
-			$obj->userEntry = $entry;
-			$stack = [$obj];
-
-			$franchises[$obj->group] = new StdClass;
-			$franchises[$obj->group]->entries = [];
-			$franchises[$obj->group]->duration = 0;
-
-			while (!empty($stack)) {
-				$obj = array_shift($stack);
-				if (isset($visited[$obj->entry->getID()])) {
-					continue;
-				}
-				$visited[$obj->entry->getID()] = true;
-				$all []= $obj;
-				foreach ($obj->entry->getRelations() as $relation) {
-					if ($relation->getType() != $obj->entry->getType()) {
-						continue;
-					}
-					$amEntry = $relation->getAMEntry();
-					//condition below speeds up things - alot!
-					if (isset($visited[$amEntry->getID()])) {
-						continue;
-					}
-					$childObj = new StdClass;
-					$childObj->entry = $amEntry;
-					$childObj->group = $obj->group;
-					$childObj->userEntry = null;
-					if (isset($entries[$childObj->entry->getID()])) {
-						$childObj->userEntry = $entries[$childObj->entry->getID()];
-					}
-					array_push($stack, $childObj);
+			$franchise = $entry->getAMEntry()->getFranchise();
+			$franchise->ownEntries = [];
+			foreach ($franchise->entries as $franchiseEntry) {
+				$id = $franchiseEntry->getID();
+				if (isset($entries[$id])) {
+					$franchise->ownEntries []= $entries[$id];
+					unset($entries[$id]);
 				}
 			}
-
-			$visited[$obj->entry->getID()] = $obj;
-		}
-
-		foreach ($all as $obj) {
-			if (empty($obj->userEntry)) {
-				continue;
-			}
-			$franchises[$obj->group]->entries []= $obj->userEntry;
-			$franchises[$obj->group]->duration += $obj->userEntry->getCompletedDuration();
+			$franchises []= $franchise;
 		}
 
 		//remove groups with less than 2 titles
 		$franchises = array_filter($franchises, function($f) {
-			return count($f->entries) > 1;
+			return count($f->ownEntries) > 1;
 		});
 
-		uasort($franchises, function($a, $b) { return count($b->entries) - count($a->entries); });
+		uasort($franchises, function($a, $b) { return count($b->ownEntries) - count($a->ownEntries); });
 		return $franchises;
 	}
 }
