@@ -20,11 +20,11 @@ dl { display: inline-block; margin: 0; }
 	dt { clear: left; font-weight: bold; width: 10em; float: left; }
 		dt:after { content: ': '; }
 		dd { float: left; margin: 0; padding: 0; }
+			dd a { margin-left: 0.5em; }
 
 .wrapper-target { float: right; width: 40%; margin-left: 1em; }
 .target { height: 15em; }
 .target text { pointer-events: none !important; }
 
-a.franchises { margin-left: 0.5em; }
 #main .wrapper-more ul.franchises { list-style-type: disc; padding-left: 2em; }
 	#main .wrapper-more ul.franchises li { margin-bottom: 1em; }

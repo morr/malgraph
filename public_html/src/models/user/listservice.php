@@ -69,6 +69,8 @@ class UserListFilters {
 	}
 }
 
+
+
 class UserListService {
 	public static function getMeanScore(array $entries) {
 		$sum = 0;
@@ -158,6 +160,23 @@ class UserListService {
 
 		uasort($franchises, function($a, $b) { return count($b->ownEntries) - count($a->ownEntries); });
 		return $franchises;
+	}
+
+	public static function getMismatchedEntries(array $entries) {
+		$entriesMismatched = [];
+		foreach ($entries as $entry) {
+			if ($entry->getType() == AMModel::TYPE_ANIME) {
+				$a = $entry->getCompletedEpisodes();
+				$b = $entry->getAMEntry()->getEpisodeCount();
+			} else {
+				$a = $entry->getCompletedChapters();
+				$b = $entry->getAMEntry()->getChapterCount();
+			}
+			if ($a != $b and $entry->getStatus() == UserListEntry::STATUS_COMPLETED) {
+				$entriesMismatched []= $entry;
+			}
+		}
+		return $entriesMismatched;
 	}
 }
 

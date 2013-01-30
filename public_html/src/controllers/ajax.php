@@ -13,6 +13,7 @@ class AjaxController extends AbstractController {
 	const SENDER_MONTHLY_ACTIVITY = 'monthly-activity';
 	const SENDER_FRANCHISES = 'franchises';
 	const SENDER_SUB_TYPE = 'sub-type';
+	const SENDER_MISMATCHED_EPS = 'mismatched-eps';
 	const SENDER_UNKNOWN = 'unknown';
 
 	public static function getSenders() {
@@ -27,6 +28,7 @@ class AjaxController extends AbstractController {
 			self::SENDER_MONTHLY_ACTIVITY,
 			self::SENDER_SUB_TYPE,
 			self::SENDER_FRANCHISES,
+			self::SENDER_MISMATCHED_EPS,
 			self::SENDER_UNKNOWN
 		];
 	}
@@ -87,6 +89,7 @@ class AjaxController extends AbstractController {
 				$this->view->score = $score;
 				$this->view->entries = $list->getEntries($filter);
 				break;
+
 			case self::SENDER_SCORE_TIME:
 				$score = $this->inputHelper->getInt('score');
 				$filter1 = UserListFilters::getNonPlanned();
@@ -95,6 +98,7 @@ class AjaxController extends AbstractController {
 				$this->view->score = $score;
 				$this->view->entries = $list->getEntries($filter);
 				break;
+
 			case self::SENDER_YEAR:
 				$year = $this->inputHelper->getInt('year');
 				$filter1 = UserListFilters::getNonPlanned();
@@ -106,6 +110,7 @@ class AjaxController extends AbstractController {
 				$this->view->entries = $list->getEntries($filter);
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
+
 			case self::SENDER_DECADE:
 				$decade = $this->inputHelper->getInt('decade');
 				$filter1 = UserListFilters::getNonPlanned();
@@ -117,6 +122,7 @@ class AjaxController extends AbstractController {
 				$this->view->entries = $list->getEntries($filter);
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
+
 			case self::SENDER_SUB_TYPE:
 				$subType = $this->inputHelper->getStringSafe('sub-type');
 				$filter1 = UserListFilters::getCompleted();
@@ -125,6 +131,7 @@ class AjaxController extends AbstractController {
 				$this->view->subType = $subType;
 				$this->view->entries = $list->getEntries($filter);
 				break;
+
 			case self::SENDER_CREATOR:
 				$creator = $this->inputHelper->getInt('creator');
 				$filter1 = UserListFilters::getNonPlanned();
@@ -148,6 +155,7 @@ class AjaxController extends AbstractController {
 				}
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
+
 			case self::SENDER_GENRE:
 				$genre = $this->inputHelper->getInt('genre');
 				$filter1 = UserListFilters::getNonPlanned();
@@ -171,11 +179,13 @@ class AjaxController extends AbstractController {
 				}
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
+
 			case self::SENDER_DAILY_ACTIVITY:
 				$daysAgo = $this->inputHelper->getInt('days-ago');
 				$this->view->daysAgo = $daysAgo;
 				$this->view->entries = $this->view->user->getHistory($this->view->am)->getEntriesByDaysAgo($daysAgo);
 				break;
+
 			case self::SENDER_MONTHLY_ACTIVITY:
 				$monthPeriod = $this->inputHelper->getStringSafe('month');
 				$filter1 = UserListFilters::getCompleted();
@@ -187,10 +197,15 @@ class AjaxController extends AbstractController {
 				$this->view->entries = $list->getEntries($filter);
 				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
+
 			case self::SENDER_FRANCHISES:
 				$filter = UserListFilters::getNonPlanned();
 				$entries = $list->getEntries($filter);
 				$this->view->entries = UserListService::getFranchises($entries);
+				break;
+
+			case self::SENDER_MISMATCHED_EPS:
+				$this->view->entries = UserListService::getMismatchedEntries($list->getEntries());
 				break;
 		}
 	}

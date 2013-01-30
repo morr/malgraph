@@ -122,11 +122,8 @@ class StatsController extends AbstractController {
 			foreach (AMModel::getTypes() as $type) {
 				$info[$type] = new StdClass;
 				$info[$type]->completed = 0;
-				if ($type == AMModel::TYPE_ANIME) {
-					$info[$type]->episodes = 0;
-				} elseif ($type == AMModel::TYPE_MANGA) {
-					$info[$type]->chapters = 0;
-				}
+				$info[$type]->eps = 0;
+				$info[$type]->epsMismatched = [];
 
 				$entriesNonPlanned = $u->getList($type)->getEntries(UserListFilters::getNonPlanned());
 				$entriesCompleted = $u->getList($type)->getEntries(UserListFilters::getCompleted());
@@ -143,9 +140,15 @@ class StatsController extends AbstractController {
 				}
 				foreach ($entriesNonPlanned as $entry) {
 					if ($type == AMModel::TYPE_ANIME) {
-						$info[$type]->episodes += $entry->getCompletedEpisodes();
+						$a = $entry->getCompletedEpisodes();
+						$b = $entry->getAMEntry()->getEpisodeCount();
 					} else {
-						$info[$type]->chapters += $entry->getCompletedChapters();
+						$a = $entry->getCompletedChapters();
+						$b = $entry->getAMEntry()->getChapterCount();
+					}
+					$info[$type]->eps += $a;
+					if ($a != $b and $entry->getStatus() == UserListEntry::STATUS_COMPLETED) {
+						$info[$type]->epsMismatched []= $entry;
 					}
 				}
 				$subTypeDistribution->finalize();

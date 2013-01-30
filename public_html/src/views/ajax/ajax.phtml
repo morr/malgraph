@@ -52,6 +52,9 @@
 
 	<?php elseif ($this->sender == AjaxController::SENDER_FRANCHISES): ?>
 		Franchises consisting of at least two titles
+
+	<?php elseif ($this->sender == AjaxController::SENDER_MISMATCHED_EPS): ?>
+		Titles that have mismatching <?php echo ChibiRegistry::getHelper('mg')->epText() ?> count
 	<?php endif ?>:
 
 	<?php if (!empty($this->entries)): ?>
@@ -137,6 +140,13 @@
 							&nbsp;&ndash;&nbsp;<?php echo date('M jS, H:i', $entry->getTimestamp()) ?>&nbsp;UTC
 						<?php elseif ($this->sender == AjaxController::SENDER_MONTHLY_ACTIVITY): ?>
 							<?php echo $entry->getStartDate() ?>&nbsp;&mdash;&nbsp;<?php echo $entry->getFinishDate() ?>
+						<?php elseif ($this->sender == AjaxController::SENDER_MISMATCHED_EPS): ?>
+							<?php if ($entry->getType() == AMModel::TYPE_MANGA): ?>
+								on your list: <?php echo $entry->getCompletedChapters() ?>, should be <?php echo $entry->getAMEntry()->getChapterCount() ?>
+							<?php else: ?>
+								on your list: <?php echo $entry->getCompletedEpisodes() ?>, should be  <?php echo $entry->getAMEntry()->getEpisodeCount() ?>
+							<?php endif ?>
+							&nbsp;<?php echo ChibiRegistry::getHelper('mg')->epText() ?>s
 						<?php endif ?>
 					)</span>
 				</li>
