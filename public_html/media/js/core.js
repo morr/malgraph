@@ -85,14 +85,15 @@ function toggleMoreWrappers(targets, data, ajax) {
 	}
 	var url = '/ajax/ajax';
 
-	$(targets).each(function() {
+	$(targets).each(function(i) {
 		var target = $(this);
-		data['u'] = target.parents('.user').attr('data-user-name');
-		if (!data['am']) {
-			data['am'] = target.parents('body').attr('data-am');
+		var realData = $.extend({}, data);
+		realData['u'] = target.parents('.user').attr('data-user-name');
+		if (!realData['am']) {
+			realData['am'] = target.parents('body').attr('data-am');
 		}
 
-		var uniqueId = JSON.stringify(data);
+		var uniqueId = JSON.stringify(realData);
 		if (target.data('unique-id') == uniqueId) {
 			if (target.is(':visible')) {
 				target.stop(true, true).slideUp('fast');
@@ -108,7 +109,7 @@ function toggleMoreWrappers(targets, data, ajax) {
 		target.data('unique-id', uniqueId);
 		target.slideUp('fast', function() {
 			if (ajax) {
-				$.get(url, data, function(response) {
+				$.get(url, realData, function(response) {
 					target.html(response);
 					target.stop(true, true).slideDown(resetHeight);
 				});
