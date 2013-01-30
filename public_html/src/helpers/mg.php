@@ -60,6 +60,18 @@ class MGHelper extends ChibiHelper {
 		}
 	}
 
+	public function headerLink($user, $text, $forcePlural = false) {
+		$view = ChibiRegistry::getView();
+		if (count($view->users) > 1 or $forcePlural) {
+			$html = '<a href="' . $this->constructUrl(null, null, [], $user->getLinkableName()) . '">';
+			$html .= $user->getPublicName();
+			$html .= '</a> &rsquo;s ' . lcfirst($text);
+		} else {
+			$html = ucfirst($text);
+		}
+		return $html;
+	}
+
 	public function amText($type = null) {
 		if ($type === null) {
 			$type = ChibiRegistry::getView()->am;

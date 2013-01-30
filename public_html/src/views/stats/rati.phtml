@@ -2,14 +2,7 @@
 <div class="section score-dist">
 	<h2>
 		<i data-title="Count of all entries with given rating,&nbsp;in&nbsp;a bar chart form." class="tooltipable icon-tooltip"></i>
-		<?php if (count($this->users) > 1): ?>
-			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-				<?php echo $user->getPublicName() ?>
-			</a>
-			&rsquo;s rating distribution
-		<?php else: ?>
-			Rating distribution
-		<?php endif ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'rating distribution') ?>
 	</h2>
 	<div class="section-body">
 		<?php if ($this->scoreDistribution[$user->getID()]->getRatedCount() == 0): ?>
@@ -135,14 +128,7 @@
 <div class="section score-time-dist">
 	<h2>
 		<i data-title="Do you waste your time on crap? Check&nbsp;your time spent on 10/10 titles." class="tooltipable icon-tooltip"></i>
-		<?php if (count($this->users) > 1): ?>
-			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-				<?php echo $user->getPublicName() ?>
-			</a>
-			&rsquo;s ratings vs. time spent
-		<?php else: ?>
-			Ratings vs. time spent
-		<?php endif ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'ratings vs. time spent') ?>
 	</h2>
 	<div class="section-body">
 		<?php if ($this->scoreDistribution[$user->getID()]->getRatedCount() == 0): ?>

@@ -1,11 +1,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section basic">
 	<h2>
-		<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-			<?php echo $user->getPublicName() ?>
-		</a>
-		&rsquo;s profile
-
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'profile', true) ?>
 		<span class="updated tooltipable" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
 			<?php echo date('M d, H:i', $user->getGenerationTime()) ?> UTC
 		</span>
@@ -107,108 +103,109 @@
 	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
 	<?php $profileInfo = $this->profileInfo[$user->getRuntimeID()][$type] ?>
 	<div class="section <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats">
-		<h3><?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($type)) ?> summary</h3>
+		<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, ChibiRegistry::getHelper('mg')->amText($type) . ' summary') ?></h2>
+		<div class="section-body">
+			<?php if ($profileInfo->completed > 0): ?>
+				<div class="wrapper-target">
+					<div class="target"></div>
+					<div class="clear"></div>
+				</div>
 
-		<?php if ($profileInfo->completed > 0): ?>
-			<div class="wrapper-target">
-				<div class="target"></div>
-				<div class="clear"></div>
-			</div>
+				<script type="text/javascript">
+					$('#user-<?php echo $user->getRuntimeID() ?> .<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .target').each(function() {
+						var chart = new Highcharts.Chart({
+							chart: { renderTo: this, spacingTop: 0, spacingBottom: 0, spacingLeft: 0, spacingRight: 0 },
+							yAxis: { title: { text: 'Count' } },
+							plotOptions: {
+								pie: {
+									size: '100%',
+									dataLabels: { enabled: true, formatter: function() { return this.percentage < 10 ? '' : this.key; }, distance: -30, color: 'white' },
+							} },
+							tooltip: { formatter: function() {
+								var text = this.key + ': ' + this.y;
+								var percent = this.y * 100.0 / <?php echo max(1, $profileInfo->subTypeDistribution->getTotalSize()) ?>;
+								text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
+								return text;
+							} },
+							series: [ {
+								type: 'pie',
+								data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ChibiRegistry::getHelper('mg')->subTypeText($key), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
+								point: { events: { click: function(e) {
+									toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category, 'am': <?php echo json_encode($type) ?>});
+								} } }
+							} ]
+						});
+					});
+				</script>
+			<?php endif ?>
+
+			<dl>
+				<dt>Completed</dt>
+				<dd><?php echo $profileInfo->completed ?></dd>
+
+				<dt>Franchises</dt>
+				<dd><?php echo count($profileInfo->franchises) ?> <a class="franchises" href="#">(show full list)</a></dd>
+
+				<?php if ($type == AMModel::TYPE_ANIME): ?>
+					<dt>Episodes</dt>
+					<dd><?php echo $profileInfo->episodes ?></dd>
+				<?php elseif ($type == AMModel::TYPE_MANGA): ?>
+					<dt>Chapters</dt>
+					<dd><?php echo $profileInfo->chapters ?></dd>
+				<?php endif ?>
+
+				<dt>Mean score</dt>
+				<dd>
+					<?php if ($profileInfo->scoreDistribution->getRatedCount() == 0): ?>
+						-
+					<?php else: ?>
+						<?php printf('%.02f', $profileInfo->scoreDistribution->getMeanScore()) ?>
+					<?php endif ?>
+				</dd>
+			</dl>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $user->getRuntimeID() ?> .<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .target').each(function() {
-					var chart = new Highcharts.Chart({
-						chart: { renderTo: this, spacingTop: 0, spacingBottom: 0, spacingLeft: 0, spacingRight: 0 },
-						yAxis: { title: { text: 'Count' } },
-						plotOptions: {
-							pie: {
-								size: '100%',
-								dataLabels: { enabled: true, formatter: function() { return this.percentage < 10 ? '' : this.key; }, distance: -30, color: 'white' },
-						} },
-						tooltip: { formatter: function() {
-							var text = this.key + ': ' + this.y;
-							var percent = this.y * 100.0 / <?php echo max(1, $profileInfo->subTypeDistribution->getTotalSize()) ?>;
-							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
-							return text;
-						} },
-						series: [ {
-							type: 'pie',
-							data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ChibiRegistry::getHelper('mg')->subTypeText($key), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
-							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category, 'am': <?php echo json_encode($type) ?>});
-							} } }
-						} ]
-					});
+				$('.franchises').click(function(e) {
+					toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'franchises', 'am': <?php echo json_encode($type) ?>});
+					e.preventDefault();
 				});
 			</script>
-		<?php endif ?>
 
-		<dl>
-			<dt>Completed</dt>
-			<dd><?php echo $profileInfo->completed ?></dd>
-
-			<dt>Franchises</dt>
-			<dd><?php echo count($profileInfo->franchises) ?> <a class="franchises" href="#">(show full list)</a></dd>
-
-			<?php if ($type == AMModel::TYPE_ANIME): ?>
-				<dt>Episodes</dt>
-				<dd><?php echo $profileInfo->episodes ?></dd>
-			<?php elseif ($type == AMModel::TYPE_MANGA): ?>
-				<dt>Chapters</dt>
-				<dd><?php echo $profileInfo->chapters ?></dd>
-			<?php endif ?>
-
-			<dt>Mean score</dt>
-			<dd>
-				<?php if ($profileInfo->scoreDistribution->getRatedCount() == 0): ?>
-					-
-				<?php else: ?>
-					<?php printf('%.02f', $profileInfo->scoreDistribution->getMeanScore()) ?>
-				<?php endif ?>
-			</dd>
-		</dl>
-
-		<script type="text/javascript">
-			$('.franchises').click(function(e) {
-				toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'franchises', 'am': <?php echo json_encode($type) ?>});
-				e.preventDefault();
-			});
-		</script>
-
-		<p>You've&#32;
-			<?php if ($type == AMModel::TYPE_ANIME): ?>
-				watched
-			<?php elseif ($type == AMModel::TYPE_MANGA): ?>
-				read
-			<?php endif ?>&#32;
-			<?php $diff = $profileInfo->scoreDistribution->getMeanScore() - $this->globalInfo->getAMData($type)->getScoreDistribution()->getMeanScore() ?>
-			<strong><?php printf('%.02f', $profileInfo->completed * 100.0 / max(1, $this->globalInfo->getAMData($type)->getDBSize())) ?>%</strong> of all <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?> on MAL
-			<?php if ($profileInfo->scoreDistribution->getRatedCount() > 0): ?>
-				&#32;and your ratings are <strong><?php printf('%.02f', abs($diff)) ?></strong> points <strong><?php echo $diff < 0 ? 'lower' : 'higher' ?></strong> than global average.
-			<?php else: ?>
-				.
-			<?php endif ?>
-		</p>
-
-		<?php if ($profileInfo->completed > 0 and $profileInfo->lengthDistribution->getLargestGroupSize() > 0 /* only titles of unknown length */): ?>
-			<p>
-				Most common&#32;
+			<p>You've&#32;
 				<?php if ($type == AMModel::TYPE_ANIME): ?>
-					TV series
+					watched
 				<?php elseif ($type == AMModel::TYPE_MANGA): ?>
-					manga
+					read
 				<?php endif ?>&#32;
-				length:&nbsp;
-					<strong><?php echo str_replace('-', '&nbsp;to&nbsp;', $profileInfo->lengthDistribution->getLargestGroupKey()) ?></strong>&nbsp;
-				<?php if ($type == AMModel::TYPE_ANIME): ?>
-					episodes
-				<?php elseif ($type == AMModel::TYPE_MANGA): ?>
-					chapters
+				<?php $diff = $profileInfo->scoreDistribution->getMeanScore() - $this->globalInfo->getAMData($type)->getScoreDistribution()->getMeanScore() ?>
+				<strong><?php printf('%.02f', $profileInfo->completed * 100.0 / max(1, $this->globalInfo->getAMData($type)->getDBSize())) ?>%</strong> of all <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?> on MAL
+				<?php if ($profileInfo->scoreDistribution->getRatedCount() > 0): ?>
+					&#32;and your ratings are <strong><?php printf('%.02f', abs($diff)) ?></strong> points <strong><?php echo $diff < 0 ? 'lower' : 'higher' ?></strong> than global average.
+				<?php else: ?>
+					.
 				<?php endif ?>
 			</p>
-		<?php endif ?>
 
-		<div class="clear"></div>
+			<?php if ($profileInfo->completed > 0 and $profileInfo->lengthDistribution->getLargestGroupSize() > 0 /* only titles of unknown length */): ?>
+				<p>
+					Most common&#32;
+					<?php if ($type == AMModel::TYPE_ANIME): ?>
+						TV series
+					<?php elseif ($type == AMModel::TYPE_MANGA): ?>
+						manga
+					<?php endif ?>&#32;
+					length:&nbsp;
+						<strong><?php echo str_replace('-', '&nbsp;to&nbsp;', $profileInfo->lengthDistribution->getLargestGroupKey()) ?></strong>&nbsp;
+					<?php if ($type == AMModel::TYPE_ANIME): ?>
+						episodes
+					<?php elseif ($type == AMModel::TYPE_MANGA): ?>
+						chapters
+					<?php endif ?>
+				</p>
+			<?php endif ?>
+
+			<div class="clear"></div>
+		</div>
 	</div>
 	<?php }); ?>
 	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
@@ -223,7 +220,7 @@
 
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section friends">
-	<h3>Friends (<?php echo count($user->getFriends()) ?>)</h3>
+	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'friends (' . count($user->getFriends()) . ')') ?></h2>
 	<div class="section-body">
 		<?php if ($user->isAnonymous()): ?>
 			<p>This user wanted to be anonymous, so their friends aren&rsquo;t shown.</p>
@@ -253,7 +250,7 @@
 
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section clubs">
-	<h3>Clubs (<?php echo count($user->getClubs()) ?>)</h3>
+	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'clubs (' . count($user->getClubs())  . ')') ?></h2>
 	<div class="section-body">
 		<?php if ($user->isAnonymous()): ?>
 			<p>Neither will we tell you their clubs.</p>

@@ -2,14 +2,7 @@
 <div class="section achi">
 	<h2>
 		<i data-title="Wall of badges you earned for&nbsp;achieving&nbsp;something big." class="tooltipable icon-tooltip"></i>
-		<?php if (count($this->users) > 1): ?>
-			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-				<?php echo $user->getPublicName() ?>
-			</a>
-			&rsquo;s achievements
-		<?php else: ?>
-			Achievements
-		<?php endif ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'achievements') ?>
 	</h2>
 </div>
 

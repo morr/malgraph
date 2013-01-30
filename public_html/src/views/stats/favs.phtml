@@ -2,14 +2,7 @@
 <div class="section decades">
 	<h2>
 		<i data-title="Shows your mean score of titles from&nbsp;any year or decade." class="tooltipable icon-tooltip"></i>
-		<?php if (count($this->users) > 1): ?>
-			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-				<?php echo $user->getPublicName() ?>
-			</a>
-			&rsquo;s favorite decades
-		<?php else: ?>
-			Favorite decades
-		<?php endif ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite decades') ?>
 	</h2>
 	<div class="section-body">
 
@@ -97,24 +90,10 @@
 	<h2>
 		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 			<i data-title="People that chose drawing over sleeping. Sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
-			<?php if (count($this->users) > 1): ?>
-				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-					<?php echo $user->getPublicName() ?>
-				</a>
-				&rsquo;s favorite authors
-			<?php else: ?>
-				Favorite authors
-			<?php endif ?>
+			<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite authors') ?>
 		<?php elseif ($this->am == AMModel::TYPE_ANIME): ?>
 			<i data-title="Anime studios that made your cartoons. Sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
-			<?php if (count($this->users) > 1): ?>
-				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-					<?php echo $user->getPublicName() ?>
-				</a>
-				&rsquo;s favorite studios
-			<?php else: ?>
-				Favorite studios
-			<?php endif ?>
+			<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite studios') ?>
 		<?php else: ?>
 			<?php continue ?>
 		<?php endif ?>
@@ -192,14 +171,7 @@
 <div class="section genres">
 	<h2>
 		<i data-title="Top genres and demographics, sorted&nbsp;by&nbsp;count on your <?php echo $this->mgHelper->amText() ?> list." class="tooltipable icon-tooltip"></i>
-		<?php if (count($this->users) > 1): ?>
-			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
-				<?php echo $user->getPublicName() ?>
-			</a>
-			&rsquo;s favorite genres
-		<?php else: ?>
-			Favorite genres
-		<?php endif ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite genres') ?>
 	</h2>
 	<div class="section-body">
 		<div class="wrapper scrollable">
