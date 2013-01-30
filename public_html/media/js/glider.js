@@ -28,7 +28,9 @@ function attachGlider(elems, event) {
 	elems.each(function() {
 		var target = $(this);
 		target.bind(event, function(e, data) {
-			showGliderDelayed();
+			if (!(e.type == 'click' && e.which == 2)) { //supress showing glider on middle mouse button click
+				showGliderDelayed();
+			}
 			return true;
 		});
 	});
