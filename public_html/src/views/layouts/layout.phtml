@@ -122,7 +122,7 @@
 							<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 								<li>
 									<a class="tooltipable"
-										data-title="Anonymize current profile (for anonymous sharing)"
+										data-title="Anonymize current profile (for&nbsp;anonymous sharing)"
 										data-position-my="center bottom"
 										data-position-at="center top"
 										href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], array_map(function($u) { return $u->getAnonymousName(); }, ChibiRegistry::getView()->users)) ?>">

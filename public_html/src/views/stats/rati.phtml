@@ -1,7 +1,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section score-dist">
 	<h2>
-		<i data-title="Count of all entries scored with given rating, in a bar chart form" class="tooltipable icon-tooltip"></i>
+		<i data-title="Count of all entries with given rating,&nbsp;in&nbsp;a bar chart form." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
 			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
 				<?php echo $user->getPublicName() ?>
@@ -31,7 +31,7 @@
 				</li>
 				<li>
 					<div>
-						<span class="prefix">Std dev</span>
+						<span class="prefix">Std dev.</span>
 						<span class="subject"><?php printf('%.02f', $this->scoreDistribution[$user->getID()]->getStandardDeviation()) ?></span>
 					</div>
 				</li>
@@ -134,7 +134,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section score-time-dist">
 	<h2>
-		<i data-title="How much time have you spent on titles rated with given score?" class="tooltipable icon-tooltip"></i>
+		<i data-title="Do you waste your time on crap? Check&nbsp;your time spent on 10/10 titles." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
 			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
 				<?php echo $user->getPublicName() ?>

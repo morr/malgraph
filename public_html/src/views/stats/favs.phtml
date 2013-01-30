@@ -1,7 +1,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section decades">
 	<h2>
-		<i data-title="Shows your mean score of titles from any year or decade." class="tooltipable icon-tooltip"></i>
+		<i data-title="Shows your mean score of titles from&nbsp;any year or decade." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
 			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
 				<?php echo $user->getPublicName() ?>
@@ -96,7 +96,7 @@
 <div class="section creators">
 	<h2>
 		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
-			<i data-title="Manga authors sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
+			<i data-title="People that chose drawing over sleeping. Sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
 			<?php if (count($this->users) > 1): ?>
 				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
 					<?php echo $user->getPublicName() ?>
@@ -106,7 +106,7 @@
 				Favorite authors
 			<?php endif ?>
 		<?php elseif ($this->am == AMModel::TYPE_ANIME): ?>
-			<i data-title="Anime studios sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
+			<i data-title="Anime studios that made your cartoons. Sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
 			<?php if (count($this->users) > 1): ?>
 				<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
 					<?php echo $user->getPublicName() ?>
@@ -131,7 +131,7 @@
 						<tr>
 							<th class="ord">#</th>
 							<th class="title">Name</th>
-							<th class="count tooltipable" data-title="Count of titles from this studio user has on their list">Count</th>
+							<th class="count tooltipable" data-title="Count of titles from this creator.">Count</th>
 							<th class="mean">Mean</th>
 							<th class="time">Hours</th>
 						</tr>
@@ -191,7 +191,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section genres">
 	<h2>
-		<i data-title="Top genres and demographics, sorted by count on your <?php echo $this->mgHelper->amText() ?> list." class="tooltipable icon-tooltip"></i>
+		<i data-title="Top genres and demographics, sorted&nbsp;by&nbsp;count on your <?php echo $this->mgHelper->amText() ?> list." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
 			<a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
 				<?php echo $user->getPublicName() ?>
@@ -213,7 +213,7 @@
 						<tr>
 							<th class="ord">#</th>
 							<th class="title">Name</th>
-							<th class="count"><span class="tooltipable" data-title="Count of titles from this genre user has on their list">Count</span></th>
+							<th class="count"><span class="tooltipable" data-title="Count of titles from this genre.">Count</span></th>
 							<th class="mean">Mean</th>
 							<th class="time">Hours</th>
 						</tr>

@@ -1,7 +1,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section missing">
 	<h2>
-		<i data-title="List of titles related to those you completed, sorted by score." class="tooltipable icon-tooltip"></i>
+		<i data-title="List of titles related to those you have&nbsp;completed, sorted by score." class="tooltipable icon-tooltip"></i>
 		<?php if (count($this->users) > 1): ?>
 			Missing titles for <a href="<?php echo $this->mgHelper->constructUrl(null, null, [], $user->getLinkableName()) ?>">
 				<?php echo $user->getPublicName() ?>
