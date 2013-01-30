@@ -7,6 +7,12 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am/creatorentry.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am/serializationentry.php';
 
+class InvalidAMTypeException extends Exception {
+	public function __construct() {
+		parent::__construct('Invalid entry type');
+	}
+}
+
 abstract class AMModel extends AbstractModel {
 	const URL = 'http://myanimelist.net/{type}/{id}';
 
@@ -27,7 +33,7 @@ abstract class AMModel extends AbstractModel {
 			case AMModel::TYPE_ANIME: return new AnimeModel();
 			case AMModel::TYPE_MANGA: return new MangaModel();
 		}
-		throw new Exception('Unknown entry type');
+		throw new InvalidAMTypeException();
 	}
 
 	protected function getXML($type, $id) {

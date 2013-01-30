@@ -65,7 +65,7 @@ class MGHelper extends ChibiHelper {
 		if (count($view->users) > 1 or $forcePlural) {
 			$html = '<a href="' . $this->constructUrl(null, null, [], $user->getLinkableName()) . '">';
 			$html .= $user->getPublicName();
-			$html .= '</a> &rsquo;s ' . lcfirst($text);
+			$html .= '</a>&rsquo;s ' . lcfirst($text);
 		} else {
 			$html = ucfirst($text);
 		}
@@ -80,7 +80,18 @@ class MGHelper extends ChibiHelper {
 			case AMModel::TYPE_ANIME: return 'anime';
 			case AMModel::TYPE_MANGA: return 'manga';
 		}
-		return '?';
+		throw new InvalidAMTypeException();
+	}
+
+	public function epText($type = null) {
+		if ($type === null) {
+			$type = ChibiRegistry::getView()->am;
+		}
+		switch ($type) {
+			case AMModel::TYPE_ANIME: return 'episode';
+			case AMModel::TYPE_MANGA: return 'chapter';
+		}
+		throw new InvalidAMTypeException();
 	}
 
 	public function removeSpaces($subject) {
