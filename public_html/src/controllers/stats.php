@@ -128,37 +128,35 @@ class StatsController extends AbstractController {
 					$info[$type]->chapters = 0;
 				}
 
-				$filter = UserListFilters::getCompleted();
-				$entries = $u->getList($type)->getEntries();
+				$entriesNonPlanned = $u->getList($type)->getEntries(UserListFilters::getNonPlanned());
+				$entriesCompleted = $u->getList($type)->getEntries(UserListFilters::getCompleted());
 				$scoreDistribution = new ScoreDistribution();
 				$lengthDistribution = new LengthDistribution();
 				$subTypeDistribution = new SubTypeDistribution();
-				foreach ($entries as $entry) {
-					if (!$filter($entry)) {
-						continue;
-					}
+				foreach ($entriesCompleted as $entry) {
 					$info[$type]->completed += 1;
-					if ($type == AMModel::TYPE_ANIME) {
-						$info[$type]->episodes += $entry->getAMEntry()->getEpisodeCount();
-					} else {
-						$info[$type]->chapters += $entry->getAMEntry()->getChapterCount();
-					}
 					$scoreDistribution->addEntry($entry);
 					if ($entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE) {
 						$lengthDistribution->addEntry($entry);
 					}
 					$subTypeDistribution->addEntry($entry);
 				}
+				foreach ($entriesNonPlanned as $entry) {
+					if ($type == AMModel::TYPE_ANIME) {
+						$info[$type]->episodes += $entry->getCompletedEpisodes();
+					} else {
+						$info[$type]->chapters += $entry->getCompletedChapters();
+					}
+				}
 				$subTypeDistribution->finalize();
 				$info[$type]->lengthDistribution = $lengthDistribution;
 				$info[$type]->scoreDistribution = $scoreDistribution;
 				$info[$type]->subTypeDistribution = $subTypeDistribution;
-				$info[$type]->franchises = UserListService::getFranchises($u->getList($type)->getEntries(UserListFilters::getNonPlanned()));
+				$info[$type]->franchises = UserListService::getFranchises($entriesNonPlanned);
 			}
 			$this->view->profileInfo[$u->getRuntimeID()] = $info;
 
 		}
-
 		require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/globals.php';
 		$this->view->globalInfo = GlobalsModel::getData();
 
