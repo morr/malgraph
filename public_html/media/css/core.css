@@ -90,7 +90,7 @@ h1, h2, h3 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 div.section+div.section { margin-top: 1.5em; }
 	h2 .icon-tooltip,
 	h3 .icon-tooltip { float: right; display: block; }
-	.section .section-body p { margin: 6px 10px; }
+	.section .section-body p { margin: 0.5em; }
 
 
 
