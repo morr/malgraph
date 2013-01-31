@@ -86,7 +86,7 @@ h1, h2, h3 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 		#menu-wrapper .actions { font-size: 105%; }
 	}
 
-#main *:first-child { margin-top: 0; }
+*:first-child { margin-top: 0; }
 div.section+div.section { margin-top: 1.5em; }
 	h2 .icon-tooltip,
 	h3 .icon-tooltip { float: right; display: block; }

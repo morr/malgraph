@@ -1,6 +1,7 @@
 .target { height: 17em; line-height: 0; }
 
-ul.infobox { height: 15em; }
+ul.infobox { height: 17em; }
+	ul.infobox .btn { margin-top: 1em; }
 
 #popup-wrapper .export { width: 35em; top: 20%; }
 	.export .header { display: inline-block; margin: 0 auto; }
