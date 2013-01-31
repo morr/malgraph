@@ -118,7 +118,7 @@
 							yAxis: { title: { text: 'Count' } },
 							plotOptions: {
 								pie: {
-									size: '100%',
+									size: '100%', shadow: false,
 									dataLabels: { enabled: true, formatter: function() { return this.percentage < 10 ? '' : this.key; }, distance: -30, color: 'white' },
 							} },
 							tooltip: { formatter: function() {
@@ -131,7 +131,8 @@
 								type: 'pie',
 								data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ChibiRegistry::getHelper('mg')->subTypeText($key), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
 								point: { events: { click: function(e) {
-									toggleMoreWrappers($('.<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>-sub-stats .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category, 'am': <?php echo json_encode($type) ?>});
+									var am = $(e.target).parents('.sub-stats').attr('data-am');
+									toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category, 'am': am});
 								} } }
 							} ]
 						});
@@ -277,7 +278,6 @@
 	$('.franchises, .mismatched-eps').click(function(e) {
 		var sender = $(this).attr('class');
 		var am = $(this).parents('.sub-stats').attr('data-am');
-	console.log(am);
 		toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': sender, 'am': am});
 		e.preventDefault();
 	});
