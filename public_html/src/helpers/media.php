@@ -12,9 +12,9 @@ class MediaHelper extends ChibiHelper {
 		foreach ($whats as $what) {
 			$paths = self::getPaths($what);
 			foreach ($paths as $path) {
-				if (strpos($path, '.css') !== false) {
+				if (strpos($path, 'css') !== false) {
 					HeadHelper::addStylesheet($path);
-				} elseif (strpos($path, '.js') !== false) {
+				} elseif (strpos($path, 'js') !== false) {
 					HeadHelper::addScript($path);
 				}
 			}
