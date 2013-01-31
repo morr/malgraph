@@ -38,8 +38,8 @@ class MediaHelper extends ChibiHelper {
 			case self::INFOBOX: return [
 				UrlHelper::url('media/css/infobox.css')];
 			case self::HIGHCHARTS: return [
-				UrlHelper::url('media/js/highcharts/highcharts.js'),
-				UrlHelper::url('media/js/highcharts/themes/mg.js')];
+				'http://code.highcharts.com/highcharts.js',
+				UrlHelper::url('media/js/highcharts-mg.js')];
 			case self::POPUPS: return [
 				UrlHelper::url('media/css/popups.css'),
 				UrlHelper::url('media/js/popups.js')];
