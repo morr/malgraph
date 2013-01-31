@@ -220,7 +220,7 @@
 		<?php elseif (count($user->getFriends()) == 0): ?>
 			<p>This user has no friends on MAL. :(</p>
 		<?php else: ?>
-			<div class="friends scrollable">
+			<div class="scrollable">
 				<?php $friends = $user->getFriends() ?>
 				<?php usort($friends, function($a, $b) { return strlen($a->getName()) > strlen($b->getName()); }) ?>
 				<ul>
@@ -233,6 +233,7 @@
 						</li>
 					<?php endforeach ?>
 				</ul>
+				<div class="clear"></div>
 			</div>
 		<?php endif ?>
 	</div>
@@ -250,7 +251,7 @@
 		<?php elseif (count($user->getClubs()) == 0): ?>
 			<p>This user doesn&rsquo;t belong to any clubs.</p>
 		<?php else: ?>
-			<div class="clubs scrollable">
+			<div class="scrollable">
 				<?php $clubs = $user->getClubs() ?>
 				<?php usort($clubs, function($a, $b) { return strlen($a->getName()) > strlen($b->getName()); }) ?>
 				<ul>
@@ -263,6 +264,7 @@
 						</li>
 					<?php endforeach ?>
 				</ul>
+				<div class="clear"></div>
 			</div>
 		<?php endif ?>
 	</div>

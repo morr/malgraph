@@ -6,7 +6,6 @@ div.section+div.section { margin-top: 1.5em; }
 
 /* user layout */
 div.users { padding-bottom: 2em; }
-div.user { background: white; }
 	div.user h2 { margin-bottom: 0.7em; padding-left: 0.3em; }
 	.compare-mode div.users {
 		background-image: url('../img/switcher.png');

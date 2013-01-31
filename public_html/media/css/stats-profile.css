@@ -3,7 +3,7 @@
 .list-views .suffix { margin-left: 0.67em; color: gray; }
 
 #main ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
-	.clubs, .friends { max-height: 15em; }
+	.clubs .scrollable, .friends .scrollable { max-height: 15em; }
 		.friends ul { columns: auto 3; -webkit-columns: auto 3; -moz-columns: auto 3; }
 		.clubs ul { columns: auto 2; -webkit-columns: auto 2; -moz-columns: auto 2; }
 			.friends li { overflow: hidden; display: block; text-overflow: ellipsis; }
