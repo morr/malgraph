@@ -120,7 +120,7 @@ function toggleMoreWrappers(targets, data, ajax) {
 	});
 }
 $(function() {
-	$('.wrapper-more .close').live('click', function(e) {
+	$('.wrapper-more').on('click', '.close', function(e) {
 		e.preventDefault();
 		$(this).parents('.users').find('.wrapper-more').stop(true, true).slideUp('fast');
 	});

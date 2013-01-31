@@ -31,7 +31,7 @@ class MediaHelper extends ChibiHelper {
 				'http://fonts.googleapis.com/css?family=Open+Sans|Ubuntu',
 				UrlHelper::url('media/css/bootstrap.min.css'),
 				UrlHelper::url('media/css/core.css'),
-				UrlHelper::url('media/js/jquery.min.js'),
+				'http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js',
 				UrlHelper::url('media/js/jquery.ui.position.js'),
 				UrlHelper::url('media/js/core.js'),
 				UrlHelper::url('media/js/glider.js')];
