@@ -112,9 +112,7 @@ class StatsController extends AbstractController {
 
 
 	public function profileAction() {
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts-more.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		MediaHelper::addMedia([MediaHelper::HIGHCHARTS]);
 		$this->view->profileInfo = [];
 
 		foreach ($this->view->users as $u) {
@@ -168,7 +166,7 @@ class StatsController extends AbstractController {
 
 
 	public function listAction() {
-		HeadHelper::addScript(UrlHelper::url('media/js/jquery.tablesorter.min.js'));
+		MediaHelper::addMedia([MediaHelper::TABLESORTER]);
 	}
 
 
@@ -270,17 +268,13 @@ class StatsController extends AbstractController {
 
 
 	public function ratiAction() {
-		HeadHelper::addScript(UrlHelper::url('media/js/popups.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/popups.css'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
-		HeadHelper::addScript(UrlHelper::url('media/js/jquery.farbtastic.js'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/jquery.farbtastic.css'));
+		MediaHelper::addMedia([MediaHelper::HIGHCHARTS,
+			MediaHelper::POPUPS,
+			MediaHelper::INFOBOX,
+			MediaHelper::FARBTASTIC
+		]);
 
-		//prepare info for view
 		$this->view->scoreDistribution = [];
-
 		foreach ($this->view->users as $userEntry) {
 			$filter = UserListFilters::getNonPlanned();
 			$entries = $userEntry->getList($this->view->am)->getEntries($filter);
@@ -400,9 +394,7 @@ class StatsController extends AbstractController {
 
 
 	public function actiAction() {
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
+		MediaHelper::addMedia([MediaHelper::HIGHCHARTS, MediaHelper::INFOBOX]);
 
 		foreach ($this->view->users as $i => $u) {
 			$actiInfo = [
@@ -514,9 +506,7 @@ class StatsController extends AbstractController {
 
 
 	public function favsAction() {
-		HeadHelper::addScript(UrlHelper::url('media/js/jquery.tablesorter.min.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
+		MediaHelper::addMedia([MediaHelper::HIGHCHARTS, MediaHelper::TABLESORTER]);
 
 		foreach ($this->view->users as $user) {
 			$filter = UserListFilters::getNonPlanned();

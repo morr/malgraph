@@ -97,9 +97,7 @@ class IndexController extends AbstractController {
 
 
 	public function globalsAction() {
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/highcharts.js'));
-		HeadHelper::addScript(UrlHelper::url('media/js/highcharts/themes/mg.js'));
-		HeadHelper::addStylesheet(UrlHelper::url('media/css/infobox.css'));
+		MediaHelper::addMedia([MediaHelper::HIGHCHARTS, MediaHelper::INFOBOX]);
 		HeadHelper::setTitle('MALgraph - global stats');
 		HeadHelper::setDescription('Global community statistics' . MGHelper::$descSuffix);
 
