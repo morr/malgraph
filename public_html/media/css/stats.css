@@ -1,9 +1,3 @@
-div.section+div.section { margin-top: 1.5em; }
-
-	h2 .icon-tooltip,
-	h3 .icon-tooltip { float: right; display: block; }
-	.section .section-body p { margin: 6px 10px; }
-
 /* user layout */
 div.users { padding-bottom: 2em; }
 	div.user h2 { margin-bottom: 0.7em; padding-left: 0.3em; }
