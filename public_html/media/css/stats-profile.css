@@ -4,11 +4,9 @@
 
 #main ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
 	.clubs .scrollable, .friends .scrollable { max-height: 15em; }
-		.friends ul { columns: auto 3; -webkit-columns: auto 3; -moz-columns: auto 3; }
-		.clubs ul { columns: auto 2; -webkit-columns: auto 2; -moz-columns: auto 2; }
-			.friends li { overflow: hidden; display: block; text-overflow: ellipsis; }
-			.clubs li { overflow: hidden; display: block; text-overflow: ellipsis; }
-
+	.friends li, .clubs li { overflow: hidden; display: block; text-overflow: ellipsis; }
+	.friends ul { columns: 3; -webkit-columns: auto 3; -moz-columns: auto 3; }
+	.clubs ul { columns: 2; -webkit-columns: auto 2; -moz-columns: auto 2; }
 	.friends a, .clubs a { position: relative; }
 	.friends i, .clubs i { position: absolute; }
 	.friends span, .clubs span { display: inline-block; margin-left: 21px; }

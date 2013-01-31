@@ -6,7 +6,7 @@ $.fn.hasAttr = function(name) {
 
 // scroll scrollable elements
 $(function() {
-	$('.scrollable').jScrollPane({horizontalDragMaxWidth: 0});
+	$('.scrollable').jScrollPane({horizontalDragMaxWidth: 0, autoReinitialise: true});
 });
 
 
