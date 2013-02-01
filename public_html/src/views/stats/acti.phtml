@@ -1,7 +1,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section acti-line-daily">
 	<h2>
-		<i data-tooltip="Number of <?php echo $this->am == AMModel::TYPE_MANGA ? "chapters you've read" : "episodes you've watched" ?> within&nbsp;given day. Shows last 3 weeks with 24 h accuracy." class="icon-tooltip"></i>
+		<i data-tooltip="Number of <?php echo $this->am == AMModel::TYPE_MANGA ? "chapters you've read" : "episodes you've watched" ?>|within given day. Shows last 3 weeks|with 24 h accuracy." class="icon-tooltip"></i>
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'activity timeline (daily)') ?>
 	</h2>
 	<div class="section-body">
@@ -16,7 +16,7 @@
 			<li>
 				<div>
 					<span class="prefix">Average time</span>
-					<span class="subject" data-tooltip="Earliest time user started or finished <?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL, was&nbsp;on <?php echo date('Y-m-d', $this->actiInfo[$user->getID()]['earliest-time']) ?>"><?php printf('%.02f', $this->actiInfo[$user->getID()]['mean-time']) ?></span>
+					<span class="subject" data-tooltip="Earliest time user started or finished|<?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL,|was on <?php echo date('Y-m-d', $this->actiInfo[$user->getID()]['earliest-time']) ?>"><?php printf('%.02f', $this->actiInfo[$user->getID()]['mean-time']) ?></span>
 					<span class="suffix">min/day</span>
 				</div>
 			</li>
@@ -66,7 +66,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section acti-line-monthly">
 	<h2>
-		<i data-tooltip="Number of titles you've completed within given month, or with no specified&nbsp;completion date." class="icon-tooltip"></i>
+		<i data-tooltip="Number of titles you've completed|within given month, or with no|specified completion date." class="icon-tooltip"></i>
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'activity timeline (monthly)') ?>
 	</h2>
 	<div class="section-body">
