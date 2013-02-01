@@ -11,7 +11,7 @@
 			<ul class="infobox">
 				<li>
 					<div>
-						<span class="prefix tooltipable" data-title="Average count of rated titles per user">Rated per user</span>
+						<span class="prefix" data-tooltip="Average count of rated titles per user">Rated per user</span>
 						<span class="subject"><?php printf('%d', floor($scoreDistribution->getRatedCount() / max(1, $this->globals->getUserCount()))) ?></span>
 					</div>
 				</li>

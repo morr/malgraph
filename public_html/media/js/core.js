@@ -21,58 +21,35 @@ $(function() {
 	}
 
 	function startTooltipRemoval(target) {
-		var div = $(target).data('tooltip');
-		if (!div) {
-			return;
-		}
-		var timeout = window.setTimeout(function() {
-			div.fadeOut('fast', function() {
-				$(this).remove();
-			});
-			$(target).data('tooltip-hide-timeout', null);
-		}, 50);
-		$(target).data('tooltip-hide-timeout', timeout);
 	}
 
-	$('.tooltipable').each(function() {
+	$('[data-tooltip]').each(function() {
 		$(this).mouseenter(function() {
 			var target = $(this);
+			var title = $(target).attr('data-tooltip');
+			var posMy = 'center top';
+			var posAt = 'center bottom';
 
-			if ($(target).data('tooltip-show-timeout')) {
-				return;
-			}
-			if ($(target).data('tooltip-hide-timeout')) {
-				stopTooltipRemoval(target);
-				return;
-			}
+			var div = $('<div class="tooltip"/>').append($('<span>').html(title.replace('|', '<br>')));
+			$(target).data('tooltip', div);
 
-			var delay = $(target).hasAttr('data-delay') ? $(target).attr('data-delay') : 300;
-			var title = $(target).hasAttr('title') ? $(target).attr('title') : $(target).attr('data-title');
-			var posMy = $(target).hasAttr('data-position-my') ? $(target).attr('data-position-my') : 'center top';
-			var posAt = $(target).hasAttr('data-position-at') ? $(target).attr('data-position-at') : 'center bottom';
-
-			var timeout = window.setTimeout(function() {
-				var div = $('<div class="tooltip"/>').append($('<div>').text(title));
-				$(target).data('tooltip', div);
-
-				$('body').append(div);
-				$(div).position({of: $(target), my: posMy, at: posAt, collision: 'fit fit'})
-					.mouseenter(function() { stopTooltipRemoval(target); })
-					.mouseleave(function() { startTooltipRemoval(target); })
-					.hide()
-					.fadeIn('fast');
-				$(target).data('tooltip-show-timeout', null);
-			}, delay);
-
-			$(target).data('tooltip-show-timeout', timeout);
+			$('body').append(div);
+			$(div).position({of: $(target), my: posMy, at: posAt, collision: 'fit fit'})
+				.mouseenter(function() { stopTooltipRemoval(target); })
+				.mouseleave(function() { startTooltipRemoval(target); })
+				.hide()
+				.fadeIn('fast');
 
 		}).mouseleave(function() {
 			var target = $(this);
-
-			window.clearTimeout($(target).data('tooltip-show-timeout'));
-			$(target).data('tooltip-show-timeout', null);
-			startTooltipRemoval($(target));
-		} );
+			var div = $(target).data('tooltip');
+			if (!div) {
+				return;
+			}
+			div.fadeOut('fast', function() {
+				$(this).remove();
+			});
+		});
 	});
 });
 

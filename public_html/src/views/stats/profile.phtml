@@ -2,7 +2,7 @@
 <div class="section basic">
 	<h2>
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'profile', true) ?>
-		<span class="updated tooltipable" data-position-my="left center" data-position-at="right center" data-title="Time of last data update">
+		<span class="updated" data-tooltip="Time of last data update">
 			<?php echo date('M d, H:i', $user->getGenerationTime()) ?> UTC
 		</span>
 		<div class="clear"></div><!-- fix for small pages -->
@@ -28,9 +28,9 @@
 			<dd class="list-views">
 				<?php echo $user->getList(AMModel::TYPE_ANIME)->getViewCount() + $user->getList(AMModel::TYPE_MANGA)->getViewCount() ?>&nbsp;
 				<span class="suffix">(
-					<span class="tooltipable" data-title="Anime list view count"><?php echo $user->getList(AMModel::TYPE_ANIME)->getViewCount() ?></span>
+					<span data-tooltip="Anime list view count"><?php echo $user->getList(AMModel::TYPE_ANIME)->getViewCount() ?></span>
 					+
-					<span class="tooltipable" data-title="Manga list view count"><?php echo $user->getList(AMModel::TYPE_MANGA)->getViewCount() ?></span>
+					<span data-tooltip="Manga list view count"><?php echo $user->getList(AMModel::TYPE_MANGA)->getViewCount() ?></span>
 				)</span>
 			</dd>
 

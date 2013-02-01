@@ -1,7 +1,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section decades">
 	<h2>
-		<i data-title="Shows your mean score of titles from&nbsp;any year or decade." class="tooltipable icon-tooltip"></i>
+		<i data-tooltip="Shows your mean score of titles from&nbsp;any year or decade." class="icon-tooltip"></i>
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite decades') ?>
 	</h2>
 	<div class="section-body">
@@ -89,10 +89,10 @@
 <div class="section creators">
 	<h2>
 		<?php if ($this->am == AMModel::TYPE_MANGA): ?>
-			<i data-title="People that chose drawing over sleeping. Sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
+			<i data-tooltip="People that chose drawing over sleeping. Sorted by number of titles on your list." class="icon-tooltip"></i>
 			<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite authors') ?>
 		<?php elseif ($this->am == AMModel::TYPE_ANIME): ?>
-			<i data-title="Anime studios that made your cartoons. Sorted by number of titles on your list." class="tooltipable icon-tooltip"></i>
+			<i data-tooltip="Anime studios that made your cartoons. Sorted by number of titles on your list." class="icon-tooltip"></i>
 			<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite studios') ?>
 		<?php else: ?>
 			<?php continue ?>
@@ -110,7 +110,7 @@
 						<tr>
 							<th class="ord">#</th>
 							<th class="title">Name</th>
-							<th class="count tooltipable" data-title="Count of titles from this creator.">Count</th>
+							<th class="count" data-tooltip="Count of titles from this creator.">Count</th>
 							<th class="mean">Mean</th>
 							<th class="time">Hours</th>
 						</tr>
@@ -170,7 +170,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section genres">
 	<h2>
-		<i data-title="Top genres and demographics, sorted&nbsp;by&nbsp;count on your <?php echo $this->mgHelper->amText() ?> list." class="tooltipable icon-tooltip"></i>
+		<i data-tooltip="Top genres and demographics, sorted&nbsp;by&nbsp;count on your <?php echo $this->mgHelper->amText() ?> list." class="icon-tooltip"></i>
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite genres') ?>
 	</h2>
 	<div class="section-body">
@@ -185,7 +185,7 @@
 						<tr>
 							<th class="ord">#</th>
 							<th class="title">Name</th>
-							<th class="count"><span class="tooltipable" data-title="Count of titles from this genre.">Count</span></th>
+							<th class="count"><span data-tooltip="Count of titles from this genre.">Count</span></th>
 							<th class="mean">Mean</th>
 							<th class="time">Hours</th>
 						</tr>
