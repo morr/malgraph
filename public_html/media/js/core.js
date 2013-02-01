@@ -30,7 +30,7 @@ $(function() {
 			var posMy = 'center top';
 			var posAt = 'center bottom';
 
-			var div = $('<div class="tooltip"/>').append($('<span>').html(title.replace('|', '<br>')));
+			var div = $('<div class="tooltip"/>').append($('<span>').html(title.replace(/\|/g, '<br>').replace(/'/g, '&rsquo;')));
 			$(target).data('tooltip', div);
 
 			$('body').append(div);
