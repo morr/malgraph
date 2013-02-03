@@ -1,5 +1,12 @@
-#main img { float: left; padding: 0 1em 0 0; }
+img.achi { float: right; padding: 0 0 0 0.5em; }
+img.achi.more-trigger { cursor: pointer; }
 
-p.level { margin: 0; font-size: 8pt; color: gray; display: inline-block; }
-	p.level:before { content: '\a0('; }
-	p.level:after { content: ')'; }
+p.level { float: right; margin: 0; font-size: 8pt; color: gray; display: inline-block; }
+p.desc { margin: 0; padding: 0.5em 0; }
+
+.progress-wrapper { padding: 0.5em 0; }
+	.progress { background: #ddd; position: relative; overflow: hidden; }
+	.progress .bar { background: #2D7DE0; height: 3px; }
+
+h3 { margin-bottom: 0; }
+.section-body { min-height: 5.5em; }

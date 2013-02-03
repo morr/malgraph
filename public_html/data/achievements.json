@@ -1,1756 +1,1627 @@
-{"manga": {
-	"mahou shoujo":
-	{
-		"achievements":
-		[
-			{
-				"id": "manga-mahoushoujo-1",
-				"title": "Signed the contract",
-				"level": "Mahou Shoujo: level 1",
-				"desc": "Became a magical girl and started saving the world, step by step.",
-				"threshold": 15
-			},
-			{
-				"id": "manga-mahoushoujo-2",
-				"title": "Magic is my middle name",
-				"level": "Mahou Shoujo: level 2",
-				"desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!",
-				"threshold": 30
-			},
-			{
-				"id": "manga-mahoushoujo-3",
-				"title": "Too magical to comprehend",
-				"level": "Mahou Shoujo: level 3",
-				"desc": "Read so many mahou shoujo manga that you sparkle occasionally.",
-				"threshold": 50
-			},
-			{
-				"id": "manga-mahoushoujo-4",
-				"title": "Are you a wizard",
-				"level": "Mahou Shoujo: MAX POWER",
-				"desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules.",
-				"threshold": 80
-			}
-		],
-		"titles":
-		[
-			{"id": 3167,	"title": "A Little Snow Fairy Sugar"},
-			{"id": 7270,	"title": "Akazukin Chacha"},
-			{"id": 1818,	"title": "Akihabara Dennou Gumi Patapi"},
-			{"id": 77,	"title": "Alice 19th"},
-			{"id": 15820,	"title": "Alice Kara Mahou"},
-			{"id": 3730,	"title": "Asagiri no Miko"},
-			{"id": 92,	"title": "Bishoujo Senshi Sailor Moon"},
-			{"id": 3630,	"title": "Carat!"},
-			{"id": 106,	"title": "Cardcaptor Sakura"},
-			{"id": 854,	"title": "Codename wa Sailor V"},
-			{"id": 172,	"title": "Corrector Yui"},
-			{"id": 18411,	"title": "Corrector Yui"},
-			{"id": 18412,	"title": "Corrector Yui Ver.2"},
-			{"id": 1661,	"title": "Cutey Honey"},
-			{"id": 1661,	"title": "Cutey Honey Flash"},
-			{"id": 1661,	"title": "Cutey Honey ‘90"},
-			{"id": 1661,	"title": "Cutey Honey aGoGo!"},
-			{"id": 1661,	"title": "Cutey Honey Tennyo Densetsu"},
-			{"id": 9987,	"title": "Dai Mahou Touge"},
-			{"id": 23986,	"title": "Daisuki desu!! Mahou Tenshi Kosumasu"},
-			{"id": 10027,	"title": "Demashitaa! Powerpuff Girls Z"},
-			{"id": 5917,	"title": "Dr. Rin ni Kiitemite!"},
-			{"id": 25923,	"title": "Eiga Futari wa Precure Max Heart"},
-			{"id": 18046,	"title": "Esper Mami"},
-			{"id": 9795,	"title": "Fancy Lala"},
-			{"id": 3526,	"title": "Fate/kaleid liner Prisma Illya"},
-			{"id": 13856,	"title": "Fate/kaleid liner Prisma Illya 2wei!"},
-			{"id": 36131,	"title": "Fate/kaleid liner Prisma Illya drei!"},
-			{"id": 3230,	"title": "Figure 17"},
-			{"id": 25927,	"title": "Fresh Precure!"},
-			{"id": 8,	"title": "Full Moon wo Sagashite"},
-			{"id": 9275,	"title": "Fushigi na Melmo"},
-			{"id": 25921,	"title": "Futari wa Precure"},
-			{"id": 25924,	"title": "Futari wa Precure Splash Star"},
-			{"id": 320,	"title": "Gakuen Alice"},
-			{"id": 7115,	"title": "Getsumen to Heiki Mina"},
-			{"id": 9911,	"title": "Ground Defence Mao-chan"},
-			{"id": 25928,	"title": "Heartcatch Precure!"},
-			{"id": 4998,	"title": "Hime-chan no Ribbon"},
-			{"id": 21406,	"title": "Himitsu no Akko-chan"},
-			{"id": 1607,	"title": "Itsudatte My Santa!"},
-			{"id": 19898,	"title": "Jewelpet"},
-			{"id": 32391,	"title": "Kaitou Tenshi Twin Angel"},
-			{"id": 35,	"title": "Kamichama Karin"},
-			{"id": 2575,	"title": "Kamichama Karin chu"},
-			{"id": 36,	"title": "Kamikaze Kaitou Jeanne"},
-			{"id": 31835,	"title": "Kamikaze Kaitou Jeanne: Bangaihen"},
-			{"id": 3498,	"title": "Key Princess Story Eternal Alice Rondo"},
-			{"id": 4649,	"title": "Kurumi-tic Miracle"},
-			{"id": 16468,	"title": "Kyouran Kazoku Nikki"},
-			{"id": 12182,	"title": "Kyouran Kazoku Nikki"},
-			{"id": 20088,	"title": "Lilpri"},
-			{"id": 119,	"title": "Magic Knight Rayearth"},
-			{"id": 697,	"title": "Magic Knight Rayearth II"},
-			{"id": 14238,	"title": "Magical Girl Lyrical Nanoha ViVid"},
-			{"id": 11189,	"title": "Magical Nyan Nyan Taruto"},
-			{"id": 24087,	"title": "Mahochu-!"},
-			{"id": 9882,	"title": "Mahou no Tenshi Creamy Mami"},
-			{"id": 13268,	"title": "Mahou Senki Lyrical Nanoha Force"},
-			{"id": 24295,	"title": "Mahou Shoujo Kazumi Magica - The Innocent Malice"},
-			{"id": 3236,	"title": "Mahou Shoujo Lyrical Nanoha As"},
-			{"id": 1231,	"title": "Mahou Shoujo Lyrical Nanoha StrikerS THE COMICS"},
-			{"id": 16872,	"title": "Mahou Shoujo Lyrical Nanoha Movie 1st the Comics"},
-			{"id": 24457,	"title": "Mahou Shoujo Madoka Magica"},
-			{"id": 28961,	"title": "Mahou Shoujo Madoka Magica: Anthology"},
-			{"id": 24456,	"title": "Mahou Shoujo Oriko Magica"},
-			{"id": 20521,	"title": "Mahou Shoujo Pretty Bell"},
-			{"id": 9806,	"title": "Mahou Tsukai Tai!"},
-			{"id": 27303,	"title": "Mahou Tsukai Tai!"},
-			{"id": 12461,	"title": "Mahou Tsukai Sally"},
-			{"id": 22942,	"title": "Majokko Tsukune-chan"},
-			{"id": 22944,	"title": "Majokko Tsukune-chan Plus"},
-			{"id": 423,	"title": "Mermaid Melody Pichi Pichi Pitch"},
-			{"id": 5217,	"title": "Min Min Mint"},
-			{"id": 5753,	"title": "Miracle Dieter Miyuki"},
-			{"id": 449,	"title": "Miracle Girls"},
-			{"id": 14610,	"title": "Moetan"},
-			{"id": 24316,	"title": "Motto! Ojamajo Doremi"},
-			{"id": 11910,	"title": "Nanako SOS"},
-			{"id": 10825,	"title": "Nanatsuiro Drops"},
-			{"id": 18884,	"title": "Nanatsuiro Drops Pure!!"},
-			{"id": 10634,	"title": "Neko Mokoro"},
-			{"id": 5626,	"title": "Nurse Angel Ririka SOS"},
-			{"id": 4175,	"title": "Ojamajo Doremi"},
-			{"id": 29283,	"title": "Ojamajo Doremi 16"},
-			{"id": 8016,	"title": "Oto x Maho"},
-			{"id": 8552,	"title": "Parallel Sailor Moon"},
-			{"id": 9883,	"title": "Persia ga suki!"},
-			{"id": 31067,	"title": "Planet Guardian!"},
-			{"id": 643,	"title": "PQ Angels"},
-			{"id": 1248,	"title": "Pretear"},
-			{"id": 1581,	"title": "Princess Tutu"},
-			{"id": 3692,	"title": "Puchi Puri Yuushi"},
-			{"id": 505,	"title": "S to M no Sekai"},
-			{"id": 13921,	"title": "Saint October"},
-			{"id": 508,	"title": "Saint Tail"},
-			{"id": 1763,	"title": "Shadow Lady"},
-			{"id": 2902,	"title": "Shin Kankaku Iyashikei Mahou Shoujo Behoimi-chan"},
-			{"id": 1524,	"title": "Shoujo Tenshi Milcute - Milky&Cute"},
-			{"id": 15116,	"title": "Shugo Chara-chan!"},
-			{"id": 101,	"title": "Shugo Chara!"},
-			{"id": 17459,	"title": "Shugo Chara! Encore!"},
-			{"id": 429,	"title": "Sugar Sugar Rune"},
-			{"id": 20569,	"title": "Super Doll Rika-chan"},
-			{"id": 3309,	"title": "Sweet Valerian"},
-			{"id": 86,	"title": "Time Stranger Kyoko"},
-			{"id": 554,	"title": "Tokyo Mew Mew"},
-			{"id": 555,	"title": "Tokyo Mew Mew a La Mode"},
-			{"id": 956,	"title": "Ultra Maniac"},
-			{"id": 20821,	"title": "Umi Monogatari - Anata ga Ite Kureta Koto"},
-			{"id": 20822,	"title": "Umi Monogatari - Minna Aishiteru!"},
-			{"id": 930,	"title": "Uta Kata"},
-			{"id": 1288,	"title": "Wedding Peach"},
-			{"id": 9080,	"title": "Wedding Peach: Young Love"},
-			{"id": 25925,	"title": "Yes! Precure 5"},
-			{"id": 25926,	"title": "Yes! Precure 5 GoGo"},
-			{"id": 16064,	"title": "Yokuwakaru Gendaimahou"},
-			{"id": 16065,	"title": "Yokuwakaru Gendaimahou"},
-			{"id": 5821,	"title": "Zettai Karen Children"},
-			{"id": 190,	"title": "Zodiac P.I."}
-		]
+{
+	"manga": {
+		"mahou shoujo": {
+			"achievements": [
+				{ "threshold": "15-29", "id": "manga-mahoushoujo-1", "level": "Mahou Shoujo: level 1", "title": "Signed the contract", "desc": "Became a magical girl and started saving the world, step by step." },
+				{ "threshold": "30-49", "id": "manga-mahoushoujo-2", "level": "Mahou Shoujo: level 2", "title": "Magic is my middle name", "desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!" },
+				{ "threshold": "50-79", "id": "manga-mahoushoujo-3", "level": "Mahou Shoujo: level 3", "title": "Too magical to comprehend", "desc": "Read so many mahou shoujo manga that you sparkle occasionally." },
+				{ "threshold": "80+", "id": "manga-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "Are you a wizard", "desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules." }
+			],
+			"requirement": {"type": "given-titles", "titles": [
+				3167,  #A Little Snow Fairy Sugar
+				7270,  #Akazukin Chacha
+				1818,  #Akihabara Dennou Gumi Patapi
+				77,    #Alice 19th
+				15820, #Alice Kara Mahou
+				3730,  #Asagiri no Miko
+				92,    #Bishoujo Senshi Sailor Moon
+				3630,  #Carat!
+				106,   #Cardcaptor Sakura
+				854,   #Codename wa Sailor V
+				172,   #Corrector Yui
+				18411, #Corrector Yui
+				18412, #Corrector Yui Ver.2
+				1661,  #Cutey Honey
+				1661,  #Cutey Honey Flash
+				1661,  #Cutey Honey ‘90
+				1661,  #Cutey Honey aGoGo!
+				1661,  #Cutey Honey Tennyo Densetsu
+				9987,  #Dai Mahou Touge
+				23986, #Daisuki desu!! Mahou Tenshi Kosumasu
+				10027, #Demashitaa! Powerpuff Girls Z
+				5917,  #Dr. Rin ni Kiitemite!
+				25923, #Eiga Futari wa Precure Max Heart
+				18046, #Esper Mami
+				9795,  #Fancy Lala
+				3526,  #Fate/kaleid liner Prisma Illya
+				13856, #Fate/kaleid liner Prisma Illya 2wei!
+				36131, #Fate/kaleid liner Prisma Illya drei!
+				3230,  #Figure 17
+				25927, #Fresh Precure!
+				8,     #Full Moon wo Sagashite
+				9275,  #Fushigi na Melmo
+				25921, #Futari wa Precure
+				25924, #Futari wa Precure Splash Star
+				320,   #Gakuen Alice
+				7115,  #Getsumen to Heiki Mina
+				9911,  #Ground Defence Mao-chan
+				25928, #Heartcatch Precure!
+				4998,  #Hime-chan no Ribbon
+				21406, #Himitsu no Akko-chan
+				1607,  #Itsudatte My Santa!
+				19898, #Jewelpet
+				32391, #Kaitou Tenshi Twin Angel
+				35,    #Kamichama Karin
+				2575,  #Kamichama Karin chu
+				36,    #Kamikaze Kaitou Jeanne
+				31835, #Kamikaze Kaitou Jeanne: Bangaihen
+				3498,  #Key Princess Story Eternal Alice Rondo
+				4649,  #Kurumi-tic Miracle
+				16468, #Kyouran Kazoku Nikki
+				12182, #Kyouran Kazoku Nikki
+				20088, #Lilpri
+				119,   #Magic Knight Rayearth
+				697,   #Magic Knight Rayearth II
+				14238, #Magical Girl Lyrical Nanoha ViVid
+				11189, #Magical Nyan Nyan Taruto
+				24087, #Mahochu-!
+				9882,  #Mahou no Tenshi Creamy Mami
+				13268, #Mahou Senki Lyrical Nanoha Force
+				24295, #Mahou Shoujo Kazumi Magica - The Innocent Malice
+				3236,  #Mahou Shoujo Lyrical Nanoha As
+				1231,  #Mahou Shoujo Lyrical Nanoha StrikerS THE COMICS
+				16872, #Mahou Shoujo Lyrical Nanoha Movie 1st the Comics
+				24457, #Mahou Shoujo Madoka Magica
+				28961, #Mahou Shoujo Madoka Magica: Anthology
+				24456, #Mahou Shoujo Oriko Magica
+				20521, #Mahou Shoujo Pretty Bell
+				9806,  #Mahou Tsukai Tai!
+				27303, #Mahou Tsukai Tai!
+				12461, #Mahou Tsukai Sally
+				22942, #Majokko Tsukune-chan
+				22944, #Majokko Tsukune-chan Plus
+				423,   #Mermaid Melody Pichi Pichi Pitch
+				5217,  #Min Min Mint
+				5753,  #Miracle Dieter Miyuki
+				449,   #Miracle Girls
+				14610, #Moetan
+				24316, #Motto! Ojamajo Doremi
+				11910, #Nanako SOS
+				10825, #Nanatsuiro Drops
+				18884, #Nanatsuiro Drops Pure!!
+				10634, #Neko Mokoro
+				5626,  #Nurse Angel Ririka SOS
+				4175,  #Ojamajo Doremi
+				29283, #Ojamajo Doremi 16
+				8016,  #Oto x Maho
+				8552,  #Parallel Sailor Moon
+				9883,  #Persia ga suki!
+				31067, #Planet Guardian!
+				643,   #PQ Angels
+				1248,  #Pretear
+				1581,  #Princess Tutu
+				3692,  #Puchi Puri Yuushi
+				505,   #S to M no Sekai
+				13921, #Saint October
+				508,   #Saint Tail
+				1763,  #Shadow Lady
+				2902,  #Shin Kankaku Iyashikei Mahou Shoujo Behoimi-chan
+				1524,  #Shoujo Tenshi Milcute - Milky&Cute
+				15116, #Shugo Chara-chan!
+				101,   #Shugo Chara!
+				17459, #Shugo Chara! Encore!
+				429,   #Sugar Sugar Rune
+				20569, #Super Doll Rika-chan
+				3309,  #Sweet Valerian
+				86,    #Time Stranger Kyoko
+				554,   #Tokyo Mew Mew
+				555,   #Tokyo Mew Mew a La Mode
+				956,   #Ultra Maniac
+				20821, #Umi Monogatari - Anata ga Ite Kureta Koto
+				20822, #Umi Monogatari - Minna Aishiteru!
+				930,   #Uta Kata
+				1288,  #Wedding Peach
+				9080,  #Wedding Peach: Young Love
+				25925, #Yes! Precure 5
+				25926, #Yes! Precure 5 GoGo
+				16064, #Yokuwakaru Gendaimahou
+				16065, #Yokuwakaru Gendaimahou
+				5821,  #Zettai Karen Children
+				190    #Zodiac P.I.
+			]}
+		},
+		"count": {
+			"achievements": [
+				{ "threshold": "100-199",   "id": "numbers-manga-100",   "level": "Casual reader",      "title": "Passed 100 mark",   "desc": "Completed over 100 titles. You DID buy all of them, right?" },
+				{ "threshold": "200-299",   "id": "numbers-manga-200",   "level": "Casual reader",      "title": "Passed 200 mark",   "desc": "Completed over 200 titles. You DID buy all of them, right?" },
+				{ "threshold": "300-399",   "id": "numbers-manga-300",   "level": "Casual reader",      "title": "Passed 300 mark",   "desc": "Completed over 300 titles. You DID buy all of them, right?" },
+				{ "threshold": "400-499",   "id": "numbers-manga-400",   "level": "A lot of free time", "title": "Passed 400 mark",   "desc": "Completed over 400 titles. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
+				{ "threshold": "500-749",   "id": "numbers-manga-500",   "level": "A lot of free time", "title": "Passed 500 mark",   "desc": "Completed over 500 titles. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
+				{ "threshold": "750-999",   "id": "numbers-manga-750",   "level": "Basement dweller",   "title": "Passed 750 mark",   "desc": "Completed over 7500 titles. You should lean back and think about your life for a while&hellip;" },
+				{ "threshold": "1000-1499", "id": "numbers-manga-1000",  "level": "Basement dweller",   "title": "Passed 1000 mark",  "desc": "Completed over 1000 titles. You should lean back and think about your life for a while&hellip;" },
+				{ "threshold": "1500-2499", "id": "numbers-manga-1500",  "level": "The Collector",      "title": "Passed 1500 mark",  "desc": "Completed over 1500 titles. Are you even human? This is not possible for mere mortal beings." },
+				{ "threshold": "2500-4999", "id": "numbers-manga-2500",  "level": "Manga maniac",       "title": "Passed 2500 mark",  "desc": "Completed over 2500 titles. This deserves no further comment." },
+				{ "threshold": "5000-7499", "id": "numbers-manga-5000",  "level": "Manga maniac",       "title": "Passed 5000 mark",  "desc": "Completed over 5000 titles. This deserves no further comment." },
+				{ "threshold": "7500-9999", "id": "numbers-manga-7500",  "level": "Manga obsession",    "title": "Passed 7500 mark",  "desc": "Completed over 7500 titles. Are you having fun, breaking all the rules?" },
+				{ "threshold": "10000+",    "id": "numbers-manga-10000", "level": "Manga obsession",    "title": "Passed 10000 mark", "desc": "Completed over 10000 titles. Are you having fun, breaking all the rules?" }
+			],
+			"requirement": { "type": "completed-titles" }
+		}
+	},
+	"anime": {
+		"mahou shoujo": {
+			"achievements": [
+				{ "threshold": "15-29", "id": "anime-mahoushoujo-1", "level": "Mahou Shoujo: level 1", "title": "Signed the contract", "desc": "Became a magical girl and started saving the world, step by step." },
+				{ "threshold": "30-49", "id": "anime-mahoushoujo-2", "level": "Mahou Shoujo: level 2", "title": "Magic is my middle name", "desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!" },
+				{ "threshold": "50-79", "id": "anime-mahoushoujo-3", "level": "Mahou Shoujo: level 3", "title": "Too magical to comprehend", "desc": "Watched so many mahou shoujo anime that you sparkle occasionally." },
+				{ "threshold": "80+", "id": "anime-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "Are you a wizard", "desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules." }
+			],
+			"requirement": {"type": "given-titles", "titles": [
+				831,   #A Little Snow Fairy Sugar
+				1014,  #A Little Snow Fairy Sugar Special
+				5246,  #Adesugata Mahou no Sannin Musume
+				103,   #Akazukin Chacha
+				367,   #Akazukin Chacha OVA
+				7152,  #Anyamal Tantei Kiruminzoo
+				231,   #Asagiri no Miko
+				232,   #Cardcaptor Sakura
+				372,   #Cardcaptor Sakura Movie 2: The Sealed Card
+				2424,  #Cardcaptor Sakura Specials
+				1078,  #Cardcaptor Sakura: Leave It to Kero-chan
+				371,   #Cardcaptor Sakura: The Movie
+				111,   #Corrector Yui
+				2036,  #Cosmic Baton Girl Comet-san
+				1661,  #Cutey Honey
+				1853,  #Cutey Honey F
+				6496,  #Cutey Honey Flash: The Movie
+				2288,  #Cyberteam in Akihabara
+				2289,  #Cyberteam in Akihabara: 2011 Summer Vacation
+				933,   #Dai Mahou Touge
+				1841,  #Dai Mahou Touge Omake
+				1221,  #Demashitaa! Powerpuff Girls Z
+				2259,  #Dr. Rin ni Kiitemite!
+				812,   #Earth Maiden Arjuna
+				1930,  #Eiga Futari wa Precure Max Heart
+				1931,  #Eiga Futari wa Precure Max Heart 2: Yukizora no Tomodachi
+				4124,  #Eiga Futari wa Precure Splash Star Tick-Tock Kiki Ippatsu!
+				5753,  #Eiga Precure All Stars DX: Minna Tomodachi - Kiseki no Zenin Daishuugou!
+				8133,  #Eiga Precure All Stars DX2: Kibou no Hikari - Rainbow Jewel wo Mamore!
+				9979,  #Eiga Precure All Stars DX3: Mirai ni Todoke! Sekai wo Tsunagu Niji-iro no Hana
+				10821, #Eiga Suite Precure♪: Torimodose! Kokoro ga Tsunaku Kiseki no Melody
+				4703,  #Eiga Yes! Precure 5 GoGo! Okashi no Kuni no Happy Birthday
+				3023,  #Esper Mami
+				10000, #Esper Mami: My Angel Mami-chan
+				9880,  #Esper Mami: Hoshizora no Dancing Doll
+				604,   #Fancy Lala
+				1126,  #Figure 17
+				5684,  #Fresh Precure!
+				6527,  #Fresh Precure! Omocha no Kuni wa Himitsu ga Ippai!
+				122,   #Full Moon wo Sagashite
+				5476,  #Fushigi na Melmo
+				505,   #Fushigiboshi no Futagohime
+				1886,  #Fushigiboshi no Futagohime Gyu!
+				603,   #Futari wa Precure
+				1929,  #Futari wa Precure Max Heart
+				1534,  #Futari wa Precure Splash Star
+				74,    #Gakuen Alice
+				11809, #gdgd Fairies
+				1865,  #Getsumen to Heiki Mina
+				7427,  #Getsumen to Heiki Mina Specials
+				980,   #Ground Defence Mao-chan
+				2230,  #Hana no Ko Lunlun
+				9264,  #Hana no Ko Lunlun: Konnichiwa Sakura no Sono
+				2804,  #Hana no Mahou Tsukai Mary Bell
+				9862,  #Hana no Mahou Tsukai Mary Bell: Phoenix no Kagi
+				3320,  #Harbor Light Monogatari: Fashion Lala Yori
+				7645,  #Heartcatch Precure!
+				9288,  #Heartcatch Precure! Hana no Miyako de Fashion Show... Desu ka!
+				10491, #Higurashi no Naku Koro ni Kira
+				2037,  #Hime-chan no Ribbon
+				8206,  #Hime Chen! Otogi Chikku Idol Lilpri
+				3285,  #Himitsu no Akko-chan
+				12569, #Himitsu no Akko-chan (Movie)
+				3838,  #Himitsu no Akko-chan 2
+				3839,  #Himitsu no Akko-chan 3
+				12971, #Himitsu no Akko-chan: Umi da! Obake da!! Natsu matsuri
+				9911,  #Houkago no Pleiades
+				588,   #Itsudatte My Santa!
+				6008,  #Jewelpet
+				12963, #Jewelpet Kira Deco!
+				12965, #Jewelpet Movie: Sweets Dance Princess
+				10359, #Jewelpet Sunshine
+				8217,  #Jewelpet Tinkle
+				577,   #Kagihime Monogatari Eikyuu Alice Rinbukyoku
+				3805,  #Kaitou Tenshi Twin Angel
+				10217, #Kaitou Tenshi Twin Angel: Kyun Kyun Tokimeki Paradise!!
+				1808,  #Kamichama Karin
+				142,   #Kamikaze Kaitou Jeanne
+				6318,  #Kigurumikku V3
+				766,   #Kishin Houkou Demonbane
+				1067,  #Kishin Houkou Demonbane (2006)
+				3577,  #Kyouran Kazoku Nikki
+				9792,  #Licca-chan Fushigi na Fushigi na Yunia Monogatari
+				7294,  #Licca-chan Fushigi na Mahou no Ring
+				8919,  #Licca-chan no Nichiyoubi
+				9878,  #Licca-chan to Yamaneko Hoshi no Tabi
+				349,   #Magical Canan
+				2040,  #Mahou no Angel Sweet Mint
+				3660,  #Mahou no Idol Pastel Yumi
+				4113,  #Mahou no Mako-chan
+				518,   #Mahou no Princess Minky Momo
+				2272,  #Mahou no Princess Minky Momo: Yume no Naka no Rondo
+				5953,  #Mahou no Princess Minky Momo: Yume wo Dakishimete
+				5400,  #Mahou no Shiho-chan
+				2038,  #Mahou no Star Magical Emi
+				8443,  #Mahou no Star Magical Emi: Semishigure
+				2044,  #Mahou no Tenshi Creamy Mami
+				2045,  #Mahou no Tenshi Creamy Mami: Eien no Once More
+				2046,  #Mahou no Tenshi Creamy Mami: Long Goodbye
+				2039,  #Mahou no Yousei Persia
+				76,    #Mahou Shoujo Lyrical Nanoha
+				77,    #Mahou Shoujo Lyrical Nanoha As
+				1915,  #Mahou Shoujo Lyrical Nanoha StrikerS
+				12101, #Mahou Shoujo Lyrical Nanoha: Lyrical Toy Box
+				4985,  #Mahou Shoujo Lyrical Nanoha: The Movie 1st
+				10153, #Mahou Shoujo Lyrical Nanoha: The Movie 2nd As
+				9756,  #Mahou Shoujo Madoka Magica
+				11977, #Mahou Shoujo Madoka Magica Movie 1: Hajimari no Monogatari
+				11979, #Mahou Shoujo Madoka Magica Movie 2: Eien no Monogatari
+				11981, #Mahou Shoujo Madoka Magica Movie 3
+				1918,  #Mahou Shoujo Pretty Sammy
+				1502,  #Mahou Shoujo Pretty Sammy (1996)
+				1503,  #Mahou Shoujo Pretty Sammy Specials
+				10519, #Mahou Shoujo Sonico★Magica
+				872,   #Mahou Shoujo Tai Arusu
+				3991,  #Mahou Shoujo Tai Arusu the Adventure
+				3845,  #Mahou Tsukai Chappy
+				3356,  #Mahou Tsukai Sally
+				3875,  #Mahou Tsukai Sally 2
+				630,   #Mahou Tsukai Tai!
+				629,   #Mahou Tsukai Tai! OVA
+				5466,  #Mahou Tsukai Tai! vs Shamanic Princess
+				2277,  #Mahou Yuugi 2D
+				2278,  #Mahou Yuugi 3D
+				2457,  #Majokko Club Yoningumi: A Kuukan Kara no Alien X
+				3388,  #Majokko Megu-chan
+				3881,  #Majokko Tickle
+				2457,  #Majokko Tsukune-chan
+				1110,  #Mermaid Melody Pichi Pichi Pitch Pure
+				521,   #Mermaid Melody: Pichi Pichi Pitch
+				6492,  #Minky Momo in Tabidachi no Eki
+				3630,  #Miracle Shoujo Limit-chan
+				3573,  #Moegaku*5
+				2367,  #Moetan
+				4421,  #Moetan Specials
+				352,   #Motto! Ojamajo Doremi
+				2948,  #Motto! Ojamajo Doremi: Secret of the Frog Stone
+				623,   #Nana 7 of 7
+				3619,  #Nanako SOS
+				1688,  #Nanatsuiro Drops
+				616,   #Nurse Angel Ririka SOS
+				615,   #Nurse Witch Komugi-chan
+				921,   #Nurse Witch Komugi-chan Magikarte Z
+				10520, #Nurse Witch Komugi-chan Magikarte Z Special
+				920,   #Nurse Witch Komugi-chan Special
+				3136,  #Ochamegami Monogatari: Korokoro Poron
+				350,   #Ojamajo Doremi
+				353,   #Ojamajo Doremi Dokkaan!
+				1376,  #Ojamajo Doremi Na-i-sho
+				12591, #Ojamajo Doremi OVA
+				351,   #Ojamajo Doremi Sharp
+				2947,  #Ojamajo Doremi Sharp Movie
+				614,   #Okusama wa Mahou Shoujo
+				10549, #Precure All Stars GoGo Dream Live!
+				12221, #Precure All Stars New Stage: Mirai no Tomodachi
+				11569, #Precure All-Stars DX the Dance Live: Miracle Dance Stage e Youkoso
+				10736, #Precure kara Minna e no Ouen Movie
+				100,   #Pretear
+				721,   #Princess Tutu
+				3265,  #Princess Tutu Recaps
+				327,   #Puchi Puri Yuushi
+				564,   #Puni Puni Poemi
+				151,   #Re: Cutey Honey
+				941,   #Renkin San-kyuu Magical Pokaan
+				1489,  #Renkin San-kyuu Magical Pokaan Specials
+				530,   #Sailor Moon
+				8756,  #Sailor Moon Memorial
+				740,   #Sailor Moon R
+				8757,  #Sailor Moon R Memorial
+				531,   #Sailor Moon R Movie: Promise of the Rose
+				2937,  #Sailor Moon R: Make Up! Sailor Senshi!
+				532,   #Sailor Moon S
+				8758,  #Sailor Moon S Memorial
+				997,   #Sailor Moon S Movie: Hearts in Ice
+				996,   #Sailor Moon Sailor Stars
+				8760,  #Sailor Moon Sailor Stars Memorial
+				1239,  #Sailor Moon SuperS
+				8759,  #Sailor Moon SuperS Memorial
+				1240,  #Sailor Moon SuperS Movie: Black Dream Hole
+				1278,  #Sailor Moon SuperS Plus: Amis First Love
+				3076,  #Sailor Moon SuperS Special
+				1724,  #Saint October
+				6311,  #Sarutobi Ecchan
+				1881,  #Sasami: Mahou Shoujo Club
+				1882,  #Sasami: Mahou Shoujo Club 2
+				3328,  #School Days: Magical Heart Kokoro-chan
+				11751, #Senki Zesshou Symphogear
+				355,   #Shakugan no Shana
+				2787,  #Shakugan no Shana II
+				3956,  #Shakugan no Shana II Specials
+				6773,  #Shakugan no Shana III (Final)
+				12823, #Shakugan no Shana III (Final) Special
+				1815,  #Shakugan no Shana Movie
+				3221,  #Shakugan no Shana Movie Special
+				6572,  #Shakugan no Shana S
+				7375,  #Shakugan no Shana S Specials
+				1531,  #Shakugan no Shana Special: Koi to Onsen no Kougai Gakushuu!
+				1066,  #Shakugan no Shana Specials
+				6330,  #Shakugan no Shana: Naze Nani Shana
+				1182,  #Shamanic Princess
+				2497,  #Shin Cutey Honey
+				2923,  #Shugo Chara!
+				7082,  #Shugo Chara! Party!
+				5262,  #Shugo Chara!! Doki
+				12191, #Smile Precure!
+				1642,  #Sugar Sugar Rune
+				9893,  #Suite Precure
+				2066,  #Super Doll Licca-chan
+				10199, #Super Doll Licca-Chan: Licca-chan Zettai Zetsumei! Doll Knights no Kiseki
+				2727,  #Sweet Valerian
+				3862,  #Sweet Valerian Specials
+				687,   #Tokyo Mew Mew
+				9393,  #T.P. Sakura: Time Paladin Sakura
+				1613,  #Time Stranger Kyoko
+				178,   #Ultra Maniac
+				179,   #Ultra Maniac OVA
+				6129,  #Umi Monogatari: Anata ga Ite Kureta Koto
+				688,   #Uta Kata
+				1932,  #Yes! Precure 5
+				3692,  #Yes! Precure 5 GoGo!
+				5454,  #Yokuwakaru Gendaimahou
+				6748,  #Yokuwakaru Gendaimahou 00
+				4651,  #Yume no Crayon Oukoku
+				4038,  #Zettai Karen Children
+				7754   #Zettai Karen Children OVA: Aitazousei! Ubawareta Mirai?
+			]}
+		},
+		"slice of life": {
+			"achievements": [
+				{ "threshold": "25-39", "id": "anime-sliceoflife-1", "title": "Normal high school boy", "level": "Slice Of Life: level 1", "desc": "Got started into the furious ride with slice-of-life anime." },
+				{ "threshold": "40-59", "id": "anime-sliceoflife-2", "title": "cute &times; ( girls + things )", "level": "Slice Of Life: level 2", "desc": "Didn&rsquo;t get bored of watching cute girls doing cute things." },
+				{ "threshold": "60-99", "id": "anime-sliceoflife-3", "title": "Enjoying life", "level": "Slice Of Life: level 3", "desc": "Found the equilibrium between boring and interesting." },
+				{ "threshold": "100+", "id": "anime-sliceoflife-4", "title": "Prima Undine", "level": "Slice Of Life: level MAX", "desc": "Awarded Ph.D. degree in sliceoflife-ology. You can be proud of yourself." }
+			],
+			"requirement": {"type": "given-titles", "titles": [
+				1689,  #5 Centimeters per Second
+				8120,  #5-tou ni Naritai.
+				2950,  #Animal Crossing
+				9989,  #Ano Hi Mita Hana no Namae wo Bokutachi wa Mada Shiranai
+				11433, #Ano Natsu de Matteru
+				66,    #Azumanga Daioh
+				9776,  #A-Channel
+				10737, #A-Channel: +A-Channel
+				11339, #A-Channel: A-Channel+smile
+				12291, #Acchi Kocchi
+				9689,  #Agukaru
+				101,   #Air
+				713,   #Air (Movie)
+				53,    #Ai Yori Aoshi
+				394,   #Ai Yori Aoshi: Enishi
+				6709,  #Ai Yori Aoshi: Yumegatari
+				8713,  #Akai Ito
+				6164,  #Aoi Hana
+				8701,  #Apartment!
+				477,   #Aria the Animation
+				962,   #Aria the Natural
+				5244,  #Aria the Natural Special
+				3297,  #Aria the Origination
+				5196,  #Aria the Origination Picture Drama
+				4772,  #Aria the Origination Special
+				2563,  #Aria the OVA: Arietta
+				659,   #Azumanga Daioh: The Very Short Movie
+				1593,  #Azumanga Web Daioh
+				1589,  #Bartender
+				1214,  #Binbou Shimai Monogatari
+				7597,  #Boku, Otaryman
+				951,   #Chibi Maruko-chan
+				2830,  #Chibikko Remi to Meiken Kapi
+				9383,  #Chie-chan Funsenki: Jarinko Chie
+				6024,  #Chis New Address
+				3841,  #Chis Sweet Home
+				7972,  #Chis Sweet Home OVA
+				2167,  #Clannad
+				4181,  #Clannad: After Story
+				1723,  #Clannad (Movie)
+				4059,  #Clannad: Another World, Tomoyo Chapter
+				6351,  #Clannad: Another World, Kyou Chapter
+				11843, #Danshi Koukousei no Nichijou
+				12893, #Danshi Koukousei no Nichijou Specials
+				9379,  #Denpa Onna to Seishun Otoko
+				10638, #Denpa Onna to Seishun Otoko Special
+				10838, #Double-J
+				3312,  #Dr. Slump
+				2222,  #Dr. Slump: Arale-chan
+				1524,  #Fuujin Monogatari
+				5670,  #GA: Geijutsuka Art Design Class
+				240,   #Genshiken
+				2508,  #Genshiken 2
+				1813,  #Genshiken OVA
+				387,   #Haibane Renmei
+				2004,  #Hanada Shounen-Shi
+				6574,  #Hanamaru Youchien
+				9289,  #Hanasaku Iroha
+				14175, #Hanasaku Iroha: Home Sweet Home
+				1592,  #Hataraki Man
+				1852,  #Hidamari Sketch
+				11239, #Hidamari Sketch 4th Season
+				3165,  #Hidamari Sketch Specials
+				3604,  #Hidamari Sketch x 365
+				6984,  #Hidamari Sketch x 365 Specials
+				7062,  #Hidamari Sketch x Hoshimittsu
+				9563,  #Hidamari Sketch x Hoshimittsu Specials
+				11237, #Hidamari Sketch x SP
+				16,    #Honey and Clover
+				1142,  #Honey and Clover II
+				644,   #Honey and Clover Specials
+				8426,  #Hourou Musuko
+				10935, #Hourou Musuko Specials
+				4550,  #Hyakko
+				6958,  #Hyakko OVA
+				488,   #Ichigo Mashimaro
+				4811,  #Ichigo Mashimaro Encore
+				1888,  #Ichigo Mashimaro OVA
+				2828,  #Ie Naki Ko
+				9938,  #Ikoku Meiro no Croisee
+				10804, #Ikoku Meiro no Croisee Special
+				3947,  #Jarinko Chie
+				3946,  #Jarinko Chie (Movie)
+				863,   #Joshi Kousei
+				6657,  #Joshi Kousei Specials
+				1116,  #Junkers Come Here
+				5680,  #K-On!
+				9617,  #K-On! (Movie)
+				6862,  #K-On! Special: Live House!
+				7791,  #K-On!!
+				9734,  #K-On!! Special
+				144,   #Kanon
+				1530,  #Kanon (2006)
+				704,   #Kanon Kazahana
+				1087,  #Kimagure Orange Road
+				147,   #Kimi ga Nozomu Eien
+				3318,  #Kimi ga Nozomu Eien: Next Season
+				10460, #Kimi to Boku.
+				11739, #Kimi to Boku. 2
+				1379,  #Kino no Tabi: Nanika wo Suru Tame ni - Life Goes On.
+				486,   #Kino no Tabi: The Beautiful World
+				2175,  #Kino no Tabi: The Beautiful World - Byouki no Kuni: For You
+				3466,  #Kino no Tabi: The Beautiful World - Tou no Kuni
+				148,   #Kita e: Diamond Dust Drops
+				5678,  #Kobato.
+				10098, #Kobato. Special: Hajimete no Kobato.
+				9423,  #Koko ni Iru
+				11887, #Kokoro Connect
+				9213,  #Kowarekake no Orgel
+				10122, #Kowarekake no Orgel Special
+				6604,  #Kuruneko
+				1887,  #Lucky Star
+				4472,  #Lucky Star OVA
+				273,   #Mahou Tsukai ni Taisetsu na Koto
+				4483,  #Mahou Tsukai ni Taisetsu na Koto: Natsu no Sora
+				6116,  #Mainichi Kaasan
+				14045, #Mangirl
+				158,   #Maria-sama ga Miteru
+				444,   #Maria-sama ga Miteru: Haru
+				1729,  #Maria-sama ga Miteru 3rd
+				3750,  #Maria-sama ga Miteru 4th
+				2963,  #Minami-ke
+				5713,  #Minami-ke Betsubara
+				5162,  #Minami-ke Okaeri
+				3225,  #Minami-ke Okawari
+				7627,  #Mitsudomoe
+				9396,  #Mitsudomoe Special
+				9510,  #Mitsudomoe Zouryouchuu!
+				10671, #Morita-san wa Mukuchi (TV)
+				11615, #Morita-san wa Mukuchi (TV) 2
+				1738,  #Muteki Kanban Musume
+				5085,  #Nakedyouth
+				4081,  #Natsume Yuujinchou
+				10379, #Natsume Yuujinchou San
+				11665, #Natsume Yuujinchou Shi
+				12119, #Natsuiro Kiseki
+				10165, #Nichijou
+				1698,  #Nodame Cantabile
+				5690,  #Nodame Cantabile Finale
+				8038,  #Nodame Cantabile Finale Special
+				6187,  #Nodame Cantabile OVA
+				8190,  #Nodame Cantabile OVA 2
+				4477,  #Nodame Cantabile Paris Chapter
+				3965,  #Nodame Cantabile Special
+				743,   #Ocean Waves
+				13283, #One Off
+				1029,  #Only Yesterday
+				11179, #Papa no Iukoto wo Kikinasai!
+				12673, #Papa no Iukoto wo Kikinasai! Special
+				325,   #Peach Girl
+				611,   #Platonic Chain
+				328,   #Piano
+				12021, #Poyopoyo Kansatsu Nikki
+				13173, #Puka Puka Juju
+				210,   #Ranma 1/2
+				10819, #Ranma 1/2: Tendou-ke no Oyobidenai Yatsura!
+				11491, #Recorder to Randoseru Do
+				13377, #Recorder to Randoseru Re
+				14627, #Recorder to Randoseru Special
+				5984,  #Ristorante Paradiso
+				8675,  #Seitokai Yakuindomo
+				10119, #Seitokai Yakuindomo OVA
+				1004,  #She and Her Cat
+				10407, #Shimanchu MiRiKa
+				11501, #Shimanchu MiRiKa 2nd Series
+				8557,  #Shinryaku! Ika Musume
+				10378, #Shinryaku!? Ika Musume
+				13267, #Shinryaku! Ika Musume OVA
+				9888,  #Shinryaku! Ika Musume Specials
+				2942,  #Sketchbook: Full Colors
+				8726,  #Soredemo Machi wa Mawatteiru
+				9055,  #Tamayura
+				10232, #Tamayura: Hitotose
+				2150,  #Tanoshii Moomin Ikka
+				5712,  #Tanoshii Moomin Ikka Bouken Nikki
+				13333, #Tari Tari
+				10278, #The iDOLM@STER
+				472,   #To Heart
+				4224,  #Toradora!
+				11553, #Toradora!: Bentou no Gokui
+				6127,  #Toradora!: SOS!
+				12431, #Uchuu Kyoudai
+				10162, #Usagi Drop
+				11113, #Usagi Drop Specials
+				1210,  #Welcome to the NHK
+				585,   #Whisper of the Heart
+				1718,  #Winter Garden
+				6956,  #Working!!
+				10521, #Working'!!
+				14335, #Yama no Susume
+				975,   #Yokohama Kaidashi Kikou
+				976,   #Yokohama Kaidashi Kikou: Quiet Country Cafe
+				6586,  #Yumeiro Pâtissière
+				9441,  #Yumeiro Pâtissière SP Professional
+				10495, #Yuru Yuri
+				12403, #Yuru Yuri ♪♪
+				12665, #Yuru Yuri: Doushite Tomaranai Tokimeki Doki Doki Paradox Eternal
+				6148,  #Yurumates
+				12123, #Yurumates 3D
+				11699, #Yurumates ha
+				5300   #Zoku Natsume Yuujinchou
+			]}
+		},
+		"gar": {
+			"achievements": [
+				{ "threshold": "25-39", "id": "anime-gar-1", "level": "GAR: level 1", "title": "So manly I can&rsquo;t breathe", "desc": "Watching all those men made you feel like a little girl&hellip; and you liked it." },
+				{ "threshold": "40-59", "id": "anime-gar-2", "level": "GAR: level 2", "title": "Testosterone storm", "desc": "Your body has adapted into GAR anime. You can hear your muscles growing." },
+				{ "threshold": "60-99", "id": "anime-gar-3", "level": "GAR: level 3", "title": "You are already man.", "desc": "Resistance is futile. People are simply no match for you." },
+				{ "threshold": "100+", "id": "anime-gar-4", "level": "GAR: level MAKSHIMUM", "title": "Alpha Male", "desc": "You aren&rsquo;t made out of testosterone. Testosterone is made out of you." }
+			],
+			"requirement": {"type": "given-titles", "titles": [
+				1292,  #Afro Samurai
+				4970,  #Afro Samurai: Resurrection
+				658,   #Akagi
+				47,    #Akira
+				2202,  #Arcadia of My Youth
+				2203,  #Arcadia of My Youth: Endless Orbit SSX
+				2582,  #Armored Trooper Votoms
+				2251,  #Baccano!
+				3901,  #Baccano! Specials
+				67,    #Basilisk: Kouga Ninpou Chou
+				404,   #Bastard!!
+				4094,  #Batman: Gotham Knight
+				9513,  #Beelzebub
+				33,    #Berserk
+				10218, #Berserk Ougon Jidaihen I: Haou no Tamago
+				12113, #Berserk Ougon Jidaihen II: Doldrey Kouryaku
+				12115, #Berserk Ougon Jidaihen III: Kourin
+				889,   #Black Lagoon
+				4901,  #Black Lagoon: Robertas Blood Trail
+				1519,  #Black Lagoon: The Second Barrage
+				3389,  #Bus Gamer
+				1470,  #City Hunter
+				1471,  #City Hunter 2
+				1472,  #City Hunter 3
+				1473,  #City Hunter 91
+				1474,  #City Hunter: .357 Magnum
+				1475,  #City Hunter: Bay City Wars
+				1479,  #City Hunter: Death of the Vicious Criminal Ryo Saeba
+				1478,  #City Hunter: Goodbye My Sweetheart
+				1476,  #City Hunter: Million Dollar Conspiracy
+				1477,  #City Hunter: The Secret Service
+				5032,  #Cobra the Animation
+				4646,  #Cobra the Animation: The Psycho-Gun
+				5031,  #Cobra the Animation: Time Drive
+				1,     #Cowboy Bebop
+				5,     #Cowboy Bebop: Tengoku no Tobira
+				114,   #Cromartie High School
+				499,   #Demon City Shinjuku
+				1178,  #Detonator Orgun
+				3702,  #Detroit Metal City
+				1726,  #Devil May Cry
+				12885, #Dynamic Super Robots Grand Battle
+				12565, #Fate/Prototype
+				356,   #Fate/stay night
+				7559,  #Fate/stay night TV Reproduction
+				6922,  #Fate/stay night: Unlimited Blade Works
+				10087, #Fate/Zero
+				11741, #Fate/Zero 2nd Season
+				13183, #Fate/Zero Remix
+				384,   #Gantz
+				395,   #Gantz 2nd Stage
+				890,   #GaoGaiGar
+				1382,  #GaoGaiGar Final
+				4416,  #GaoGaiGar Final Grand Glorious Gathering
+				5776,  #GaoGaiGar: Blockaded Numbers Special
+				3579,  #Getter Robo
+				8252,  #Getter Robo (Movie)
+				4486,  #Getter Robo G
+				5292,  #Getter Robo Go
+				978,   #Getter Robo: Armageddon
+				4039,  #Golgo 13
+				1761,  #Golgo 13: Queen Bee
+				1760,  #Golgo 13: The Professional
+				4385,  #Great Mazinger vs. Getter Robo
+				4386,  #Great Mazinger vs. Getter Robo G: Kuuchuu Dai-Gekitotsu
+				3481,  #Grendizer: Getter Robo G - Great Mazinger Kessen! Daikaijuu
+				411,   #Gun x Sword
+				267,   #Gungrave
+				263,   #Hajime no Ippo
+				12069, #Hajime no Ippo Special
+				264,   #Hajime no Ippo: Champion Road
+				265,   #Hajime no Ippo: Mashiba vs. Kimura
+				5258,  #Hajime no Ippo: New Challenger
+				1645,  #Harlock Saga
+				967,   #Hokuto no Ken
+				1356,  #Hokuto no Ken 2
+				1358,  #Hokuto no Ken Movie
+				7363,  #Hokuto No Ken: Legend of Heroes
+				2174,  #Hokuto no Ken: Raoh Gaiden Gekitou-hen
+				1773,  #Hokuto no Ken: Raoh Gaiden Junai-hen
+				4549,  #Hokuto no Ken: Raoh Gaiden Ten no Haoh
+				4312,  #Hokuto no Ken: Toki-den
+				3027,  #Hokuto no Ken: Yuria-den
+				5291,  #Hokuto no Ken: Zero Kenshiro Den
+				666,   #JoJo's Bizarre Adventure
+				665,   #JoJo's Bizarre Adventure (2000)
+				3603,  #JoJo's Bizarre Adventure: Phantom Blood
+				3002,  #Kaiji
+				10271, #Kaiji: Hakairoku Hen
+				6293,  #Koukou Butouden Crows
+				820,   #Legend of the Galactic Heroes
+				2253,  #Mazinger Z
+				10625, #Mazinger Z (Movie)
+				3898,  #Mazinger Z vs. Devilman
+				4388,  #Mazinger Z vs. Dr. Hell
+				4406,  #Mazinger Z vs. General Dark
+				1064,  #Mazinkaiser
+				8666,  #Mazinkaiser SKL
+				2734,  #Mazinkaiser: Shitou! Ankoku Dai Shogun
+				1285,  #MD Geist
+				1286,  #MD Geist II: Death Force
+				96,    #Mobile Fighter G Gundam
+				6946,  #Mudazumo Naki Kaikaku: The Legend of Koizumi
+				1357,  #New Fist of the North Star
+				2978,  #New Getter Robo
+				1455,  #Ninja Resurrection
+				5040,  #One Outs
+				400,   #Outlaw Star
+				6675,  #Redline
+				917,   #Riding Bean
+				45,    #Rurouni Kenshin
+				46,    #Rurouni Kenshin: Ishinshishi e no Requiem
+				44,    #Rurouni Kenshin: Tsuiokuhen
+				2903,  #Sakigake!! Otokojuku
+				4031,  #Sakigake!! Otokojuku Movie
+				166,   #Samurai 7
+				205,   #Samurai Champloo
+				5355,  #Sengoku Basara
+				6634,  #Sengoku Basara Two
+				10483, #Sengoku Basara Two: Ryuko
+				6581,  #Sengoku Basara: Setonai no Gekitotsu! Hi wo Fuku Umi no Daiyousai - Fugaku!!
+				9745,  #Sengoku Basara: The Last Party
+				938,   #Shin Getter Robo vs. Neo Getter Robo
+				5485,  #Shin Mazinger Shougeki! Z-Hen
+				1913,  #Shonan Junai Gumi
+				1541,  #Souten no Ken
+				3864,  #Souten no Ken Specials
+				2451,  #Space Adventure Cobra
+				5742,  #Space Adventure Cobra Pilot
+				2452,  #Space Adventure Cobra: The Movie
+				1000,  #Space Pirate Captain Harlock
+				2470,  #Space Pirate Captain Harlock: The Mystery of Arcadia
+				1081,  #Space Pirate Captain Herlock: The Endless Odyssey
+				876,   #Street Fighter II V
+				1362,  #Street Fighter II: The Movie
+				3252,  #Super Express Mazinger 7
+				2418,  #Sword of the Stranger
+				2001,  #Tengen Toppa Gurren Lagann
+				5947,  #Tengen Toppa Gurren Lagann Gekijouban Zenyasai Special: Virals Sweet Dream
+				4107,  #Tengen Toppa Gurren Lagann Movie: Gurren-hen
+				4565,  #Tengen Toppa Gurren Lagann Movie: Lagann-hen
+				10622, #Tengen Toppa Gurren Lagann OVA
+				4705,  #Tengen Toppa Gurren Lagann Parallel Works
+				8348,  #Tengen Toppa Gurren Lagann Parallel Works 2
+				3352,  #Tengen Toppa Gurren Lagann Special
+				6,     #Trigun
+				4106,  #Trigun: Badlands Rumble
+				4387   #UFO Robo Grendizer tai Great Mazinger
+			]}
+		},
+		"mecha": {
+			"achievements": [
+				{ "threshold": "25-39",  "id": "anime-mecha-1", "level": "Mecha: level 1", "title": "Me? PILOT this thing?!", "desc": "A secret organization wants you to pilot a huge mecha. Can you do it?" },
+				{ "threshold": "40-59", "id": "anime-mecha-2", "level": "Mecha: level 2", "title": "Engineer", "desc": "After watching over 40 mecha anime you should be able to build your own mobile suit. Remember not to kill the rest of us." },
+				{ "threshold": "60-99", "id": "anime-mecha-3", "level": "Mecha: level 3", "title": "Mechazawa", "desc": "Having watched over 60 mecha anime, you&rsquo;ve probably became a robot already. Nice job, hero." },
+				{ "threshold": "100+", "id": "anime-mecha-4", "level": "Mecha: level MAX", "title": "Pierce the H E A V E N S !", "desc": "Do the impossible. See the invisible. ROW ROW FIGHT THE POWAH!<br>&hellip;You just sang that in your head, didn&rsquo;t you?" }
+			],
+			"requirement": {"type": "given-titles", "titles": [
+				7113,  #30th Gundam Perfect Mission
+				1346,  #AD Police Files
+				92,    #After War Gundam X
+				5270,  #All That Gundam
+				598,   #Android Kikaider: The Animation
+				937,   #Appleseed
+				54,    #Appleseed (Movie)
+				2969,  #Appleseed Saga Ex Machina
+				9737,  #Appleseed XIII
+				10689, #Appleseed XIII: Gekijou Remix Han 1: Yuigon
+				10693, #Appleseed XIII: Gekijou Remix Han 2: Yogen
+				10447, #Aquarion Evol
+				6032,  #Aquarion Movie: Ippatsu Gyakuten Hen
+				2837,  #Ariel
+				2839,  #Ariel Visual
+				5421,  #Ark
+				1079,  #Armitage III
+				492,   #Armitage III Dual-Matrix
+				493,   #Armitage III Polymatrix
+				2048,  #Armor Hunter Mellowlink
+				2582,  #Armored Trooper Votoms
+				2583,  #Armored Trooper Votoms: The Last Red Shoulder
+				2584,  #Armored Trooper Votoms: Big Battle
+				2585,  #Armored Trooper Votoms: Red Shoulder Document - Roots of Treachery
+				2586,  #Armored Trooper Votoms: The Defrost
+				3256,  #Armored Trooper Votoms: Pailsen Files
+				7536,  #Armored Trooper Votoms: Pailsen Files the Movie
+				8017,  #Armored Trooper Votoms: Phantom Arc
+				8248,  #Armored Trooper Votoms: Case; Irvine
+				8250,  #Armored Trooper Votoms: Alone Again
+				12337, #Armored Trooper Votoms Recaps
+				12439, #Armored Trooper Votoms: Vol.1 Stories of the A.T. Votoms
+				12441, #Armored Trooper Votoms: Vol.2 Highlights of the A.T. Votoms
+				5342,  #Asura Cryin
+				6676,  #Asura Cryin 2
+				929,   #Aura Battler Dunbine
+				5372,  #Aura Battler Dunbine OVA
+				109,   #Bakuretsu Tenshi
+				5675,  #Basquash!
+				1016,  #Battle Angel Alita
+				6511,  #Beast Wars Neo
+				5070,  #Beast Wars Second Chou Seimeitai Transformers
+				5289,  #Beast Wars Second: LioConvoy in Imminent Danger!
+				567,   #Big O
+				3079,  #Blue Comet SPT Layzner
+				5755,  #Blue Comet SPT Layzner OVA
+				58,    #Blue Gender
+				1380,  #Blue Gender: The Warrior
+				1051,  #Blue Submarine No. 6
+				1690,  #Bokurano
+				1542,  #Brain Powerd
+				6772,  #Break Blade 1: Kakusei no Toki
+				8514,  #Break Blade 2: Ketsubetsu no Michi
+				9252,  #Break Blade 3: Kyoujin no Ato
+				9465,  #Break Blade 4: Sanka no Chi
+				9724,  #Break Blade 5: Shisen no Hate
+				10092, #Break Blade 6: Doukoku no Toride
+				1347,  #Bubblegum Crisis
+				568,   #Bubblegum Crisis Tokyo 2040
+				2258,  #Choro Q Dagram
+				8132,  #Chou Deneiban SD Gundam Sangokuden Brave Battle Warriors
+				9274,  #Chou Seimeitai Transformers Beast Wars Metals: Convoy Daihenshin!
+				2127,  #Chouja Raideen
+				2255,  #Choujuu Kishin Dancougar
+				5266,  #Choujuu Kishin Dancougar: God Bless Dancougar
+				5629,  #Choujuu Kishin Dancougar: Hakunetsu no Shuushou
+				2256,  #Choujuu Kishin Dancougar: Ushinawareta Monotachi e no Requiem
+				8888,  #Code Geass Gaiden: Boukoku no Akito
+				1575,  #Code Geass: Hangyaku no Lelouch
+				8728,  #Code Geass: Hangyaku no Lelouch - Kiseki no Birthday Picture Drama
+				1953,  #Code Geass: Hangyaku no Lelouch Picture Drama
+				2904,  #Code Geass: Hangyaku no Lelouch R2
+				5163,  #Code Geass: Hangyaku no Lelouch R2 Picture Drama
+				6768,  #Code Geass: Hangyaku no Lelouch R2 Special Edition Zero Requiem
+				9591,  #Code Geass: Hangyaku no Lelouch R2: Flash Specials
+				2124,  #Code Geass: Hangyaku no Lelouch Recaps
+				4596,  #Code Geass: Hangyaku no Lelouch Special Edition Black Rebellion
+				1312,  #Dai-Guard
+				956,   #Daikuu Maryuu Gaiking
+				9972,  #Document Taiyou no Kiba Dagram
+				10534, #Doraemon: Nobita and the New Steel Troops - Angel Wings
+				2665,  #Doraemon: Nobita and the Platoon of Iron Men
+				3135,  #Dragon's Heaven
+				992,   #Dual Parallel! Trouble Adventures
+				993,   #Dual Parallel! Trouble Adventures Special
+				12885, #Dynamic Super Robots Grand Battle
+				182,   #Escaflowne
+				393,   #Escaflowne: A Girl in Gaea
+				237,   #Eureka Seven
+				12471, #Eureka Seven AO
+				1631,  #Eureka Seven: Navigation ray=out
+				13731, #Eureka Seven: New Order
+				4246,  #Eureka Seven: Pocket ga Niji de Ippai
+				2759,  #Evangelion: 1.0 You Are (Not) Alone
+				3784,  #Evangelion: 2.0 You Can (Not) Advance
+				3785,  #Evangelion: 3.0 You Can (Not) Redo
+				3786,  #Evangelion: 4.0
+				2042,  #Five Star Stories
+				1299,  #Flag
+				227,   #FLCL
+				72,    #Full Metal Panic Fumoffu
+				71,    #Full Metal Panic!
+				73,    #Full Metal Panic! The Second Raid
+				6291,  #Full Metal Panic! The Second Raid Episode 000
+				1015,  #Full Metal Panic! The Second Raid OVA
+				1845,  #Gaiking
+				890,   #GaoGaiGar
+				1382,  #GaoGaiGar Final
+				4416,  #GaoGaiGar Final Grand Glorious Gathering
+				5776,  #GaoGaiGar: Blockaded Numbers Special
+				909,   #Geneshaft
+				3579,  #Getter Robo
+				8252,  #Getter Robo (Movie)
+				4486,  #Getter Robo G
+				5292,  #Getter Robo Go
+				978,   #Getter Robo: Armageddon
+				43,    #Ghost in the Shell
+				468,   #Ghost in the Shell 2: Innocence
+				4672,  #Ghost in the Shell 2.0
+				467,   #Ghost in the Shell: Stand Alone Complex
+				1566,  #Ghost in the Shell: Stand Alone Complex - Solid State Society
+				3447,  #Ghost in the Shell: Stand Alone Complex - Solid State Society - Uchikoma no Hibi
+				10090, #Ghost in the Shell: Stand Alone Complex - Solid State Society 3D
+				10950, #Ghost in the Shell: Stand Alone Complex - Solid State Society 3D - Tachikoma no Hibi
+				1335,  #Ghost in the Shell: Stand Alone Complex - Tachikoma na Hibi
+				10870, #Ghost in the Shell: Stand Alone Complex - Tachikoma na Hibi (TV)
+				10949, #Ghost in the Shell: Stand Alone Complex - Tachikoma no Hibi Fan Disc
+				2449,  #Ghost in the Shell: Stand Alone Complex - The Laughing Man
+				10947, #Ghost in the Shell: Stand Alone Complex - The Laughing Man - Tachikoma no Hibi
+				801,   #Ghost in the Shell: Stand Alone Complex 2nd GIG
+				2448,  #Ghost in the Shell: Stand Alone Complex 2nd GIG - Individual Eleven
+				10948, #Ghost in the Shell: Stand Alone Complex 2nd GIG - Individual Eleven - Tachikoma no Hibi
+				3485,  #Ghost in the Shell: Stand Alone Complex 2nd GIG - Tachikoma na Hibi
+				3327,  #Giant Gorg
+				2321,  #Giant Robo
+				2322,  #Giant Robo Gaiden Ginrei
+				2987,  #Ginga Hyouryuu Vifam
+				5250,  #God Mazinger
+				7781,  #Gothicmade: Hana no Utame
+				3146,  #GR: Giant Robo
+				5658,  #Great Mazinger
+				4385,  #Great Mazinger vs. Getter Robo
+				4386,  #Great Mazinger vs. Getter Robo G: Kuuchuu Dai-Gekitotsu
+				3481,  #Grendizer: Getter Robo G - Great Mazinger Kessen! Daikaijuu
+				411,   #Gun x Sword
+				7248,  #Gunbuster Renewal EX
+				1911,  #Gunbuster vs. Diebuster
+				3288,  #Gundam Evolve
+				8839,  #Gundam Neo Experience 0087: Green Divers
+				4540,  #Gundam: Mission to the Rise
+				2598,  #Heavy Metal L-Gaim
+				2599,  #Heavy Metal L-Gaim I: Pentagona Window + Lady Gyabure
+				2600,  #Heavy Metal L-Gaim II: Farewell My Lovely + Pentagona Doors
+				2601,  #Heavy Metal L-Gaim III: Full Metal Soldier
+				2002,  #Heroic Age
+				2291,  #Iczer-One
+				1230,  #Innocent Venus
+				9041,  #IS: Infinite Stratos
+				141,   #Jinki:Extend
+				848,   #Jinki:Extend OVA
+				11767, #Justeen
+				1991,  #Juusou Kikou Dancougar Nova
+				143,   #Kannazuki no Miko
+				8486,  #Kihei Senki Legacies
+				9170,  #Kimi ga Nozomu Eien: Gundam Parody
+				4198,  #Koutetsu Jeeg
+				2157,  #Koutetsushin Jeeg
+				3653,  #Kurogane no Linebarrels
+				7540,  #Kurogane no Linebarrels Specials
+				1088,  #Macross
+				5165,  #Macross 25th Anniversary Special Eizou: All That VF Macross F Version
+				5164,  #Macross 25th Anniversary Special Eizou: All That VF Macross Zero Version
+				1397,  #Macross 7
+				1399,  #Macross 7 Encore
+				6209,  #Macross 7 Plus
+				1400,  #Macross 7: Ginga ga Ore wo Yonde Iru
+				1398,  #Macross Dynamite 7
+				1504,  #Macross Flash Back 2012
+				3572,  #Macross Frontier
+				4454,  #Macross Frontier Deculture Edition
+				10050, #Macross Frontier Music Clip Shuu: Nyankuri
+				10361, #Macross Frontier: Chou Jikuu Gekijou
+				5310,  #Macross Frontier: Itsuwari no Utahime
+				7222,  #Macross Frontier: Sayonara no Tsubasa
+				4939,  #Macross Fufonfia
+				1262,  #Macross II: Lovers Again
+				474,   #Macross Plus
+				1211,  #Macross Plus Movie Edition
+				5051,  #Macross XX
+				194,   #Macross Zero
+				1089,  #Macross: Do You Remember Love
+				435,   #Magic Knight Rayearth
+				1563,  #Magic Knight Rayearth II
+				1954,  #Magic Knight Rayearth OVA
+				4058,  #Makyou Gaiden Le Deus
+				218,   #Martian Successor Nadesico
+				219,   #Martian Successor Nadesico: The Prince of Darkness
+				2253,  #Mazinger Z
+				10625, #Mazinger Z (Movie)
+				3898,  #Mazinger Z vs. Devilman
+				4388,  #Mazinger Z vs. Dr. Hell
+				4406,  #Mazinger Z vs. General Dark
+				1064,  #Mazinkaiser
+				8666,  #Mazinkaiser SKL
+				2734,  #Mazinkaiser: Shitou! Ankoku Dai Shogun
+				1935,  #Megazone 23
+				96,    #Mobile Fighter G Gundam
+				1288,  #Mobile Police Patlabor
+				2733,  #Mobile Police Patlabor Minimum
+				1289,  #Mobile Police Patlabor: The New Files
+				80,    #Mobile Suit Gundam
+				2581,  #Mobile Suit Gundam 00
+				3927,  #Mobile Suit Gundam 00 Second Season
+				7270,  #Mobile Suit Gundam 00 Special Edition
+				6288,  #Mobile Suit Gundam 00 The Movie: A Wakening of the Trailblazer
+				5351,  #Mobile Suit Gundam 00: Tenshitachi no Kiseki
+				82,    #Mobile Suit Gundam 0080: War in the Pocket
+				84,    #Mobile Suit Gundam 0083: Stardust Memory
+				10581, #Mobile Suit Gundam 0083: Stardust Memory - The Mayfly of Space
+				2695,  #Mobile Suit Gundam 0083: The Fading Light of Zeon
+				10808, #Mobile Suit Gundam AGE
+				88,    #Mobile Suit Gundam F91
+				1090,  #Mobile Suit Gundam I
+				1091,  #Mobile Suit Gundam II: Soldiers of Sorrow
+				1092,  #Mobile Suit Gundam III: Encounters in Space
+				4232,  #Mobile Suit Gundam MS IGLOO 2: Gravity of the Battlefront
+				1916,  #Mobile Suit Gundam MS IGLOO: Apocalypse 0079
+				1917,  #Mobile Suit Gundam MS IGLOO: The Hidden One Year War
+				93,    #Mobile Suit Gundam Seed
+				1215,  #Mobile Suit Gundam Seed C.E.73: Stargazer
+				94,    #Mobile Suit Gundam Seed Destiny
+				1241,  #Mobile Suit Gundam Seed Destiny Final Plus: The Chosen Future
+				2294,  #Mobile Suit Gundam Seed Destiny Special Edition
+				864,   #Mobile Suit Gundam Seed MSV Astray
+				2269,  #Mobile Suit Gundam Seed Special Edition
+				2298,  #Mobile Suit Gundam Seed: After-Phase Between the Stars
+				2743,  #Mobile Suit Gundam Seed: Seed Supernova - Tanekyara Gekijo
+				6336,  #Mobile Suit Gundam Unicorn
+				90,    #Mobile Suit Gundam Wing
+				91,    #Mobile Suit Gundam Wing: Endless Waltz
+				2273,  #Mobile Suit Gundam Wing: Endless Waltz Movie
+				3626,  #Mobile Suit Gundam Wing: Operation Meteor
+				86,    #Mobile Suit Gundam ZZ
+				9708,  #Mobile Suit Gundam ZZ: Gundam Frag.
+				87,    #Mobile Suit Gundam: Chars Counterattack
+				5723,  #Mobile Suit Gundam: More Information on the Universal Century
+				81,    #Mobile Suit Gundam: The 08th MS Team
+				83,    #Mobile Suit Gundam: The 08th MS Team - Millers Report
+				10937, #Mobile Suit Gundam: The Origin
+				9098,  #Mobile Suit SD Gundam Festival
+				2302,  #Mobile Suit SD Gundam Mk I
+				2303,  #Mobile Suit SD Gundam Mk II
+				2305,  #Mobile Suit SD Gundam Mk III
+				2304,  #Mobile Suit SD Gundam Mk IV
+				6792,  #Mobile Suit SD Gundam Mk V
+				9087,  #Mobile Suit SD Gundam Musha Knight Commando
+				2306,  #Mobile Suit SD Gundams Counterattack
+				89,    #Mobile Suit Victory Gundam
+				85,    #Mobile Suit Zeta Gundam
+				1967,  #Mobile Suit Zeta Gundam: A New Translation - Heir to the Stars
+				1968,  #Mobile Suit Zeta Gundam: A New Translation II - Lovers
+				1969,  #Mobile Suit Zeta Gundam: A New Translation III - Love Is the Pulse of the Stars
+				9040,  #Mokei Senshi Gunpla Builders Beginning G
+				593,   #Mugen no Ryvius
+				2200,  #Muteki Choujin Zanbot 3
+				3305,  #Muteki Koujin Daitarn 3
+				11021, #Muv-Luv Alternative: Total Eclipse
+				1163,  #Neo Ranga
+				30,    #Neon Genesis Evangelion
+				31,    #Neon Genesis Evangelion: Death & Rebirth
+				32,    #Neon Genesis Evangelion: The End of Evangelion
+				2978,  #New Getter Robo
+				3059,  #Ninja Senshi Tobikage
+				1792,  #Overman King Gainer
+				5153,  #Panzer World Galient
+				10751, #Panzer World Galient OVA
+				324,   #Patlabor
+				1096,  #Patlabor 2: The Movie
+				1290,  #Patlabor WXIII
+				1095,  #Patlabor: The Movie
+				4130,  #Petit Eva: Evangelion@School
+				165,   #RahXephon
+				559,   #RahXephon Interlude: Her and Herself // Thatness and Thereness
+				5288,  #RahXephon Specials
+				758,   #RahXephon: Pluralitas Concentio
+				1693,  #Reideen
+				2094,  #Relic Armor Legaciam
+				4618,  #RideBack
+				7060,  #Ring of Gundam
+				11227, #Rinne no Lagrange
+				12281, #Rinne no Lagrange 2
+				2000,  #Roujin Z
+				561,   #Sakura Taisen
+				1964,  #Sakura Taisen: Ecole de Paris
+				1166,  #Sakura Taisen: Gouka Kenran
+				608,   #Sakura Taisen: Katsudou Shashin
+				562,   #Sakura Taisen: Le Nouveau Paris
+				2168,  #Sakura Taisen: New York
+				1165,  #Sakura Taisen: Ouka Kenran
+				1999,  #Sakura Taisen: Sumire
+				2391,  #SD Gundam Force
+				1939,  #SD Gundam Gaiden
+				8287,  #SD Gundam Sangokuden Brave Battle Warriors
+				7242,  #Sengoku Gyoujin Dullahan: Kagen no Keishousha
+				938,   #Shin Getter Robo vs. Neo Getter Robo
+				5485,  #Shin Mazinger Shougeki! Z-Hen
+				1602,  #Soukou no Strain
+				478,   #Sousei no Aquarion
+				2170,  #Sousei no Aquarion OVA
+				930,   #Space Runaway Ideon
+				8934,  #Star Driver: Kagayaki no Takuto
+				12857, #Star Driver: Kagayaki no Takuto Movie
+				3252,  #Super Express Mazinger 7
+				1603,  #Super Robot Taisen OG: Divine Wars
+				4075,  #Super Robot Taisen OG: Divine Wars Special
+				1544,  #Super Robot Taisen OG: The Animation
+				9241,  #Super Robot Taisen OG: The Inspector
+				2257,  #Taiyou no Kiba Dagram
+				1459,  #Tekkaman Blade
+				1460,  #Tekkaman Blade 2
+				2299,  #Tekkaman Blade OVA: Burning Clock
+				2301,  #Tekkaman Blade OVA: Missing Link
+				2300,  #Tekkaman Blade OVA: Twin Blood
+				2001,  #Tengen Toppa Gurren Lagann
+				5947,  #Tengen Toppa Gurren Lagann Gekijouban Zenyasai Special: Virals Sweet Dream
+				4107,  #Tengen Toppa Gurren Lagann Movie: Gurren-hen
+				4565,  #Tengen Toppa Gurren Lagann Movie: Lagann-hen
+				10622, #Tengen Toppa Gurren Lagann OVA
+				4705,  #Tengen Toppa Gurren Lagann Parallel Works
+				8348,  #Tengen Toppa Gurren Lagann Parallel Works 2
+				3352,  #Tengen Toppa Gurren Lagann Special
+				3287,  #Tenkuu Danzato Skelter Heaven
+				2686,  #Tetsujin 28-go
+				4208,  #Tetsujin 28-go (1980)
+				2337,  #Tetsujin 28-go (2004)
+				10319, #Tetsujin 28-go FX
+				10005, #Tetsujin 28-go: Hakuchuu no Zangetsu
+				1762,  #The Heroic Legend of Arslan
+				2760,  #The Ideon: A Contact
+				2761,  #The Ideon: Be Invoked
+				14401, #Titan Rain
+				10954, #Toei Robot Girls
+				949,   #Top wo Nerae!
+				1002,  #Top wo Nerae! 2
+				5462,  #Top wo Nerae! Science Lesson
+				1675,  #Transformers Armada
+				928,   #Transformers Galaxy Force
+				2268,  #Transformers Generation 1
+				925,   #Transformers Headmasters
+				924,   #Transformers Masterforce
+				927,   #Transformers Superlink
+				9528,  #Transformers Superlink Special
+				2265,  #Transformers the Movie
+				926,   #Transformers Victory
+				6038,  #Transformers Zone
+				7862,  #Transformers: Robot Masters
+				2284,  #Transformers: Robots in Disguise
+				6800,  #Transformers: Scramble City
+				95,    #Turn A Gundam
+				3963,  #Turn A Gundam I: Earth Light
+				3964,  #Turn A Gundam II: Moonlight Butterfly
+				1458,  #Uchuu no Kishi Tekkaman
+				4387,  #UFO Robo Grendizer tai Great Mazinger
+				180,   #Vandread
+				1111,  #Vandread Gekitouhen
+				1112,  #Vandread Taidouhen
+				181,   #Vandread: The Second Stage
+				8249,  #Votoms Finder Armored Trooperoid
+				1986,  #Wakusei Robo Danguard Ace
+				8707,  #Wakusei Robo Danguard Ace tai Konchuu Robot Gundan
+				5515,  #Wakusei Robo Danguard Ace: Uchuu Daikaisen
+				2128,  #Yuusha Raideen
+				878,   #Zegapain
+				763,   #Zoids
+				1746,  #Zoids Fuzors
+				712,   #Zoids Genesis
+				764    #Zoids Shin Seiki/Zero
+			]}
+		},
+		"historical": {
+			"achievements": [
+				{ "threshold": "25-39", "id": "anime-historical-1", "level": "Historical: level 1", "title": "", "desc": "" },
+				{ "threshold": "40-59", "id": "anime-historical-2", "level": "Historical: level 2", "title": "", "desc": "" },
+				{ "threshold": "60-99", "id": "anime-historical-3", "level": "Historical: level 3", "title": "", "desc": "" },
+				{ "threshold": "100+", "id": "anime-historical-4", "level": "Historical: ANCIENT POWER", "title": "", "desc": "" }
+			],
+			"requirement": {"type": "given-titles", "titles": [
+				11545, #108 Ward Inside and Out: Make-Up Artist
+				3835,  #Ai no Gakko Cuore Monogatari
+				2548,  #Ai no Wakakusa Monogatari
+				2558,  #Ai no Wakakusa Monogatari II
+				2554,  #Ai Shoujo Pollyanna Monogatari
+				656,   #Air in Summer
+				11275, #Akado Suzunosuke
+				283,   #Akage no Anne
+				8950,  #Akage no Anne: Green Gables e no Michi
+				5157,  #Alexander Senki Gekijouban
+				10112, #Alexandros no Ketsudan
+				2546,  #Alps Monogatari: Watashi no Annette
+				2225,  #Alps no Shoujo Heidi
+				9547,  #Alps no Shoujo Heidi (1979)
+				9548,  #Alps no Shoujo Heidi: Alm no Yama Hen
+				9549,  #Alps no Shoujo Heidi: Heidi to Clara Hen
+				3359,  #Amatsuki
+				2333,  #Anime Sanjushi
+				2334,  #Anime Sanjushi: Aramis no Bouken
+				7610,  #Anju to Zushioumaru
+				6093,  #Anmitsu Hime
+				3829,  #Anne no Nikki
+				12027, #Anne no Nikki: Anne Frank Monogatari
+				4723,  #Animated Classics of Japanese Literature
+				2334,  #Anime Sanjushi: Aramis no Bouken
+				7193,  #Aoi Bungaku Series
+				10901, #Aoi Hitomi no Onna no Ko no Ohanashi
+				5673,  #Apfelland Monogatari
+				1946,  #Ashita no Nadja
+				8475,  #Asura
+				586,   #Ayakashi: Japanese Classic Horror
+				2251,  #Baccano!
+				3901,  #Baccano! Specials
+				1576,  #Bakumatsu Kikansetsu Irohanihoheto
+				8092,  #Bakumatsu no Spasibo
+				67,    #Basilisk: Kouga Ninpou Chou
+				12561, #Benkeitai Ushiwaka
+				9613,  #Big X
+				4151,  #Blade of the Immortal
+				405,   #Blood: The Last Vampire
+				4680,  #Botchan
+				11241, #Brave 10
+				13169, #Buta
+				2800,  #Candy Candy
+				723,   #Candy Candy (Movie)
+				2802,  #Candy Candy: Candy no Natsuyasumi
+				2801,  #Candy Candy: Haru no Yobigoe
+				2836,  #Chiisana Viking Vickie
+				2800,  #Chikara to Onna no Yo no Naka
+				2915,  #Chikyuuga Ugoita Hi
+				4201,  #Chocchan Monogatari
+				13349, #Chouyaku Hyakuninsshu: Uta Koi
+				60,    #Chrno Crusade
+				4450,  #Chrno Crusade: Azmaria's Lessons
+				3935,  #Clockwork Fighters: Hiwou's War
+				2755,  #Cleopatra
+				3132,  #Cristopher Columbus
+				1842,  #D.Gray-man
+				1778,  #Dae Jang Geum: Jand Geum’s Dream
+				9200,  #Dae Jang Geum: Jang Geum’s Dream 2
+				496,   #Dagger of Kamui
+				8915,  #Dantalian no Shoka
+				12879, #Dantalian no Shoka: Ibarahime
+				8915,  #Dojoji Temple
+				1026,  #Eight Clouds Rising
+				345,   #Eikoku Koi Monogatari Emma
+				2517,  #Eikoku Koi Monogatari Emma: Intermission
+				2035,  #Eikoku Koi Monogatari Emma: Molders Hen
+				4199,  #Entaku no Kishi Monogatari: Moero Arthur
+				714,   #Enzai
+				5178,  #First Squad: The Moment of Truth
+				2553,  #Flanders no Inu
+				2623,  #Flanders no Inu (Movie)
+				2624,  #Flanders no Inu, Boku no Patrasche
+				3367,  #Furusato Japan
+				13163, #Furusato Saisei: Nihon no Mukashi Banashi
+				13335, #Fuse Teppou Musume no Torimonochou
+				7775,  #Futatsu no Kurumi
+				2238,  #Fuyu no Semi
+				10048, #Fuyu no Semi: Tokubetsu Henshuuhan
+				1049,  #Gauche the Cellist
+				918,   #Gintama
+				2951,  #Gintama Jump Festa 2005 Special
+				9969,  #Gintama’
+				10643, #Gintama: Dai Hanseikai
+				6945,  #Gintama: Jump Anime Tour 2008 Special
+				7472,  #Gintama: Shinyaku Benizakura Hen
+				9735,  #Gintama: Shinyaku Benizakura Hen Special
+				336,   #Ginyuu Mokushiroku Meine Liebe
+				771,   #Ginyuu Mokushiroku Meine Liebe Wieder
+				578,   #Grave of the Fireflies
+				8233,  #Genji
+				3488,  #Genji Monogatari
+				5155,  #Genji Monogatari Sennenki
+				3646,  #Glass no Usagi
+				7867,  #Gon
+				8425,  #Gosick
+				10504, #Gosick Recap
+				1200,  #Gun-dou Musashi
+				10270, #Gun-dou Musashi Recap
+				2579,  #Hachijunichikan Sekai Isshuu
+				1824,  #Hadashi no Gen
+				1825,  #Hadashi no Gen 2
+				1663,  #Haha wo Tazunete Sanzenri
+				3335,  #Haikara-san ga Tooru
+				5168,  #Hairy Tale
+				8764,  #Hajime Ningen Gon
+				8736,  #Hajime Ningen Gyatoruz
+				4513,  #Hakujaden
+				6895,  #Hakuouki
+				9065,  #Hakuouki Hekketsuroku
+				9723,  #Hakuouki Hekketsuroku Episode 0
+				13117, #Hakuouki Movie 1
+				13119, #Hakuouki Movie 2
+				11663, #Hakuouki OVA
+				13115, #Hakuouki Reimeiroku
+				10350, #Hakuouki Sekkaroku
+				4551,  #Hakushaku to Yousei
+				8533,  #Hana no Kage
+				14145, #Hanayaka Nari, Waga Ichizoku
+				1904,  #Harukanaru Toki no Naka de 2: Shiroki Ryuu no Miko
+				3227,  #Harukanaru Toki no Naka de 3: Kurenai no Tsuki
+				4190,  #Harukanaru Toki no Naka de 3: Onsen Chibi Special
+				7254,  #Harukanaru Toki no Naka de 3: Owarinaki Unmei
+				647,   #Harukanaru Toki no Naka de: Ajisai Yumegatari
+				1905,  #Harukanaru Toki no Naka de: Character Endings
+				247,   #Harukanaru Toki no Naka de: Hachiyou Shou
+				1907,  #Harukanaru Toki no Naka de: Kokoro no Yukue
+				1906,  #Harukanaru Toki no Naka de: Maihitoyo
+				8554,  #Hashire Melos
+				4876,  #Hashire Melos!
+				2405,  #Hello! Lady Lynn
+				5929,  #Hi no Ame ga Furu
+				13639, #Hi no Youjin
+				2694,  #Hidamari no Ki
+				7967,  #Hiroshima ni Ichiban Densha ga Hashitta
+				2810,  #Himitsu no Hanazono
+				5060,  #Hetalia Axis Powers
+				9865,  #Hetalia Axis Powers Fan Disc
+				8479,  #Hetalia World Series
+				10497, #Hetalia World Series Extra Episodes
+				1371,  #Hi no Tori
+				2997,  #Hi no Tori: Houou Hen
+				2999,  #Hi no Tori: Yamato Hen
+				1977,  #Hijikata Toshizou: Shiro no Kiseki
+				3873,  #Honey Honey no Suteki na Bouken
+				6150,  #Hong Xing Xiao Yong Shi
+				11101, #Honoo no Alpen Rose
+				3807,  #Honoo no Alpen Rose: Judy & Randy
+				9957,  #Hoshizora no Violin
+				7170,  #House of Flames
+				2545,  #Huckleberry no Boukeni
+				4800,  #Huckleberry Finn Monogatarii
+				279,   #Hundred Stories
+				9996,  #Hyouge Mono
+				2828,  #Ie Naki Ko
+				2831,  #Ie Naki Ko (Movie)
+				2829,  #Ie Naki Ko Remi
+				10471, #Ie Naki Ko Remi Specials
+				9938,  #Ikoku Meiro no Croisée
+				10905, #Ikoku Meiro no Croisée Picture Drama
+				10804, #Ikoku Meiro no Croisée Special
+				10832, #Ikoku Meiro no Croisée: Yune & Alice
+				2282,  #In The Beginning: The Bible Stories
+				3326,  #Inaka Isha
+				249,   #InuYasha
+				449,   #InuYasha: Guren no Houraijima
+				450,   #InuYasha: Kagami no Naka no Mugenjo
+				6811,  #InuYasha: Kanketsu-hen
+				4886,  #InuYasha: Kuroi Tessaiga
+				451,   #InuYasha: Tenka Hadou no Ken
+				452,   #InuYasha: Toki wo Koeru Omoi
+				14211, #Instant History
+				5876,  #IZUMO
+				5900,  #Jean Valjean Monogatari
+				1759,  #Jigen Sengokushi: Kuro no Shishi - Jinnai Hen
+				3435,  #Joou Heika no Petite Angie
+				9525,  #Junod
+				2138,  #Kage
+				1622,  #Kai Doh Maru
+				3010,  #Kaiketsu Zorro
+				5023,  #Kamui the Ninja
+				1658,  #Karakuri no Kimi
+				2243,  #Karasu Tengu Kabuto
+				1371,  #Karasu Tengu Kabuto: Ougon no Me no Kemono
+				1036,  #Kasho no Tsuki
+				3110,  #Kaze no Naka no Shoujo: Kinpatsu no Jeanie
+				1878,  #Kaze no Shoujo Emily
+				1063,  #Kaze to Ki no Uta Sanctus: Sei Naru Kana
+				606,   #Kazemakase Tsukikage Ran
+				8436,  #Ketsudan
+				1058,  #Kidou Shinsengumi Moeyo Ken
+				511,   #Kidou Shinsengumi Moeyo Ken TV
+				5192,  #Kiku-chan to Ookami
+				12031, #Kingdom
+				6012,  #Kinpatsu no Jeanie
+				3061,  #Kishin Corps
+				4262,  #Koihime†Musou
+				5305,  #Koihime†Musou OVA
+				4393,  #Kokka Kimigayo
+				10029, #Kokurikozaka Kara
+				10335, #Kompeki no Kantai Tokubetsu Hen: Sourai Kaihatsu Monogatari
+				6229,  #Konpeki no Kantai
+				5924,  #Koukoku Ichidai Otoko
+				2162,  #Koutetsu Sangokushi
+				8304,  #Koutetsu Sangokushi Special
+				3866,  #Kuro ga Ita Natsu
+				4898,  #Kuroshitsuji
+				6707,  #Kuroshitsuji II
+				9136,  #Kuroshitsuji II Specials
+				8068,  #Kuroshitsuji Picture Drama
+				6163,  #Kuroshitsuji Recap
+				6793,  #Kuroshitsuji Special
+				5039,  #Kurozuka
+				6230,  #Kyokujitsu no Kantai
+				5415,  #La Rose de Versailles
+				2227,  #Lady Lady!!
+				9773,  #Lady Lady!! (1988)
+				1013,  #Le Chevalier D'Eon
+				1695,  #Les Misérables: Shoujo Cosette
+				1032,  #Like the Clouds, Like the Wind
+				5600,  #Little El Cid Bouken
+				7500,  #Maabou no Shounen Koukuu Tsuwamono
+				7524,  #Mahou no Pen
+				3162,  #Makiba no Shoujo Katori
+				11829, #Manga Mitoukoumon
+				9856,  #Manga Nihon Emaki
+				11245, #Manga Nihonshi
+				10282, #Manga Nippon Mukashibanashi
+				6277,  #Manga Nippon Mukashibanashi (1976)
+				10285, #Manga Nippon Mukashibanashi (Movie)
+				5091,  #Manga Sarutobi Sasuke
+				6262,  #Manga Sekai Mukashibanashi
+				4926,  #Marco: Haha wo Tazunete Sanzenri
+				5935,  #Marco Polo no Boken
+				9821,  #McDull and Chinese Culture
+				4187,  #Megumi
+				3836,  #Meiken Jolie
+				2981,  #Midori: Shoujo Tsubaki
+				7497,  #Mikanbun
+				1033,  #Millennium Actress
+				7857,  #Mini Sengoku Basara: Chousokabe-kun to Mouri-kun
+				9630,  #Mini Sengoku Basara Two: Tsukiyo no Katakura-
+				5386,  #Miyamoto Musashi: Souken no Haseru Yume
+				9395,  #Miyanishi Tatasuya Gekijou: Omae Umasou da na
+				4096,  #Mizu no Tane
+				4614,  #Moero Arthur: Hakuba no Ouji
+				6857,  #Momotarou no Umiwashi
+				2246,  #Mononoke
+				3309,  #Mozu no Nie
+				6769,  #Mura Matsuri
+				1375,  #My Daddy Long Legs
+				1279,  #Mysterious Cities of Gold
+				1252,  #Nadia: The Motion Picture
+				1251,  #Nadia, the Secret of Blue Water
+				3381,  #Nadia, the Secret of Blue Water Omakes
+				3465,  #Nagasaki 1945: Angelus no Kane
+				1937,  #Nakoruru: Ano Hito kara no Okurimono
+				8896,  #Natsufuku no Shoujotachi
+				5184,  #Negibouzu no Asataro
+				12165, #Niji no Kanata e! Shoujo Diana no Monogatari
+				7651,  #Ningen Shikaku: Director’s Cut Ban
+				1455,  #Ninja Resurrection
+				617,   #Ninja Scroll
+				618,   #Ninja Scroll: The Series
+				912,   #Ninku
+				2851,  #Ninku (Movie)
+				12181, #Nippon Omoshiro Mukashi Banashi
+				1203,  #Nitaboh
+				8777,  #Nobara no Julie
+				11933, #Oda Nobuna no Yabou
+				14181, #Oedo wa Nemurenai!
+				2152,  #Oh! Edo Rocket
+				8415,  #Oi! Ryouma
+				10500, #Ojii-san no Lamp
+				9501,  #Olympus Guardian
+				9204,  #Omae Umasou da na
+				7171,  #Oni
+				8487,  #Onigamiden
+				5439,  #Ooedo Forty Eight
+				785,   #Otaku no Video
+				14213, #Otogi Manga Calendar
+				525,   #Otogizoushi
+				13673, #Otome Nadeshiko Koi Tenchou
+				8476,  #Otome Youkai Zakuro
+				10180, #Otome Youkai Zakuro Picture Drama
+				3879,  #Paris no Isabel
+				1035,  #Patalliro Saiyuki!
+				6688,  #Pattenrai! Minami no Shima no Mizu Monogatari
+				161,   #Peace Maker Kurogane
+				9568,  #Peace Maker Kurogane Special
+				2549,  #Perrine Monogatari
+				7117,  #Pika Don
+				416,   #Porco Rosso
+				3424,  #Porfy no Nagai Tabi
+				163,   #Power Stone
+				9806,  #Qin Shi Ming Yue
+				11841, #Qin Shi Ming Yue 2:Night Ends - Daybreak
+				11835, #Qin Shi Ming Yue 3: Hundred Schools of Thought
+				1329,  #Rail of the Star: A True Story of Children
+				6114,  #Rainbow: Nisha Rokubou no Shichinin
+				9959,  #Rainyantsuuri no Uta
+				2244,  #Rakugo Tennyo Oyui
+				1442,  #Reign: The Conqueror
+				7473,  #Rennyo to Sono Haha
+				2543,  #Robin Hood no Daibouken
+				970,   #Romance of the Three Kingdoms
+				2559,  #Romeo no Aoi Sora
+				338,   #Rose of Versailles
+				3868,  #Rose of Versailles Movie
+				45,    #Rurouni Kenshin
+				6591,  #Rurouni Kenshin DVD-BOX Special Ending
+				46,    #Rurouni Kenshin: Ishinshishi e no Requiem
+				10334, #Rurouni Kenshin Recap
+				9716,  #Rurouni Kenshin: Review Special
+				401,   #Rurouni Kenshin: Seisouhen
+				11441, #Rurouni Kenshin: Shin Kyoto Hen
+				12067, #Rurouni Kenshin Special
+				4664,  #Rurouni Kenshin: Special Techniques
+				44,    #Rurouni Kenshin: Tsuiokuhen
+				5997,  #Sabu to Ichi Torimono Hikae
+				6902,  #Saikyou Bushouden: Sangoku Engi
+				957,   #Saiunkoku Monogatari
+				1914,  #Saiunkoku Monogatari 2nd Season
+				2193,  #Saiunkoku Monogatari Soushuuhen
+				2192,  #Saiunkoku Monogatari Specials
+				12531, #Sakamichi no Apollon
+				419,   #Samurai Deeper Kyo
+				1167,  #Samurai Gun
+				2591,  #Samurai Spirits
+				836,   #Samurai Spirits 2
+				2698,  #Sanctuary
+				8677,  #Sangokushi
+				7696,  #Sangokushi Daiichibu Eiyuu-tachi no Yoake
+				7697,  #Sangokushi Dainibu Choukou Moyu
+				7698,  #Sangokushi Daisanbu Harukanaru Taichi
+				8678,  #Sangokushi II
+				7588,  #Saraiya Goyou
+				6057,  #Sasuke
+				3877,  #Sasurai no Shoujo Nell
+				12907, #Sekiei Ayakashi Mangatan
+				5355,  #Sengoku Basara
+				6581,  #Sengoku Basara: Setonai no Gekitotsu! Hi wo Fuku Umi no Daiyousai - Fugaku!!
+				9745,  #Sengoku Basara: The Last Party
+				6634,  #Sengoku Basara Two
+				10483, #Sengoku Basara Two: Ryuko, Itadaki no Chikai! Atsuki Mirai e Kakeru Tamashii!!
+				7242,  #Sengoku Gyoujin Dullahan: Kagen no Keishousha
+				10308, #Sengoku Otome: Momoiro Paradox
+				11547, #Sengoku☆Paradise Kiwami
+				6973,  #Senkou no Night Raid
+				10201, #Senkou no Night Raid Picture Drama
+				8840,  #Senkou no Night Raid Recap
+				8800,  #Senkou no Night Raid Specials
+				3038,  #Senya Ichiya Monogatari
+				4514,  #Seton Doubutsuki: Kuma no Ko Jacky
+				2216,  #Shigurui
+				959,   #Shin Chou Kyou Ryo: Condor Hero
+				960,   #Shin Chou Kyou Ryo: Condor Hero II
+				5854,  #Shin Chou Kyou Ryo: Condor Hero III
+				1938,  #Shin Kaikei Gunkan
+				6112,  #Shin Koihime†Musou
+				7774,  #Shin Koihime†Musou OVA
+				8635,  #Shin Koihime†Musou: Live Revolution
+				8057,  #Shin Koihime†Musou: Otome Tairan
+				10297, #Shin Koihime†Musou: Otome Tairan OVA
+				5693,  #Shinran-sama: Negai, Soshite Hikari
+				989,   #Shinshaku Sengoku Eiyuu Densetsu: Sanada Juu Yuushi
+				988,   #Shinshaku Sengoku Eiyuu Densetsu: Sanada Juu Yuushi The Animation
+				7052,  #Shinshuu Sudama Hen
+				8337,  #Shoka
+				3369,  #Shoubushi Densetsu Tetsuya
+				10369, #Shougeki Shinsengumi
+				2547,  #Shoukoujo Sara
+				1557,  #Shounen Onmyouji
+				10014, #Shouwa Monogatari
+				10013, #Shouwa Monogatari (Movie)
+				340,   #Shura no Toki
+				1863,  #Silk Road Shounen Yuuto
+				4558,  #Snow Night Stories
+				10774, #Soccer Fever
+				11561, #Sougen no Ko Tenguri
+				1541,  #Souten no Ken
+				3864,  #Souten no Ken Specials
+				5226,  #Souten Kouro
+				3054,  #Star of the Seine
+				565,   #Steamboy
+				554,   #Steel Angel Kurumi
+				557,   #Steel Angel Kurumi Encore
+				2882,  #Superbook
+				3936,  #Superbook 2
+				1072,  #Sweat Punch: Kigeki
+				1452,  #Sword for Truth
+				2418,  #Sword of the Stranger
+				173,   #Tactics
+				2618,  #Takarajima
+				11685, #Takarajima Memorial: Yuunagi to tobareta Otoko
+				1208,  #Taro the Dragon Boy
+				8214,  #Tekkamen wo Oe! Dartanyan Monogatari Yori
+				1587,  #Tenpou Ibun Ayakashi Ayashi
+				3248,  #Tenpou Ibun Ayakashi Ayashi Inferno OVA
+				7014,  #Tezuka Osamu no Buddha: Akai Sabaku yo! Utsukushiku
+				2500,  #The Cockpit
+				3075,  #The Flying House
+				3496,  #The Golden Laws
+				1822,  #The Hakkenden
+				12715, #The Hakkenden: Shin Shou
+				7985,  #The Laws of the Sun
+				6503,  #The Legend
+				7861,  #The Rose and Women of Versailles
+				12321, #Thermae Romae
+				12727, #Thermae Romae Specials
+				5895,  #Tistou Midori no Oyayubi
+				2577,  #Tom Sawyer no Bouken
+				7591,  #Tono to Issho
+				9794,  #Tono to Issho 1.5
+				10324, #Tono to Issho: Gantai no Yabou
+				8961,  #Tono to Issho: Ippunkan Gekijou
+				6124,  #Toshishun
+				2557,  #Trapp Ikka Monogatari
+				5917,  #Tsuru ni Notte: Tomoko no Bouken
+				12903, #Tsushima Maru: Sayounara Okinawa
+				6273,  #Tsuyu no Hitoshizuku
+				6835,  #Umi no Mizu wa Naze Karai
+				7485,  #Urashima Tarou
+				1102,  #Urda
+				2753,  #Ushiro no Shoumen Dare
+				4991,  #Wakakusa Monogatari
+				3196,  #Wakakusa Charlotte
+				4132,  #Wakakusa no Yon Shimai
+				3761,  #Wanwan Sanjushi
+				3215,  #Winter Days
+				2024,  #Yoshimune
+				4660,  #Yoshino no Hime
+				6272,  #Zakuro Yashiki La Grenadiere
+				4790,  #Zeno: Kagiri Naki Ai ni
+				12763, #Zero-sen Hayato
+				29,    #Zipang
+				7808   #Zukokke Knight: Don De La Mancha
+			]}
+		},
+		"boku no pico": {
+			"achievements": [
+				{ "threshold": "3+", "id": "anime-bokunopico", "level": "", "title": "Feels&hellip; weird, man", "desc": "Watched Boku no Pico. This is what you get when you follow /a/&rsquo;s recommendations." }
+			],
+			"requirement": {"type": "given-titles", "titles": [
+				1639,  #Boku no Pico
+				5391,  #Pico to Chico
+				4866,  #Pico x CoCo x Chico
+				6546   #Pico: My Little Summer Story
+			]}
+		},
+		"mean score": {
+			"achievements": [
+				{ "threshold": "8.5-10", "id": "anime-suffering", "title": "Watching anime is suffering", "desc": "Mean score lower than 5. Someone has to counterweigh the fanboys, right?" },
+				{ "threshold": "0-5", "id": "anime-ilovethem", "title": "I love Chinese cartoons", "desc": "Mean score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;" }
+			],
+			"requirement": { "type": "mean-score" }
+		},
+		"count": {
+			"achievements": [
+				{ "threshold": "100-199",   "id": "numbers-anime-100",   "level": "Casual watcher",     "title": "Passed 100 mark",   "desc": "Completed over 100 titles. You DID buy all of them, right?" },
+				{ "threshold": "200-299",   "id": "numbers-anime-200",   "level": "Casual watcher",     "title": "Passed 200 mark",   "desc": "Completed over 200 titles. You DID buy all of them, right?" },
+				{ "threshold": "300-399",   "id": "numbers-anime-300",   "level": "Casual watcher",     "title": "Passed 300 mark",   "desc": "Completed over 300 titles. You DID buy all of them, right?" },
+				{ "threshold": "400-499",   "id": "numbers-anime-400",   "level": "A lot of free time", "title": "Passed 400 mark",   "desc": "Completed over 400 titles. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
+				{ "threshold": "500-749",   "id": "numbers-anime-500",   "level": "A lot of free time", "title": "Passed 500 mark",   "desc": "Completed over 500 titles. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
+				{ "threshold": "750-999",   "id": "numbers-anime-750",   "level": "Basement dweller",   "title": "Passed 750 mark",   "desc": "Completed over 750 titles. You should lean back and think about your life for a while&hellip;" },
+				{ "threshold": "1000-1499", "id": "numbers-anime-1000",  "level": "Basement dweller",   "title": "Passed 1000 mark",  "desc": "Completed over 1000 titles. You should lean back and think about your life for a while&hellip;" },
+				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "The Collector",      "title": "Passed 1500 mark",  "desc": "Completed over 1500 titles. Are you even human? This is not possible for mere mortal beings." },
+				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Anime maniac",       "title": "Passed 2500 mark",  "desc": "Completed over 2500 titles. This deserves no further comment." },
+				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Anime maniac",       "title": "Passed 5000 mark",  "desc": "Completed over 5000 titles. This deserves no further comment." },
+				{ "threshold": "7500-9999", "id": "numbers-anime-7500",  "level": "Anime obsession",    "title": "Passed 7500 mark",  "desc": "Completed over 7500 titles. Are you having fun, breaking all the rules?" },
+				{ "threshold": "10000+",    "id": "numbers-anime-10000", "level": "Anime obsession",    "title": "Passed 10000 mark", "desc": "Completed over 10000 titles. Are you having fun, breaking all the rules?" }
+			],
+			"requirement": { "type": "completed-titles" }
+		}
 	}
-},
-"anime": {
-	"boku no pico":
-	{
-		"achievements":
-		[
-			{
-				"id": "anime-bokunopico",
-				"title": "Feels... weird, man",
-				"level": "",
-				"desc": "Watched Boku no Pico. This is what you get when you follow /a/'s recommendations.",
-				"threshold": 3
-			}
-		],
-		"titles":
-		[
-			{"id": 1639,	"title": "Boku no Pico"},
-			{"id": 5391,	"title": "Pico to Chico"},
-			{"id": 4866,	"title": "Pico x CoCo x Chico"},
-			{"id": 6546,	"title": "Pico: My Little Summer Story"}
-		]
-	},
-	"mahou shoujo":
-	{
-		"achievements":
-		[
-			{
-				"id": "anime-mahoushoujo-1",
-				"title": "Signed the contract",
-				"level": "Mahou Shoujo: level 1",
-				"desc": "Became a magical girl and started saving the world, step by step.",
-				"threshold": 15
-			},
-			{
-				"id": "anime-mahoushoujo-2",
-				"title": "Magic is my middle name",
-				"level": "Mahou Shoujo: level 2",
-				"desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!",
-				"threshold": 30
-			},
-			{
-				"id": "anime-mahoushoujo-3",
-				"title": "Too magical to comprehend",
-				"level": "Mahou Shoujo: level 3",
-				"desc": "Watched so many mahou shoujo anime that you sparkle occasionally.",
-				"threshold": 50
-			},
-			{
-				"id": "anime-mahoushoujo-4",
-				"title": "Are you a wizard",
-				"level": "Mahou Shoujo: MAX POWER",
-				"desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules.",
-				"threshold": 80
-			}
-		],
-		"titles":
-		[
-			{"id": 831,	"title": "A Little Snow Fairy Sugar"},
-			{"id": 1014,	"title": "A Little Snow Fairy Sugar Special"},
-			{"id": 5246,	"title": "Adesugata Mahou no Sannin Musume"},
-			{"id": 103,	"title": "Akazukin Chacha"},
-			{"id": 367,	"title": "Akazukin Chacha OVA"},
-			{"id": 7152,	"title": "Anyamal Tantei Kiruminzoo"},
-			{"id": 231,	"title": "Asagiri no Miko"},
-			{"id": 232,	"title": "Cardcaptor Sakura"},
-			{"id": 372,	"title": "Cardcaptor Sakura Movie 2: The Sealed Card"},
-			{"id": 2424,	"title": "Cardcaptor Sakura Specials"},
-			{"id": 1078,	"title": "Cardcaptor Sakura: Leave It to Kero-chan"},
-			{"id": 371,	"title": "Cardcaptor Sakura: The Movie"},
-			{"id": 111,	"title": "Corrector Yui"},
-			{"id": 2036,	"title": "Cosmic Baton Girl Comet-san"},
-			{"id": 1661,	"title": "Cutey Honey"},
-			{"id": 1853,	"title": "Cutey Honey F"},
-			{"id": 6496,	"title": "Cutey Honey Flash: The Movie"},
-			{"id": 2288,	"title": "Cyberteam in Akihabara"},
-			{"id": 2289,	"title": "Cyberteam in Akihabara: 2011 Summer Vacation"},
-			{"id": 933,	"title": "Dai Mahou Touge"},
-			{"id": 1841,	"title": "Dai Mahou Touge Omake"},
-			{"id": 1221,	"title": "Demashitaa! Powerpuff Girls Z"},
-			{"id": 2259,	"title": "Dr. Rin ni Kiitemite!"},
-			{"id": 812,	"title": "Earth Maiden Arjuna"},
-			{"id": 1930,	"title": "Eiga Futari wa Precure Max Heart"},
-			{"id": 1931,	"title": "Eiga Futari wa Precure Max Heart 2: Yukizora no Tomodachi"},
-			{"id": 4124,	"title": "Eiga Futari wa Precure Splash Star Tick-Tock Kiki Ippatsu!"},
-			{"id": 5753,	"title": "Eiga Precure All Stars DX: Minna Tomodachi - Kiseki no Zenin Daishuugou!"},
-			{"id": 8133,	"title": "Eiga Precure All Stars DX2: Kibou no Hikari - Rainbow Jewel wo Mamore!"},
-			{"id": 9979,	"title": "Eiga Precure All Stars DX3: Mirai ni Todoke! Sekai wo Tsunagu Niji-iro no Hana"},
-			{"id": 10821,	"title": "Eiga Suite Precure♪: Torimodose! Kokoro ga Tsunaku Kiseki no Melody"},
-			{"id": 4703,	"title": "Eiga Yes! Precure 5 GoGo! Okashi no Kuni no Happy Birthday"},
-			{"id": 3023,	"title": "Esper Mami"},
-			{"id": 10000,	"title": "Esper Mami: My Angel Mami-chan"},
-			{"id": 9880,	"title": "Esper Mami: Hoshizora no Dancing Doll"},
-			{"id": 604,	"title": "Fancy Lala"},
-			{"id": 1126,	"title": "Figure 17"},
-			{"id": 5684,	"title": "Fresh Precure!"},
-			{"id": 6527,	"title": "Fresh Precure! Omocha no Kuni wa Himitsu ga Ippai!"},
-			{"id": 122,	"title": "Full Moon wo Sagashite"},
-			{"id": 5476,	"title": "Fushigi na Melmo"},
-			{"id": 505,	"title": "Fushigiboshi no Futagohime"},
-			{"id": 1886,	"title": "Fushigiboshi no Futagohime Gyu!"},
-			{"id": 603,	"title": "Futari wa Precure"},
-			{"id": 1929,	"title": "Futari wa Precure Max Heart"},
-			{"id": 1534,	"title": "Futari wa Precure Splash Star"},
-			{"id": 74,	"title": "Gakuen Alice"},
-			{"id": 11809,	"title": "gdgd Fairies"},
-			{"id": 1865,	"title": "Getsumen to Heiki Mina"},
-			{"id": 7427,	"title": "Getsumen to Heiki Mina Specials"},
-			{"id": 980,	"title": "Ground Defence Mao-chan"},
-			{"id": 2230,	"title": "Hana no Ko Lunlun"},
-			{"id": 9264,	"title": "Hana no Ko Lunlun: Konnichiwa Sakura no Sono"},
-			{"id": 2804,	"title": "Hana no Mahou Tsukai Mary Bell"},
-			{"id": 9862,	"title": "Hana no Mahou Tsukai Mary Bell: Phoenix no Kagi"},
-			{"id": 3320,	"title": "Harbor Light Monogatari: Fashion Lala Yori"},
-			{"id": 7645,	"title": "Heartcatch Precure!"},
-			{"id": 9288,	"title": "Heartcatch Precure! Hana no Miyako de Fashion Show... Desu ka!"},
-			{"id": 10491,	"title": "Higurashi no Naku Koro ni Kira"},
-			{"id": 2037,	"title": "Hime-chan no Ribbon"},
-			{"id": 8206,	"title": "Hime Chen! Otogi Chikku Idol Lilpri"},
-			{"id": 3285,	"title": "Himitsu no Akko-chan"},
-			{"id": 12569,	"title": "Himitsu no Akko-chan (Movie)"},
-			{"id": 3838,	"title": "Himitsu no Akko-chan 2"},
-			{"id": 3839,	"title": "Himitsu no Akko-chan 3"},
-			{"id": 12971,	"title": "Himitsu no Akko-chan: Umi da! Obake da!! Natsu matsuri"},
-			{"id": 9911,	"title": "Houkago no Pleiades"},
-			{"id": 588,	"title": "Itsudatte My Santa!"},
-			{"id": 6008,	"title": "Jewelpet"},
-			{"id": 12963,	"title": "Jewelpet Kira Deco!"},
-			{"id": 12965,	"title": "Jewelpet Movie: Sweets Dance Princess"},
-			{"id": 10359,	"title": "Jewelpet Sunshine"},
-			{"id": 8217,	"title": "Jewelpet Tinkle"},
-			{"id": 577,	"title": "Kagihime Monogatari Eikyuu Alice Rinbukyoku"},
-			{"id": 3805,	"title": "Kaitou Tenshi Twin Angel"},
-			{"id": 10217,	"title": "Kaitou Tenshi Twin Angel: Kyun Kyun Tokimeki Paradise!!"},
-			{"id": 1808,	"title": "Kamichama Karin"},
-			{"id": 142,	"title": "Kamikaze Kaitou Jeanne"},
-			{"id": 6318,	"title": "Kigurumikku V3"},
-			{"id": 766,	"title": "Kishin Houkou Demonbane"},
-			{"id": 1067,	"title": "Kishin Houkou Demonbane (2006)"},
-			{"id": 3577,	"title": "Kyouran Kazoku Nikki"},
-			{"id": 9792,	"title": "Licca-chan Fushigi na Fushigi na Yunia Monogatari"},
-			{"id": 7294,	"title": "Licca-chan Fushigi na Mahou no Ring"},
-			{"id": 8919,	"title": "Licca-chan no Nichiyoubi"},
-			{"id": 9878,	"title": "Licca-chan to Yamaneko Hoshi no Tabi"},
-			{"id": 349,	"title": "Magical Canan"},
-			{"id": 2040,	"title": "Mahou no Angel Sweet Mint"},
-			{"id": 3660,	"title": "Mahou no Idol Pastel Yumi"},
-			{"id": 4113,	"title": "Mahou no Mako-chan"},
-			{"id": 518,	"title": "Mahou no Princess Minky Momo"},
-			{"id": 2272,	"title": "Mahou no Princess Minky Momo: Yume no Naka no Rondo"},
-			{"id": 5953,	"title": "Mahou no Princess Minky Momo: Yume wo Dakishimete"},
-			{"id": 5400,	"title": "Mahou no Shiho-chan"},
-			{"id": 2038,	"title": "Mahou no Star Magical Emi"},
-			{"id": 8443,	"title": "Mahou no Star Magical Emi: Semishigure"},
-			{"id": 2044,	"title": "Mahou no Tenshi Creamy Mami"},
-			{"id": 2045,	"title": "Mahou no Tenshi Creamy Mami: Eien no Once More"},
-			{"id": 2046,	"title": "Mahou no Tenshi Creamy Mami: Long Goodbye"},
-			{"id": 2039,	"title": "Mahou no Yousei Persia"},
-			{"id": 76,	"title": "Mahou Shoujo Lyrical Nanoha"},
-			{"id": 77,	"title": "Mahou Shoujo Lyrical Nanoha As"},
-			{"id": 1915,	"title": "Mahou Shoujo Lyrical Nanoha StrikerS"},
-			{"id": 12101,	"title": "Mahou Shoujo Lyrical Nanoha: Lyrical Toy Box"},
-			{"id": 4985,	"title": "Mahou Shoujo Lyrical Nanoha: The Movie 1st"},
-			{"id": 10153,	"title": "Mahou Shoujo Lyrical Nanoha: The Movie 2nd As"},
-			{"id": 9756,	"title": "Mahou Shoujo Madoka Magica"},
-			{"id": 11977,	"title": "Mahou Shoujo Madoka Magica Movie 1: Hajimari no Monogatari"},
-			{"id": 11979,	"title": "Mahou Shoujo Madoka Magica Movie 2: Eien no Monogatari"},
-			{"id": 11981,	"title": "Mahou Shoujo Madoka Magica Movie 3"},
-			{"id": 1918,	"title": "Mahou Shoujo Pretty Sammy"},
-			{"id": 1502,	"title": "Mahou Shoujo Pretty Sammy (1996)"},
-			{"id": 1503,	"title": "Mahou Shoujo Pretty Sammy Specials"},
-			{"id": 10519,	"title": "Mahou Shoujo Sonico★Magica"},
-			{"id": 872,	"title": "Mahou Shoujo Tai Arusu"},
-			{"id": 3991,	"title": "Mahou Shoujo Tai Arusu the Adventure"},
-			{"id": 3845,	"title": "Mahou Tsukai Chappy"},
-			{"id": 3356,	"title": "Mahou Tsukai Sally"},
-			{"id": 3875,	"title": "Mahou Tsukai Sally 2"},
-			{"id": 630,	"title": "Mahou Tsukai Tai!"},
-			{"id": 629,	"title": "Mahou Tsukai Tai! OVA"},
-			{"id": 5466,	"title": "Mahou Tsukai Tai! vs Shamanic Princess"},
-			{"id": 2277,	"title": "Mahou Yuugi 2D"},
-			{"id": 2278,	"title": "Mahou Yuugi 3D"},
-			{"id": 2457,	"title": "Majokko Club Yoningumi: A Kuukan Kara no Alien X"},
-			{"id": 3388,	"title": "Majokko Megu-chan"},
-			{"id": 3881,	"title": "Majokko Tickle"},
-			{"id": 2457,	"title": "Majokko Tsukune-chan"},
-			{"id": 1110,	"title": "Mermaid Melody Pichi Pichi Pitch Pure"},
-			{"id": 521,	"title": "Mermaid Melody: Pichi Pichi Pitch"},
-			{"id": 6492,	"title": "Minky Momo in Tabidachi no Eki"},
-			{"id": 3630,	"title": "Miracle Shoujo Limit-chan"},
-			{"id": 3573,	"title": "Moegaku*5"},
-			{"id": 2367,	"title": "Moetan"},
-			{"id": 4421,	"title": "Moetan Specials"},
-			{"id": 352,	"title": "Motto! Ojamajo Doremi"},
-			{"id": 2948,	"title": "Motto! Ojamajo Doremi: Secret of the Frog Stone"},
-			{"id": 623,	"title": "Nana 7 of 7"},
-			{"id": 3619,	"title": "Nanako SOS"},
-			{"id": 1688,	"title": "Nanatsuiro Drops"},
-			{"id": 616,	"title": "Nurse Angel Ririka SOS"},
-			{"id": 615,	"title": "Nurse Witch Komugi-chan"},
-			{"id": 921,	"title": "Nurse Witch Komugi-chan Magikarte Z"},
-			{"id": 10520,	"title": "Nurse Witch Komugi-chan Magikarte Z Special"},
-			{"id": 920,	"title": "Nurse Witch Komugi-chan Special"},
-			{"id": 3136,	"title": "Ochamegami Monogatari: Korokoro Poron"},
-			{"id": 350,	"title": "Ojamajo Doremi"},
-			{"id": 353,	"title": "Ojamajo Doremi Dokkaan!"},
-			{"id": 1376,	"title": "Ojamajo Doremi Na-i-sho"},
-			{"id": 12591,	"title": "Ojamajo Doremi OVA"},
-			{"id": 351,	"title": "Ojamajo Doremi Sharp"},
-			{"id": 2947,	"title": "Ojamajo Doremi Sharp Movie"},
-			{"id": 614,	"title": "Okusama wa Mahou Shoujo"},
-			{"id": 10549,	"title": "Precure All Stars GoGo Dream Live!"},
-			{"id": 12221,	"title": "Precure All Stars New Stage: Mirai no Tomodachi"},
-			{"id": 11569,	"title": "Precure All-Stars DX the Dance Live: Miracle Dance Stage e Youkoso"},
-			{"id": 10736,	"title": "Precure kara Minna e no Ouen Movie"},
-			{"id": 100,	"title": "Pretear"},
-			{"id": 721,	"title": "Princess Tutu"},
-			{"id": 3265,	"title": "Princess Tutu Recaps"},
-			{"id": 327,	"title": "Puchi Puri Yuushi"},
-			{"id": 564,	"title": "Puni Puni Poemi"},
-			{"id": 151,	"title": "Re: Cutey Honey"},
-			{"id": 941,	"title": "Renkin San-kyuu Magical Pokaan"},
-			{"id": 1489,	"title": "Renkin San-kyuu Magical Pokaan Specials"},
-			{"id": 530,	"title": "Sailor Moon"},
-			{"id": 8756,	"title": "Sailor Moon Memorial"},
-			{"id": 740,	"title": "Sailor Moon R"},
-			{"id": 8757,	"title": "Sailor Moon R Memorial"},
-			{"id": 531,	"title": "Sailor Moon R Movie: Promise of the Rose"},
-			{"id": 2937,	"title": "Sailor Moon R: Make Up! Sailor Senshi!"},
-			{"id": 532,	"title": "Sailor Moon S"},
-			{"id": 8758,	"title": "Sailor Moon S Memorial"},
-			{"id": 997,	"title": "Sailor Moon S Movie: Hearts in Ice"},
-			{"id": 996,	"title": "Sailor Moon Sailor Stars"},
-			{"id": 8760,	"title": "Sailor Moon Sailor Stars Memorial"},
-			{"id": 1239,	"title": "Sailor Moon SuperS"},
-			{"id": 8759,	"title": "Sailor Moon SuperS Memorial"},
-			{"id": 1240,	"title": "Sailor Moon SuperS Movie: Black Dream Hole"},
-			{"id": 1278,	"title": "Sailor Moon SuperS Plus: Amis First Love"},
-			{"id": 3076,	"title": "Sailor Moon SuperS Special"},
-			{"id": 1724,	"title": "Saint October"},
-			{"id": 6311,	"title": "Sarutobi Ecchan"},
-			{"id": 1881,	"title": "Sasami: Mahou Shoujo Club"},
-			{"id": 1882,	"title": "Sasami: Mahou Shoujo Club 2"},
-			{"id": 3328,	"title": "School Days: Magical Heart Kokoro-chan"},
-			{"id": 11751,	"title": "Senki Zesshou Symphogear"},
-			{"id": 355,	"title": "Shakugan no Shana"},
-			{"id": 2787,	"title": "Shakugan no Shana II"},
-			{"id": 3956,	"title": "Shakugan no Shana II Specials"},
-			{"id": 6773,	"title": "Shakugan no Shana III (Final)"},
-			{"id": 12823,	"title": "Shakugan no Shana III (Final) Special"},
-			{"id": 1815,	"title": "Shakugan no Shana Movie"},
-			{"id": 3221,	"title": "Shakugan no Shana Movie Special"},
-			{"id": 6572,	"title": "Shakugan no Shana S"},
-			{"id": 7375,	"title": "Shakugan no Shana S Specials"},
-			{"id": 1531,	"title": "Shakugan no Shana Special: Koi to Onsen no Kougai Gakushuu!"},
-			{"id": 1066,	"title": "Shakugan no Shana Specials"},
-			{"id": 6330,	"title": "Shakugan no Shana: Naze Nani Shana"},
-			{"id": 1182,	"title": "Shamanic Princess"},
-			{"id": 2497,	"title": "Shin Cutey Honey"},
-			{"id": 2923,	"title": "Shugo Chara!"},
-			{"id": 7082,	"title": "Shugo Chara! Party!"},
-			{"id": 5262,	"title": "Shugo Chara!! Doki"},
-			{"id": 12191,	"title": "Smile Precure!"},
-			{"id": 1642,	"title": "Sugar Sugar Rune"},
-			{"id": 9893,	"title": "Suite Precure"},
-			{"id": 2066,	"title": "Super Doll Licca-chan"},
-			{"id": 10199,	"title": "Super Doll Licca-Chan: Licca-chan Zettai Zetsumei! Doll Knights no Kiseki"},
-			{"id": 2727,	"title": "Sweet Valerian"},
-			{"id": 3862,	"title": "Sweet Valerian Specials"},
-			{"id": 687,	"title": "Tokyo Mew Mew"},
-			{"id": 9393,	"title": "T.P. Sakura: Time Paladin Sakura"},
-			{"id": 1613,	"title": "Time Stranger Kyoko"},
-			{"id": 178,	"title": "Ultra Maniac"},
-			{"id": 179,	"title": "Ultra Maniac OVA"},
-			{"id": 6129,	"title": "Umi Monogatari: Anata ga Ite Kureta Koto"},
-			{"id": 688,	"title": "Uta Kata"},
-			{"id": 1932,	"title": "Yes! Precure 5"},
-			{"id": 3692,	"title": "Yes! Precure 5 GoGo!"},
-			{"id": 5454,	"title": "Yokuwakaru Gendaimahou"},
-			{"id": 6748,	"title": "Yokuwakaru Gendaimahou 00"},
-			{"id": 4651,	"title": "Yume no Crayon Oukoku"},
-			{"id": 4038,	"title": "Zettai Karen Children"},
-			{"id": 7754,	"title": "Zettai Karen Children OVA: Aitazousei! Ubawareta Mirai?"}
-		]
-	},
-	"slice of life":
-	{
-		"achievements":
-		[
-			{
-				"id": "anime-sliceoflife-1",
-				"title": "Normal high school boy",
-				"level": "Slice Of Life: level 1",
-				"desc": "Got started into the furious ride with slice-of-life anime.",
-				"threshold": 25
-			},
-			{
-				"id": "anime-sliceoflife-2",
-				"title": "cute &times; ( girls + things )",
-				"level": "Slice Of Life: level 2",
-				"desc": "Didn't get bored of watching cute girls doing cute things.",
-				"threshold": 40
-			},
-			{
-				"id": "anime-sliceoflife-3",
-				"title": "Enjoying life",
-				"level": "Slice Of Life: level 3",
-				"desc": "Found the equilibrium between boring and interesting.",
-				"threshold": 60
-			},
-			{
-				"id": "anime-sliceoflife-4",
-				"title": "Prima Undine",
-				"level": "Slice Of Life: level MAX",
-				"desc": "Awarded Ph.D. degree in sliceoflife-ology. You can be proud of yourself.",
-				"threshold": 100
-			}
-		],
-		"titles":
-		[
-			{"id": 1689,	"title": "5 Centimeters per Second"},
-			{"id": 8120,	"title": "5-tou ni Naritai."},
-			{"id": 2950,	"title": "Animal Crossing"},
-			{"id": 9989,	"title": "Ano Hi Mita Hana no Namae wo Bokutachi wa Mada Shiranai"},
-			{"id": 11433,	"title": "Ano Natsu de Matteru"},
-			{"id": 66,	"title": "Azumanga Daioh"},
-			{"id": 9776,	"title": "A-Channel"},
-			{"id": 10737,	"title": "A-Channel: +A-Channel"},
-			{"id": 11339,	"title": "A-Channel: A-Channel+smile"},
-			{"id": 12291,	"title": "Acchi Kocchi"},
-			{"id": 9689,	"title": "Agukaru"},
-			{"id": 101,	"title": "Air"},
-			{"id": 713,	"title": "Air (Movie)"},
-			{"id": 53,	"title": "Ai Yori Aoshi"},
-			{"id": 394,	"title": "Ai Yori Aoshi: Enishi"},
-			{"id": 6709,	"title": "Ai Yori Aoshi: Yumegatari"},
-			{"id": 8713,	"title": "Akai Ito"},
-			{"id": 6164,	"title": "Aoi Hana"},
-			{"id": 8701,	"title": "Apartment!"},
-			{"id": 477,	"title": "Aria the Animation"},
-			{"id": 962,	"title": "Aria the Natural"},
-			{"id": 5244,	"title": "Aria the Natural Special"},
-			{"id": 3297,	"title": "Aria the Origination"},
-			{"id": 5196,	"title": "Aria the Origination Picture Drama"},
-			{"id": 4772,	"title": "Aria the Origination Special"},
-			{"id": 2563,	"title": "Aria the OVA: Arietta"},
-			{"id": 659,	"title": "Azumanga Daioh: The Very Short Movie"},
-			{"id": 1593,	"title": "Azumanga Web Daioh"},
-			{"id": 1589,	"title": "Bartender"},
-			{"id": 1214,	"title": "Binbou Shimai Monogatari"},
-			{"id": 7597,	"title": "Boku, Otaryman"},
-			{"id": 951,	"title": "Chibi Maruko-chan"},
-			{"id": 2830,	"title": "Chibikko Remi to Meiken Kapi"},
-			{"id": 9383,	"title": "Chie-chan Funsenki: Jarinko Chie"},
-			{"id": 6024,	"title": "Chis New Address"},
-			{"id": 3841,	"title": "Chis Sweet Home"},
-			{"id": 7972,	"title": "Chis Sweet Home OVA"},
-			{"id": 2167,	"title": "Clannad"},
-			{"id": 4181,	"title": "Clannad: After Story"},
-			{"id": 1723,	"title": "Clannad (Movie)"},
-			{"id": 4059,	"title": "Clannad: Another World, Tomoyo Chapter"},
-			{"id": 6351,	"title": "Clannad: Another World, Kyou Chapter"},
-			{"id": 11843,	"title": "Danshi Koukousei no Nichijou"},
-			{"id": 12893,	"title": "Danshi Koukousei no Nichijou Specials"},
-			{"id": 9379,	"title": "Denpa Onna to Seishun Otoko"},
-			{"id": 10638,	"title": "Denpa Onna to Seishun Otoko Special"},
-			{"id": 10838,	"title": "Double-J"},
-			{"id": 3312,	"title": "Dr. Slump"},
-			{"id": 2222,	"title": "Dr. Slump: Arale-chan"},
-			{"id": 1524,	"title": "Fuujin Monogatari"},
-			{"id": 5670,	"title": "GA: Geijutsuka Art Design Class"},
-			{"id": 240,	"title": "Genshiken"},
-			{"id": 2508,	"title": "Genshiken 2"},
-			{"id": 1813,	"title": "Genshiken OVA"},
-			{"id": 387,	"title": "Haibane Renmei"},
-			{"id": 2004,	"title": "Hanada Shounen-Shi"},
-			{"id": 6574,	"title": "Hanamaru Youchien"},
-			{"id": 9289,	"title": "Hanasaku Iroha"},
-			{"id": 14175,	"title": "Hanasaku Iroha: Home Sweet Home"},
-			{"id": 1592,	"title": "Hataraki Man"},
-			{"id": 1852,	"title": "Hidamari Sketch"},
-			{"id": 11239,	"title": "Hidamari Sketch 4th Season"},
-			{"id": 3165,	"title": "Hidamari Sketch Specials"},
-			{"id": 3604,	"title": "Hidamari Sketch x 365"},
-			{"id": 6984,	"title": "Hidamari Sketch x 365 Specials"},
-			{"id": 7062,	"title": "Hidamari Sketch x Hoshimittsu"},
-			{"id": 9563,	"title": "Hidamari Sketch x Hoshimittsu Specials"},
-			{"id": 11237,	"title": "Hidamari Sketch x SP"},
-			{"id": 16,	"title": "Honey and Clover"},
-			{"id": 1142,	"title": "Honey and Clover II"},
-			{"id": 644,	"title": "Honey and Clover Specials"},
-			{"id": 8426,	"title": "Hourou Musuko"},
-			{"id": 10935,	"title": "Hourou Musuko Specials"},
-			{"id": 4550,	"title": "Hyakko"},
-			{"id": 6958,	"title": "Hyakko OVA"},
-			{"id": 488,	"title": "Ichigo Mashimaro"},
-			{"id": 4811,	"title": "Ichigo Mashimaro Encore"},
-			{"id": 1888,	"title": "Ichigo Mashimaro OVA"},
-			{"id": 2828,	"title": "Ie Naki Ko"},
-			{"id": 9938,	"title": "Ikoku Meiro no Croisee"},
-			{"id": 10804,	"title": "Ikoku Meiro no Croisee Special"},
-			{"id": 3947,	"title": "Jarinko Chie"},
-			{"id": 3946,	"title": "Jarinko Chie (Movie)"},
-			{"id": 863,	"title": "Joshi Kousei"},
-			{"id": 6657,	"title": "Joshi Kousei Specials"},
-			{"id": 1116,	"title": "Junkers Come Here"},
-			{"id": 5680,	"title": "K-On!"},
-			{"id": 9617,	"title": "K-On! (Movie)"},
-			{"id": 6862,	"title": "K-On! Special: Live House!"},
-			{"id": 7791,	"title": "K-On!!"},
-			{"id": 9734,	"title": "K-On!! Special"},
-			{"id": 144,	"title": "Kanon"},
-			{"id": 1530,	"title": "Kanon (2006)"},
-			{"id": 704,	"title": "Kanon Kazahana"},
-			{"id": 1087,	"title": "Kimagure Orange Road"},
-			{"id": 147,	"title": "Kimi ga Nozomu Eien"},
-			{"id": 3318,	"title": "Kimi ga Nozomu Eien: Next Season"},
-			{"id": 10460,	"title": "Kimi to Boku."},
-			{"id": 11739,	"title": "Kimi to Boku. 2"},
-			{"id": 1379,	"title": "Kino no Tabi: Nanika wo Suru Tame ni - Life Goes On."},
-			{"id": 486,	"title": "Kino no Tabi: The Beautiful World"},
-			{"id": 2175,	"title": "Kino no Tabi: The Beautiful World - Byouki no Kuni: For You"},
-			{"id": 3466,	"title": "Kino no Tabi: The Beautiful World - Tou no Kuni"},
-			{"id": 148,	"title": "Kita e: Diamond Dust Drops"},
-			{"id": 5678,	"title": "Kobato."},
-			{"id": 10098,	"title": "Kobato. Special: Hajimete no Kobato."},
-			{"id": 9423,	"title": "Koko ni Iru"},
-			{"id": 11887,	"title": "Kokoro Connect"},
-			{"id": 9213,	"title": "Kowarekake no Orgel"},
-			{"id": 10122,	"title": "Kowarekake no Orgel Special"},
-			{"id": 6604,	"title": "Kuruneko"},
-			{"id": 1887,	"title": "Lucky Star"},
-			{"id": 4472,	"title": "Lucky Star OVA"},
-			{"id": 273,	"title": "Mahou Tsukai ni Taisetsu na Koto"},
-			{"id": 4483,	"title": "Mahou Tsukai ni Taisetsu na Koto: Natsu no Sora"},
-			{"id": 6116,	"title": "Mainichi Kaasan"},
-			{"id": 14045,	"title": "Mangirl"},
-			{"id": 158,	"title": "Maria-sama ga Miteru"},
-			{"id": 444,	"title": "Maria-sama ga Miteru: Haru"},
-			{"id": 1729,	"title": "Maria-sama ga Miteru 3rd"},
-			{"id": 3750,	"title": "Maria-sama ga Miteru 4th"},
-			{"id": 2963,	"title": "Minami-ke"},
-			{"id": 5713,	"title": "Minami-ke Betsubara"},
-			{"id": 5162,	"title": "Minami-ke Okaeri"},
-			{"id": 3225,	"title": "Minami-ke Okawari"},
-			{"id": 7627,	"title": "Mitsudomoe"},
-			{"id": 9396,	"title": "Mitsudomoe Special"},
-			{"id": 9510,	"title": "Mitsudomoe Zouryouchuu!"},
-			{"id": 10671,	"title": "Morita-san wa Mukuchi (TV)"},
-			{"id": 11615,	"title": "Morita-san wa Mukuchi (TV) 2"},
-			{"id": 1738,	"title": "Muteki Kanban Musume"},
-			{"id": 5085,	"title": "Nakedyouth"},
-			{"id": 4081,	"title": "Natsume Yuujinchou"},
-			{"id": 10379,	"title": "Natsume Yuujinchou San"},
-			{"id": 11665,	"title": "Natsume Yuujinchou Shi"},
-			{"id": 12119,	"title": "Natsuiro Kiseki"},
-			{"id": 10165,	"title": "Nichijou"},
-			{"id": 1698,	"title": "Nodame Cantabile"},
-			{"id": 5690,	"title": "Nodame Cantabile Finale"},
-			{"id": 8038,	"title": "Nodame Cantabile Finale Special"},
-			{"id": 6187,	"title": "Nodame Cantabile OVA"},
-			{"id": 8190,	"title": "Nodame Cantabile OVA 2"},
-			{"id": 4477,	"title": "Nodame Cantabile Paris Chapter"},
-			{"id": 3965,	"title": "Nodame Cantabile Special"},
-			{"id": 743,	"title": "Ocean Waves"},
-			{"id": 13283,	"title": "One Off"},
-			{"id": 1029,	"title": "Only Yesterday"},
-			{"id": 11179,	"title": "Papa no Iukoto wo Kikinasai!"},
-			{"id": 12673,	"title": "Papa no Iukoto wo Kikinasai! Special"},
-			{"id": 325,	"title": "Peach Girl"},
-			{"id": 611,	"title": "Platonic Chain"},
-			{"id": 328,	"title": "Piano"},
-			{"id": 12021,	"title": "Poyopoyo Kansatsu Nikki"},
-			{"id": 13173,	"title": "Puka Puka Juju"},
-			{"id": 210,	"title": "Ranma 1/2"},
-			{"id": 10819,	"title": "Ranma 1/2: Tendou-ke no Oyobidenai Yatsura!"},
-			{"id": 11491,	"title": "Recorder to Randoseru Do"},
-			{"id": 13377,	"title": "Recorder to Randoseru Re"},
-			{"id": 14627,	"title": "Recorder to Randoseru Special"},
-			{"id": 5984,	"title": "Ristorante Paradiso"},
-			{"id": 8675,	"title": "Seitokai Yakuindomo"},
-			{"id": 10119,	"title": "Seitokai Yakuindomo OVA"},
-			{"id": 1004,	"title": "She and Her Cat"},
-			{"id": 10407,	"title": "Shimanchu MiRiKa"},
-			{"id": 11501,	"title": "Shimanchu MiRiKa 2nd Series"},
-			{"id": 8557,	"title": "Shinryaku! Ika Musume"},
-			{"id": 10378,	"title": "Shinryaku!? Ika Musume"},
-			{"id": 13267,	"title": "Shinryaku! Ika Musume OVA"},
-			{"id": 9888,	"title": "Shinryaku! Ika Musume Specials"},
-			{"id": 2942,	"title": "Sketchbook: Full Colors"},
-			{"id": 8726,	"title": "Soredemo Machi wa Mawatteiru"},
-			{"id": 9055,	"title": "Tamayura"},
-			{"id": 10232,	"title": "Tamayura: Hitotose"},
-			{"id": 2150,	"title": "Tanoshii Moomin Ikka"},
-			{"id": 5712,	"title": "Tanoshii Moomin Ikka Bouken Nikki"},
-			{"id": 13333,	"title": "Tari Tari"},
-			{"id": 10278,	"title": "The iDOLM@STER"},
-			{"id": 472,	"title": "To Heart"},
-			{"id": 4224,	"title": "Toradora!"},
-			{"id": 11553,	"title": "Toradora!: Bentou no Gokui"},
-			{"id": 6127,	"title": "Toradora!: SOS!"},
-			{"id": 12431,	"title": "Uchuu Kyoudai"},
-			{"id": 10162,	"title": "Usagi Drop"},
-			{"id": 11113,	"title": "Usagi Drop Specials"},
-			{"id": 1210,	"title": "Welcome to the NHK"},
-			{"id": 585,	"title": "Whisper of the Heart"},
-			{"id": 1718,	"title": "Winter Garden"},
-			{"id": 6956,	"title": "Working!!"},
-			{"id": 10521,	"title": "Working'!!"},
-			{"id": 14335,	"title": "Yama no Susume"},
-			{"id": 975,	"title": "Yokohama Kaidashi Kikou"},
-			{"id": 976,	"title": "Yokohama Kaidashi Kikou: Quiet Country Cafe"},
-			{"id": 6586,	"title": "Yumeiro Pâtissière"},
-			{"id": 9441,	"title": "Yumeiro Pâtissière SP Professional"},
-			{"id": 10495,	"title": "Yuru Yuri"},
-			{"id": 12403,	"title": "Yuru Yuri ♪♪"},
-			{"id": 12665,	"title": "Yuru Yuri: Doushite Tomaranai Tokimeki Doki Doki Paradox Eternal"},
-			{"id": 6148,	"title": "Yurumates"},
-			{"id": 12123,	"title": "Yurumates 3D"},
-			{"id": 11699,	"title": "Yurumates ha"},
-			{"id": 5300,	"title": "Zoku Natsume Yuujinchou"}
-		]
-	},
-	"gar":
-	{
-		"achievements":
-		[
-			{
-				"id": "anime-gar-1",
-				"title": "So manly I can't breathe",
-				"level": "GAR: level 1",
-				"desc": "Watching all those men made you feel like a little girl&hellip; and you liked it.",
-				"threshold": 25
-			},
-			{
-				"id": "anime-gar-2",
-				"title": "Testosterone storm",
-				"level": "GAR: level 2",
-				"desc": "Your body has adapted into GAR anime. You can hear your muscles growing.",
-				"threshold": 40
-			},
-			{
-				"id": "anime-gar-3",
-				"title": "You are already man.",
-				"level": "GAR: level 3",
-				"desc": "Resistance is futile. People are simply no match for you.",
-				"threshold": 60
-			},
-			{
-				"id": "anime-gar-4",
-				"title": "Alpha Male",
-				"level": "GAR: level MAKSHIMUM",
-				"desc": "You aren't made out of testosterone. Testosterone is made out of you.",
-				"threshold": 100
-			}
-		],
-		"titles":
-		[
-			{"id": 1292,	"title": "Afro Samurai"},
-			{"id": 4970,	"title": "Afro Samurai: Resurrection"},
-			{"id": 658,	"title": "Akagi"},
-			{"id": 47,	"title": "Akira"},
-			{"id": 2202,	"title": "Arcadia of My Youth"},
-			{"id": 2203,	"title": "Arcadia of My Youth: Endless Orbit SSX"},
-			{"id": 2582,	"title": "Armored Trooper Votoms"},
-			{"id": 2251,	"title": "Baccano!"},
-			{"id": 3901,	"title": "Baccano! Specials"},
-			{"id": 67,	"title": "Basilisk: Kouga Ninpou Chou"},
-			{"id": 404,	"title": "Bastard!!"},
-			{"id": 4094,	"title": "Batman: Gotham Knight"},
-			{"id": 9513,	"title": "Beelzebub"},
-			{"id": 33,	"title": "Berserk"},
-			{"id": 10218,	"title": "Berserk Ougon Jidaihen I: Haou no Tamago"},
-			{"id": 12113,	"title": "Berserk Ougon Jidaihen II: Doldrey Kouryaku"},
-			{"id": 12115,	"title": "Berserk Ougon Jidaihen III: Kourin"},
-			{"id": 889,	"title": "Black Lagoon"},
-			{"id": 4901,	"title": "Black Lagoon: Robertas Blood Trail"},
-			{"id": 1519,	"title": "Black Lagoon: The Second Barrage"},
-			{"id": 3389,	"title": "Bus Gamer"},
-			{"id": 1470,	"title": "City Hunter"},
-			{"id": 1471,	"title": "City Hunter 2"},
-			{"id": 1472,	"title": "City Hunter 3"},
-			{"id": 1473,	"title": "City Hunter 91"},
-			{"id": 1474,	"title": "City Hunter: .357 Magnum"},
-			{"id": 1475,	"title": "City Hunter: Bay City Wars"},
-			{"id": 1479,	"title": "City Hunter: Death of the Vicious Criminal Ryo Saeba"},
-			{"id": 1478,	"title": "City Hunter: Goodbye My Sweetheart"},
-			{"id": 1476,	"title": "City Hunter: Million Dollar Conspiracy"},
-			{"id": 1477,	"title": "City Hunter: The Secret Service"},
-			{"id": 5032,	"title": "Cobra the Animation"},
-			{"id": 4646,	"title": "Cobra the Animation: The Psycho-Gun"},
-			{"id": 5031,	"title": "Cobra the Animation: Time Drive"},
-			{"id": 1,	"title": "Cowboy Bebop"},
-			{"id": 5,	"title": "Cowboy Bebop: Tengoku no Tobira"},
-			{"id": 114,	"title": "Cromartie High School"},
-			{"id": 499,	"title": "Demon City Shinjuku"},
-			{"id": 1178,	"title": "Detonator Orgun"},
-			{"id": 3702,	"title": "Detroit Metal City"},
-			{"id": 1726,	"title": "Devil May Cry"},
-			{"id": 12885,	"title": "Dynamic Super Robots Grand Battle"},
-			{"id": 12565,	"title": "Fate/Prototype"},
-			{"id": 356,	"title": "Fate/stay night"},
-			{"id": 7559,	"title": "Fate/stay night TV Reproduction"},
-			{"id": 6922,	"title": "Fate/stay night: Unlimited Blade Works"},
-			{"id": 10087,	"title": "Fate/Zero"},
-			{"id": 11741,	"title": "Fate/Zero 2nd Season"},
-			{"id": 13183,	"title": "Fate/Zero Remix"},
-			{"id": 384,	"title": "Gantz"},
-			{"id": 395,	"title": "Gantz 2nd Stage"},
-			{"id": 890,	"title": "GaoGaiGar"},
-			{"id": 1382,	"title": "GaoGaiGar Final"},
-			{"id": 4416,	"title": "GaoGaiGar Final Grand Glorious Gathering"},
-			{"id": 5776,	"title": "GaoGaiGar: Blockaded Numbers Special"},
-			{"id": 3579,	"title": "Getter Robo"},
-			{"id": 8252,	"title": "Getter Robo (Movie)"},
-			{"id": 4486,	"title": "Getter Robo G"},
-			{"id": 5292,	"title": "Getter Robo Go"},
-			{"id": 978,	"title": "Getter Robo: Armageddon"},
-			{"id": 4039,	"title": "Golgo 13"},
-			{"id": 1761,	"title": "Golgo 13: Queen Bee"},
-			{"id": 1760,	"title": "Golgo 13: The Professional"},
-			{"id": 4385,	"title": "Great Mazinger vs. Getter Robo"},
-			{"id": 4386,	"title": "Great Mazinger vs. Getter Robo G: Kuuchuu Dai-Gekitotsu"},
-			{"id": 3481,	"title": "Grendizer: Getter Robo G - Great Mazinger Kessen! Daikaijuu"},
-			{"id": 411,	"title": "Gun x Sword"},
-			{"id": 267,	"title": "Gungrave"},
-			{"id": 263,	"title": "Hajime no Ippo"},
-			{"id": 12069,	"title": "Hajime no Ippo Special"},
-			{"id": 264,	"title": "Hajime no Ippo: Champion Road"},
-			{"id": 265,	"title": "Hajime no Ippo: Mashiba vs. Kimura"},
-			{"id": 5258,	"title": "Hajime no Ippo: New Challenger"},
-			{"id": 1645,	"title": "Harlock Saga"},
-			{"id": 967,	"title": "Hokuto no Ken"},
-			{"id": 1356,	"title": "Hokuto no Ken 2"},
-			{"id": 1358,	"title": "Hokuto no Ken Movie"},
-			{"id": 7363,	"title": "Hokuto No Ken: Legend of Heroes"},
-			{"id": 2174,	"title": "Hokuto no Ken: Raoh Gaiden Gekitou-hen"},
-			{"id": 1773,	"title": "Hokuto no Ken: Raoh Gaiden Junai-hen"},
-			{"id": 4549,	"title": "Hokuto no Ken: Raoh Gaiden Ten no Haoh"},
-			{"id": 4312,	"title": "Hokuto no Ken: Toki-den"},
-			{"id": 3027,	"title": "Hokuto no Ken: Yuria-den"},
-			{"id": 5291,	"title": "Hokuto no Ken: Zero Kenshiro Den"},
-			{"id": 666,	"title": "JoJo's Bizarre Adventure"},
-			{"id": 665,	"title": "JoJo's Bizarre Adventure (2000)"},
-			{"id": 3603,	"title": "JoJo's Bizarre Adventure: Phantom Blood"},
-			{"id": 3002,	"title": "Kaiji"},
-			{"id": 10271,	"title": "Kaiji: Hakairoku Hen"},
-			{"id": 6293,	"title": "Koukou Butouden Crows"},
-			{"id": 820,	"title": "Legend of the Galactic Heroes"},
-			{"id": 2253,	"title": "Mazinger Z"},
-			{"id": 10625,	"title": "Mazinger Z (Movie)"},
-			{"id": 3898,	"title": "Mazinger Z vs. Devilman"},
-			{"id": 4388,	"title": "Mazinger Z vs. Dr. Hell"},
-			{"id": 4406,	"title": "Mazinger Z vs. General Dark"},
-			{"id": 1064,	"title": "Mazinkaiser"},
-			{"id": 8666,	"title": "Mazinkaiser SKL"},
-			{"id": 2734,	"title": "Mazinkaiser: Shitou! Ankoku Dai Shogun"},
-			{"id": 1285,	"title": "MD Geist"},
-			{"id": 1286,	"title": "MD Geist II: Death Force"},
-			{"id": 96,	"title": "Mobile Fighter G Gundam"},
-			{"id": 6946,	"title": "Mudazumo Naki Kaikaku: The Legend of Koizumi"},
-			{"id": 1357,	"title": "New Fist of the North Star"},
-			{"id": 2978,	"title": "New Getter Robo"},
-			{"id": 1455,	"title": "Ninja Resurrection"},
-			{"id": 5040,	"title": "One Outs"},
-			{"id": 400,	"title": "Outlaw Star"},
-			{"id": 6675,	"title": "Redline"},
-			{"id": 917,	"title": "Riding Bean"},
-			{"id": 45,	"title": "Rurouni Kenshin"},
-			{"id": 46,	"title": "Rurouni Kenshin: Ishinshishi e no Requiem"},
-			{"id": 44,	"title": "Rurouni Kenshin: Tsuiokuhen"},
-			{"id": 2903,	"title": "Sakigake!! Otokojuku"},
-			{"id": 4031,	"title": "Sakigake!! Otokojuku Movie"},
-			{"id": 166,	"title": "Samurai 7"},
-			{"id": 205,	"title": "Samurai Champloo"},
-			{"id": 5355,	"title": "Sengoku Basara"},
-			{"id": 6634,	"title": "Sengoku Basara Two"},
-			{"id": 10483,	"title": "Sengoku Basara Two: Ryuko"},
-			{"id": 6581,	"title": "Sengoku Basara: Setonai no Gekitotsu! Hi wo Fuku Umi no Daiyousai - Fugaku!!"},
-			{"id": 9745,	"title": "Sengoku Basara: The Last Party"},
-			{"id": 938,	"title": "Shin Getter Robo vs. Neo Getter Robo"},
-			{"id": 5485,	"title": "Shin Mazinger Shougeki! Z-Hen"},
-			{"id": 1913,	"title": "Shonan Junai Gumi"},
-			{"id": 1541,	"title": "Souten no Ken"},
-			{"id": 3864,	"title": "Souten no Ken Specials"},
-			{"id": 2451,	"title": "Space Adventure Cobra"},
-			{"id": 5742,	"title": "Space Adventure Cobra Pilot"},
-			{"id": 2452,	"title": "Space Adventure Cobra: The Movie"},
-			{"id": 1000,	"title": "Space Pirate Captain Harlock"},
-			{"id": 2470,	"title": "Space Pirate Captain Harlock: The Mystery of Arcadia"},
-			{"id": 1081,	"title": "Space Pirate Captain Herlock: The Endless Odyssey"},
-			{"id": 876,	"title": "Street Fighter II V"},
-			{"id": 1362,	"title": "Street Fighter II: The Movie"},
-			{"id": 3252,	"title": "Super Express Mazinger 7"},
-			{"id": 2418,	"title": "Sword of the Stranger"},
-			{"id": 2001,	"title": "Tengen Toppa Gurren Lagann"},
-			{"id": 5947,	"title": "Tengen Toppa Gurren Lagann Gekijouban Zenyasai Special: Virals Sweet Dream"},
-			{"id": 4107,	"title": "Tengen Toppa Gurren Lagann Movie: Gurren-hen"},
-			{"id": 4565,	"title": "Tengen Toppa Gurren Lagann Movie: Lagann-hen"},
-			{"id": 10622,	"title": "Tengen Toppa Gurren Lagann OVA"},
-			{"id": 4705,	"title": "Tengen Toppa Gurren Lagann Parallel Works"},
-			{"id": 8348,	"title": "Tengen Toppa Gurren Lagann Parallel Works 2"},
-			{"id": 3352,	"title": "Tengen Toppa Gurren Lagann Special"},
-			{"id": 6,	"title": "Trigun"},
-			{"id": 4106,	"title": "Trigun: Badlands Rumble"},
-			{"id": 4387,	"title": "UFO Robo Grendizer tai Great Mazinger"}
-		]
-	},
-	"mecha":
-	{
-		"achievements":
-		[
-			{
-				"id": "anime-mecha-1",
-				"title": "Me? PILOT this thing?!",
-				"level": "Mecha: level 1",
-				"desc": "A secret organization wants you to pilot a huge mecha. Can you do it?",
-				"threshold": 25
-			},
-			{
-				"id": "anime-mecha-2",
-				"title": "Engineer",
-				"level": "Mecha: level 2",
-				"desc": "After watching over 40 mecha anime you should be able to build your own mobile suit. Remember not to kill the rest of us.",
-				"threshold": 40
-			},
-			{
-				"id": "anime-mecha-3",
-				"title": "Mechazawa",
-				"level": "Mecha: level 3",
-				"desc": "Having watched over 60 mecha anime, you've probably became a robot already. Nice job, hero.",
-				"threshold": 60
-			},
-			{
-				"id": "anime-mecha-4",
-				"title": "Pierce the H E A V E N S !",
-				"level": "Mecha: level MAX",
-				"desc": "Do the impossible. See the invisible. ROW ROW FIGHT THE POWAH!<br>&hellip;You just sang that in your head, didn't you?",
-				"threshold": 100
-			}
-		],
-		"titles":
-		[
-			{"id": 7113,	"title": "30th Gundam Perfect Mission"},
-			{"id": 1346,	"title": "AD Police Files"},
-			{"id": 92,	"title": "After War Gundam X"},
-			{"id": 5270,	"title": "All That Gundam"},
-			{"id": 598,	"title": "Android Kikaider: The Animation"},
-			{"id": 937,	"title": "Appleseed"},
-			{"id": 54,	"title": "Appleseed (Movie)"},
-			{"id": 2969,	"title": "Appleseed Saga Ex Machina"},
-			{"id": 9737,	"title": "Appleseed XIII"},
-			{"id": 10689,	"title": "Appleseed XIII: Gekijou Remix Han 1: Yuigon"},
-			{"id": 10693,	"title": "Appleseed XIII: Gekijou Remix Han 2: Yogen"},
-			{"id": 10447,	"title": "Aquarion Evol"},
-			{"id": 6032,	"title": "Aquarion Movie: Ippatsu Gyakuten Hen"},
-			{"id": 2837,	"title": "Ariel"},
-			{"id": 2839,	"title": "Ariel Visual"},
-			{"id": 5421,	"title": "Ark"},
-			{"id": 1079,	"title": "Armitage III"},
-			{"id": 492,	"title": "Armitage III Dual-Matrix"},
-			{"id": 493,	"title": "Armitage III Polymatrix"},
-			{"id": 2048,	"title": "Armor Hunter Mellowlink"},
-			{"id": 2582,	"title": "Armored Trooper Votoms"},
-			{"id": 2583,	"title": "Armored Trooper Votoms: The Last Red Shoulder"},
-			{"id": 2584,	"title": "Armored Trooper Votoms: Big Battle"},
-			{"id": 2585,	"title": "Armored Trooper Votoms: Red Shoulder Document - Roots of Treachery"},
-			{"id": 2586,	"title": "Armored Trooper Votoms: The Defrost"},
-			{"id": 3256,	"title": "Armored Trooper Votoms: Pailsen Files"},
-			{"id": 7536,	"title": "Armored Trooper Votoms: Pailsen Files the Movie"},
-			{"id": 8017,	"title": "Armored Trooper Votoms: Phantom Arc"},
-			{"id": 8248,	"title": "Armored Trooper Votoms: Case; Irvine"},
-			{"id": 8250,	"title": "Armored Trooper Votoms: Alone Again"},
-			{"id": 12337,	"title": "Armored Trooper Votoms Recaps"},
-			{"id": 12439,	"title": "Armored Trooper Votoms: Vol.1 Stories of the A.T. Votoms"},
-			{"id": 12441,	"title": "Armored Trooper Votoms: Vol.2 Highlights of the A.T. Votoms"},
-			{"id": 5342,	"title": "Asura Cryin"},
-			{"id": 6676,	"title": "Asura Cryin 2"},
-			{"id": 929,	"title": "Aura Battler Dunbine"},
-			{"id": 5372,	"title": "Aura Battler Dunbine OVA"},
-			{"id": 109,	"title": "Bakuretsu Tenshi"},
-			{"id": 5675,	"title": "Basquash!"},
-			{"id": 1016,	"title": "Battle Angel Alita"},
-			{"id": 6511,	"title": "Beast Wars Neo"},
-			{"id": 5070,	"title": "Beast Wars Second Chou Seimeitai Transformers"},
-			{"id": 5289,	"title": "Beast Wars Second: LioConvoy in Imminent Danger!"},
-			{"id": 567,	"title": "Big O"},
-			{"id": 3079,	"title": "Blue Comet SPT Layzner"},
-			{"id": 5755,	"title": "Blue Comet SPT Layzner OVA"},
-			{"id": 58,	"title": "Blue Gender"},
-			{"id": 1380,	"title": "Blue Gender: The Warrior"},
-			{"id": 1051,	"title": "Blue Submarine No. 6"},
-			{"id": 1690,	"title": "Bokurano"},
-			{"id": 1542,	"title": "Brain Powerd"},
-			{"id": 6772,	"title": "Break Blade 1: Kakusei no Toki"},
-			{"id": 8514,	"title": "Break Blade 2: Ketsubetsu no Michi"},
-			{"id": 9252,	"title": "Break Blade 3: Kyoujin no Ato"},
-			{"id": 9465,	"title": "Break Blade 4: Sanka no Chi"},
-			{"id": 9724,	"title": "Break Blade 5: Shisen no Hate"},
-			{"id": 10092,	"title": "Break Blade 6: Doukoku no Toride"},
-			{"id": 1347,	"title": "Bubblegum Crisis"},
-			{"id": 568,	"title": "Bubblegum Crisis Tokyo 2040"},
-			{"id": 2258,	"title": "Choro Q Dagram"},
-			{"id": 8132,	"title": "Chou Deneiban SD Gundam Sangokuden Brave Battle Warriors"},
-			{"id": 9274,	"title": "Chou Seimeitai Transformers Beast Wars Metals: Convoy Daihenshin!"},
-			{"id": 2127,	"title": "Chouja Raideen"},
-			{"id": 2255,	"title": "Choujuu Kishin Dancougar"},
-			{"id": 5266,	"title": "Choujuu Kishin Dancougar: God Bless Dancougar"},
-			{"id": 5629,	"title": "Choujuu Kishin Dancougar: Hakunetsu no Shuushou"},
-			{"id": 2256,	"title": "Choujuu Kishin Dancougar: Ushinawareta Monotachi e no Requiem"},
-			{"id": 8888,	"title": "Code Geass Gaiden: Boukoku no Akito"},
-			{"id": 1575,	"title": "Code Geass: Hangyaku no Lelouch"},
-			{"id": 8728,	"title": "Code Geass: Hangyaku no Lelouch - Kiseki no Birthday Picture Drama"},
-			{"id": 1953,	"title": "Code Geass: Hangyaku no Lelouch Picture Drama"},
-			{"id": 2904,	"title": "Code Geass: Hangyaku no Lelouch R2"},
-			{"id": 5163,	"title": "Code Geass: Hangyaku no Lelouch R2 Picture Drama"},
-			{"id": 6768,	"title": "Code Geass: Hangyaku no Lelouch R2 Special Edition Zero Requiem"},
-			{"id": 9591,	"title": "Code Geass: Hangyaku no Lelouch R2: Flash Specials"},
-			{"id": 2124,	"title": "Code Geass: Hangyaku no Lelouch Recaps"},
-			{"id": 4596,	"title": "Code Geass: Hangyaku no Lelouch Special Edition Black Rebellion"},
-			{"id": 1312,	"title": "Dai-Guard"},
-			{"id": 956,	"title": "Daikuu Maryuu Gaiking"},
-			{"id": 9972,	"title": "Document Taiyou no Kiba Dagram"},
-			{"id": 10534,	"title": "Doraemon: Nobita and the New Steel Troops - Angel Wings"},
-			{"id": 2665,	"title": "Doraemon: Nobita and the Platoon of Iron Men"},
-			{"id": 3135,	"title": "Dragon's Heaven"},
-			{"id": 992,	"title": "Dual Parallel! Trouble Adventures"},
-			{"id": 993,	"title": "Dual Parallel! Trouble Adventures Special"},
-			{"id": 12885,	"title": "Dynamic Super Robots Grand Battle"},
-			{"id": 182,	"title": "Escaflowne"},
-			{"id": 393,	"title": "Escaflowne: A Girl in Gaea"},
-			{"id": 237,	"title": "Eureka Seven"},
-			{"id": 12471,	"title": "Eureka Seven AO"},
-			{"id": 1631,	"title": "Eureka Seven: Navigation ray=out"},
-			{"id": 13731,	"title": "Eureka Seven: New Order"},
-			{"id": 4246,	"title": "Eureka Seven: Pocket ga Niji de Ippai"},
-			{"id": 2759,	"title": "Evangelion: 1.0 You Are (Not) Alone"},
-			{"id": 3784,	"title": "Evangelion: 2.0 You Can (Not) Advance"},
-			{"id": 3785,	"title": "Evangelion: 3.0 You Can (Not) Redo"},
-			{"id": 3786,	"title": "Evangelion: 4.0"},
-			{"id": 2042,	"title": "Five Star Stories"},
-			{"id": 1299,	"title": "Flag"},
-			{"id": 227,	"title": "FLCL"},
-			{"id": 72,	"title": "Full Metal Panic Fumoffu"},
-			{"id": 71,	"title": "Full Metal Panic!"},
-			{"id": 73,	"title": "Full Metal Panic! The Second Raid"},
-			{"id": 6291,	"title": "Full Metal Panic! The Second Raid Episode 000"},
-			{"id": 1015,	"title": "Full Metal Panic! The Second Raid OVA"},
-			{"id": 1845,	"title": "Gaiking"},
-			{"id": 890,	"title": "GaoGaiGar"},
-			{"id": 1382,	"title": "GaoGaiGar Final"},
-			{"id": 4416,	"title": "GaoGaiGar Final Grand Glorious Gathering"},
-			{"id": 5776,	"title": "GaoGaiGar: Blockaded Numbers Special"},
-			{"id": 909,	"title": "Geneshaft"},
-			{"id": 3579,	"title": "Getter Robo"},
-			{"id": 8252,	"title": "Getter Robo (Movie)"},
-			{"id": 4486,	"title": "Getter Robo G"},
-			{"id": 5292,	"title": "Getter Robo Go"},
-			{"id": 978,	"title": "Getter Robo: Armageddon"},
-			{"id": 43,	"title": "Ghost in the Shell"},
-			{"id": 468,	"title": "Ghost in the Shell 2: Innocence"},
-			{"id": 4672,	"title": "Ghost in the Shell 2.0"},
-			{"id": 467,	"title": "Ghost in the Shell: Stand Alone Complex"},
-			{"id": 1566,	"title": "Ghost in the Shell: Stand Alone Complex - Solid State Society"},
-			{"id": 3447,	"title": "Ghost in the Shell: Stand Alone Complex - Solid State Society - Uchikoma no Hibi"},
-			{"id": 10090,	"title": "Ghost in the Shell: Stand Alone Complex - Solid State Society 3D"},
-			{"id": 10950,	"title": "Ghost in the Shell: Stand Alone Complex - Solid State Society 3D - Tachikoma no Hibi"},
-			{"id": 1335,	"title": "Ghost in the Shell: Stand Alone Complex - Tachikoma na Hibi"},
-			{"id": 10870,	"title": "Ghost in the Shell: Stand Alone Complex - Tachikoma na Hibi (TV)"},
-			{"id": 10949,	"title": "Ghost in the Shell: Stand Alone Complex - Tachikoma no Hibi Fan Disc"},
-			{"id": 2449,	"title": "Ghost in the Shell: Stand Alone Complex - The Laughing Man"},
-			{"id": 10947,	"title": "Ghost in the Shell: Stand Alone Complex - The Laughing Man - Tachikoma no Hibi"},
-			{"id": 801,	"title": "Ghost in the Shell: Stand Alone Complex 2nd GIG"},
-			{"id": 2448,	"title": "Ghost in the Shell: Stand Alone Complex 2nd GIG - Individual Eleven"},
-			{"id": 10948,	"title": "Ghost in the Shell: Stand Alone Complex 2nd GIG - Individual Eleven - Tachikoma no Hibi"},
-			{"id": 3485,	"title": "Ghost in the Shell: Stand Alone Complex 2nd GIG - Tachikoma na Hibi"},
-			{"id": 3327,	"title": "Giant Gorg"},
-			{"id": 2321,	"title": "Giant Robo"},
-			{"id": 2322,	"title": "Giant Robo Gaiden Ginrei"},
-			{"id": 2987,	"title": "Ginga Hyouryuu Vifam"},
-			{"id": 5250,	"title": "God Mazinger"},
-			{"id": 7781,	"title": "Gothicmade: Hana no Utame"},
-			{"id": 3146,	"title": "GR: Giant Robo"},
-			{"id": 5658,	"title": "Great Mazinger"},
-			{"id": 4385,	"title": "Great Mazinger vs. Getter Robo"},
-			{"id": 4386,	"title": "Great Mazinger vs. Getter Robo G: Kuuchuu Dai-Gekitotsu"},
-			{"id": 3481,	"title": "Grendizer: Getter Robo G - Great Mazinger Kessen! Daikaijuu"},
-			{"id": 411,	"title": "Gun x Sword"},
-			{"id": 7248,	"title": "Gunbuster Renewal EX"},
-			{"id": 1911,	"title": "Gunbuster vs. Diebuster"},
-			{"id": 3288,	"title": "Gundam Evolve"},
-			{"id": 8839,	"title": "Gundam Neo Experience 0087: Green Divers"},
-			{"id": 4540,	"title": "Gundam: Mission to the Rise"},
-			{"id": 2598,	"title": "Heavy Metal L-Gaim"},
-			{"id": 2599,	"title": "Heavy Metal L-Gaim I: Pentagona Window + Lady Gyabure"},
-			{"id": 2600,	"title": "Heavy Metal L-Gaim II: Farewell My Lovely + Pentagona Doors"},
-			{"id": 2601,	"title": "Heavy Metal L-Gaim III: Full Metal Soldier"},
-			{"id": 2002,	"title": "Heroic Age"},
-			{"id": 2291,	"title": "Iczer-One"},
-			{"id": 1230,	"title": "Innocent Venus"},
-			{"id": 9041,	"title": "IS: Infinite Stratos"},
-			{"id": 141,	"title": "Jinki:Extend"},
-			{"id": 848,	"title": "Jinki:Extend OVA"},
-			{"id": 11767,	"title": "Justeen"},
-			{"id": 1991,	"title": "Juusou Kikou Dancougar Nova"},
-			{"id": 143,	"title": "Kannazuki no Miko"},
-			{"id": 8486,	"title": "Kihei Senki Legacies"},
-			{"id": 9170,	"title": "Kimi ga Nozomu Eien: Gundam Parody"},
-			{"id": 4198,	"title": "Koutetsu Jeeg"},
-			{"id": 2157,	"title": "Koutetsushin Jeeg"},
-			{"id": 3653,	"title": "Kurogane no Linebarrels"},
-			{"id": 7540,	"title": "Kurogane no Linebarrels Specials"},
-			{"id": 1088,	"title": "Macross"},
-			{"id": 5165,	"title": "Macross 25th Anniversary Special Eizou: All That VF Macross F Version"},
-			{"id": 5164,	"title": "Macross 25th Anniversary Special Eizou: All That VF Macross Zero Version"},
-			{"id": 1397,	"title": "Macross 7"},
-			{"id": 1399,	"title": "Macross 7 Encore"},
-			{"id": 6209,	"title": "Macross 7 Plus"},
-			{"id": 1400,	"title": "Macross 7: Ginga ga Ore wo Yonde Iru"},
-			{"id": 1398,	"title": "Macross Dynamite 7"},
-			{"id": 1504,	"title": "Macross Flash Back 2012"},
-			{"id": 3572,	"title": "Macross Frontier"},
-			{"id": 4454,	"title": "Macross Frontier Deculture Edition"},
-			{"id": 10050,	"title": "Macross Frontier Music Clip Shuu: Nyankuri"},
-			{"id": 10361,	"title": "Macross Frontier: Chou Jikuu Gekijou"},
-			{"id": 5310,	"title": "Macross Frontier: Itsuwari no Utahime"},
-			{"id": 7222,	"title": "Macross Frontier: Sayonara no Tsubasa"},
-			{"id": 4939,	"title": "Macross Fufonfia"},
-			{"id": 1262,	"title": "Macross II: Lovers Again"},
-			{"id": 474,	"title": "Macross Plus"},
-			{"id": 1211,	"title": "Macross Plus Movie Edition"},
-			{"id": 5051,	"title": "Macross XX"},
-			{"id": 194,	"title": "Macross Zero"},
-			{"id": 1089,	"title": "Macross: Do You Remember Love"},
-			{"id": 435,	"title": "Magic Knight Rayearth"},
-			{"id": 1563,	"title": "Magic Knight Rayearth II"},
-			{"id": 1954,	"title": "Magic Knight Rayearth OVA"},
-			{"id": 4058,	"title": "Makyou Gaiden Le Deus"},
-			{"id": 218,	"title": "Martian Successor Nadesico"},
-			{"id": 219,	"title": "Martian Successor Nadesico: The Prince of Darkness"},
-			{"id": 2253,	"title": "Mazinger Z"},
-			{"id": 10625,	"title": "Mazinger Z (Movie)"},
-			{"id": 3898,	"title": "Mazinger Z vs. Devilman"},
-			{"id": 4388,	"title": "Mazinger Z vs. Dr. Hell"},
-			{"id": 4406,	"title": "Mazinger Z vs. General Dark"},
-			{"id": 1064,	"title": "Mazinkaiser"},
-			{"id": 8666,	"title": "Mazinkaiser SKL"},
-			{"id": 2734,	"title": "Mazinkaiser: Shitou! Ankoku Dai Shogun"},
-			{"id": 1935,	"title": "Megazone 23"},
-			{"id": 96,	"title": "Mobile Fighter G Gundam"},
-			{"id": 1288,	"title": "Mobile Police Patlabor"},
-			{"id": 2733,	"title": "Mobile Police Patlabor Minimum"},
-			{"id": 1289,	"title": "Mobile Police Patlabor: The New Files"},
-			{"id": 80,	"title": "Mobile Suit Gundam"},
-			{"id": 2581,	"title": "Mobile Suit Gundam 00"},
-			{"id": 3927,	"title": "Mobile Suit Gundam 00 Second Season"},
-			{"id": 7270,	"title": "Mobile Suit Gundam 00 Special Edition"},
-			{"id": 6288,	"title": "Mobile Suit Gundam 00 The Movie: A Wakening of the Trailblazer"},
-			{"id": 5351,	"title": "Mobile Suit Gundam 00: Tenshitachi no Kiseki"},
-			{"id": 82,	"title": "Mobile Suit Gundam 0080: War in the Pocket"},
-			{"id": 84,	"title": "Mobile Suit Gundam 0083: Stardust Memory"},
-			{"id": 10581,	"title": "Mobile Suit Gundam 0083: Stardust Memory - The Mayfly of Space"},
-			{"id": 2695,	"title": "Mobile Suit Gundam 0083: The Fading Light of Zeon"},
-			{"id": 10808,	"title": "Mobile Suit Gundam AGE"},
-			{"id": 88,	"title": "Mobile Suit Gundam F91"},
-			{"id": 1090,	"title": "Mobile Suit Gundam I"},
-			{"id": 1091,	"title": "Mobile Suit Gundam II: Soldiers of Sorrow"},
-			{"id": 1092,	"title": "Mobile Suit Gundam III: Encounters in Space"},
-			{"id": 4232,	"title": "Mobile Suit Gundam MS IGLOO 2: Gravity of the Battlefront"},
-			{"id": 1916,	"title": "Mobile Suit Gundam MS IGLOO: Apocalypse 0079"},
-			{"id": 1917,	"title": "Mobile Suit Gundam MS IGLOO: The Hidden One Year War"},
-			{"id": 93,	"title": "Mobile Suit Gundam Seed"},
-			{"id": 1215,	"title": "Mobile Suit Gundam Seed C.E.73: Stargazer"},
-			{"id": 94,	"title": "Mobile Suit Gundam Seed Destiny"},
-			{"id": 1241,	"title": "Mobile Suit Gundam Seed Destiny Final Plus: The Chosen Future"},
-			{"id": 2294,	"title": "Mobile Suit Gundam Seed Destiny Special Edition"},
-			{"id": 864,	"title": "Mobile Suit Gundam Seed MSV Astray"},
-			{"id": 2269,	"title": "Mobile Suit Gundam Seed Special Edition"},
-			{"id": 2298,	"title": "Mobile Suit Gundam Seed: After-Phase Between the Stars"},
-			{"id": 2743,	"title": "Mobile Suit Gundam Seed: Seed Supernova - Tanekyara Gekijo"},
-			{"id": 6336,	"title": "Mobile Suit Gundam Unicorn"},
-			{"id": 90,	"title": "Mobile Suit Gundam Wing"},
-			{"id": 91,	"title": "Mobile Suit Gundam Wing: Endless Waltz"},
-			{"id": 2273,	"title": "Mobile Suit Gundam Wing: Endless Waltz Movie"},
-			{"id": 3626,	"title": "Mobile Suit Gundam Wing: Operation Meteor"},
-			{"id": 86,	"title": "Mobile Suit Gundam ZZ"},
-			{"id": 9708,	"title": "Mobile Suit Gundam ZZ: Gundam Frag."},
-			{"id": 87,	"title": "Mobile Suit Gundam: Chars Counterattack"},
-			{"id": 5723,	"title": "Mobile Suit Gundam: More Information on the Universal Century"},
-			{"id": 81,	"title": "Mobile Suit Gundam: The 08th MS Team"},
-			{"id": 83,	"title": "Mobile Suit Gundam: The 08th MS Team - Millers Report"},
-			{"id": 10937,	"title": "Mobile Suit Gundam: The Origin"},
-			{"id": 9098,	"title": "Mobile Suit SD Gundam Festival"},
-			{"id": 2302,	"title": "Mobile Suit SD Gundam Mk I"},
-			{"id": 2303,	"title": "Mobile Suit SD Gundam Mk II"},
-			{"id": 2305,	"title": "Mobile Suit SD Gundam Mk III"},
-			{"id": 2304,	"title": "Mobile Suit SD Gundam Mk IV"},
-			{"id": 6792,	"title": "Mobile Suit SD Gundam Mk V"},
-			{"id": 9087,	"title": "Mobile Suit SD Gundam Musha Knight Commando"},
-			{"id": 2306,	"title": "Mobile Suit SD Gundams Counterattack"},
-			{"id": 89,	"title": "Mobile Suit Victory Gundam"},
-			{"id": 85,	"title": "Mobile Suit Zeta Gundam"},
-			{"id": 1967,	"title": "Mobile Suit Zeta Gundam: A New Translation - Heir to the Stars"},
-			{"id": 1968,	"title": "Mobile Suit Zeta Gundam: A New Translation II - Lovers"},
-			{"id": 1969,	"title": "Mobile Suit Zeta Gundam: A New Translation III - Love Is the Pulse of the Stars"},
-			{"id": 9040,	"title": "Mokei Senshi Gunpla Builders Beginning G"},
-			{"id": 593,	"title": "Mugen no Ryvius"},
-			{"id": 2200,	"title": "Muteki Choujin Zanbot 3"},
-			{"id": 3305,	"title": "Muteki Koujin Daitarn 3"},
-			{"id": 11021,	"title": "Muv-Luv Alternative: Total Eclipse"},
-			{"id": 1163,	"title": "Neo Ranga"},
-			{"id": 30,	"title": "Neon Genesis Evangelion"},
-			{"id": 31,	"title": "Neon Genesis Evangelion: Death & Rebirth"},
-			{"id": 32,	"title": "Neon Genesis Evangelion: The End of Evangelion"},
-			{"id": 2978,	"title": "New Getter Robo"},
-			{"id": 3059,	"title": "Ninja Senshi Tobikage"},
-			{"id": 1792,	"title": "Overman King Gainer"},
-			{"id": 5153,	"title": "Panzer World Galient"},
-			{"id": 10751,	"title": "Panzer World Galient OVA"},
-			{"id": 324,	"title": "Patlabor"},
-			{"id": 1096,	"title": "Patlabor 2: The Movie"},
-			{"id": 1290,	"title": "Patlabor WXIII"},
-			{"id": 1095,	"title": "Patlabor: The Movie"},
-			{"id": 4130,	"title": "Petit Eva: Evangelion@School"},
-			{"id": 165,	"title": "RahXephon"},
-			{"id": 559,	"title": "RahXephon Interlude: Her and Herself // Thatness and Thereness"},
-			{"id": 5288,	"title": "RahXephon Specials"},
-			{"id": 758,	"title": "RahXephon: Pluralitas Concentio"},
-			{"id": 1693,	"title": "Reideen"},
-			{"id": 2094,	"title": "Relic Armor Legaciam"},
-			{"id": 4618,	"title": "RideBack"},
-			{"id": 7060,	"title": "Ring of Gundam"},
-			{"id": 11227,	"title": "Rinne no Lagrange"},
-			{"id": 12281,	"title": "Rinne no Lagrange 2"},
-			{"id": 2000,	"title": "Roujin Z"},
-			{"id": 561,	"title": "Sakura Taisen"},
-			{"id": 1964,	"title": "Sakura Taisen: Ecole de Paris"},
-			{"id": 1166,	"title": "Sakura Taisen: Gouka Kenran"},
-			{"id": 608,	"title": "Sakura Taisen: Katsudou Shashin"},
-			{"id": 562,	"title": "Sakura Taisen: Le Nouveau Paris"},
-			{"id": 2168,	"title": "Sakura Taisen: New York"},
-			{"id": 1165,	"title": "Sakura Taisen: Ouka Kenran"},
-			{"id": 1999,	"title": "Sakura Taisen: Sumire"},
-			{"id": 2391,	"title": "SD Gundam Force"},
-			{"id": 1939,	"title": "SD Gundam Gaiden"},
-			{"id": 8287,	"title": "SD Gundam Sangokuden Brave Battle Warriors"},
-			{"id": 7242,	"title": "Sengoku Gyoujin Dullahan: Kagen no Keishousha"},
-			{"id": 938,	"title": "Shin Getter Robo vs. Neo Getter Robo"},
-			{"id": 5485,	"title": "Shin Mazinger Shougeki! Z-Hen"},
-			{"id": 1602,	"title": "Soukou no Strain"},
-			{"id": 478,	"title": "Sousei no Aquarion"},
-			{"id": 2170,	"title": "Sousei no Aquarion OVA"},
-			{"id": 930,	"title": "Space Runaway Ideon"},
-			{"id": 8934,	"title": "Star Driver: Kagayaki no Takuto"},
-			{"id": 12857,	"title": "Star Driver: Kagayaki no Takuto Movie"},
-			{"id": 3252,	"title": "Super Express Mazinger 7"},
-			{"id": 1603,	"title": "Super Robot Taisen OG: Divine Wars"},
-			{"id": 4075,	"title": "Super Robot Taisen OG: Divine Wars Special"},
-			{"id": 1544,	"title": "Super Robot Taisen OG: The Animation"},
-			{"id": 9241,	"title": "Super Robot Taisen OG: The Inspector"},
-			{"id": 2257,	"title": "Taiyou no Kiba Dagram"},
-			{"id": 1459,	"title": "Tekkaman Blade"},
-			{"id": 1460,	"title": "Tekkaman Blade 2"},
-			{"id": 2299,	"title": "Tekkaman Blade OVA: Burning Clock"},
-			{"id": 2301,	"title": "Tekkaman Blade OVA: Missing Link"},
-			{"id": 2300,	"title": "Tekkaman Blade OVA: Twin Blood"},
-			{"id": 2001,	"title": "Tengen Toppa Gurren Lagann"},
-			{"id": 5947,	"title": "Tengen Toppa Gurren Lagann Gekijouban Zenyasai Special: Virals Sweet Dream"},
-			{"id": 4107,	"title": "Tengen Toppa Gurren Lagann Movie: Gurren-hen"},
-			{"id": 4565,	"title": "Tengen Toppa Gurren Lagann Movie: Lagann-hen"},
-			{"id": 10622,	"title": "Tengen Toppa Gurren Lagann OVA"},
-			{"id": 4705,	"title": "Tengen Toppa Gurren Lagann Parallel Works"},
-			{"id": 8348,	"title": "Tengen Toppa Gurren Lagann Parallel Works 2"},
-			{"id": 3352,	"title": "Tengen Toppa Gurren Lagann Special"},
-			{"id": 3287,	"title": "Tenkuu Danzato Skelter Heaven"},
-			{"id": 2686,	"title": "Tetsujin 28-go"},
-			{"id": 4208,	"title": "Tetsujin 28-go (1980)"},
-			{"id": 2337,	"title": "Tetsujin 28-go (2004)"},
-			{"id": 10319,	"title": "Tetsujin 28-go FX"},
-			{"id": 10005,	"title": "Tetsujin 28-go: Hakuchuu no Zangetsu"},
-			{"id": 1762,	"title": "The Heroic Legend of Arslan"},
-			{"id": 2760,	"title": "The Ideon: A Contact"},
-			{"id": 2761,	"title": "The Ideon: Be Invoked"},
-			{"id": 14401,	"title": "Titan Rain"},
-			{"id": 10954,	"title": "Toei Robot Girls"},
-			{"id": 949,	"title": "Top wo Nerae!"},
-			{"id": 1002,	"title": "Top wo Nerae! 2"},
-			{"id": 5462,	"title": "Top wo Nerae! Science Lesson"},
-			{"id": 1675,	"title": "Transformers Armada"},
-			{"id": 928,	"title": "Transformers Galaxy Force"},
-			{"id": 2268,	"title": "Transformers Generation 1"},
-			{"id": 925,	"title": "Transformers Headmasters"},
-			{"id": 924,	"title": "Transformers Masterforce"},
-			{"id": 927,	"title": "Transformers Superlink"},
-			{"id": 9528,	"title": "Transformers Superlink Special"},
-			{"id": 2265,	"title": "Transformers the Movie"},
-			{"id": 926,	"title": "Transformers Victory"},
-			{"id": 6038,	"title": "Transformers Zone"},
-			{"id": 7862,	"title": "Transformers: Robot Masters"},
-			{"id": 2284,	"title": "Transformers: Robots in Disguise"},
-			{"id": 6800,	"title": "Transformers: Scramble City"},
-			{"id": 95,	"title": "Turn A Gundam"},
-			{"id": 3963,	"title": "Turn A Gundam I: Earth Light"},
-			{"id": 3964,	"title": "Turn A Gundam II: Moonlight Butterfly"},
-			{"id": 1458,	"title": "Uchuu no Kishi Tekkaman"},
-			{"id": 4387,	"title": "UFO Robo Grendizer tai Great Mazinger"},
-			{"id": 180,	"title": "Vandread"},
-			{"id": 1111,	"title": "Vandread Gekitouhen"},
-			{"id": 1112,	"title": "Vandread Taidouhen"},
-			{"id": 181,	"title": "Vandread: The Second Stage"},
-			{"id": 8249,	"title": "Votoms Finder Armored Trooperoid"},
-			{"id": 1986,	"title": "Wakusei Robo Danguard Ace"},
-			{"id": 8707,	"title": "Wakusei Robo Danguard Ace tai Konchuu Robot Gundan"},
-			{"id": 5515,	"title": "Wakusei Robo Danguard Ace: Uchuu Daikaisen"},
-			{"id": 2128,	"title": "Yuusha Raideen"},
-			{"id": 878,	"title": "Zegapain"},
-			{"id": 763,	"title": "Zoids"},
-			{"id": 1746,	"title": "Zoids Fuzors"},
-			{"id": 712,	"title": "Zoids Genesis"},
-			{"id": 764,	"title": "Zoids Shin Seiki/Zero"}
-		]
-	},
-	"historical":
-	{
-		"achievements":
-		[
-			{
-				"id": "anime-historical-1",
-				"title": "",
-				"level": "Historical: level 1",
-				"desc": "",
-				"threshold": 25
-			},
-			{
-				"id": "anime-historical-2",
-				"title": "",
-				"level": "Historical: level 2",
-				"desc": "",
-				"threshold": 40
-			},
-			{
-				"id": "anime-historical-3",
-				"title": "",
-				"level": "Historical: level 3",
-				"desc": "",
-				"threshold": 60
-			},
-			{
-				"id": "anime-historical-4",
-				"title": "",
-				"level": "Historical: ANCIENT POWER",
-				"desc": "",
-				"threshold": 100
-			}
-		],
-		"titles":
-		[
-			{"id": 11545,	"title": "108 Ward Inside and Out: Make-Up Artist"},
-			{"id": 3835,	"title": "Ai no Gakko Cuore Monogatari"},
-			{"id": 2548,	"title": "Ai no Wakakusa Monogatari"},
-			{"id": 2558,	"title": "Ai no Wakakusa Monogatari II"},
-			{"id": 2554,	"title": "Ai Shoujo Pollyanna Monogatari"},
-			{"id": 656,	"title": "Air in Summer"},		
-			{"id": 11275,	"title": "Akado Suzunosuke"},
-			{"id": 283,	"title": "Akage no Anne"},
-			{"id": 8950,	"title": "Akage no Anne: Green Gables e no Michi"},
-			{"id": 5157,	"title": "Alexander Senki Gekijouban"},
-			{"id": 10112,	"title": "Alexandros no Ketsudan"},
-			{"id": 2546,	"title": "Alps Monogatari: Watashi no Annette"},
-			{"id": 2225,	"title": "Alps no Shoujo Heidi"},
-			{"id": 9547,	"title": "Alps no Shoujo Heidi (1979)"},
-			{"id": 9548,	"title": "Alps no Shoujo Heidi: Alm no Yama Hen"},
-			{"id": 9549,	"title": "Alps no Shoujo Heidi: Heidi to Clara Hen"},
-			{"id": 3359,	"title": "Amatsuki"},
-			{"id": 2333,	"title": "Anime Sanjushi"},
-			{"id": 2334,	"title": "Anime Sanjushi: Aramis no Bouken"},
-			{"id": 7610,	"title": "Anju to Zushioumaru"},
-			{"id": 6093,	"title": "Anmitsu Hime"},
-			{"id": 3829,	"title": "Anne no Nikki"},
-			{"id": 12027,	"title": "Anne no Nikki: Anne Frank Monogatari"},
-			{"id": 4723,	"title": "Animated Classics of Japanese Literature"},
-			{"id": 2334,	"title": "Anime Sanjushi: Aramis no Bouken"},
-			{"id": 7193,	"title": "Aoi Bungaku Series"},
-			{"id": 10901,	"title": "Aoi Hitomi no Onna no Ko no Ohanashi"},
-			{"id": 5673,	"title": "Apfelland Monogatari"},
-			{"id": 1946,	"title": "Ashita no Nadja"},
-			{"id": 8475,	"title": "Asura"},		
-			{"id": 586,	"title": "Ayakashi: Japanese Classic Horror"},
-			{"id": 2251,	"title": "Baccano!"},
-			{"id": 3901,	"title": "Baccano! Specials"},
-			{"id": 1576,	"title": "Bakumatsu Kikansetsu Irohanihoheto"},
-			{"id": 8092,	"title": "Bakumatsu no Spasibo"},
-			{"id": 67,	"title": "Basilisk: Kouga Ninpou Chou"},
-			{"id": 12561,	"title": "Benkeitai Ushiwaka"},
-			{"id": 9613,	"title": "Big X"},
-			{"id": 4151,	"title": "Blade of the Immortal"},
-			{"id": 405,	"title": "Blood: The Last Vampire"},
-			{"id": 4680,	"title": "Botchan"},
-			{"id": 11241,	"title": "Brave 10"},
-			{"id": 13169,	"title": "Buta"},
-			{"id": 2800,	"title": "Candy Candy"},
-			{"id": 723,	"title": "Candy Candy (Movie)"},
-			{"id": 2802,	"title": "Candy Candy: Candy no Natsuyasumi"},
-			{"id": 2801,	"title": "Candy Candy: Haru no Yobigoe"},
-			{"id": 2836,	"title": "Chiisana Viking Vickie"},
-			{"id": 2800,	"title": "Chikara to Onna no Yo no Naka"},
-			{"id": 2915,	"title": "Chikyuuga Ugoita Hi"},
-			{"id": 4201,	"title": "Chocchan Monogatari"},
-			{"id": 13349,	"title": "Chouyaku Hyakuninsshu: Uta Koi"},
-			{"id": 60,	"title": "Chrno Crusade"},
-			{"id": 4450,	"title": "Chrno Crusade: Azmaria's Lessons"},
-			{"id": 3935,	"title": "Clockwork Fighters: Hiwou's War"},
-			{"id": 2755,	"title": "Cleopatra"},
-			{"id": 3132,	"title": "Cristopher Columbus"},
-			{"id": 1842,	"title": "D.Gray-man"},		
-			{"id": 1778,	"title": "Dae Jang Geum: Jand Geum’s Dream"},
-			{"id": 9200,	"title": "Dae Jang Geum: Jang Geum’s Dream 2"},
-			{"id": 496,	"title": "Dagger of Kamui"},
-			{"id": 8915,	"title": "Dantalian no Shoka"},
-			{"id": 12879,	"title": "Dantalian no Shoka: Ibarahime"},		
-			{"id": 8915,	"title": "Dojoji Temple"},
-			{"id": 1026,	"title": "Eight Clouds Rising"},
-			{"id": 345,	"title": "Eikoku Koi Monogatari Emma"},
-			{"id": 2517,	"title": "Eikoku Koi Monogatari Emma: Intermission"},
-			{"id": 2035,	"title": "Eikoku Koi Monogatari Emma: Molders Hen"},
-			{"id": 4199,	"title": "Entaku no Kishi Monogatari: Moero Arthur"},
-			{"id": 714,	"title": "Enzai"},
-			{"id": 5178,	"title": "First Squad: The Moment of Truth"},
-			{"id": 2553,	"title": "Flanders no Inu"},
-			{"id": 2623,	"title": "Flanders no Inu (Movie)"},
-			{"id": 2624,	"title": "Flanders no Inu, Boku no Patrasche"},
-			{"id": 3367,	"title": "Furusato Japan"},
-			{"id": 13163,	"title": "Furusato Saisei: Nihon no Mukashi Banashi"},
-			{"id": 13335,	"title": "Fuse Teppou Musume no Torimonochou"},
-			{"id": 7775,	"title": "Futatsu no Kurumi"},
-			{"id": 2238,	"title": "Fuyu no Semi"},
-			{"id": 10048,	"title": "Fuyu no Semi: Tokubetsu Henshuuhan"},
-			{"id": 1049,	"title": "Gauche the Cellist"},		
-			{"id": 918,	"title": "Gintama"},
-			{"id": 2951,	"title": "Gintama Jump Festa 2005 Special"},
-			{"id": 9969,	"title": "Gintama’"},		
-			{"id": 10643,	"title": "Gintama: Dai Hanseikai"},
-			{"id": 6945,	"title": "Gintama: Jump Anime Tour 2008 Special"},
-			{"id": 7472,	"title": "Gintama: Shinyaku Benizakura Hen"},
-			{"id": 9735,	"title": "Gintama: Shinyaku Benizakura Hen Special"},
-			{"id": 336,	"title": "Ginyuu Mokushiroku Meine Liebe"},
-			{"id": 771,	"title": "Ginyuu Mokushiroku Meine Liebe Wieder"},
-			{"id": 578,	"title": "Grave of the Fireflies"},
-			{"id": 8233,	"title": "Genji"},
-			{"id": 3488,	"title": "Genji Monogatari"},
-			{"id": 5155,	"title": "Genji Monogatari Sennenki"},
-			{"id": 3646,	"title": "Glass no Usagi"},
-			{"id": 7867,	"title": "Gon"},
-			{"id": 8425,	"title": "Gosick"},
-			{"id": 10504,	"title": "Gosick Recap"},
-			{"id": 1200,	"title": "Gun-dou Musashi"},
-			{"id": 10270,	"title": "Gun-dou Musashi Recap"},
-			{"id": 2579,	"title": "Hachijunichikan Sekai Isshuu"},
-			{"id": 1824,	"title": "Hadashi no Gen"},
-			{"id": 1825,	"title": "Hadashi no Gen 2"},
-			{"id": 1663,	"title": "Haha wo Tazunete Sanzenri"},
-			{"id": 3335,	"title": "Haikara-san ga Tooru"},
-			{"id": 5168,	"title": "Hairy Tale"},
-			{"id": 8764,	"title": "Hajime Ningen Gon"},
-			{"id": 8736,	"title": "Hajime Ningen Gyatoruz"},
-			{"id": 4513,	"title": "Hakujaden"},
-			{"id": 6895,	"title": "Hakuouki"},
-			{"id": 9065,	"title": "Hakuouki Hekketsuroku"},
-			{"id": 9723,	"title": "Hakuouki Hekketsuroku Episode 0"},
-			{"id": 13117,	"title": "Hakuouki Movie 1"},
-			{"id": 13119,	"title": "Hakuouki Movie 2"},
-			{"id": 11663,	"title": "Hakuouki OVA"},
-			{"id": 13115,	"title": "Hakuouki Reimeiroku"},
-			{"id": 10350,	"title": "Hakuouki Sekkaroku"},
-			{"id": 4551,	"title": "Hakushaku to Yousei"},
-			{"id": 8533,	"title": "Hana no Kage"},
-			{"id": 14145,	"title": "Hanayaka Nari, Waga Ichizoku"},
-			{"id": 1904,	"title": "Harukanaru Toki no Naka de 2: Shiroki Ryuu no Miko"},
-			{"id": 3227,	"title": "Harukanaru Toki no Naka de 3: Kurenai no Tsuki"},
-			{"id": 4190,	"title": "Harukanaru Toki no Naka de 3: Onsen Chibi Special"},
-			{"id": 7254,	"title": "Harukanaru Toki no Naka de 3: Owarinaki Unmei"},
-			{"id": 647,	"title": "Harukanaru Toki no Naka de: Ajisai Yumegatari"},
-			{"id": 1905,	"title": "Harukanaru Toki no Naka de: Character Endings"},
-			{"id": 247,	"title": "Harukanaru Toki no Naka de: Hachiyou Shou"},
-			{"id": 1907,	"title": "Harukanaru Toki no Naka de: Kokoro no Yukue"},
-			{"id": 1906,	"title": "Harukanaru Toki no Naka de: Maihitoyo"},
-			{"id": 8554,	"title": "Hashire Melos"},
-			{"id": 4876,	"title": "Hashire Melos!"},
-			{"id": 2405,	"title": "Hello! Lady Lynn"},
-			{"id": 5929,	"title": "Hi no Ame ga Furu"},
-			{"id": 13639,	"title": "Hi no Youjin"},
-			{"id": 2694,	"title": "Hidamari no Ki"},
-			{"id": 7967,	"title": "Hiroshima ni Ichiban Densha ga Hashitta"},
-			{"id": 2810,	"title": "Himitsu no Hanazono"},
-			{"id": 5060,	"title": "Hetalia Axis Powers"},		
-			{"id": 9865,	"title": "Hetalia Axis Powers Fan Disc"},		
-			{"id": 8479,	"title": "Hetalia World Series"},		
-			{"id": 10497,	"title": "Hetalia World Series Extra Episodes"},
-			{"id": 1371,	"title": "Hi no Tori"},	
-			{"id": 2997,	"title": "Hi no Tori: Houou Hen"},
-			{"id": 2999,	"title": "Hi no Tori: Yamato Hen"},
-			{"id": 1977,	"title": "Hijikata Toshizou: Shiro no Kiseki"},
-			{"id": 3873,	"title": "Honey Honey no Suteki na Bouken"},
-			{"id": 6150,	"title": "Hong Xing Xiao Yong Shi"},
-			{"id": 11101,	"title": "Honoo no Alpen Rose"},
-			{"id": 3807,	"title": "Honoo no Alpen Rose: Judy & Randy"},
-			{"id": 9957,	"title": "Hoshizora no Violin"},
-			{"id": 7170,	"title": "House of Flames"},
-			{"id": 2545,	"title": "Huckleberry no Boukeni"},
-			{"id": 4800,	"title": "Huckleberry Finn Monogatarii"},
-			{"id": 279,	"title": "Hundred Stories"},
-			{"id": 9996,	"title": "Hyouge Mono"},
-			{"id": 2828,	"title": "Ie Naki Ko"},
-			{"id": 2831,	"title": "Ie Naki Ko (Movie)"},
-			{"id": 2829,	"title": "Ie Naki Ko Remi"},
-			{"id": 10471,	"title": "Ie Naki Ko Remi Specials"},
-			{"id": 9938,	"title": "Ikoku Meiro no Croisée"},
-			{"id": 10905,	"title": "Ikoku Meiro no Croisée Picture Drama"},
-			{"id": 10804,	"title": "Ikoku Meiro no Croisée Special"},
-			{"id": 10832,	"title": "Ikoku Meiro no Croisée: Yune & Alice"},
-			{"id": 2282,	"title": "In The Beginning: The Bible Stories"},
-			{"id": 3326,	"title": "Inaka Isha"},
-			{"id": 249,	"title": "InuYasha"},
-			{"id": 449,	"title": "InuYasha: Guren no Houraijima"},
-			{"id": 450,	"title": "InuYasha: Kagami no Naka no Mugenjo"},
-			{"id": 6811,	"title": "InuYasha: Kanketsu-hen"},
-			{"id": 4886,	"title": "InuYasha: Kuroi Tessaiga"},
-			{"id": 451,	"title": "InuYasha: Tenka Hadou no Ken"},
-			{"id": 452,	"title": "InuYasha: Toki wo Koeru Omoi"},
-			{"id": 14211,	"title": "Instant History"},
-			{"id": 5876,	"title": "IZUMO"},
-			{"id": 5900,	"title": "Jean Valjean Monogatari"},
-			{"id": 1759,	"title": "Jigen Sengokushi: Kuro no Shishi - Jinnai Hen"},
-			{"id": 3435,	"title": "Joou Heika no Petite Angie"},
-			{"id": 9525,	"title": "Junod"},
-			{"id": 2138,	"title": "Kage"},
-			{"id": 1622,	"title": "Kai Doh Maru"},
-			{"id": 3010,	"title": "Kaiketsu Zorro"},
-			{"id": 5023,	"title": "Kamui the Ninja"},
-			{"id": 1658,	"title": "Karakuri no Kimi"},
-			{"id": 2243,	"title": "Karasu Tengu Kabuto"},
-			{"id": 1371,	"title": "Karasu Tengu Kabuto: Ougon no Me no Kemono"},
-			{"id": 1036,	"title": "Kasho no Tsuki"},
-			{"id": 3110,	"title": "Kaze no Naka no Shoujo: Kinpatsu no Jeanie"},
-			{"id": 1878,	"title": "Kaze no Shoujo Emily"},
-			{"id": 1063,	"title": "Kaze to Ki no Uta Sanctus: Sei Naru Kana"},
-			{"id": 606,	"title": "Kazemakase Tsukikage Ran"},
-			{"id": 8436,	"title": "Ketsudan"},
-			{"id": 1058,	"title": "Kidou Shinsengumi Moeyo Ken"},
-			{"id": 511,	"title": "Kidou Shinsengumi Moeyo Ken TV"},
-			{"id": 5192,	"title": "Kiku-chan to Ookami"},
-			{"id": 12031,	"title": "Kingdom"},
-			{"id": 6012,	"title": "Kinpatsu no Jeanie"},
-			{"id": 3061,	"title": "Kishin Corps"},
-			{"id": 4262,	"title": "Koihime†Musou"},
-			{"id": 5305,	"title": "Koihime†Musou OVA"},
-			{"id": 4393,	"title": "Kokka Kimigayo"},
-			{"id": 10029,	"title": "Kokurikozaka Kara"},
-			{"id": 10335,	"title": "Kompeki no Kantai Tokubetsu Hen: Sourai Kaihatsu Monogatari"},
-			{"id": 6229,	"title": "Konpeki no Kantai"},
-			{"id": 5924,	"title": "Koukoku Ichidai Otoko"},
-			{"id": 2162,	"title": "Koutetsu Sangokushi"},
-			{"id": 8304,	"title": "Koutetsu Sangokushi Special"},
-			{"id": 3866,	"title": "Kuro ga Ita Natsu"},
-			{"id": 4898,	"title": "Kuroshitsuji"},
-			{"id": 6707,	"title": "Kuroshitsuji II"},
-			{"id": 9136,	"title": "Kuroshitsuji II Specials"},
-			{"id": 8068,	"title": "Kuroshitsuji Picture Drama"},
-			{"id": 6163,	"title": "Kuroshitsuji Recap"},
-			{"id": 6793,	"title": "Kuroshitsuji Special"},
-			{"id": 5039,	"title": "Kurozuka"},
-			{"id": 6230,	"title": "Kyokujitsu no Kantai"},
-			{"id": 5415,	"title": "La Rose de Versailles"},
-			{"id": 2227,	"title": "Lady Lady!!"},
-			{"id": 9773,	"title": "Lady Lady!! (1988)"},
-			{"id": 1013,	"title": "Le Chevalier D'Eon"},
-			{"id": 1695,	"title": "Les Misérables: Shoujo Cosette"},
-			{"id": 1032,	"title": "Like the Clouds, Like the Wind"},
-			{"id": 5600,	"title": "Little El Cid Bouken"},
-			{"id": 7500,	"title": "Maabou no Shounen Koukuu Tsuwamono"},
-			{"id": 7524,	"title": "Mahou no Pen"},
-			{"id": 3162,	"title": "Makiba no Shoujo Katori"},
-			{"id": 11829,	"title": "Manga Mitoukoumon"},
-			{"id": 9856,	"title": "Manga Nihon Emaki"},
-			{"id": 11245,	"title": "Manga Nihonshi"},
-			{"id": 10282,	"title": "Manga Nippon Mukashibanashi"},
-			{"id": 6277,	"title": "Manga Nippon Mukashibanashi (1976)"},
-			{"id": 10285,	"title": "Manga Nippon Mukashibanashi (Movie)"},
-			{"id": 5091,	"title": "Manga Sarutobi Sasuke"},
-			{"id": 6262,	"title": "Manga Sekai Mukashibanashi"},
-			{"id": 4926,	"title": "Marco: Haha wo Tazunete Sanzenri"},
-			{"id": 5935,	"title": "Marco Polo no Boken"},
-			{"id": 9821,	"title": "McDull and Chinese Culture"},
-			{"id": 4187,	"title": "Megumi"},
-			{"id": 3836,	"title": "Meiken Jolie"},
-			{"id": 2981,	"title": "Midori: Shoujo Tsubaki"},
-			{"id": 7497,	"title": "Mikanbun"},
-			{"id": 1033,	"title": "Millennium Actress"},
-			{"id": 7857,	"title": "Mini Sengoku Basara: Chousokabe-kun to Mouri-kun"},
-			{"id": 9630,	"title": "Mini Sengoku Basara Two: Tsukiyo no Katakura-"},
-			{"id": 5386,	"title": "Miyamoto Musashi: Souken no Haseru Yume"},
-			{"id": 9395,	"title": "Miyanishi Tatasuya Gekijou: Omae Umasou da na"},
-			{"id": 4096,	"title": "Mizu no Tane"},
-			{"id": 4614,	"title": "Moero Arthur: Hakuba no Ouji"},
-			{"id": 6857,	"title": "Momotarou no Umiwashi"},
-			{"id": 2246,	"title": "Mononoke"},
-			{"id": 3309,	"title": "Mozu no Nie"},
-			{"id": 6769,	"title": "Mura Matsuri"},
-			{"id": 1375,	"title": "My Daddy Long Legs"},
-			{"id": 1279,	"title": "Mysterious Cities of Gold"},
-			{"id": 1252,	"title": "Nadia: The Motion Picture"},
-			{"id": 1251,	"title": "Nadia, the Secret of Blue Water"},
-			{"id": 3381,	"title": "Nadia, the Secret of Blue Water Omakes"},
-			{"id": 3465,	"title": "Nagasaki 1945: Angelus no Kane"},
-			{"id": 1937,	"title": "Nakoruru: Ano Hito kara no Okurimono"},
-			{"id": 8896,	"title": "Natsufuku no Shoujotachi"},
-			{"id": 5184,	"title": "Negibouzu no Asataro"},
-			{"id": 12165,	"title": "Niji no Kanata e! Shoujo Diana no Monogatari"},
-			{"id": 7651,	"title": "Ningen Shikaku: Director’s Cut Ban"},
-			{"id": 1455,	"title": "Ninja Resurrection"},
-			{"id": 617,	"title": "Ninja Scroll"},
-			{"id": 618,	"title": "Ninja Scroll: The Series"},
-			{"id": 912,	"title": "Ninku"},
-			{"id": 2851,	"title": "Ninku (Movie)"},
-			{"id": 12181,	"title": "Nippon Omoshiro Mukashi Banashi"},
-			{"id": 1203,	"title": "Nitaboh"},
-			{"id": 8777,	"title": "Nobara no Julie"},
-			{"id": 11933,	"title": "Oda Nobuna no Yabou"},
-			{"id": 14181,	"title": "Oedo wa Nemurenai!"},
-			{"id": 2152,	"title": "Oh! Edo Rocket"},
-			{"id": 8415,	"title": "Oi! Ryouma"},
-			{"id": 10500,	"title": "Ojii-san no Lamp"},
-			{"id": 9501,	"title": "Olympus Guardian"},
-			{"id": 9204,	"title": "Omae Umasou da na"},
-			{"id": 7171,	"title": "Oni"},
-			{"id": 8487,	"title": "Onigamiden"},
-			{"id": 5439,	"title": "Ooedo Forty Eight"},
-			{"id": 785,	"title": "Otaku no Video"},
-			{"id": 14213,	"title": "Otogi Manga Calendar"},
-			{"id": 525,	"title": "Otogizoushi"},
-			{"id": 13673,	"title": "Otome Nadeshiko Koi Tenchou"},
-			{"id": 8476,	"title": "Otome Youkai Zakuro"},
-			{"id": 10180,	"title": "Otome Youkai Zakuro Picture Drama"},
-			{"id": 3879,	"title": "Paris no Isabel"},
-			{"id": 1035,	"title": "Patalliro Saiyuki!"},
-			{"id": 6688,	"title": "Pattenrai! Minami no Shima no Mizu Monogatari"},
-			{"id": 161,	"title": "Peace Maker Kurogane"},
-			{"id": 9568,	"title": "Peace Maker Kurogane Special"},
-			{"id": 2549,	"title": "Perrine Monogatari"},
-			{"id": 7117,	"title": "Pika Don"},
-			{"id": 416,	"title": "Porco Rosso"},
-			{"id": 3424,	"title": "Porfy no Nagai Tabi"},
-			{"id": 163,	"title": "Power Stone"},
-			{"id": 9806,	"title": "Qin Shi Ming Yue"},
-			{"id": 11841,	"title": "Qin Shi Ming Yue 2:Night Ends - Daybreak"},
-			{"id": 11835,	"title": "Qin Shi Ming Yue 3: Hundred Schools of Thought"},
-			{"id": 1329,	"title": "Rail of the Star: A True Story of Children"},
-			{"id": 6114,	"title": "Rainbow: Nisha Rokubou no Shichinin"},
-			{"id": 9959,	"title": "Rainyantsuuri no Uta"},		
-			{"id": 2244,	"title": "Rakugo Tennyo Oyui"},
-			{"id": 1442,	"title": "Reign: The Conqueror"},
-			{"id": 7473,	"title": "Rennyo to Sono Haha"},
-			{"id": 2543,	"title": "Robin Hood no Daibouken"},
-			{"id": 970,	"title": "Romance of the Three Kingdoms"},
-			{"id": 2559,	"title": "Romeo no Aoi Sora"},
-			{"id": 338,	"title": "Rose of Versailles"},
-			{"id": 3868,	"title": "Rose of Versailles Movie"},
-			{"id": 45,	"title": "Rurouni Kenshin"},
-			{"id": 6591,	"title": "Rurouni Kenshin DVD-BOX Special Ending"},
-			{"id": 46,	"title": "Rurouni Kenshin: Ishinshishi e no Requiem"},
-			{"id": 10334,	"title": "Rurouni Kenshin Recap"},
-			{"id": 9716,	"title": "Rurouni Kenshin: Review Special"},
-			{"id": 401,	"title": "Rurouni Kenshin: Seisouhen"},
-			{"id": 11441,	"title": "Rurouni Kenshin: Shin Kyoto Hen"},
-			{"id": 12067,	"title": "Rurouni Kenshin Special"},
-			{"id": 4664,	"title": "Rurouni Kenshin: Special Techniques"},
-			{"id": 44,	"title": "Rurouni Kenshin: Tsuiokuhen"},
-			{"id": 5997,	"title": "Sabu to Ichi Torimono Hikae"},
-			{"id": 6902,	"title": "Saikyou Bushouden: Sangoku Engi"},		
-			{"id": 957,	"title": "Saiunkoku Monogatari"},
-			{"id": 1914,	"title": "Saiunkoku Monogatari 2nd Season"},
-			{"id": 2193,	"title": "Saiunkoku Monogatari Soushuuhen"},
-			{"id": 2192,	"title": "Saiunkoku Monogatari Specials"},
-			{"id": 12531,	"title": "Sakamichi no Apollon"},
-			{"id": 419,	"title": "Samurai Deeper Kyo"},
-			{"id": 1167,	"title": "Samurai Gun"},
-			{"id": 2591,	"title": "Samurai Spirits"},
-			{"id": 836,	"title": "Samurai Spirits 2"},
-			{"id": 2698,	"title": "Sanctuary"},
-			{"id": 8677,	"title": "Sangokushi"},
-			{"id": 7696,	"title": "Sangokushi Daiichibu Eiyuu-tachi no Yoake"},
-			{"id": 7697,	"title": "Sangokushi Dainibu Choukou Moyu"},
-			{"id": 7698,	"title": "Sangokushi Daisanbu Harukanaru Taichi"},
-			{"id": 8678,	"title": "Sangokushi II"},
-			{"id": 7588,	"title": "Saraiya Goyou"},
-			{"id": 6057,	"title": "Sasuke"},
-			{"id": 3877,	"title": "Sasurai no Shoujo Nell"},
-			{"id": 12907,	"title": "Sekiei Ayakashi Mangatan"},
-			{"id": 5355,	"title": "Sengoku Basara"},
-			{"id": 6581,	"title": "Sengoku Basara: Setonai no Gekitotsu! Hi wo Fuku Umi no Daiyousai - Fugaku!!"},
-			{"id": 9745,	"title": "Sengoku Basara: The Last Party"},
-			{"id": 6634,	"title": "Sengoku Basara Two"},		
-			{"id": 10483,	"title": "Sengoku Basara Two: Ryuko, Itadaki no Chikai! Atsuki Mirai e Kakeru Tamashii!!"},
-			{"id": 7242,	"title": "Sengoku Gyoujin Dullahan: Kagen no Keishousha"},
-			{"id": 10308,	"title": "Sengoku Otome: Momoiro Paradox"},
-			{"id": 11547,	"title": "Sengoku☆Paradise Kiwami"},
-			{"id": 6973,	"title": "Senkou no Night Raid"},
-			{"id": 10201,	"title": "Senkou no Night Raid Picture Drama"},
-			{"id": 8840,	"title": "Senkou no Night Raid Recap"},
-			{"id": 8800,	"title": "Senkou no Night Raid Specials"},
-			{"id": 3038,	"title": "Senya Ichiya Monogatari"},
-			{"id": 4514,	"title": "Seton Doubutsuki: Kuma no Ko Jacky"},
-			{"id": 2216,	"title": "Shigurui"},
-			{"id": 959,	"title": "Shin Chou Kyou Ryo: Condor Hero"},
-			{"id": 960,	"title": "Shin Chou Kyou Ryo: Condor Hero II"},
-			{"id": 5854,	"title": "Shin Chou Kyou Ryo: Condor Hero III"},
-			{"id": 1938,	"title": "Shin Kaikei Gunkan"},
-			{"id": 6112,	"title": "Shin Koihime†Musou"},
-			{"id": 7774,	"title": "Shin Koihime†Musou OVA"},
-			{"id": 8635,	"title": "Shin Koihime†Musou: Live Revolution"},
-			{"id": 8057,	"title": "Shin Koihime†Musou: Otome Tairan"},
-			{"id": 10297,	"title": "Shin Koihime†Musou: Otome Tairan OVA"},
-			{"id": 5693,	"title": "Shinran-sama: Negai, Soshite Hikari"},
-			{"id": 989,	"title": "Shinshaku Sengoku Eiyuu Densetsu: Sanada Juu Yuushi"},
-			{"id": 988,	"title": "Shinshaku Sengoku Eiyuu Densetsu: Sanada Juu Yuushi The Animation"},
-			{"id": 7052,	"title": "Shinshuu Sudama Hen"},
-			{"id": 8337,	"title": "Shoka"},
-			{"id": 3369,	"title": "Shoubushi Densetsu Tetsuya"},
-			{"id": 10369,	"title": "Shougeki Shinsengumi"},
-			{"id": 2547,	"title": "Shoukoujo Sara"},
-			{"id": 1557,	"title": "Shounen Onmyouji"},
-			{"id": 10014,	"title": "Shouwa Monogatari"},
-			{"id": 10013,	"title": "Shouwa Monogatari (Movie)"},
-			{"id": 340,	"title": "Shura no Toki"},
-			{"id": 1863,	"title": "Silk Road Shounen Yuuto"},
-			{"id": 4558,	"title": "Snow Night Stories"},
-			{"id": 10774,	"title": "Soccer Fever"},
-			{"id": 11561,	"title": "Sougen no Ko Tenguri"},
-			{"id": 1541,	"title": "Souten no Ken"},
-			{"id": 3864,	"title": "Souten no Ken Specials"},
-			{"id": 5226,	"title": "Souten Kouro"},
-			{"id": 3054,	"title": "Star of the Seine"},
-			{"id": 565,	"title": "Steamboy"},
-			{"id": 554,	"title": "Steel Angel Kurumi"},
-			{"id": 557,	"title": "Steel Angel Kurumi Encore"},
-			{"id": 2882,	"title": "Superbook"},
-			{"id": 3936,	"title": "Superbook 2"},
-			{"id": 1072,	"title": "Sweat Punch: Kigeki"},
-			{"id": 1452,	"title": "Sword for Truth"},
-			{"id": 2418,	"title": "Sword of the Stranger"},
-			{"id": 173,	"title": "Tactics"},
-			{"id": 2618,	"title": "Takarajima"},
-			{"id": 11685,	"title": "Takarajima Memorial: Yuunagi to tobareta Otoko"},
-			{"id": 1208,	"title": "Taro the Dragon Boy"},
-			{"id": 8214,	"title": "Tekkamen wo Oe! Dartanyan Monogatari Yori"},
-			{"id": 1587,	"title": "Tenpou Ibun Ayakashi Ayashi"},
-			{"id": 3248,	"title": "Tenpou Ibun Ayakashi Ayashi Inferno OVA"},
-			{"id": 7014,	"title": "Tezuka Osamu no Buddha: Akai Sabaku yo! Utsukushiku"},
-			{"id": 2500,	"title": "The Cockpit"},
-			{"id": 3075,	"title": "The Flying House"},
-			{"id": 3496,	"title": "The Golden Laws"},
-			{"id": 1822,	"title": "The Hakkenden"},
-			{"id": 12715,	"title": "The Hakkenden: Shin Shou"},
-			{"id": 7985,	"title": "The Laws of the Sun"},
-			{"id": 6503,	"title": "The Legend"},
-			{"id": 7861,	"title": "The Rose and Women of Versailles"},
-			{"id": 12321,	"title": "Thermae Romae"},
-			{"id": 12727,	"title": "Thermae Romae Specials"},
-			{"id": 5895,	"title": "Tistou Midori no Oyayubi"},
-			{"id": 2577,	"title": "Tom Sawyer no Bouken"},
-			{"id": 7591,	"title": "Tono to Issho"},
-			{"id": 9794,	"title": "Tono to Issho 1.5"},
-			{"id": 10324,	"title": "Tono to Issho: Gantai no Yabou"},
-			{"id": 8961,	"title": "Tono to Issho: Ippunkan Gekijou"},
-			{"id": 6124,	"title": "Toshishun"},
-			{"id": 2557,	"title": "Trapp Ikka Monogatari"},
-			{"id": 5917,	"title": "Tsuru ni Notte: Tomoko no Bouken"},
-			{"id": 12903,	"title": "Tsushima Maru: Sayounara Okinawa"},
-			{"id": 6273,	"title": "Tsuyu no Hitoshizuku"},
-			{"id": 6835,	"title": "Umi no Mizu wa Naze Karai"},
-			{"id": 7485,	"title": "Urashima Tarou"},
-			{"id": 1102,	"title": "Urda"},
-			{"id": 2753,	"title": "Ushiro no Shoumen Dare"},
-			{"id": 4991,	"title": "Wakakusa Monogatari"},
-			{"id": 3196,	"title": "Wakakusa Charlotte"},
-			{"id": 4132,	"title": "Wakakusa no Yon Shimai"},
-			{"id": 3761,	"title": "Wanwan Sanjushi"},
-			{"id": 3215,	"title": "Winter Days"},
-			{"id": 2024,	"title": "Yoshimune"},
-			{"id": 4660,	"title": "Yoshino no Hime"},
-			{"id": 6272,	"title": "Zakuro Yashiki La Grenadiere"},
-			{"id": 4790,	"title": "Zeno: Kagiri Naki Ai ni"},
-			{"id": 12763,	"title": "Zero-sen Hayato"},
-			{"id": 29,	"title": "Zipang"},
-			{"id": 7808,	"title": "Zukokke Knight: Don De La Mancha"}
-		]
-	}
-}
 }

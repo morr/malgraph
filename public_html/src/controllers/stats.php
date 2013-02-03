@@ -172,94 +172,88 @@ class StatsController extends AbstractController {
 
 
 	public function achiAction() {
-		foreach ($this->view->users as $i => $u) {
-			$groups = [];
-			foreach ($u->getList($this->view->am)->getEntries() as $entry) {
-				$groups[$entry->getStatus()] []= $entry;
-			}
+		$contents = file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile);
+		$contents = preg_replace('/#(.*)$/m', '', $contents);
+		$achList = json_decode($contents, true);
 
+		$imgFiles = scandir(ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/media/img/ach');
+		$getThreshold = function($ach) {
+			if (preg_match('/^([0-9.]+)\+$/', $ach['threshold'], $matches)) {
+				return [floatval($matches[1]), null];
+			} elseif (preg_match('/^([0-9.]+)(\.\.|-)([0-9.]+)$/', $ach['threshold'], $matches)) {
+				return [floatval($matches[1]), floatval($matches[3])];
+			}
+			throw new Exception('Invalid threshold: ' . $ach['threshold']);
+		};
+
+		foreach ($this->view->users as $i => $u) {
+			$entriesCompleted = $u->getList($this->view->am)->getEntries(UserListFilters::getCompleted());
+			$entriesNonPlanned = $u->getList($this->view->am)->getEntries(UserListFilters::getNonPlanned());
 			$achievements = [];
 
-			$achList = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile), true);
-			$AM = $this->view->am;
-			$model = AMModel::factory($this->view->am);
-
-			//achievments from json
-			foreach ($achList[$AM] as $group => $groupData) {
-				$achIds = array();
-				foreach ($groupData['titles'] as $title) {
-					$achIds []= $title['id'];
-				}
-				$entriesOwned = array();
-				if (!empty($groups[UserListEntry::STATUS_COMPLETED])) {
-					foreach ($groups[UserListEntry::STATUS_COMPLETED] as $e) {
-						if (in_array($e->getID(), $achIds)) {
-							$entriesOwned []= $e;
+			foreach ($achList[$this->view->am] as $group => $groupData) {
+				//get subject and entries basing on requirement type
+				$subject = null;
+				$entriesOwned = null;
+				switch ($groupData['requirement']['type']) {
+					case 'given-titles':
+						$entriesOwned = array();
+						foreach ($entriesCompleted as $e) {
+							if (in_array($e->getID(), $groupData['requirement']['titles'])) {
+								$entriesOwned []= $e;
+							}
 						}
-					}
+						$subject = count($entriesOwned);
+						break;
+					case 'completed-titles':
+						$subject = count($entriesCompleted);
+						break;
+					case 'mean-score':
+						$distribution = new ScoreDistribution($entriesNonPlanned);
+						if ($distribution->getRatedCount() > 0) {
+							$subject = $distribution->getMeanScore();
+						}
+						break;
+					default:
+						throw new Exception('Invalid requirement: ' . $groupData['requirement']['type']);
 				}
-				uasort($entriesOwned, UserListSorters::getByTitle());
-				//give corresponding achievement (make sure it has correct threshold)
-				uasort($groupData['achievements'], function($a, $b) { return $a['threshold'] > $b['threshold'] ? -1 : 1; });
-				foreach ($groupData['achievements'] as $ach) {
-					if (count($entriesOwned) >= $ach['threshold']) {
-						$ach['entries'] = $entriesOwned;
+
+				if ($subject === null) {
+					continue;
+				}
+
+				//give first achievement for which the subject fits into its threshold
+				$nextAch = null;
+				foreach (array_reverse($groupData['achievements']) as $ach) {
+					list($a, $b) = $getThreshold($ach);
+
+					if ((($subject >= $a) or ($a === null)) and (($subject <= $b) or ($b === null))) {
+						//put additional info
+						$ach['a'] = $a;
+						$ach['b'] = $b;
+						if (!empty($entriesOwned)) {
+							uasort($entriesOwned, UserListSorters::getByTitle());
+							$ach['entries'] = $entriesOwned;
+						}
+						foreach ($imgFiles as $f) {
+							if (preg_match('/' . $ach['id'] . '[^0-9a-zA-Z_-]/', $f)) {
+								$ach['path'] = $f;
+							}
+						}
+						$ach['progress'] = 100;
+						$ach['progress-subject'] = $subject;
+						if ($nextAch !== null) {
+							list ($nextA, $nextB) = $getThreshold($nextAch);
+							$ach['progress'] = ($subject - $a) * 100.0 / ($nextA - $a);
+							$ach['progress-next-a'] = $nextA;
+							$ach['progress-next-b'] = $nextB;
+						}
 						$achievements []= $ach;
 						break;
 					}
+					$nextAch = $ach;
 				}
 			}
-
-			//achievement for mean score
-			if ($this->view->am == AMModel::TYPE_ANIME) {
-				$count = 0;
-				$sum = 0;
-				$filter = UserListFilters::getNonPlanned();
-				foreach ($u->getList($this->view->am)->getEntries($filter) as $e) {
-					if ($e->getScore() > 0) {
-						$sum += $e->getScore();
-						$count ++;
-					}
-				}
-				$scoreMean = $sum / max(1, $count);
-
-				if (($scoreMean < 5) && ($scoreMean > 0)) {
-					$achievements []= [
-						'id' => 'anime-suffering',
-						'title' => 'Watching anime is suffering',
-						'desc' => 'Mean score lower than 5. Someone has to counterweigh the fanboys, right?'
-					];
-				}
-				if ($scoreMean >= 8.5) {
-					$achievements []= [
-						'id' => 'anime-ilovethem',
-						'title' => 'I love Chinese cartoons',
-						'desc' => 'Mean score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;'
-					];
-				}
-			}
-
-			$files = scandir(implode(DIRECTORY_SEPARATOR, [ChibiConfig::getInstance()->chibi->runtime->rootFolder, 'media', 'img', 'ach']));
-
-			foreach ($achievements as &$ach) {
-				$ach['path'] = null;
-				foreach ($files as $f) {
-					if (preg_match('/' . $ach['id'] . '[^0-9a-zA-Z_-]/', $f)) {
-						$ach['path'] = $f;
-					}
-				}
-			}
-			unset($ach);
-
-			//sort by achievement related titles count
-			uasort($achievements, function($a, $b) {
-				if (empty($a['entries'])) {
-					return - 1;
-				} elseif (empty($b['entries'])) {
-					return 1;
-				}
-				return count($a['entries']) - count($b['entries']);
-			});
 
 			$this->view->achievements[$u->getID()] = $achievements;
 		}

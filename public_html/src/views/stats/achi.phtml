@@ -17,9 +17,9 @@
 <?php else: ?>
 	<?php foreach ($this->achievements[$user->getID()] as $k => $ach): ?>
 		<div class="section" data-id="<?php echo $k ?>">
-		<?php if (!empty($ach['path'])): ?>
-			<img class="more-trigger" alt="<?php echo $ach['title'] ?>" src="<?php echo UrlHelper::url('media/img/ach/' . $ach['path']) ?>">
-		<?php endif ?>
+			<?php if (!empty($ach['path'])): ?>
+				<img class="achi<?php if (!empty($ach['entries'])): ?> more-trigger<?php endif ?>" alt="<?php echo $ach['title'] ?>" src="<?php echo UrlHelper::url('media/img/ach/' . $ach['path']) ?>">
+			<?php endif ?>
 			<h3>
 				<?php echo $ach['title'] ?>
 				<?php if (!empty($ach['level'])): ?>
@@ -27,13 +27,25 @@
 				<?php endif ?>
 			</h3>
 			<div class="section-body">
+				<?php if (isset($ach['progress'])): ?>
+					<?php if (isset($ach['progress-next-a'])): ?>
+						<div class="progress-wrapper" data-tooltip="Got <?php echo $ach['progress-subject'] ?>, next level at <?php echo $ach['progress-next-a'] ?>">
+					<?php else: ?>
+						<div class="progress-wrapper" data-tooltip="Maximum level!">
+					<?php endif ?>
+						<div class="progress">
+							<div class="bar" style="width: <?php echo $ach['progress'] ?>%"></div>
+						</div>
+					</div>
+				<?php endif ?>
+
 				<?php if (!empty($ach['desc'])): ?>
 					<p class="desc"><?php echo $ach['desc'] ?></p>
 				<?php endif ?>
 
-				<?php if (!empty($ach['entries'])): ?>
-					<a href="#" class="more-trigger">See related titles.</a>
+				<div class="clear"></div>
 
+				<?php if (!empty($ach['entries'])): ?>
 					<div class="wrapper wrapper-more">
 						<p>
 							<a class="close">&times;</a>
@@ -58,8 +70,6 @@
 						<?php endif ?>
 					</div>
 				<?php endif ?>
-
-				<div class="clear"></div>
 			</div>
 		</div>
 	<?php endforeach ?>
