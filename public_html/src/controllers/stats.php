@@ -130,13 +130,13 @@ class StatsController extends AbstractController {
 				$subTypeDistribution = new SubTypeDistribution();
 				foreach ($entriesCompleted as $entry) {
 					$info[$type]->completed += 1;
-					$scoreDistribution->addEntry($entry);
 					if ($entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE) {
 						$lengthDistribution->addEntry($entry);
 					}
 					$subTypeDistribution->addEntry($entry);
 				}
 				foreach ($entriesNonPlanned as $entry) {
+					$scoreDistribution->addEntry($entry);
 					if ($type == AMModel::TYPE_ANIME) {
 						$a = $entry->getCompletedEpisodes();
 						$b = $entry->getAMEntry()->getEpisodeCount();
