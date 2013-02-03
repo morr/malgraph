@@ -2,10 +2,10 @@
 	"manga": {
 		"mahou shoujo": {
 			"achievements": [
-				{ "threshold": "15-29", "id": "manga-mahoushoujo-1", "level": "Mahou Shoujo: level 1", "title": "Signed the contract", "desc": "Became a magical girl and started saving the world, step by step." },
-				{ "threshold": "30-49", "id": "manga-mahoushoujo-2", "level": "Mahou Shoujo: level 2", "title": "Magic is my middle name", "desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!" },
-				{ "threshold": "50-79", "id": "manga-mahoushoujo-3", "level": "Mahou Shoujo: level 3", "title": "Too magical to comprehend", "desc": "Read so many mahou shoujo manga that you sparkle occasionally." },
-				{ "threshold": "80+", "id": "manga-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "Are you a wizard", "desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules." }
+				{ "threshold": "15-29", "id": "manga-mahoushoujo-1", "level": "Mahou Shoujo: level 1",   "title": "Signed the contract",       "desc": "Became a magical girl and started saving the world, step by step." },
+				{ "threshold": "30-49", "id": "manga-mahoushoujo-2", "level": "Mahou Shoujo: level 2",   "title": "Magic is my middle name",   "desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!" },
+				{ "threshold": "50-79", "id": "manga-mahoushoujo-3", "level": "Mahou Shoujo: level 3",   "title": "Too magical to comprehend", "desc": "Read so many mahou shoujo manga that you sparkle occasionally." },
+				{ "threshold": "80+",   "id": "manga-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "Are you a wizard",          "desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				3167,  #A Little Snow Fairy Sugar
@@ -151,10 +151,10 @@
 	"anime": {
 		"mahou shoujo": {
 			"achievements": [
-				{ "threshold": "15-29", "id": "anime-mahoushoujo-1", "level": "Mahou Shoujo: level 1", "title": "Signed the contract", "desc": "Became a magical girl and started saving the world, step by step." },
-				{ "threshold": "30-49", "id": "anime-mahoushoujo-2", "level": "Mahou Shoujo: level 2", "title": "Magic is my middle name", "desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!" },
-				{ "threshold": "50-79", "id": "anime-mahoushoujo-3", "level": "Mahou Shoujo: level 3", "title": "Too magical to comprehend", "desc": "Watched so many mahou shoujo anime that you sparkle occasionally." },
-				{ "threshold": "80+", "id": "anime-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "Are you a wizard", "desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules." }
+				{ "threshold": "15-29", "id": "anime-mahoushoujo-1", "level": "Mahou Shoujo: level 1",   "title": "Signed the contract",       "desc": "Became a magical girl and started saving the world, step by step." },
+				{ "threshold": "30-49", "id": "anime-mahoushoujo-2", "level": "Mahou Shoujo: level 2",   "title": "Magic is my middle name",   "desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!" },
+				{ "threshold": "50-79", "id": "anime-mahoushoujo-3", "level": "Mahou Shoujo: level 3",   "title": "Too magical to comprehend", "desc": "Watched so many mahou shoujo anime that you sparkle occasionally." },
+				{ "threshold": "80+",   "id": "anime-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "Are you a wizard",          "desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				831,   #A Little Snow Fairy Sugar
@@ -386,10 +386,10 @@
 		},
 		"slice of life": {
 			"achievements": [
-				{ "threshold": "25-39", "id": "anime-sliceoflife-1", "title": "Normal high school boy", "level": "Slice Of Life: level 1", "desc": "Got started into the furious ride with slice-of-life anime." },
-				{ "threshold": "40-59", "id": "anime-sliceoflife-2", "title": "cute &times; ( girls + things )", "level": "Slice Of Life: level 2", "desc": "Didn&rsquo;t get bored of watching cute girls doing cute things." },
-				{ "threshold": "60-99", "id": "anime-sliceoflife-3", "title": "Enjoying life", "level": "Slice Of Life: level 3", "desc": "Found the equilibrium between boring and interesting." },
-				{ "threshold": "100+", "id": "anime-sliceoflife-4", "title": "Prima Undine", "level": "Slice Of Life: level MAX", "desc": "Awarded Ph.D. degree in sliceoflife-ology. You can be proud of yourself." }
+				{ "threshold": "25-39", "id": "anime-sliceoflife-1", "level": "Slice Of Life: level 1",   "title": "Normal high school boy",          "desc": "Got started into the furious ride with slice-of-life anime." },
+				{ "threshold": "40-59", "id": "anime-sliceoflife-2", "level": "Slice Of Life: level 2",   "title": "cute &times; ( girls + things )", "desc": "Didn&rsquo;t get bored of watching cute girls doing cute things." },
+				{ "threshold": "60-99", "id": "anime-sliceoflife-3", "level": "Slice Of Life: level 3",   "title": "Enjoying life",                   "desc": "Found the equilibrium between boring and interesting." },
+				{ "threshold": "100+",  "id": "anime-sliceoflife-4", "level": "Slice Of Life: level MAX", "title": "Prima Undine",                    "desc": "Awarded Ph.D. degree in sliceoflife-ology. You can be proud of yourself." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				1689,  #5 Centimeters per Second
@@ -597,10 +597,10 @@
 		},
 		"gar": {
 			"achievements": [
-				{ "threshold": "25-39", "id": "anime-gar-1", "level": "GAR: level 1", "title": "So manly I can&rsquo;t breathe", "desc": "Watching all those men made you feel like a little girl&hellip; and you liked it." },
-				{ "threshold": "40-59", "id": "anime-gar-2", "level": "GAR: level 2", "title": "Testosterone storm", "desc": "Your body has adapted into GAR anime. You can hear your muscles growing." },
-				{ "threshold": "60-99", "id": "anime-gar-3", "level": "GAR: level 3", "title": "You are already man.", "desc": "Resistance is futile. People are simply no match for you." },
-				{ "threshold": "100+", "id": "anime-gar-4", "level": "GAR: level MAKSHIMUM", "title": "Alpha Male", "desc": "You aren&rsquo;t made out of testosterone. Testosterone is made out of you." }
+				{ "threshold": "25-39", "id": "anime-gar-1", "level": "GAR: level 1",         "title": "So manly I can&rsquo;t breathe", "desc": "Watching all those men made you feel like a little girl&hellip; and you liked it." },
+				{ "threshold": "40-59", "id": "anime-gar-2", "level": "GAR: level 2",         "title": "Testosterone storm",             "desc": "Your body has adapted into GAR anime. You can hear your muscles growing." },
+				{ "threshold": "60-99", "id": "anime-gar-3", "level": "GAR: level 3",         "title": "You are already man.",           "desc": "Resistance is futile. People are simply no match for you." },
+				{ "threshold": "100+",  "id": "anime-gar-4", "level": "GAR: level MAKSHIMUM", "title": "Alpha Male",                     "desc": "You aren&rsquo;t made out of testosterone. Testosterone is made out of you." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				1292,  #Afro Samurai
@@ -755,10 +755,10 @@
 		},
 		"mecha": {
 			"achievements": [
-				{ "threshold": "25-39",  "id": "anime-mecha-1", "level": "Mecha: level 1", "title": "Me? PILOT this thing?!", "desc": "A secret organization wants you to pilot a huge mecha. Can you do it?" },
-				{ "threshold": "40-59", "id": "anime-mecha-2", "level": "Mecha: level 2", "title": "Engineer", "desc": "After watching over 40 mecha anime you should be able to build your own mobile suit. Remember not to kill the rest of us." },
-				{ "threshold": "60-99", "id": "anime-mecha-3", "level": "Mecha: level 3", "title": "Mechazawa", "desc": "Having watched over 60 mecha anime, you&rsquo;ve probably became a robot already. Nice job, hero." },
-				{ "threshold": "100+", "id": "anime-mecha-4", "level": "Mecha: level MAX", "title": "Pierce the H E A V E N S !", "desc": "Do the impossible. See the invisible. ROW ROW FIGHT THE POWAH!<br>&hellip;You just sang that in your head, didn&rsquo;t you?" }
+				{ "threshold": "25-39", "id": "anime-mecha-1", "level": "Mecha: level 1",   "title": "Me? PILOT this thing?!",     "desc": "A secret organization wants you to pilot a huge mecha. Can you do it?" },
+				{ "threshold": "40-59", "id": "anime-mecha-2", "level": "Mecha: level 2",   "title": "Engineer",                   "desc": "After watching over 40 mecha anime you should be able to build your own mobile suit. Remember not to kill the rest of us." },
+				{ "threshold": "60-99", "id": "anime-mecha-3", "level": "Mecha: level 3",   "title": "Mechazawa",                  "desc": "Having watched over 60 mecha anime, you&rsquo;ve probably became a robot already. Nice job, hero." },
+				{ "threshold": "100+",  "id": "anime-mecha-4", "level": "Mecha: level MAX", "title": "Pierce the H E A V E N S !", "desc": "Do the impossible. See the invisible. ROW ROW FIGHT THE POWAH!<br>&hellip;You just sang that in your head, didn&rsquo;t you?" }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				7113,  #30th Gundam Perfect Mission
@@ -1142,10 +1142,10 @@
 		},
 		"historical": {
 			"achievements": [
-				{ "threshold": "25-39", "id": "anime-historical-1", "level": "Historical: level 1", "title": "", "desc": "" },
-				{ "threshold": "40-59", "id": "anime-historical-2", "level": "Historical: level 2", "title": "", "desc": "" },
-				{ "threshold": "60-99", "id": "anime-historical-3", "level": "Historical: level 3", "title": "", "desc": "" },
-				{ "threshold": "100+", "id": "anime-historical-4", "level": "Historical: ANCIENT POWER", "title": "", "desc": "" }
+				{ "threshold": "25-39", "id": "anime-historical-1", "level": "Historical: level 1",       "title": "", "desc": "" },
+				{ "threshold": "40-59", "id": "anime-historical-2", "level": "Historical: level 2",       "title": "", "desc": "" },
+				{ "threshold": "60-99", "id": "anime-historical-3", "level": "Historical: level 3",       "title": "", "desc": "" },
+				{ "threshold": "100+",  "id": "anime-historical-4", "level": "Historical: ANCIENT POWER", "title": "", "desc": "" }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				11545, #108 Ward Inside and Out: Make-Up Artist
@@ -1602,7 +1602,7 @@
 		"mean score": {
 			"achievements": [
 				{ "threshold": "8.5-10", "id": "anime-suffering", "title": "Watching anime is suffering", "desc": "Mean score lower than 5. Someone has to counterweigh the fanboys, right?" },
-				{ "threshold": "0-5", "id": "anime-ilovethem", "title": "I love Chinese cartoons", "desc": "Mean score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;" }
+				{ "threshold": "0-5",    "id": "anime-ilovethem", "title": "I love Chinese cartoons",     "desc": "Mean score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;" }
 			],
 			"requirement": { "type": "mean-score" }
 		},
