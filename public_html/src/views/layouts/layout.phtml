@@ -195,7 +195,11 @@
 		<div class="clear"></div>
 	</div>
 
-	<p class="load-time"><?php printf('%.02f', microtime(true) - ChibiConfig::getInstance()->chibi->runtime->timeStarted) ?>s</p>
+	<p class="load-time">
+		<?php printf('%.02f', microtime(true) - ChibiConfig::getInstance()->chibi->runtime->timeStarted) ?>s
+		&nbsp;|&nbsp;
+		<?php echo date('M d Y, H:i:s') ?> UTC
+	</p>
 
 	<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 		<script type="text/javascript">
