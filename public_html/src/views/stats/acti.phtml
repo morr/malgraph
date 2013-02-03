@@ -8,16 +8,16 @@
 		<ul class="infobox">
 			<li>
 				<div>
-					<span class="prefix">Total time</span>
-					<span class="subject"><?php printf('%.02f', $this->actiInfo[$user->getID()]['total-time'] / 60.0 / 24.0) ?></span>
-					<span class="suffix">days</span>
+					<?php $eps = array_sum(array_map(function($p) { return count($p); }, array_values($this->dayPeriods[$user->getID()]))) ?>
+					<span class="prefix">Last 3 weeks</span>
+					<span class="subject"><?php echo $eps ?></span>
+					<span class="suffix"><?php echo ChibiRegistry::getHelper('mg')->epText(null, count($eps) > 0) ?></span>
 				</div>
 			</li>
 			<li>
 				<div>
-					<span class="prefix">Average time</span>
-					<span class="subject" data-tooltip="Earliest time user started or finished|<?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL,|was on <?php echo date('Y-m-d', $this->actiInfo[$user->getID()]['earliest-time']) ?>"><?php printf('%.02f', $this->actiInfo[$user->getID()]['mean-time']) ?></span>
-					<span class="suffix">min/day</span>
+					<span class="prefix">Different titles</span>
+					<span class="subject"><?php echo count($this->dayPeriodTitles[$user->getID()]) ?></span>
 				</div>
 			</li>
 		</ul>
@@ -34,7 +34,7 @@
 			$('#user-<?php echo $user->getRuntimeID() ?> .acti-line-daily .target').each(function() {
 				var chart = new Highcharts.Chart({
 					chart: { renderTo: this, type: 'column', marginTop: 8 },
-					xAxis: { categories: <?php echo json_encode(array_keys($this->actiInfo[$user->getID()]['day-periods'])) ?>, title: { text: 'Days ago', margin: 15 }, labels: { style: { fontSize: '10px !important' } } },
+					xAxis: { categories: <?php echo json_encode(array_keys($this->dayPeriods[$user->getID()])) ?>, title: { text: 'Days ago', margin: 15 }, labels: { style: { fontSize: '10px !important' } } },
 					yAxis: { title: { text: '<?php echo $this->am == AMModel::TYPE_MANGA ? 'Chapter' : 'Episode' ?> count' }, min: 0 },
 					tooltip: { formatter: function() {
 						var text = '<?php echo $this->am == AMModel::TYPE_MANGA ? 'Chapters' : 'Episodes' ?> completed ';
@@ -48,7 +48,7 @@
 						text += ': ' + this.y;
 						return text; } },
 					series: [ {
-						data: <?php echo json_encode(array_map(function($p) { return count($p); }, array_values($this->actiInfo[$user->getID()]['day-periods']))) ?>,
+						data: <?php echo json_encode(array_map(function($p) { return count($p); }, array_values($this->dayPeriods[$user->getID()]))) ?>,
 						point: { events: { click: function(e) {
 							toggleMoreWrappers($('.acti-line-daily .wrapper-more'), {'sender': 'daily-activity', 'days-ago': this.category});
 						} } }
@@ -70,19 +70,19 @@
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'activity timeline (monthly)') ?>
 	</h2>
 	<div class="section-body">
-		<?php if (empty($this->actiInfo[$user->getID()]['month-periods'])): ?>
+		<?php if (empty($this->monthPeriods[$user->getID()])): ?>
 			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified.<br>
 			This graph won&rsquo;t work without this data.</p>
-		<?php elseif (count($this->actiInfo[$user->getID()]['month-periods']) == 1): ?>
-			<?php $p = array_keys($this->actiInfo[$user->getID()]['month-periods'])[0] ?>
+		<?php elseif (count($this->monthPeriods[$user->getID()]) == 1): ?>
+			<?php $p = array_keys($this->monthPeriods[$user->getID()])[0] ?>
 			<?php if ($p == '?'): ?>
 				<p>No information was found about long-term completion date of your titles.</p>
 			<?php else: ?>
-				<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo array_keys($this->actiInfo[$user->getID()]['month-periods'])[0] ?>, so a graph isn&rsquo;t needed.</p>
+				<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo array_keys($this->monthPeriods[$user->getID()])[0] ?>, so a graph isn&rsquo;t needed.</p>
 			<?php endif ?>
 		<?php else: ?>
 			<div class="wrapper wrapper-target">
-				<div style="width: <?php echo count($this->actiInfo[$user->getID()]['month-periods']) * 30 + 100 ?>px" class="target"></div>
+				<div style="width: <?php echo count($this->monthPeriods[$user->getID()]) * 30 + 100 ?>px" class="target"></div>
 				<div class="clear"></div>
 			</div>
 
@@ -91,7 +91,7 @@
 
 			<?php
 				$max = 0;
-				foreach ($this->actiInfo[$user->getID()]['month-periods'] as $key => $x2) {
+				foreach ($this->monthPeriods[$user->getID()] as $key => $x2) {
 					if ($key != '?' and count($x2['entries']) > $max) {
 						$max = count($x2['entries']);
 					}
@@ -103,7 +103,7 @@
 				$('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'area', marginTop: 8, marginBottom: 56 },
-						xAxis: { categories: <?php echo json_encode(array_keys($this->actiInfo[$user->getID()]['month-periods'])) ?>, labels: { rotation: -45, align: 'right' } },
+						xAxis: { categories: <?php echo json_encode(array_keys($this->monthPeriods[$user->getID()])) ?>, labels: { rotation: -45, align: 'right' } },
 						yAxis: { title: {text: 'Title count'}, min: 0, max: <?php echo $real_max ?> },
 						tooltip: { formatter: function() {
 							var text = 'Titles ';
@@ -116,21 +116,21 @@
 						series: [ {
 							data:
 								<?php echo json_encode(array_map(function($key) use ($user, $real_max) {
-									$x = $this->actiInfo[$user->getID()]['month-periods'][$key];
+									$x = $this->monthPeriods[$user->getID()][$key];
 									return [
 										'y' => min(count($x['entries']), $real_max),
 										'real_y' => count($x['entries'])
 									];
-								}, array_keys($this->actiInfo[$user->getID()]['month-periods'])))
+								}, array_keys($this->monthPeriods[$user->getID()])))
 								?>,
 							point: { events: { click: function(e) {
 								toggleMoreWrappers($('.acti-line-monthly .wrapper-more'), {'sender': 'monthly-activity', 'month': this.category});
 							} } }
 						},
-						<?php if (!empty($this->actiInfo[$user->getID()]['month-periods']['?'])): ?>
+						<?php if (!empty($this->monthPeriods[$user->getID()]['?'])): ?>
 							{
 								data: <?php
-									$x = &$this->actiInfo[$user->getID()]['month-periods']['?'];
+									$x = &$this->monthPeriods[$user->getID()]['?'];
 									echo json_encode([ [
 										'y' => min(count($x['entries']), $real_max),
 										'real_y' => count($x['entries'])

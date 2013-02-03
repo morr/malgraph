@@ -83,13 +83,13 @@ class MGHelper extends ChibiHelper {
 		throw new InvalidAMTypeException();
 	}
 
-	public function epText($type = null) {
+	public function epText($type = null, $plural = false) {
 		if ($type === null) {
 			$type = ChibiRegistry::getView()->am;
 		}
 		switch ($type) {
-			case AMModel::TYPE_ANIME: return 'episode';
-			case AMModel::TYPE_MANGA: return 'chapter';
+			case AMModel::TYPE_ANIME: return 'episode' . ($plural ? 's' : '');
+			case AMModel::TYPE_MANGA: return 'chapter' . ($plural ? 's' : '');
 		}
 		throw new InvalidAMTypeException();
 	}

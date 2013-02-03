@@ -275,6 +275,29 @@ class StatsController extends AbstractController {
 
 			$this->view->scoreDistribution[$userEntry->getID()] = new ScoreDistribution($entries);
 			$this->view->scoreDurationDistribution[$userEntry->getID()] = new ScoreDurationDistribution($entries);
+
+			//add some random information
+			list($year, $month, $day) = explode('-', $userEntry->getUserData()->getJoinDate());
+			$earliest = mktime(0, 0, 0, $month, $day, $year);
+			$totalTime = 0;
+			foreach ($entries as $e) {
+				$totalTime += $e->getCompletedDuration();
+				foreach ([$e->getStartDate(), $e->getFinishDate()] as $k) {
+					$f = explode('-', $k);
+					if (count($f) != 3) {
+						continue;
+					}
+					$year = intval($f[0]);
+					$month = intval($f[1]);
+					$day = intval($f[2]);
+					$time = mktime(0, 0, 0, $month, $day, $year);
+					if ($time < $earliest) {
+						$earliest = $time;
+					}
+				}
+			}
+			$this->view->earliestTimeKnown[$userEntry->getID()] = $earliest;
+			$this->view->meanTime[$userEntry->getID()] = $totalTime / max(1, (time() - $earliest) / (24. * 3600.0));
 		}
 	}
 
@@ -391,29 +414,23 @@ class StatsController extends AbstractController {
 		MediaHelper::addMedia([MediaHelper::HIGHCHARTS, MediaHelper::INFOBOX]);
 
 		foreach ($this->view->users as $i => $u) {
-			$actiInfo = [
-				'month-periods' => [],
-				'day-periods' => [],
-				'total-time' => 0,
-				'mean-time' => 0,
-			];
-
 			//count completed within month periods
 			$monthPeriod = false;
 			$monthPeriodMin = false;
 			$monthPeriodMax = false;
+			$monthPeriods = [];
 
 			$filter = UserListFilters::getCompleted();
 			$entries = $u->getList($this->view->am)->getEntries($filter);
 			foreach ($entries as $e) {
 				$monthPeriod = UserListService::getMonthPeriod($e);
-				if (!isset($actiInfo['month-periods'][$monthPeriod])) {
-					$actiInfo['month-periods'][$monthPeriod] = [
+				if (!isset($monthPeriods[$monthPeriod])) {
+					$monthPeriods[$monthPeriod] = [
 						'duration' => 0,
 						'entries' => []
 					];
 				}
-				$actiInfo['month-periods'][$monthPeriod]['entries'] []= $e;
+				$monthPeriods[$monthPeriod]['entries'] []= $e;
 				if ($monthPeriod != '?') {
 					if ($monthPeriodMin === false or strcmp($monthPeriod, $monthPeriod) < 0) {
 						$monthPeriodMin = $monthPeriod;
@@ -422,7 +439,7 @@ class StatsController extends AbstractController {
 						$monthPeriodMax = $monthPeriod;
 					}
 				}
-				$actiInfo['month-periods'][$monthPeriod]['duration'] += $e->getCompletedDuration();
+				$monthPeriods[$monthPeriod]['duration'] += $e->getCompletedDuration();
 			}
 
 			//add empty month periods so graph has no gaps
@@ -443,14 +460,14 @@ class StatsController extends AbstractController {
 					$keys []= sprintf('%04d-%02d', $yearMax, $month);
 				}
 				foreach ($keys as $key) {
-					if (!isset($actiInfo['month-periods'][$key])) {
-						$actiInfo['month-periods'][$key] = [
+					if (!isset($monthPeriods[$key])) {
+						$monthPeriods[$key] = [
 							'duration' => 0,
 							'entries' => []
 						];
 					}
 				}
-				uksort($actiInfo['month-periods'], function($a, $b) {
+				uksort($monthPeriods, function($a, $b) {
 					if ($a == '?') {
 						return -1;
 					} elseif ($b == '?') {
@@ -460,40 +477,21 @@ class StatsController extends AbstractController {
 				});
 			}
 
-			//add some random information
-			$actiInfo['total-time'] = array_sum(array_map(function($mp) { return $mp['duration']; }, $actiInfo['month-periods']));
-
-			list($year, $month, $day) = explode('-', $u->getUserData()->getJoinDate());
-			$earliest = mktime(0, 0, 0, $month, $day, $year);
-			$entires = $u->getList($this->view->am)->getEntries();
-			foreach ($entries as $e) {
-				foreach ([$e->getStartDate(), $e->getFinishDate()] as $k) {
-					$f = explode('-', $k);
-					if (count($f) != 3) {
-						continue;
-					}
-					$year = intval($f[0]);
-					$month = intval($f[1]);
-					$day = intval($f[2]);
-					$time = mktime(0, 0, 0, $month, $day, $year);
-					if ($time < $earliest) {
-						$earliest = $time;
-					}
-				}
-			}
-			$actiInfo['earliest-time'] = $earliest;
-			$actiInfo['mean-time'] = $actiInfo['total-time'] / ((time() - $earliest) / (24. * 3600.0));
-
 			//day periods
+			$dayPeriods = [];
+			$dayPeriodTitles = [];
 			for ($daysBack = 21; $daysBack >= 0; $daysBack --) {
 				$dayPeriod = [];
 				foreach ($u->getHistory($this->view->am)->getEntriesByDaysAgo($daysBack) as $entry) {
 					$dayPeriod []= $entry;
+					$dayPeriodTitles[$entry->getID()] = $entry;
 				}
-				$actiInfo['day-periods'][$daysBack] = $dayPeriod;
+				$dayPeriods[$daysBack] = $dayPeriod;
 			}
 
-			$this->view->actiInfo[$u->getID()] = $actiInfo;
+			$this->view->monthPeriods[$u->getID()] = $monthPeriods;
+			$this->view->dayPeriods[$u->getID()] = $dayPeriods;
+			$this->view->dayPeriodTitles[$u->getID()] = $dayPeriodTitles;
 		}
 	}
 
