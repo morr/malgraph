@@ -576,7 +576,7 @@ class StatsController extends AbstractController {
 					return $a->getID() - $b->getID();
 				});
 			}
-			uasort($proposedEntries, function($a, $b) { return $b->meanScore - $a->meanScore; });
+			uasort($proposedEntries, function($a, $b) { return $b->meanScore > $a->meanScore; });
 
 			$this->view->proposedEntries[$u->getID()] = $proposedEntries;
 		}
