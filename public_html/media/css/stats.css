@@ -25,8 +25,8 @@ div.users { padding-bottom: 2em; }
 		#switcher i { margin: 0 !important; }
 
 	/* "more" divs */
-	.wrapper-more { padding-top: 1em; display: none; }
-		.wrapper-more ul { margin-bottom: 0; }
+	.wrapper-more { display: none; }
+		.wrapper-more ul { margin: 0; padding-top: 1em; }
 		.wrapper-more .close { float: right; font-size: 20pt; line-height: 20pt; text-decoration: none; color: silver; cursor: pointer; }
 		.wrapper-more ul span.details { color: gray; margin-left: 0.5em; font-size: 92.5%; }
 
