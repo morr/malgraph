@@ -143,7 +143,7 @@
 				{ "threshold": "2500-4999", "id": "numbers-manga-2500",  "level": "Manga maniac",       "title": "Passed 2500 mark",  "desc": "Completed over 2500 titles. This deserves no further comment." },
 				{ "threshold": "5000-7499", "id": "numbers-manga-5000",  "level": "Manga maniac",       "title": "Passed 5000 mark",  "desc": "Completed over 5000 titles. This deserves no further comment." },
 				{ "threshold": "7500-9999", "id": "numbers-manga-7500",  "level": "Manga obsession",    "title": "Passed 7500 mark",  "desc": "Completed over 7500 titles. Are you having fun, breaking all the rules?" },
-				{ "threshold": "10000+",    "id": "numbers-manga-10000", "level": "Manga obsession",    "title": "Passed 10000 mark", "desc": "Completed over 10000 titles. Are you having fun, breaking all the rules?" }
+				{ "threshold": "10000+",    "id": "numbers-manga-10000", "level": "Manga obsession",    "title": "Passed 10000 mark", "desc": "Completed over 10000 titles. There is no higher level. You can stop now." }
 			],
 			"requirement": { "type": "completed-titles" }
 		}
@@ -179,6 +179,7 @@
 				933,   #Dai Mahou Touge
 				1841,  #Dai Mahou Touge Omake
 				1221,  #Demashitaa! Powerpuff Girls Z
+				660,   #Denshin Mamotte Shugogetten
 				2259,  #Dr. Rin ni Kiitemite!
 				812,   #Earth Maiden Arjuna
 				1930,  #Eiga Futari wa Precure Max Heart
@@ -285,6 +286,7 @@
 				3388,  #Majokko Megu-chan
 				3881,  #Majokko Tickle
 				2457,  #Majokko Tsukune-chan
+				626,   #Mamotte Shugogetten!
 				1110,  #Mermaid Melody Pichi Pichi Pitch Pure
 				521,   #Mermaid Melody: Pichi Pichi Pitch
 				6492,  #Minky Momo in Tabidachi no Eki
@@ -423,12 +425,16 @@
 				1589,  #Bartender
 				1214,  #Binbou Shimai Monogatari
 				7597,  #Boku, Otaryman
+				10719, #Boku wa Tomodachi ga Sukunai
 				951,   #Chibi Maruko-chan
 				2830,  #Chibikko Remi to Meiken Kapi
 				9383,  #Chie-chan Funsenki: Jarinko Chie
 				6024,  #Chis New Address
 				3841,  #Chis Sweet Home
 				7972,  #Chis Sweet Home OVA
+				14741, #Chuunibyou demo Koi ga Shitai!
+				15687, #Chuunibyou demo Koi ga Shitai! Lite
+				15879, #Chuunibyou demo Koi ga Shitai!: Depth of Field - Ai to Nikushimi Gekijyo
 				2167,  #Clannad
 				4181,  #Clannad: After Story
 				1723,  #Clannad (Movie)
@@ -483,6 +489,7 @@
 				6862,  #K-On! Special: Live House!
 				7791,  #K-On!!
 				9734,  #K-On!! Special
+				5914,  #Kanamemo
 				144,   #Kanon
 				1530,  #Kanon (2006)
 				704,   #Kanon Kazahana
@@ -500,9 +507,11 @@
 				10098, #Kobato. Special: Hajimete no Kobato.
 				9423,  #Koko ni Iru
 				11887, #Kokoro Connect
+				16001, #Kokoro Connect: Michi Random
 				9213,  #Kowarekake no Orgel
 				10122, #Kowarekake no Orgel Special
 				6604,  #Kuruneko
+				13655, #Little Busters!
 				1887,  #Lucky Star
 				4472,  #Lucky Star OVA
 				273,   #Mahou Tsukai ni Taisetsu na Koto
@@ -689,6 +698,7 @@
 				5291,  #Hokuto no Ken: Zero Kenshiro Den
 				666,   #JoJo's Bizarre Adventure
 				665,   #JoJo's Bizarre Adventure (2000)
+				14719, #Jojo's Bizarre Adventure (2012)
 				3603,  #JoJo's Bizarre Adventure: Phantom Blood
 				3002,  #Kaiji
 				10271, #Kaiji: Hakairoku Hen
@@ -911,6 +921,8 @@
 				3288,  #Gundam Evolve
 				8839,  #Gundam Neo Experience 0087: Green Divers
 				4540,  #Gundam: Mission to the Rise
+				266,   #Gunparade March: Arata Naru Kougunka
+				858,   #Gunparade Orchestra
 				2598,  #Heavy Metal L-Gaim
 				2599,  #Heavy Metal L-Gaim I: Pentagona Window + Lady Gyabure
 				2600,  #Heavy Metal L-Gaim II: Farewell My Lovely + Pentagona Doors
@@ -926,6 +938,8 @@
 				143,   #Kannazuki no Miko
 				8486,  #Kihei Senki Legacies
 				9170,  #Kimi ga Nozomu Eien: Gundam Parody
+				766,   #Kishin Houkou Demonbane
+				1067,  #Kishin Houkou Demonbane (2006)
 				4198,  #Koutetsu Jeeg
 				2157,  #Koutetsushin Jeeg
 				3653,  #Kurogane no Linebarrels
@@ -967,6 +981,8 @@
 				8666,  #Mazinkaiser SKL
 				2734,  #Mazinkaiser: Shitou! Ankoku Dai Shogun
 				1935,  #Megazone 23
+				1285,  #MD Geist
+				1832,  #Mei Ou Project Zeorymer
 				96,    #Mobile Fighter G Gundam
 				1288,  #Mobile Police Patlabor
 				2733,  #Mobile Police Patlabor Minimum
@@ -1028,6 +1044,7 @@
 				2200,  #Muteki Choujin Zanbot 3
 				3305,  #Muteki Koujin Daitarn 3
 				11021, #Muv-Luv Alternative: Total Eclipse
+				16335, #Muv-Luv Alternative: Total Eclipse Recap - Climax Chokuzen Special
 				1163,  #Neo Ranga
 				30,    #Neon Genesis Evangelion
 				31,    #Neon Genesis Evangelion: Death & Rebirth
@@ -1246,6 +1263,7 @@
 				7867,  #Gon
 				8425,  #Gosick
 				10504, #Gosick Recap
+				578,   #Grave of the Fireflies
 				1200,  #Gun-dou Musashi
 				10270, #Gun-dou Musashi Recap
 				2579,  #Hachijunichikan Sekai Isshuu
@@ -1601,14 +1619,15 @@
 		},
 		"mean score": {
 			"achievements": [
-				{ "threshold": "8.5-10", "id": "anime-suffering", "title": "Watching anime is suffering", "desc": "Mean score lower than 5. Someone has to counterweigh the fanboys, right?" },
-				{ "threshold": "0-5",    "id": "anime-ilovethem", "title": "I love Chinese cartoons",     "desc": "Mean score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;" }
+				{ "threshold": "8.5-10", "id": "anime-ilovethem",     "title": "I love Chinese cartoons",     "desc": "Mean score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;" },
+				{ "threshold": "3-5",    "id": "anime-suffering",     "title": "Watching anime is suffering", "desc": "Mean score lower than 5. Someone has to counterweigh the fanboys, right?" },
+				{ "threshold": "0-2.99", "id": "anime-lessthanthree", "title": "Less than three",             "desc": "You seem to hate anime. Go outside, find a new hobby or something like that." }
 			],
 			"requirement": { "type": "mean-score" }
 		},
 		"count": {
 			"achievements": [
-				{ "threshold": "100-199",   "id": "numbers-anime-100",   "level": "Casual watcher",     "title": "Passed 100 mark",   "desc": "Completed over 100 titles. You DID buy all of them, right?" },
+				{ "threshold": "100-199",   "id": "numbers-anime-100",   "level": "Do you even watch?", "title": "Passed 100 mark",   "desc": "Completed over 100 titles. You DID buy all of them, right?" },
 				{ "threshold": "200-299",   "id": "numbers-anime-200",   "level": "Casual watcher",     "title": "Passed 200 mark",   "desc": "Completed over 200 titles. You DID buy all of them, right?" },
 				{ "threshold": "300-399",   "id": "numbers-anime-300",   "level": "Casual watcher",     "title": "Passed 300 mark",   "desc": "Completed over 300 titles. You DID buy all of them, right?" },
 				{ "threshold": "400-499",   "id": "numbers-anime-400",   "level": "A lot of free time", "title": "Passed 400 mark",   "desc": "Completed over 400 titles. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
@@ -1619,7 +1638,7 @@
 				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Anime maniac",       "title": "Passed 2500 mark",  "desc": "Completed over 2500 titles. This deserves no further comment." },
 				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Anime maniac",       "title": "Passed 5000 mark",  "desc": "Completed over 5000 titles. This deserves no further comment." },
 				{ "threshold": "7500-9999", "id": "numbers-anime-7500",  "level": "Anime obsession",    "title": "Passed 7500 mark",  "desc": "Completed over 7500 titles. Are you having fun, breaking all the rules?" },
-				{ "threshold": "10000+",    "id": "numbers-anime-10000", "level": "Anime obsession",    "title": "Passed 10000 mark", "desc": "Completed over 10000 titles. Are you having fun, breaking all the rules?" }
+				{ "threshold": "10000+",    "id": "numbers-anime-10000", "level": "Anime obsession",    "title": "Passed 10000 mark", "desc": "Completed over 10000 titles. There is no higher level. You can stop now." }
 			],
 			"requirement": { "type": "completed-titles" }
 		}
