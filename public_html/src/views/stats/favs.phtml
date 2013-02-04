@@ -29,15 +29,16 @@
 							<?php $json = [];
 								$i = 0;
 								foreach ($this->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $decade) {
+									$band = [
+										'from' => $decade - 0.5,
+										'to' => $decade + 9.5,
+										'label' => ['text' => $decade . 's'],
+										'zIndex' => 3,
+									];
 									if ($i ++ % 2 == 0) {
-										$json []= [
-											'from' => $decade - 0.5,
-											'to' => $decade + 9.5,
-											'color' => 'rgba(200, 230, 255, 0.2)',
-											'label' => ['text' => $decade . 's'],
-											'zIndex' => 3,
-										];
+										$band['color'] = 'rgba(200, 230, 255, 0.2)';
 									}
+									$json []= $band;
 								} ?>
 							plotBands: <?php echo json_encode($json) ?>
 						},

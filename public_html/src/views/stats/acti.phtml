@@ -103,7 +103,37 @@
 				$('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'area', marginTop: 8, marginBottom: 56 },
-						xAxis: { categories: <?php echo json_encode(array_keys($this->monthPeriods[$user->getID()])) ?>, labels: { rotation: -45, align: 'right' } },
+						xAxis: {
+							categories: <?php echo json_encode(array_keys($this->monthPeriods[$user->getID()])) ?>,
+							labels: { rotation: -45, align: 'right' },
+							<?php $json = [];
+								$keys = array_map(function($x) { return substr($x, 0, strpos($x, '-')); }, array_keys($this->monthPeriods[$user->getID()]));
+								$k = 0; $i = 0;
+								while ($k < count($keys)) {
+									$year = $nextYear = $keys[$k];
+									$j = $k;
+									$k2 = $k;
+									while ($j < count($keys)) {
+										if ($keys[$j] != $keys[$k]) {
+											break;
+										}
+										$k2 = $j;
+										++ $j;
+									}
+									$band = [
+										'from' => $k - 0.5,
+										'to' => $k2 + 0.5,
+										'label' => ['text' => $year],
+										'zIndex' => 3
+									];
+									if ($i ++ % 2 == 1) {
+										$band['color'] = 'rgba(200, 230, 255, 0.2)';
+									}
+									$json []= $band;
+									$k = $k2 + 1;
+								} ?>
+							plotBands: <?php echo json_encode($json) ?>
+						},
 						yAxis: { title: {text: 'Title count'}, min: 0, max: <?php echo $real_max ?> },
 						tooltip: { formatter: function() {
 							var text = 'Titles ';
