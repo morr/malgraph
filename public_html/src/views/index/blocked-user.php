@@ -5,4 +5,4 @@
 <?php else: ?>
 	<?php echo ucfirst($_SESSION['wrong-user']) ?>
 <?php endif ?>
- requested to block his profile from being displayed here.</p>
+ requested to block their profile from being displayed here.</p>
