@@ -1608,7 +1608,7 @@
 		},
 		"boku no pico": {
 			"achievements": [
-				{ "threshold": "3+", "id": "anime-bokunopico", "level": "It&rsquo;s just ice cream", "title": "Feels&hellip; weird, man", "desc": "Watched Boku no Pico. This is what you get when you follow /a/&rsquo;s recommendations." }
+				{ "threshold": "3+", "id": "anime-bokunopico", "level": "It&rsquo;s just an ice cream", "title": "Feels&hellip; weird, man", "desc": "Watched Boku no Pico. This is what you get when you follow /a/&rsquo;s recommendations." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				1639,  #Boku no Pico
@@ -1634,7 +1634,7 @@
 				{ "threshold": "500-749",   "id": "numbers-anime-500",   "level": "Passed 500 mark",   "title": "A lot of free time",    "desc": "Watched over 500 anime. Do you have any other hobbies?" },
 				{ "threshold": "750-999",   "id": "numbers-anime-750",   "level": "Passed 750 mark",   "title": "I see the light",       "desc": "Watched over 750 anime. Good luck getting to the next level." },
 				{ "threshold": "1000-1499", "id": "numbers-anime-1000",  "level": "Passed 1000 mark",  "title": "I&rsquo;m done here",   "desc": "Watched over 1000 anime. Congratulations, you broke the magical number. Take a breath now." },
-				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "Passed 1500 mark",  "title": "The Collector",         "desc": "Watched over 1500 animes. No, wait. The plural is of anime is anime." }
+				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "Passed 1500 mark",  "title": "The Collector",         "desc": "Watched over 1500 animes. No, wait. The plural is of anime is anime." },
 				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Passed 2500 mark",  "title": "Anime maniac",          "desc": "Watched over 2500 anime. This deserves no further comment." },
 				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Passed 5000 mark",  "title": "Gotta watch them all!", "desc": "Watched over 5000 anime. You&rsquo;re one of the chosen ones." },
 				{ "threshold": "7500-9999", "id": "numbers-anime-7500",  "level": "Passed 7500 mark",  "title": "Database breaker",      "desc": "Watched over 7500 anime. Are you having fun, breaking all the rules? By the way, do we even have that many anime in the database?!" },
