@@ -432,7 +432,7 @@ class StatsController extends AbstractController {
 				}
 				$monthPeriods[$monthPeriod]['entries'] []= $e;
 				if ($monthPeriod != '?') {
-					if ($monthPeriodMin === false or strcmp($monthPeriod, $monthPeriod) < 0) {
+					if ($monthPeriodMin === false or strcmp($monthPeriod, $monthPeriodMin) < 0) {
 						$monthPeriodMin = $monthPeriod;
 					}
 					if ($monthPeriodMax === false or strcmp($monthPeriod, $monthPeriodMax) > 0) {
