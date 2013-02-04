@@ -152,9 +152,11 @@
 				</li>-->
 				<li>
 					<div>
-						<span class="prefix">Average time</span>
-						<span class="subject" data-tooltip="Earliest time user started or finished|<?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL,|was on <?php echo date('Y-m-d', $this->earliestTimeKnown[$user->getID()]) ?>"><?php printf('%.02f', $this->meanTime[$user->getID()]) ?></span>
-						<span class="suffix">min/day</span>
+						<div data-tooltip="Earliest time user started or finished|<?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL,|was on <?php echo date('Y-m-d', $this->earliestTimeKnown[$user->getID()]) ?>">
+							<span class="prefix">Average time</span>
+								<span class="subject"><?php printf('%.02f', $this->meanTime[$user->getID()]) ?></span>
+							<span class="suffix">min/day</span>
+						</div>
 					</div>
 				</li>
 			</ul>
