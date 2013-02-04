@@ -13,7 +13,7 @@ h1, h2, h3 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 	h3 { font-size: 1.17em; }
 	h2, h3 { font-weight: normal; margin: 0 0 1em 0; border-bottom: 1px solid #eee; }
 .clear { clear: both; }
-.load-time { color: #eee; }
+.load-time { display: none; }
 
 
 
