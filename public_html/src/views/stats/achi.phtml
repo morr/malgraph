@@ -52,8 +52,8 @@
 							<?php if ($user->getList($this->am)->isPrivate()): ?>
 								Can&rsquo;t show you titles from a private list.</p>
 							<?php else: ?>
-								Earned because you
-								&nbsp;<?php echo $this->am == AMModel::TYPE_MANGA ? 'read' : 'watched' ?>:
+								Awarded for
+								&nbsp;<?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> these:
 								&nbsp;(<?php echo count($ach['entries']) ?>)
 							<?php endif ?>
 						</p>

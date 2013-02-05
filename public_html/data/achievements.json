@@ -143,7 +143,7 @@
 				{ "threshold": "2500-4999", "id": "numbers-manga-2500",  "level": "Passed 2500 mark",  "title": "Still not enough",   "desc": "Read over 2500 manga. You&rsquo;ve read six lifetimes worth of words." },
 				{ "threshold": "5000-7499", "id": "numbers-manga-5000",  "level": "Passed 5000 mark",  "title": "Sleep deprivation",  "desc": "Read over 5000 manga. Think of all the mangakas and writers that couldn&rsquo;t sleep just to make this moment happen." },
 				{ "threshold": "7500-9999", "id": "numbers-manga-7500",  "level": "Passed 7500 mark",  "title": "Reincarnation",      "desc": "Read over 7500 manga. How, exactly? This is not possible within one lifetime." },
-				{ "threshold": "10000+",    "id": "numbers-manga-10000", "level": "Passed 10000 mark", "title": "So many zeros",      "desc": "Read over 100 manga. Technically, ten thousand is over 100, so it checks out. Congratulations." }
+				{ "threshold": "10000+",    "id": "numbers-manga-10000", "level": "Passed 10000 mark", "title": "So many zeros",      "desc": "Read over 10000 manga. An average user&rsquo;s list is shorter than your list of titles starting with &bdquo;A&rdquo; alone." }
 			],
 			"requirement": { "type": "completed-titles" }
 		}
@@ -391,7 +391,7 @@
 				{ "threshold": "25-39", "id": "anime-sliceoflife-1", "level": "Slice Of Life: level 1",   "title": "Normal high school boy",          "desc": "Got started into the furious ride with slice-of-life anime." },
 				{ "threshold": "40-59", "id": "anime-sliceoflife-2", "level": "Slice Of Life: level 2",   "title": "cute &times; ( girls + things )", "desc": "Didn&rsquo;t get bored of watching cute girls doing cute things." },
 				{ "threshold": "60-99", "id": "anime-sliceoflife-3", "level": "Slice Of Life: level 3",   "title": "Enjoying life",                   "desc": "Found the equilibrium between boring and interesting." },
-				{ "threshold": "100+",  "id": "anime-sliceoflife-4", "level": "Slice Of Life: level MAX", "title": "Prima Undine",                    "desc": "Awarded Ph.D. degree in sliceoflife-ology. You can be proud of yourself." }
+				{ "threshold": "100+",  "id": "anime-sliceoflife-4", "level": "Slice Of Life: level MAX", "title": "Prima Undine",                    "desc": "Awarded Ph.D. degree in sliceoflife-ology. You can teach others how to stay calm and take it easy." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				1689,  #5 Centimeters per Second
@@ -768,7 +768,7 @@
 				{ "threshold": "25-39", "id": "anime-mecha-1", "level": "Mecha: level 1",   "title": "Me? PILOT this thing?!",     "desc": "A secret organization wants you to pilot a huge mecha. Can you do it?" },
 				{ "threshold": "40-59", "id": "anime-mecha-2", "level": "Mecha: level 2",   "title": "Engineer",                   "desc": "After watching over 40 mecha anime you should be able to build your own mobile suit. Remember not to kill the rest of us." },
 				{ "threshold": "60-99", "id": "anime-mecha-3", "level": "Mecha: level 3",   "title": "Mechazawa",                  "desc": "Having watched over 60 mecha anime, you&rsquo;ve probably became a robot already. Nice job, hero." },
-				{ "threshold": "100+",  "id": "anime-mecha-4", "level": "Mecha: level MAX", "title": "Pierce the H E A V E N S !", "desc": "Do the impossible. See the invisible. ROW ROW FIGHT THE POWAH!<br>&hellip;You just sang that in your head, didn&rsquo;t you?" }
+				{ "threshold": "100+",  "id": "anime-mecha-4", "level": "Mecha: level MAX", "title": "Pierce the H E A V E N S !", "desc": "Do the impossible. See the invisible. ROW ROW FIGHT THE POWAH! &hellip;You just sang that in your head, didn&rsquo;t you?" }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				7113,  #30th Gundam Perfect Mission
@@ -1162,7 +1162,7 @@
 				{ "threshold": "25-39", "id": "anime-historical-1", "level": "Historical: level 1",   "title": "History class", "desc": "History doesn&rsquo;t have to be boring. There&rsquo;s a lot to learn." },
 				{ "threshold": "40-59", "id": "anime-historical-2", "level": "Historical: level 2",   "title": "Looking back",  "desc": "Instead of dreaming of the future, you prefer to look back at the past." },
 				{ "threshold": "60-99", "id": "anime-historical-3", "level": "Historical: level 3",   "title": "Archaeologist", "desc": "You found a calendar that says the world will end in 2012? Hah, who would fall for that?" },
-				{ "threshold": "100+",  "id": "anime-historical-4", "level": "Historical: level MAX", "title": "Time machine",  "desc": "Kids these days are boring. You&rsquo;d rather watch something heartwarming about siblings trying to catch fireflies." }
+				{ "threshold": "100+",  "id": "anime-historical-4", "level": "Historical: level MAX", "title": "Time machine",  "desc": "Kids these days are boring. You&rsquo;d rather watch something heartwarming about siblings catching fireflies." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				11545, #108 Ward Inside and Out: Make-Up Artist
@@ -1619,9 +1619,9 @@
 		},
 		"mean score": {
 			"achievements": [
-				{ "threshold": "8.5-10", "id": "anime-ilovethem",     "title": "I love Chinese cartoons",     "desc": "Mean score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;" },
-				{ "threshold": "3-5",    "id": "anime-suffering",     "title": "Watching anime is suffering", "desc": "Mean score lower than 5. Someone has to counterweigh the fanboys, right?" },
-				{ "threshold": "0-2.99", "id": "anime-lessthanthree", "title": "Less than three",             "desc": "Mean score lower than 3. Is this hate, or is this love?" }
+				{ "threshold": "8.5-10", "id": "score-anime-ilovethem",     "title": "I love Chinese cartoons",     "desc": "Mean anime score higher than 8.5. How about using the whole scale and re-rating stuff? That could make you look less like a fanboy&hellip;" },
+				{ "threshold": "3-5",    "id": "score-anime-suffering",     "title": "Watching anime is suffering", "desc": "Mean anime score lower than 5. Someone has to counterweigh the fanboys, right?" },
+				{ "threshold": "0-2.99", "id": "score-anime-lessthanthree", "title": "Less than three",             "desc": "Mean anime score lower than 3. Is this hate, or is this love?" }
 			],
 			"requirement": { "type": "mean-score" }
 		},
@@ -1631,12 +1631,12 @@
 				{ "threshold": "200-299",   "id": "numbers-anime-200",   "level": "Passed 200 mark",   "title": "Casual watcher",        "desc": "Watched over 200 anime. You&rsquo;re used to seeing character&rsquo;s eyes bigger than their nose. If they have any nose." },
 				{ "threshold": "300-399",   "id": "numbers-anime-300",   "level": "Passed 300 mark",   "title": "A millionaire",         "desc": "Watched over 300 anime. You DID buy all of them, right?" },
 				{ "threshold": "400-499",   "id": "numbers-anime-400",   "level": "Passed 400 mark",   "title": "Bragging rights",       "desc": "Watched over 400 anime. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
-				{ "threshold": "500-749",   "id": "numbers-anime-500",   "level": "Passed 500 mark",   "title": "A lot of free time",    "desc": "Watched over 500 anime. Do you have any other hobbies?" },
-				{ "threshold": "750-999",   "id": "numbers-anime-750",   "level": "Passed 750 mark",   "title": "I see the light",       "desc": "Watched over 750 anime. Good luck getting to the next level." },
-				{ "threshold": "1000-1499", "id": "numbers-anime-1000",  "level": "Passed 1000 mark",  "title": "I&rsquo;m done here",   "desc": "Watched over 1000 anime. Congratulations, you broke the magical number. Take a breath now." },
-				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "Passed 1500 mark",  "title": "The Collector",         "desc": "Watched over 1500 animes. No, wait. The plural is of anime is anime." },
-				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Passed 2500 mark",  "title": "Anime maniac",          "desc": "Watched over 2500 anime. This deserves no further comment." },
-				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Passed 5000 mark",  "title": "Gotta watch them all!", "desc": "Watched over 5000 anime. You&rsquo;re one of the chosen ones." },
+				{ "threshold": "500-749",   "id": "numbers-anime-500",   "level": "Passed 500 mark",   "title": "A lot of free time",    "desc": "Watched over 500 anime. Now think of what kind of person you&rsquo;d be if you didn&rsquo;t start watching anime then. On that particular day&hellip;" },
+				{ "threshold": "750-999",   "id": "numbers-anime-750",   "level": "Passed 750 mark",   "title": "I see the light",       "desc": "Watched over 750 anime. Your power level is way above others&rsquo;. The only way is up." },
+				{ "threshold": "1000-1499", "id": "numbers-anime-1000",  "level": "Passed 1000 mark",  "title": "Gotta watch them all!", "desc": "Watched over 1000 anime. Congratulations, you broke the magical number. Take a breath now, it will only get more difficult." },
+				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "Passed 1500 mark",  "title": "The Collector",         "desc": "Watched over 1500 animes. No, wait. The plural of anime is anime." },
+				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Passed 2500 mark",  "title": "The Maniac",            "desc": "Watched over 2500 anime. Is this healthy? You should contact your doctor." },
+				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Passed 5000 mark",  "title": "The Living Legend",     "desc": "Watched over 5000 anime. You&rsquo;re one of the chosen ones. You don&rsquo;t even have to brag, since everyone heard about you." },
 				{ "threshold": "7500-9999", "id": "numbers-anime-7500",  "level": "Passed 7500 mark",  "title": "Database breaker",      "desc": "Watched over 7500 anime. Are you having fun, breaking all the rules? By the way, do we even have that many anime in the database?!" },
 				{ "threshold": "10000+",    "id": "numbers-anime-10000", "level": "Passed 10000 mark", "title": "This is it.",           "desc": "Watched over 10000 anime. There is no higher level. You can stop now. Everyone, go home." }
 			],
