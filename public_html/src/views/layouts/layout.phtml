@@ -20,6 +20,12 @@
 <?php endif ?>
 	<div id="header">
 		<div class="main-wrapper">
+			<div id="no-script">
+				JavaScript is disabled. Consider enabling it to get positive user experience.
+			</div>
+			<script type="text/javascript">
+				$('#no-script').hide()
+			</script>
 			<ul id="top-nav">
 				<li id="logo">
 					<a href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl('index', 'index') ?>">
