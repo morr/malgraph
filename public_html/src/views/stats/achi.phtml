@@ -28,7 +28,9 @@
 			</h3>
 			<div class="section-body">
 				<?php if (isset($ach['progress'])): ?>
-					<?php if (isset($ach['progress-next-a'])): ?>
+					<?php if (isset($ach['tooltip'])): ?>
+						<div class="progress-wrapper" data-tooltip="<?php echo ChibiRegistry::getHelper('mg')->replaceTokens($ach['tooltip'], $ach) ?>">
+					<?php elseif (isset($ach['progress-next-a'])): ?>
 						<div class="progress-wrapper" data-tooltip="Got <?php echo $ach['progress-subject'] ?>, next level at <?php echo $ach['progress-next-a'] ?>">
 					<?php else: ?>
 						<div class="progress-wrapper" data-tooltip="Maximum level!">

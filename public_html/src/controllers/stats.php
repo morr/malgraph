@@ -241,7 +241,7 @@ class StatsController extends AbstractController {
 							}
 						}
 						$ach['progress'] = 100;
-						$ach['progress-subject'] = $subject;
+						$ach['progress-subject'] = round($subject, 2);
 						if ($nextAch !== null) {
 							list ($nextA, $nextB) = $getThreshold($nextAch);
 							$ach['progress'] = ($subject - $a) * 100.0 / ($nextA - $a);
