@@ -205,6 +205,16 @@ class StatsController extends AbstractController {
 						}
 						$subject = count($entriesOwned);
 						break;
+					case 'genre-titles':
+						$filter = UserListFilters::getGenre($groupData['requirement']['genre']);
+						$entriesOwned = array();
+						foreach ($entriesCompleted as $e) {
+							if ($filter($e)) {
+								$entriesOwned []= $e;
+							}
+						}
+						$subject = count($entriesOwned);
+						break;
 					case 'completed-titles':
 						$subject = count($entriesCompleted);
 						break;
