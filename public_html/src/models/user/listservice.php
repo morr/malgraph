@@ -172,7 +172,7 @@ class UserListService {
 				$a = $entry->getCompletedChapters();
 				$b = $entry->getAMEntry()->getChapterCount();
 			}
-			if ($a != $b and $entry->getStatus() == UserListEntry::STATUS_COMPLETED) {
+			if ($a != $b and ($b > 0 or $entry->getAMEntry()->getStatus() == AMEntry::STATUS_PUBLISHING) and $entry->getStatus() == UserListEntry::STATUS_COMPLETED) {
 				$entriesMismatched []= $entry;
 			}
 		}

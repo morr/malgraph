@@ -142,11 +142,20 @@
 							<?php echo $entry->getStartDate() ?>&nbsp;&mdash;&nbsp;<?php echo $entry->getFinishDate() ?>
 						<?php elseif ($this->sender == AjaxController::SENDER_MISMATCHED_EPS): ?>
 							<?php if ($entry->getType() == AMModel::TYPE_MANGA): ?>
-								on your list: <?php echo $entry->getCompletedChapters() ?>, should be <?php echo $entry->getAMEntry()->getChapterCount() ?>
+								on your list: <?php echo $entry->getCompletedChapters() ?>,&nbsp;
+								<?php if ($entry->getAMEntry()->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
+									but it&rsquo;s still publishing
+								<?php else: ?>
+									should be <?php echo $entry->getAMEntry()->getChapterCount() ?> chapters
+								<?php endif ?>
 							<?php else: ?>
-								on your list: <?php echo $entry->getCompletedEpisodes() ?>, should be  <?php echo $entry->getAMEntry()->getEpisodeCount() ?>
+								on your list: <?php echo $entry->getCompletedEpisodes() ?>,&nbsp;
+								<?php if ($entry->getAMEntry()->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
+									but it&rsquo;s still airing
+								<?php else: ?>
+									should be  <?php echo $entry->getAMEntry()->getEpisodeCount() ?> episodes
+								<?php endif ?>
 							<?php endif ?>
-							&nbsp;<?php echo ChibiRegistry::getHelper('mg')->epText() ?>s
 						<?php endif ?>
 					)</span>
 				</li>

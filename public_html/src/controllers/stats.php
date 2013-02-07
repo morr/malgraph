@@ -146,13 +146,13 @@ class StatsController extends AbstractController {
 					}
 					$info[$type]->eps += $a;
 					if ($a != $b and $entry->getStatus() == UserListEntry::STATUS_COMPLETED) {
-						$info[$type]->epsMismatched []= $entry;
 					}
 				}
 				$subTypeDistribution->finalize();
 				$info[$type]->lengthDistribution = $lengthDistribution;
 				$info[$type]->scoreDistribution = $scoreDistribution;
 				$info[$type]->subTypeDistribution = $subTypeDistribution;
+				$info[$type]->epsMismatched = UserListService::getMismatchedEntries($entriesNonPlanned);
 				$info[$type]->franchises = UserListService::getFranchises($entriesNonPlanned);
 			}
 			$this->view->profileInfo[$u->getRuntimeID()] = $info;

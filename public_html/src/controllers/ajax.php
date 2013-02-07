@@ -205,7 +205,9 @@ class AjaxController extends AbstractController {
 				break;
 
 			case self::SENDER_MISMATCHED_EPS:
-				$this->view->entries = UserListService::getMismatchedEntries($list->getEntries());
+				$filter = UserListFilters::getNonPlanned();
+				$entries = $list->getEntries($filter);
+				$this->view->entries = UserListService::getMismatchedEntries($entries);
 				break;
 		}
 	}
