@@ -198,6 +198,9 @@ abstract class AMEntry extends AbstractModelEntry {
 	}
 
 	public function getTitle() {
+		if (!$this->title) {
+			return 'Unknown Entry ID ' . $this->getID();
+		}
 		return $this->title;
 	}
 

@@ -50,11 +50,7 @@
 
 								<td class="title" data-sorter="<?php echo $e->getAMEntry()->getTitle() ?>">
 									<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->amText() ?>/<?php echo $e->getID() ?>">
-										<?php if (!$e->getAMEntry()->getTitle()): ?>
-											Unknown Entry ID <?php echo $e->getID() ?>
-										<?php else: ?>
-											<?php echo $e->getAMEntry()->getTitle() ?>
-										<?php endif ?>
+										<?php echo $e->getAMEntry()->getTitle() ?>
 									</a>
 								</td>
 
