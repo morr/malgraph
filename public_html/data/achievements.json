@@ -130,6 +130,15 @@
 				190    #Zodiac P.I.
 			]}
 		},
+		"sports": {
+			"achievements": [
+				{ "threshold": "15-29", "id": "manga-sports-1", "level": "Sports: level 1",    "title": "", "desc": "sports 1" },
+				{ "threshold": "30-49", "id": "manga-sports-2", "level": "Sports: level 2",    "title": "", "desc": "sports 2" },
+				{ "threshold": "50-79", "id": "manga-sports-3", "level": "Sports: level 3",    "title": "", "desc": "sports 3" },
+				{ "threshold": "80+",   "id": "manga-sports-4", "level": "Sports: FULL SWING", "title": "", "desc": "sports max" }
+			],
+			"requirement": { "type": "genre-titles", "genre": 30 }
+		},
 		"count": {
 			"achievements": [
 				{ "threshold": "100-199",   "id": "numbers-manga-100",   "level": "Passed 100 mark",   "title": "Casual reader",      "desc": "Read over 100 manga. Or manhwa. Or other printed media. Anyway, you did it!" },
