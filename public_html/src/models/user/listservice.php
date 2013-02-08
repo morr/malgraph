@@ -486,7 +486,7 @@ class CreatorDistribution extends Distribution {
 
 	public function addEntry(UserListEntry $entry) {
 		$type = $entry->getType();
-		$excluded = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedCreatorsDefFile), true);
+		$excluded = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedCreatorsDefFile);
 		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$type]);
 		$creators = $entry->getAMEntry()->getCreators();
 		foreach ($creators as $creator) {
@@ -510,7 +510,7 @@ class GenreDistribution extends Distribution {
 
 	public function addEntry(UserListEntry $entry) {
 		$type = $entry->getType();
-		$excluded = json_decode(file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedGenresDefFile), true);
+		$excluded = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedGenresDefFile);
 		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$type]);
 		$genres = $entry->getAMEntry()->getGenres();
 		foreach ($genres as $genre) {

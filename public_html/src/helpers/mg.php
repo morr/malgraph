@@ -337,4 +337,11 @@ class MGHelper extends ChibiHelper {
 		return UrlHelper::htmlUrl($url, $get);
 	}
 
+
+
+	public static function loadJSON($path) {
+		$contents = file_get_contents($path);
+		$contents = preg_replace('/#(.*)$/m', '', $contents);
+		return json_decode($contents, true);
+	}
 }

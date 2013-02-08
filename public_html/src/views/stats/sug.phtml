@@ -1,4 +1,34 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
+<div class="section recs">
+	<h2>
+		<i data-tooltip="List of titles you might want to check out we found using some complicated formulas." class="icon-tooltip"></i>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'recommendations') ?>
+	</h2>
+	<div class="section-body">
+		<?php if (empty($this->recs[$user->getID()])): ?>
+			<p>No recommendations. :(</p>
+		<?php else: ?>
+			<?php if ($this->recsStatic): ?>
+				<p>Your <?php echo ChibiRegistry::getHelper('mg')->amText() ?> list is too short for us to properly guess your tastes.<br>
+				Here you have some widely recommended titles that you haven&rsquo;t <?php echo $this->am == AMModel::TYPE_ANIME ? 'seen' : 'watched' ?> yet:</p>
+			<?php endif ?>
+			<ol>
+			<?php foreach ($this->recs[$user->getID()] as $entry): ?>
+				<li>
+					<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->amText() ?>/<?php echo $entry->getID() ?>">
+						<?php echo $entry->getTitle() ?>
+					</a>
+				</li>
+			<?php endforeach ?>
+			</ol>
+		<?php endif ?>
+	</div>
+</div>
+<?php }); ?>
+
+
+
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section missing">
 	<h2>
 		<i data-tooltip="List of titles related to those you|have completed, sorted by score." class="icon-tooltip"></i>
@@ -6,7 +36,7 @@
 	</h2>
 	<div class="section-body">
 
-		<?php if (empty($this->proposedEntries[$user->getID()])): ?>
+		<?php if (empty($this->relations[$user->getID()])): ?>
 			<p>Yay! No missing relations!</p>
 		<?php elseif ($user->getList($this->am)->isPrivate()): ?>
 			<p>Since <?php echo $user->getPublicName() ?>&rsquo;s <?php echo $this->mgHelper->amText() ?> list is marked as private, we can&rsquo;t reveal its content by showing suggestions.<br>
@@ -20,7 +50,7 @@
 						<th class="proposed">&hellip;so you might want to check this:</th>
 					</tr>
 				</thead>
-				<?php foreach ($this->proposedEntries[$user->getID()] as $franchise): ?>
+				<?php foreach ($this->relations[$user->getID()] as $franchise): ?>
 					<tbody>
 						<tr data-ids="<?php echo join(' ', array_map(function($entry) { return $entry->getID(); }, $franchise->ownEntries)) ?>">
 							<td class="subject">
@@ -58,6 +88,8 @@
 	</div>
 </div>
 <?php }); ?>
+
+
 
 <script type="text/javascript">
 	$('.missing tr').each(function() {

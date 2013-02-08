@@ -172,9 +172,7 @@ class StatsController extends AbstractController {
 
 
 	public function achiAction() {
-		$contents = file_get_contents(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile);
-		$contents = preg_replace('/#(.*)$/m', '', $contents);
-		$achList = json_decode($contents, true);
+		$achList = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile);
 
 		$imgFiles = scandir(ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/media/img/ach');
 		$getThreshold = function($ach) {
@@ -563,30 +561,48 @@ class StatsController extends AbstractController {
 
 	public function sugAction() {
 		foreach ($this->view->users as $u) {
-			$proposedEntries = array();
-
 			$filter = UserListFilters::getCompleted();
 			$entries = $u->getList($this->view->am)->getEntries($filter);
 
-			$proposedEntries = UserListService::getFranchises($entries, null);
-			foreach ($proposedEntries as $franchise) {
+			$recs = array();
+			if (count($entries) <= 20) {
+				$this->view->recsStatic = true;
+				$model = AMModel::factory($this->view->am);
+				$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
+				foreach ($staticRecs[$this->view->am] as $id) {
+					$userEntry = $u->getList($this->view->am)->getEntryByID($id);
+					if ($userEntry !== null and $userEntry->getStatus() == UserListEntry::STATUS_COMPLETED) {
+						continue;
+					}
+					$recs []= $model->get($id, AMModel::CACHE_POLICY_FORCE_CACHE);
+				}
+				shuffle($recs);
+				$recs = array_slice($recs, 0, 10);
+			}
+			$this->view->recs[$u->getID()] = $recs;
+
+
+			$relations = UserListService::getFranchises($entries, null);
+			//remove ids user has seen
+			foreach ($relations as $franchise) {
 				foreach ($franchise->ownEntries as $ownEntry) {
 					unset($franchise->entries[$ownEntry->getID()]);
 				}
 			}
-			$proposedEntries = array_filter($proposedEntries, function($a) {
+			//filter entries that might be empty after removal
+			$relations = array_filter($relations, function($a) {
 				return count($a->entries) > 0;
 			});
-
-			foreach ($proposedEntries as $franchise) {
+			//sort titles
+			foreach ($relations as $franchise) {
 				$franchise->meanScore = UserListService::getMeanScore($franchise->ownEntries);
 				uasort($franchise->entries, function($a, $b) {
 					return $a->getID() - $b->getID();
 				});
 			}
-			uasort($proposedEntries, function($a, $b) { return $b->meanScore > $a->meanScore; });
+			uasort($relations, function($a, $b) { return $b->meanScore > $a->meanScore; });
 
-			$this->view->proposedEntries[$u->getID()] = $proposedEntries;
+			$this->view->relations[$u->getID()] = $relations;
 		}
 	}
 }
