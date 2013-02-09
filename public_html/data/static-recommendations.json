@@ -1,0 +1,106 @@
+{
+	"anime": [
+		1,    #cowboy bebop
+		6,    #trigun
+		16,   #honey and clover
+		19,   #monster
+		24,   #school rumble (s1)
+		30,   #neon genesis evangelion (najstarszy)
+		43,   #ghost in the shell (pierwszy film)
+		64,   #rozen maiden
+		66,   #azumanga daioh
+		71,   #full metal panic (pierwszy sezon)
+		97,   #last exile
+		160,  #now and then,  #here and there
+		202,  #wolfs rain
+		205,  #samurai champloo
+		227,  #flcl
+		232,  #cardcaptor sakura
+		323,  #paranoia agent
+		329,  #planetes
+		339,  #serial experiments lain
+		387,  #haibane renmei
+		437,  #perfect blue
+		457,  #mushishi
+		477,  #aria the animation (pierwszy sezon)
+		486,  #kino no tabi
+		523,  #my neighbor totoro
+		567,  #the big o
+		578,  #grave of the fireflies
+		658,  #akagi
+		790,  #ergo proxy
+		820,  #legend of galactic heroes
+		849,  #haruhi (pierwszy sezon)
+		889,  #black lagoon
+		934,  #higurashi (pierwszy sezon)
+		1210, #welcome to the nhk
+		1535, #death note
+		1575, #code geass (pierwszy sezon)
+		1690, #bokurano
+		1698, #nodame cantabile
+		2001, #tengen toppa gurren lagann
+		2104, #seto no hanayome
+		2164, #dennou coil
+		2167, #clannad (pierwszy sezon)
+		2236, #the girl who leapt through time
+		2476, #school days
+		3002, #kaiji
+		3702, #detroit metal city
+		5114, #fullmetal alchemist brotherhood
+		7785, #tatami galaxy aka yojouhan shinwa taikei
+		9253, #steins;gate
+		9756  #mahou shoujo madoka magika
+	],
+	"manga": [
+		1,     #monster
+		2,     #berserk
+		3,     #20th century boys
+		4,     #yokohama kaidashi kikou
+		7,     #hajime no ippo
+		21,    #death note
+		23,    #ranma 1/2
+		25,    #fullmetal alchemist
+		85,    #azumanga daioh
+		104,   #yotsubato
+		124,   #aqua
+		142,   #battle royale
+		267,   #hellsing
+		336,   #great teacher onizuka
+		339,   #cromartie high school
+		348,   #genshiken
+		401,   #parasyte
+		418,   #mushishi
+		436,   #uzumaki
+		463,   #welcome to the nhk
+		564,   #gantz
+		583,   #claymore
+		584,   #mirai nikki
+		642,   #vinland saga
+		651,   #nausicaa
+		662,   #3x3 eyes
+		670,   #bokurano
+		674,   #majin tantei nogami neuro
+		731,   #eden its an endless world
+		735,   #black lagoon
+		745,   #pluto
+		768,   #battle angel alita
+		1189,  #living game
+		1218,  #akagi
+		1470,  #gon
+		1534,  #zetman
+		1541,  #confession
+		1600,  #black jack
+		1649,  #liar game
+		1735,  #detroit metal city
+		1926,  #mysterious girlfriend x
+		2436,  #hotel
+		2924,  #historie
+		3468,  #usagi drop
+		3572,  #kaiji
+		5293,  #doubt
+		8967,  #onani master kurosawa
+		10552, #hoshi no samidare
+		14943, #loop
+		18291  #fuuko no iru mise
+	]
+}
