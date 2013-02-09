@@ -109,9 +109,9 @@ class UserListService {
 		return $monthPeriod;
 	}
 
-	public static function getAiredYear(UserListEntry $entry) {
-		$yearA = intval(substr($entry->getAMEntry()->getAiredFrom(), 0, 4));
-		$yearB = intval(substr($entry->getAMEntry()->getAiredTo(), 0, 4));
+	public static function getAiredYear(AMEntry $entry) {
+		$yearA = intval(substr($entry->getAiredFrom(), 0, 4));
+		$yearB = intval(substr($entry->getAiredTo(), 0, 4));
 		if (!$yearA and !$yearB) {
 			return 0;
 		} elseif (!$yearA) {
@@ -125,7 +125,7 @@ class UserListService {
 		return $year;
 	}
 
-	public static function getAiredDecade(UserListEntry $entry) {
+	public static function getAiredDecade(AMEntry $entry) {
 		$year = self::getAiredYear($entry);
 		$decade = floor($year / 10) * 10;
 		return $decade;
@@ -533,7 +533,7 @@ class YearDistribution extends Distribution {
 	}
 
 	public function addEntry(UserListEntry $entry) {
-		$this->addToGroup(UserListService::getAiredYear($entry), $entry);
+		$this->addToGroup(UserListService::getAiredYear($entry->getAMEntry()), $entry);
 	}
 }
 
@@ -549,6 +549,6 @@ class DecadeDistribution extends Distribution {
 	}
 
 	public function addEntry(UserListEntry $entry) {
-		$this->addToGroup(UserListService::getAiredDecade($entry), $entry);
+		$this->addToGroup(UserListService::getAiredDecade($entry->getAMEntry()), $entry);
 	}
 }

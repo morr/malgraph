@@ -69,6 +69,12 @@ abstract class AMModel extends AbstractModel {
 		}
 		$entry->setTitle(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node2->textContent));
 
+		//picture
+		$node = $xpath->query('//td[@class = \'borderClass\']//img')->item(0);
+		if (!empty($node)) {
+			$entry->setPictureURL($node->getAttribute('src'));
+		}
+
 		//rank
 		preg_match_all('/#([0-9]+)/', $xpath->query('//h1')->item(0)->childNodes->item(0)->nodeValue, $matches);
 		$entry->setRanking(intval($matches[1][0]));

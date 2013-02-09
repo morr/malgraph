@@ -12,14 +12,113 @@
 				<p>Your <?php echo ChibiRegistry::getHelper('mg')->amText() ?> list is too short for us to properly guess your tastes.<br>
 				Here you have some widely recommended titles that you haven&rsquo;t <?php echo $this->am == AMModel::TYPE_ANIME ? 'seen' : 'watched' ?> yet:</p>
 			<?php endif ?>
-			<ol>
+			<ol><!-- my fetish -->
 			<?php foreach ($this->recs[$user->getID()] as $entry): ?>
 				<li>
-					<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->amText() ?>/<?php echo $entry->getID() ?>">
-						<?php echo $entry->getTitle() ?>
-					</a>
+					<div class="header">
+						<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->amText() ?>/<?php echo $entry->getID() ?>">
+							<?php echo $entry->getTitle() ?>
+						</a>
+						<span class="year"><?php echo UserListService::getAiredYear($entry) ?></span>
+						<a href="#" class="more"><strong>+</strong> more info</a>
+					</div>
+					<div class="wrapper-more">
+						<a class="close">&times;</a>
+						<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $entry->getID() ?>">
+							<?php if (!$entry->getPictureURL()): ?>
+								<img class="unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
+							<?php else: ?>
+								<img src="<?php echo $entry->getPictureURL() ?>" alt="Picture from MAL">
+							<?php endif ?>
+						</a>
+
+						<table>
+							<tr class="type">
+								<td class="key">Type</dt>
+								<td class="value"><?php echo ChibiRegistry::getHelper('mg')->subTypeText($entry->getSubType()) ?></dd>
+							</tr>
+
+							<tr class="eps">
+								<td class="key"><?php echo ucfirst(ChibiRegistry::getHelper('mg')->epText(null, true)) ?></dt>
+								<td class="value"><?php echo ($entry->getType() == AMModel::TYPE_ANIME ? $entry->getEpisodeCount() : $entry->getChapterCount()) ?: '?' ?></dd>
+							</tr>
+
+							<tr class="creators">
+								<td class="key"><?php echo $entry->getType() == AMModel::TYPE_ANIME ? 'Studio' : 'Author' ?></td>
+								<td class="value no-wrap"><?php
+									$tmp = [];
+									if (!$entry->getCreators()) {
+										echo 'None found';
+									} else {
+										foreach ($entry->getCreators() as $k => $creator) {
+											if ($this->am == AMModel::TYPE_MANGA) {
+												$item = '<a href="http://myanimelist.net/people/' . $creator->getID() . '/">';
+											} else {
+												$item = '<a href="http://myanimelist.net/anime.php?p=' . $creator->getID() . '">';
+											}
+											$item .= $creator->getName();
+											$item .= '</a>';
+											$tmp []= $item;
+										}
+										echo join(', ', $tmp);
+									} ?>
+								</td>
+							</tr>
+
+							<tr class="tags">
+								<td class="key">Tags</td>
+								<td class="value"><?php
+									$tmp = [];
+									if (!$entry->getTags()) {
+										echo 'None found';
+									} else {
+										foreach ($entry->getTags() as $k => $tag) {
+											if ($entry->getType() == AMModel::TYPE_ANIME) {
+												$item = '<a href="http://myanimelist.net/anime.php?tag=' . urlencode($tag->getName()) . '">';
+											} else {
+												$item = '<a href="http://myanimelist.net/manga.php?tag=' . urlencode($tag->getName()) . '">';
+											}
+											$item .= $tag->getName();
+											$item .= '</a>';
+											$tmp []= $item;
+										}
+										echo join(', ', $tmp);
+									} ?>
+								</td>
+							</tr>
+
+							<tr class="franchise">
+								<td class="key">Franchise</td>
+								<td class="value"><?php
+									$tmp = [];
+									$franchise = $entry->getFranchise();
+									$eps = 0;
+									$subTypes = [];
+									foreach ($franchise->entries as $subEntry) {
+										$subTypes[$subEntry->getSubType()] []= $subEntry;
+									}
+									foreach ($subTypes as $subType => $entries) {
+										$item = count($entries) . ' ';
+										$item .= ChibiRegistry::getHelper('mg')->subTypeText($subType);
+										$tmp []= $item;
+										foreach ($entries as $entry) {
+											if ($entry->getType() == AMModel::TYPE_ANIME) {
+												$eps += $entry->getEpisodeCount();
+											} else {
+												$eps += $entry->getChapterCount();
+											}
+										}
+									}
+									printf('%s (%d %s)', join(', ', $tmp), $eps, ChibiRegistry::getHelper('mg')->epText(null, $eps > 1)); ?>
+								</td>
+							</tr>
+						</table>
+
+						<div class="clear"></div>
+					</div>
 				</li>
 			<?php endforeach ?>
+
 			</ol>
 		<?php endif ?>
 	</div>
@@ -125,5 +224,17 @@
 			});
 			newTr.insertAfter(tr).find('td').append(link);
 		}
+	});
+
+	$('.recs .header .more').click(function(e) {
+		var target = $(this).parents('li').find('.wrapper-more');
+		toggleMoreWrappers(target, [], false);
+		e.preventDefault();
+	});
+	$(function() {
+		$('.wrapper-more').off('click', '.close').on('click', '.close', function(e) {
+			e.preventDefault();
+			$(this).parents('.wrapper-more').stop(true, true).slideUp('fast');
+		});
 	});
 </script>

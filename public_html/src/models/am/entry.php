@@ -148,6 +148,7 @@ abstract class AMEntry extends AbstractModelEntry {
 	private $tags = [];
 	private $relations = [];
 	private $valid;
+	private $picURL = null;
 
 	public function getFranchise() {
 		$franchise = [];
@@ -214,6 +215,14 @@ abstract class AMEntry extends AbstractModelEntry {
 
 	public function setID($id) {
 		$this->id = $id;
+	}
+
+	public function setPictureURL($url) {
+		$this->picURL = $url;
+	}
+
+	public function getPictureURL() {
+		return $this->picURL;
 	}
 
 	public function getStatus() {
