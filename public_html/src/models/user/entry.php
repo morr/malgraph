@@ -144,6 +144,11 @@ class UserEntry extends AbstractModelEntry {
 		$this->userData = new UserData();
 	}
 
+	public function __destruct() {
+		$this->lists[AMModel::TYPE_ANIME]->destroy();
+		$this->lists[AMModel::TYPE_MANGA]->destroy();
+	}
+
 	public function getAnonymousName() {
 		$anonName = AnonService::getByUserName($this->getUserName());
 		if ($anonName === null) {

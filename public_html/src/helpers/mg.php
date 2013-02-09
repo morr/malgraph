@@ -344,4 +344,13 @@ class MGHelper extends ChibiHelper {
 		$contents = preg_replace('/#(.*)$/m', '', $contents);
 		return json_decode($contents, true);
 	}
+
+
+
+	public static function getMemoryUsage() {
+		$unit = ['b', 'kb', 'mb', 'gb', 'tb', 'pb'];
+		$size = memory_get_usage(true);
+		$i = floor(log($size, 1024));
+		return sprintf('%.02f' . $unit[$i], $size / pow(1024, $i), 2);
+	}
 }
