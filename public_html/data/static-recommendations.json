@@ -4,14 +4,14 @@
 		6,    #trigun
 		16,   #honey and clover
 		19,   #monster
-		24,   #school rumble (s1)
-		30,   #neon genesis evangelion (najstarszy)
-		43,   #ghost in the shell (pierwszy film)
+		24,   #school rumble
+		30,   #neon genesis evangelion
+		43,   #ghost in the shell (movie)
 		64,   #rozen maiden
 		66,   #azumanga daioh
-		71,   #full metal panic (pierwszy sezon)
+		71,   #full metal panic
 		97,   #last exile
-		160,  #now and then,  #here and there
+		160,  #now and then, here and there
 		202,  #wolfs rain
 		205,  #samurai champloo
 		227,  #flcl
@@ -22,7 +22,7 @@
 		387,  #haibane renmei
 		437,  #perfect blue
 		457,  #mushishi
-		477,  #aria the animation (pierwszy sezon)
+		477,  #aria the animation
 		486,  #kino no tabi
 		523,  #my neighbor totoro
 		567,  #the big o
@@ -30,18 +30,18 @@
 		658,  #akagi
 		790,  #ergo proxy
 		820,  #legend of galactic heroes
-		849,  #haruhi (pierwszy sezon)
+		849,  #haruhi
 		889,  #black lagoon
-		934,  #higurashi (pierwszy sezon)
+		934,  #higurashi
 		1210, #welcome to the nhk
 		1535, #death note
-		1575, #code geass (pierwszy sezon)
+		1575, #code geass
 		1690, #bokurano
 		1698, #nodame cantabile
 		2001, #tengen toppa gurren lagann
 		2104, #seto no hanayome
 		2164, #dennou coil
-		2167, #clannad (pierwszy sezon)
+		2167, #clannad
 		2236, #the girl who leapt through time
 		2476, #school days
 		3002, #kaiji
@@ -84,9 +84,9 @@
 		735,   #black lagoon
 		745,   #pluto
 		768,   #battle angel alita
+		1153,  #narutaru
 		1189,  #living game
 		1218,  #akagi
-		1470,  #gon
 		1534,  #zetman
 		1541,  #confession
 		1600,  #black jack
@@ -97,10 +97,10 @@
 		2924,  #historie
 		3468,  #usagi drop
 		3572,  #kaiji
+		4632,  #oyasumi punpun
 		5293,  #doubt
 		8967,  #onani master kurosawa
 		10552, #hoshi no samidare
 		14943, #loop
-		18291  #fuuko no iru mise
 	]
 }
