@@ -5,119 +5,114 @@
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'rating distribution') ?>
 	</h2>
 	<div class="section-body">
-		<?php if ($this->scoreDistribution[$user->getID()]->getRatedCount() == 0): ?>
-			<p>No ratings, no graphs.<br>
-			MALgraph can&rsquo;t render any shiny bars until you feed it some data.</p>
-		<?php else: ?>
-			<ul class="infobox">
-				<li>
-					<div>
-						<span class="prefix">Total rated</span>
-						<span class="subject"><?php printf('%d', $this->scoreDistribution[$user->getID()]->getRatedCount()) ?></span>
-					</div>
-				</li>
-				<li>
-					<div>
-						<span class="prefix">Mean score</span>
-						<span class="subject"><?php printf('%.02f', $this->scoreDistribution[$user->getID()]->getMeanScore()) ?></span>
-					</div>
-				</li>
-				<li>
-					<div>
-						<span class="prefix">Std dev.</span>
-						<span class="subject"><?php printf('%.02f', $this->scoreDistribution[$user->getID()]->getStandardDeviation()) ?></span>
-					</div>
-				</li>
-				<li>
-					<button class="btn export-trigger">Export</button>
-				</li>
-			</ul>
+		<ul class="infobox">
+			<li>
+				<div>
+					<span class="prefix">Total rated</span>
+					<span class="subject"><?php printf('%d', $this->scoreDistribution[$user->getID()]->getRatedCount()) ?></span>
+				</div>
+			</li>
+			<li>
+				<div>
+					<span class="prefix">Mean score</span>
+					<span class="subject"><?php printf('%.02f', $this->scoreDistribution[$user->getID()]->getMeanScore()) ?></span>
+				</div>
+			</li>
+			<li>
+				<div>
+					<span class="prefix">Std dev.</span>
+					<span class="subject"><?php printf('%.02f', $this->scoreDistribution[$user->getID()]->getStandardDeviation()) ?></span>
+				</div>
+			</li>
+			<li>
+				<button class="btn export-trigger">Export</button>
+			</li>
+		</ul>
 
-			<div class="wrapper-target">
-				<div class="target"></div>
-				<div class="clear"></div>
-			</div>
+		<div class="wrapper-target">
+			<div class="target"></div>
+			<div class="clear"></div>
+		</div>
 
-			<div class="wrapper-more">
-			</div>
+		<div class="wrapper-more">
+		</div>
 
-			<div class="wrapper-export">
-				<div class="popup export">
-					<div class="title">
-						<p>Export your rating distribution</p>
+		<div class="wrapper-export">
+			<div class="popup export">
+				<div class="title">
+					<p>Export your rating distribution</p>
+				</div>
+				<div class="body">
+					<div class="custom-theme">
+						<p><br>Choose element to edit:</p>
+						<form>
+							<?php $options = [
+								'bar1' => 'Bar gradient - left',
+								'bar2' => 'Bar gradient - right',
+								'line1' => 'Line gradient - left',
+								'line2' => 'Line gradient - right',
+								'back' => 'Background',
+								'font1' => 'Text I - numbers',
+								'font2' => 'Text II - labels and %',
+								'title' => 'Title and icon',
+							]; ?>
+							<select class="color" name="color">
+								<?php foreach ($options as $key => $text): ?>
+									<option value="<?php echo $key ?>"><?php echo $text ?></option>
+								<?php endforeach ?>
+							</select>
+							<div class="colorpicker"></div>
+						</form>
 					</div>
-					<div class="body">
-						<div class="custom-theme">
-							<p><br>Choose element to edit:</p>
-							<form>
-								<?php $options = [
-									'bar1' => 'Bar gradient - left',
-									'bar2' => 'Bar gradient - right',
-									'line1' => 'Line gradient - left',
-									'line2' => 'Line gradient - right',
-									'back' => 'Background',
-									'font1' => 'Text I - numbers',
-									'font2' => 'Text II - labels and %',
-									'title' => 'Title and icon',
-								]; ?>
-								<select class="color" name="color">
-									<?php foreach ($options as $key => $text): ?>
-										<option value="<?php echo $key ?>"><?php echo $text ?></option>
-									<?php endforeach ?>
-								</select>
-								<div class="colorpicker"></div>
-							</form>
+					<div class="body-wrapper">
+						<p>You can export your rating distribution as an image, which updates automatically every 24 h. How about putting it on <a href="http://myanimelist.net/editprofile.php">your MAL profile</a>?</p>
+						<div class="header">
+							<p>Layout:</p>
+							<select class="type" name="type"></select>
+							<p>Theme:</p>
+							<select class="theme" name="theme"></select>
+							<div class="clear"></div>
 						</div>
-						<div class="body-wrapper">
-							<p>You can export your rating distribution as an image, which updates automatically every 24 h. How about putting it on <a href="http://myanimelist.net/editprofile.php">your MAL profile</a>?</p>
-							<div class="header">
-								<p>Layout:</p>
-								<select class="type" name="type"></select>
-								<p>Theme:</p>
-								<select class="theme" name="theme"></select>
-								<div class="clear"></div>
-							</div>
-							<textarea readonly="readonly" name="bbcode">[center][url=http://<?php echo $_SERVER['SERVER_NAME'] ?>/<?php echo $user->getLinkableName() ?>][img]http://<?php echo $_SERVER['SERVER_NAME'] ?>/export/<?php echo $user->getLinkableName() ?>?type=1[/img][/url][/center]</textarea>
-							<?php if ($user->isAnonymous()): ?>
-								<p class="warning"><strong>This code will link back to an anonymized profile.</strong><br>Are you sure you want to do this?</p>
-							<?php endif ?>
-							<div class="preview">
-								<p>Preview (may be scaled):</p>
-								<img alt="Preview">
-							</div>
+						<textarea readonly="readonly" name="bbcode">[center][url=http://<?php echo $_SERVER['SERVER_NAME'] ?>/<?php echo $user->getLinkableName() ?>][img]http://<?php echo $_SERVER['SERVER_NAME'] ?>/export/<?php echo $user->getLinkableName() ?>?type=1[/img][/url][/center]</textarea>
+						<?php if ($user->isAnonymous()): ?>
+							<p class="warning"><strong>This code will link back to an anonymized profile.</strong><br>Are you sure you want to do this?</p>
+						<?php endif ?>
+						<div class="preview">
+							<p>Preview (may be scaled):</p>
+							<img alt="Preview">
 						</div>
-						<div class="clear"></div>
 					</div>
+					<div class="clear"></div>
 				</div>
 			</div>
+		</div>
 
-			<script type="text/javascript">
-				$('#user-<?php echo $user->getRuntimeID() ?> .score-dist .target').each(function() {
-					var chart = new Highcharts.Chart({
-						chart: { renderTo: this, type: 'bar', marginRight: 35 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, $this->scoreDistribution[$user->getID()]->getGroupsKeys())) ?>, title: { text: 'Rating' } },
-						yAxis: { title: { text: 'Count', margin: 15 } },
-						tooltip: { formatter: function() {
-							var text;
-							if (this.x == '-') {
-								text = 'Unrated titles: ' + this.y;
-							} else {
-								text = 'Titles rated with ' + this.x + ': ' + this.y;
-							}
-							var percent = this.y * 100.0 / <?php echo max(1, $this->scoreDistribution[$user->getID()]->getTotalSize()) ?>;
-							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
-							return text;
-						} },
-						series: [ {
-							data: <?php echo json_encode(array_values($this->scoreDistribution[$user->getID()]->getGroupsSizes())) ?>,
-							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.score-dist .wrapper-more'), {'sender': 'score', 'score': this.category});
-							} } }
-						} ]
-					});
+		<script type="text/javascript">
+			$('#user-<?php echo $user->getRuntimeID() ?> .score-dist .target').each(function() {
+				var chart = new Highcharts.Chart({
+					chart: { renderTo: this, type: 'bar', marginRight: 35 },
+					xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, $this->scoreDistribution[$user->getID()]->getGroupsKeys())) ?>, title: { text: 'Rating' } },
+					yAxis: { title: { text: 'Count', margin: 15 } },
+					tooltip: { formatter: function() {
+						var text;
+						if (this.x == '-') {
+							text = 'Unrated titles: ' + this.y;
+						} else {
+							text = 'Titles rated with ' + this.x + ': ' + this.y;
+						}
+						var percent = this.y * 100.0 / <?php echo max(1, $this->scoreDistribution[$user->getID()]->getTotalSize()) ?>;
+						text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
+						return text;
+					} },
+					series: [ {
+						data: <?php echo json_encode(array_values($this->scoreDistribution[$user->getID()]->getGroupsSizes())) ?>,
+						point: { events: { click: function(e) {
+							toggleMoreWrappers($('.score-dist .wrapper-more'), {'sender': 'score', 'score': this.category});
+						} } }
+					} ]
 				});
-			</script>
-		<?php endif ?>
+			});
+		</script>
 	</div>
 </div>
 <?php }); ?>
@@ -131,71 +126,66 @@
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'ratings vs. time spent') ?>
 	</h2>
 	<div class="section-body">
-		<?php if ($this->scoreDistribution[$user->getID()]->getRatedCount() == 0): ?>
-			<p>Couldn&rsquo;t find ratings on your list.<br>
-			Rate some <?php echo $this->mgHelper->textAM() ?> and come back in 24 hours.</p>
-		<?php else: ?>
-			<ul class="infobox">
-				<li>
-					<div>
-						<span class="prefix">Total time</span>
-						<span class="subject"><?php printf('%.02f', $this->scoreDurationDistribution[$user->getID()]->getTotalTime() / 1440.) ?></span>
-						<span class="suffix">days</span>
+		<ul class="infobox">
+			<li>
+				<div>
+					<span class="prefix">Total time</span>
+					<span class="subject"><?php printf('%.02f', $this->scoreDurationDistribution[$user->getID()]->getTotalTime() / 1440.) ?></span>
+					<span class="suffix">days</span>
+				</div>
+			</li>
+			<!--<li>
+				<div>
+					<span class="prefix">Mean score</span>
+					<span class="subject"><?php printf('%.02f', $this->scoreDurationDistribution[$user->getID()]->getMeanScore()) ?></span>
+					<span class="suffix">(weighted)</span>
+				</div>
+			</li>-->
+			<li>
+				<div>
+					<div data-tooltip="Earliest time user started or finished|<?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL,|was on <?php echo date('Y-m-d', $this->earliestTimeKnown[$user->getID()]) ?>">
+						<span class="prefix">Average time</span>
+							<span class="subject"><?php printf('%.02f', $this->meanTime[$user->getID()]) ?></span>
+						<span class="suffix">min/day</span>
 					</div>
-				</li>
-				<!--<li>
-					<div>
-						<span class="prefix">Mean score</span>
-						<span class="subject"><?php printf('%.02f', $this->scoreDurationDistribution[$user->getID()]->getMeanScore()) ?></span>
-						<span class="suffix">(weighted)</span>
-					</div>
-				</li>-->
-				<li>
-					<div>
-						<div data-tooltip="Earliest time user started or finished|<?php echo $this->am == AMModel::TYPE_MANGA ? 'reading' : 'watching' ?> something, or joined MAL,|was on <?php echo date('Y-m-d', $this->earliestTimeKnown[$user->getID()]) ?>">
-							<span class="prefix">Average time</span>
-								<span class="subject"><?php printf('%.02f', $this->meanTime[$user->getID()]) ?></span>
-							<span class="suffix">min/day</span>
-						</div>
-					</div>
-				</li>
-			</ul>
+				</div>
+			</li>
+		</ul>
 
-			<div class="wrapper-target">
-				<div class="target"></div>
-				<div class="clear"></div>
-			</div>
+		<div class="wrapper-target">
+			<div class="target"></div>
+			<div class="clear"></div>
+		</div>
 
-			<div class="wrapper-more">
-			</div>
+		<div class="wrapper-more">
+		</div>
 
-			<script type="text/javascript">
-				$('#user-<?php echo $user->getRuntimeID() ?> .score-time-dist .target').each(function() {
-					var chart = new Highcharts.Chart({
-						chart: { renderTo: this, type: 'bar', marginRight: 15 },
-						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, $this->scoreDistribution[$user->getID()]->getGroupsKeys())) ?>, title: { text: 'Rating' } },
-						yAxis: { title: {text: 'Hours spent', margin: 15 } },
-						tooltip: { formatter: function() {
-							var text;
-							if (this.x == '-') {
-								text = 'Hours spent on unrated titles: ' + Math.round(this.y * 100) / 100.0;
-							} else {
-								text = 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
-							}
-							var percent = this.y * 100.0 / <?php echo max(1, $this->scoreDurationDistribution[$user->getID()]->getTotalSize() / 60.) ?>;
-							text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
-							return text;
-						} },
-						series: [ {
-							data: <?php echo json_encode(array_map(function($x) { return $x / 60.; }, array_values($this->scoreDurationDistribution[$user->getID()]->getGroupsSizes()))) ?>,
-							point: { events: { click: function(e) {
-								toggleMoreWrappers($('.score-time-dist .wrapper-more'), {'sender': 'score-time', 'score': this.category});
-							} } }
-						} ]
-					});
+		<script type="text/javascript">
+			$('#user-<?php echo $user->getRuntimeID() ?> .score-time-dist .target').each(function() {
+				var chart = new Highcharts.Chart({
+					chart: { renderTo: this, type: 'bar', marginRight: 15 },
+					xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, $this->scoreDistribution[$user->getID()]->getGroupsKeys())) ?>, title: { text: 'Rating' } },
+					yAxis: { title: {text: 'Hours spent', margin: 15 } },
+					tooltip: { formatter: function() {
+						var text;
+						if (this.x == '-') {
+							text = 'Hours spent on unrated titles: ' + Math.round(this.y * 100) / 100.0;
+						} else {
+							text = 'Hours spent on titles rated with ' + this.x + ': ' + Math.round(this.y * 100) / 100.0;
+						}
+						var percent = this.y * 100.0 / <?php echo max(1, $this->scoreDurationDistribution[$user->getID()]->getTotalSize() / 60.) ?>;
+						text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
+						return text;
+					} },
+					series: [ {
+						data: <?php echo json_encode(array_map(function($x) { return $x / 60.; }, array_values($this->scoreDurationDistribution[$user->getID()]->getGroupsSizes()))) ?>,
+						point: { events: { click: function(e) {
+							toggleMoreWrappers($('.score-time-dist .wrapper-more'), {'sender': 'score-time', 'score': this.category});
+						} } }
+					} ]
 				});
-			</script>
-		<?php endif ?>
+			});
+		</script>
 	</div>
 </div>
 <?php }); ?>
