@@ -565,9 +565,16 @@ class StatsController extends AbstractController {
 			$entries = $u->getList($this->view->am)->getEntries($filter);
 			$limit = 15;
 
+			$this->view->recsStatic = count($entries) <= 20;
+			$this->sessionHelper->restore();
+			if (isset($_SESSION['recs'][$u->getID()])) {
+				$this->view->recs[$u->getID()] = unserialize($_SESSION['recs'][$u->getID()]);
+				continue;
+			}
+			$this->sessionHelper->close();
+
 			$recs = [];
 			$modelAM = AMModel::factory($this->view->am);
-			$this->view->recsStatic = count($entries) <= 20;
 			//static recommendations
 			if ($this->view->recsStatic) {
 				$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
@@ -590,7 +597,11 @@ class StatsController extends AbstractController {
 				$u1 = $u;
 				$list1 = $u1->getList($this->view->am);
 				$mean1 = UserListService::getMeanScore($entries);
-				$filterDontShow = function($e) { if (!$e) { return true; } if ($e->getStatus() != UserListEntry::STATUS_PLANNED) { return true; } return false; };
+				$filterDontShow = function($e) {
+					if (!$e) return true;
+					if ($e->getStatus() != UserListEntry::STATUS_PLANNED) return true;
+					return false;
+				};
 
 				//1. get some user base
 				$modelUsers = new UserModel();
@@ -668,16 +679,22 @@ class StatsController extends AbstractController {
 				arsort($finalAM, SORT_NUMERIC);
 				$finalAM = array_keys($finalAM);
 				while (count($finalAM) > 0 and count($recs) < $limit) {
-					$e = $modelAM->get(array_shift($finalAM));
 					//make sure only first unwatched thing in franchise is going to be recommended
-					$franchise = $e->getFranchise();
+					$franchise = $modelAM->get(array_shift($finalAM))->getFranchise();
 					uasort($franchise->entries, function($a, $b) { return $a->getID() > $b->getID() ? 1 : -1; });
+					$e = null;
 					foreach ($franchise->entries as $e2) {
+						if ($e2->getStatus() == AMEntry::STATUS_NOT_YET_PUBLISHED) {
+							continue;
+						}
 						$e1 = $list1->getEntryByID($e2->getID());
 						if (!$filterDontShow($e1)) {
 							$e = $e2;
 							break;
 						}
+					}
+					if (empty($e)) {
+						continue;
 					}
 					//don't recommend more than one thing in given franchise
 					foreach ($franchise->entries as $e2) {
@@ -686,11 +703,17 @@ class StatsController extends AbstractController {
 					}
 					$recs []= $e;
 				}
-
 			}
+
+			$this->sessionHelper->restore();
+			if (!isset($_SESSION['recs'])) {
+				$_SESSION['recs'] = [];
+			}
+			$_SESSION['recs'][$u->getID()] = serialize($recs);
 			$this->view->recs[$u->getID()] = $recs;
+		}
 
-
+		foreach ($this->view->users as $u) {
 			$relations = UserListService::getFranchises($entries, null);
 			//remove ids user has seen
 			foreach ($relations as $franchise) {
