@@ -9,10 +9,12 @@ class IndexController extends AbstractController {
 	}
 
 	public function wrongUserAction() {
+		HeadHelper::setTitle('MALgraph - error: user not found');
 		$this->view->userName = $this->inputHelper->getStringSafe('u');
 	}
 
 	public function blockedUserAction() {
+		HeadHelper::setTitle('MALgraph - error: user blocked');
 		$this->view->userName = $this->inputHelper->getStringSafe('u');
 	}
 
@@ -25,9 +27,11 @@ class IndexController extends AbstractController {
 	}
 
 	public function netDownAction() {
+		HeadHelper::setTitle('MALgraph - network error');
 	}
 
 	public function wrongQueryAction() {
+		HeadHelper::setTitle('MALgraph - error: wrong query');
 	}
 
 
