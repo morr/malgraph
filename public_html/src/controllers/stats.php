@@ -578,9 +578,10 @@ class StatsController extends AbstractController {
 				}
 				shuffle($recs);
 				$recs = array_slice($recs, 0, $limit);
+			}
 
 			//dynamic recommendations
-			} else {
+			if (empty($recs)) {
 				$goal = 50;
 				$selUsers = [];
 				$selAM = [];
