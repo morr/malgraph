@@ -3,7 +3,6 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 
 class HTMLCacheModel extends AbstractModel {
 	public function getReal($get) {
-		error_log(print_r($get, true));
 		ob_start();
 		$request = $get['request'];
 		$router = ChibiRegistry::get('router');
@@ -16,15 +15,32 @@ class HTMLCacheModel extends AbstractModel {
 		return $entry;
 	}
 
-	public function get($key) {
+	public function get($key, $policy = AbstractModel::CACHE_POLICY_DEFAULT) {
 		if (!ChibiConfig::getInstance()->misc->htmlCacheEnabled) {
-			return self::getReal($key);
+			return self::get($key, AbstractModel::CACHE_POLICY_FORCE_CACHE);
 		}
-		return parent::get($key);
+		return parent::get($key, $policy);
 	}
 
 	public function __construct() {
 		$this->folder = ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->htmlCacheDir;
+	}
+
+	public function getKeys() {
+		$keys = parent::getKeys();
+		$keysFinal = [];
+		foreach ($keys as $key) {
+			$keysFinal []= $this->pathToKey($key);
+		}
+		return $keysFinal;
+	}
+
+	public function pathToKey($path) {
+		$key = str_replace($this->suffix, '', basename($path));
+		$key = base64_decode($key);
+		$key = gzuncompress($key);
+		$key = json_decode($key, true);
+		return $key;
 	}
 
 	public function keyToPath($key) {
