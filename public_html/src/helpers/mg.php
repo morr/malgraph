@@ -229,7 +229,7 @@ class MGHelper extends ChibiHelper {
 	public function downloadMulti(array $urls) {
 		$documents = [];
 
-		if (!empty(ChibiConfig::getInstance()->misc->mirrorDir)) {
+		if (ChibiConfig::getInstance()->misc->mirrorEnabled) {
 			$mirrors = [];
 			$nurls = $urls;
 			foreach ($urls as $key => $url) {
