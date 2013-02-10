@@ -17,13 +17,6 @@ class AbstractController extends ChibiController {
 		$this->view->controllerName = ChibiConfig::getInstance()->chibi->runtime->controllerName;
 		$this->view->actionName = ChibiConfig::getInstance()->chibi->runtime->actionName;
 
-		//hash for prevention of race condition in ajax-driven user cache refreshing
-		if (!isset($_SESSION['unique-hash'])) {
-			$uniqueHash = md5('pepper-' . microtime(true) . mt_rand());
-			$_SESSION['unique-hash'] = $uniqueHash;
-		}
-		$this->view->uniqueHash = $_SESSION['unique-hash'];
-
 		//basic settings
 		HeadHelper::setTitle('MALgraph');
 		HeadHelper::setKeywords(['malgraph', 'anime', 'manga', 'statistics', 'stats']);

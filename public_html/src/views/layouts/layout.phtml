@@ -210,9 +210,14 @@
 	<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 		<script type="text/javascript">
 			window.setTimeout(function() {
-				var url = <?php echo json_encode(ChibiRegistry::getHelper('mg')->constructUrl('index', 'regenerate')) ?>;
-				var data = <?php echo json_encode(['user-name' => reset(ChibiRegistry::getView()->userNames), 'unique-hash' => ChibiRegistry::getView()->uniqueHash]) ?>;
-				$.get(url, data, function(response) { /*alert(response);*/ });
+				var url = <?php echo json_encode(ChibiRegistry::getHelper('mg')->constructUrl('index', 'get-token')) ?>;
+				$.get(url, [], function(response) {
+					var data = {};
+					data['unique-hash'] = response;
+					data['user-name'] = <?php echo json_encode(reset(ChibiRegistry::getView()->userNames)) ?>;
+					var url = <?php echo json_encode(ChibiRegistry::getHelper('mg')->constructUrl('index', 'regenerate')) ?>;
+					$.get(url, data, function(response) { /*alert(response);*/ });
+				});
 			}, 1500);
 		</script>
 	<?php endif ?>

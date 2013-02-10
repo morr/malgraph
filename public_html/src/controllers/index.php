@@ -62,6 +62,19 @@ class IndexController extends AbstractController {
 
 
 
+	//hash for prevention of race condition in ajax-driven user cache refreshing
+	public function getTokenAction() {
+		header('Content-Type: text/plain; charset=utf-8');
+		ChibiConfig::getInstance()->chibi->runtime->layoutName = null;
+
+		if (!isset($_SESSION['unique-hash'])) {
+			$_SESSION['unique-hash'] = md5('pepper-' . microtime(true) . mt_rand());
+		}
+
+		echo $_SESSION['unique-hash'];
+		exit;
+	}
+
 	public function regenerateAction() {
 		header('Content-Type: text/plain; charset=utf-8');
 		ChibiConfig::getInstance()->chibi->runtime->layoutName = null;
