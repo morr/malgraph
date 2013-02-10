@@ -153,16 +153,6 @@ class AdminController extends AbstractController {
 				$model->delete($userName);
 				$this->success($userName . ' deleted OK');
 				break;
-			case 'toggle-vip':
-				$user = $model->get($userName);
-				$user->getUserData()->setVIP(!$user->getUserData()->isVIP());
-				$model->put($userName, $user);
-				if ($user->getUserData()->isVIP()) {
-					$this->success($userName . ' marked is now VIP');
-				} else {
-					$this->success($userName . ' marked is no longer VIP');
-				}
-				break;
 			case 'toggle-block':
 				$user = $model->get($userName);
 				$user->getUserData()->setBlocked(!$user->getUserData()->isBlocked());

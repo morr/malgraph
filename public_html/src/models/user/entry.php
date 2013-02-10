@@ -4,7 +4,6 @@ class UserData {
 	const GENDER_MALE = 'M';
 	const GENDER_UNKNOWN = '?';
 
-	private $vip = false;
 	private $blocked = false;
 	private $profilePicURL = null;
 	private $gender = self::GENDER_UNKNOWN;
@@ -53,14 +52,6 @@ class UserData {
 
 	public function setWebsite($website) {
 		$this->website = $website;
-	}
-
-	public function isVIP() {
-		return $this->vip;
-	}
-
-	public function setVIP($vip) {
-		$this->vip = $vip;
 	}
 
 	public function isBlocked() {

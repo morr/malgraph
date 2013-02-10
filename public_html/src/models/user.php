@@ -350,11 +350,7 @@ class UserModel extends AbstractModel {
 		$this->beforeUpdate($userEntry);
 
 		$userEntry->setGenerationTime(time());
-		if ($userEntry->getUserData()->isVIP()) {
-			$userEntry->setExpirationTime(time() + 3600 * 3);
-		} else {
-			$userEntry->setExpirationTime(time() + 3600 * 24);
-		}
+		$userEntry->setExpirationTime(time() + 3600 * 24);
 
 		if ($userEntry->getUserData()->isBlocked()) {
 			return $userEntry;
