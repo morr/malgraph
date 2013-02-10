@@ -567,8 +567,9 @@ class StatsController extends AbstractController {
 
 			$this->view->recsStatic = count($entries) <= 20;
 			$this->sessionHelper->restore();
-			if (isset($_SESSION['recs'][$u->getID()])) {
-				$this->view->recs[$u->getID()] = unserialize($_SESSION['recs'][$u->getID()]);
+			$sessionKey = 'recs-' . $this->view->am . '-' . $u->getID();
+			if (isset($_SESSION[$sessionKey])) {
+				$this->view->recs[$u->getID()] = unserialize($_SESSION[$sessionKey]);
 				continue;
 			}
 			$this->sessionHelper->close();
@@ -706,10 +707,7 @@ class StatsController extends AbstractController {
 			}
 
 			$this->sessionHelper->restore();
-			if (!isset($_SESSION['recs'])) {
-				$_SESSION['recs'] = [];
-			}
-			$_SESSION['recs'][$u->getID()] = serialize($recs);
+			$_SESSION[$sessionKey] = serialize($recs);
 			$this->view->recs[$u->getID()] = $recs;
 		}
 
