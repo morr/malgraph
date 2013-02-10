@@ -1,6 +1,4 @@
 <?php
-ini_set('memory_limit', '120M');
-
 class InvalidEntryException extends Exception {}
 class DownloadException extends Exception {
 	public function __construct($url) {
@@ -10,7 +8,7 @@ class DownloadException extends Exception {
 
 interface CRUMModel {
 	public function get($key);
-	public function put($key, &$data);
+	public function put($key, $data);
 	public function getKeys();
 	public function delete($key);
 };
@@ -120,7 +118,7 @@ abstract class AbstractModel implements CachableModel {
 		return $data;
 	}
 
-	public function put($key, &$data) {
+	public function put($key, $data) {
 		$path = $this->keyToPath($key);
 		return file_put_contents($path, serialize($data), LOCK_EX);
 	}
