@@ -1,7 +1,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section recs">
 	<h2>
-		<i data-tooltip="List of titles you might want to check out we found using some complicated formulas." class="icon-tooltip"></i>
+		<i data-tooltip="List of titles you might want to check out,|found with some complicated formulas." class="icon-tooltip"></i>
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'recommendations') ?>
 	</h2>
 	<div class="section-body">
@@ -9,8 +9,10 @@
 			<p>No recommendations. :(</p>
 		<?php else: ?>
 			<?php if ($this->recsStatic): ?>
-				<p>Your <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list is too short for us to properly guess your tastes.<br>
-				Here you have some widely recommended titles that you haven&rsquo;t <?php echo $this->am == AMModel::TYPE_ANIME ? 'watched' : 'read' ?> yet:</p>
+				<p>Your <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list is too short for us to guess your tastes, but don&rsquo;t worry!<br>
+				Here are some widely recommended titles that you haven&rsquo;t <?php echo $this->am == AMModel::TYPE_ANIME ? 'watched' : 'read' ?> yet:</p>
+			<?php else: ?>
+				<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->textAM()) ?> recommendations tailored to your taste. The system says you will<br>like them, but we take no responsibility for injuries due to bad suggestions.</p>
 			<?php endif ?>
 			<ol><!-- my fetish -->
 			<?php foreach ($this->recs[$user->getID()] as $entry): ?>
