@@ -210,10 +210,6 @@ class AnimeModel extends AMModel {
 		$this->folder = ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->animeCacheDir;
 	}
 
-	public function isFresh($data) {
-		return isset($data['expires']) and time() <= $data['expires'];
-	}
-
 	protected function loadAnime(&$animeEntry, $doc) {
 		$xpath = new DOMXpath($doc);
 
