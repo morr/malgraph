@@ -411,7 +411,7 @@ class StatsController extends AbstractController {
 		//we gotta do an update HERE, where we present image to given user
 		$modelUsers = new UserModel();
 		try {
-			$user = $modelUsers->get($user->getUserName(), UserModel::CACHE_POLICY_DEFAULT);
+			$user = $modelUsers->get($user->getUserName(), AbstractModel::CACHE_POLICY_DEFAULT);
 		} catch (Exception $e) {
 		}
 	}
@@ -563,21 +563,130 @@ class StatsController extends AbstractController {
 		foreach ($this->view->users as $u) {
 			$filter = UserListFilters::getCompleted();
 			$entries = $u->getList($this->view->am)->getEntries($filter);
+			$limit = 15;
 
-			$recs = array();
-			if (count($entries) <= 20) {
-				$this->view->recsStatic = true;
-				$model = AMModel::factory($this->view->am);
+			$recs = [];
+			$modelAM = AMModel::factory($this->view->am);
+			$this->view->recsStatic = count($entries) <= 20;
+			//static recommendations
+			if ($this->view->recsStatic) {
 				$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
 				foreach ($staticRecs[$this->view->am] as $id) {
 					$userEntry = $u->getList($this->view->am)->getEntryByID($id);
 					if ($userEntry !== null and $userEntry->getStatus() == UserListEntry::STATUS_COMPLETED) {
 						continue;
 					}
-					$recs []= $model->get($id, AMModel::CACHE_POLICY_FORCE_CACHE);
+					$recs []= $modelAM->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
 				}
 				shuffle($recs);
-				$recs = array_slice($recs, 0, 10);
+				$recs = array_slice($recs, 0, $limit);
+
+			//dynamic recommendations
+			} else {
+				$goal = 50;
+				$selUsers = [];
+				$selAM = [];
+
+				$u1 = $u;
+				$list1 = $u1->getList($this->view->am);
+				$mean1 = UserListService::getMeanScore($entries);
+				$filterDontShow = function($e) { if (!$e) { return true; } if ($e->getStatus() != UserListEntry::STATUS_PLANNED) { return true; } return false; };
+
+				//1. get some user base
+				$modelUsers = new UserModel();
+				$allIds = $modelUsers->getKeys();
+				shuffle($allIds);
+				$iters = 0;
+				while (count($allIds) > 0 and count($selUsers) < $goal) {
+					$iters ++;
+					$id = array_shift($allIds);
+					if (!isset($selUsers[$id])) {
+						$u2 = $modelUsers->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
+						$list2 = $u2->getList($this->view->am);
+						$distro = $list2->getScoreDistributionForCF();
+						//filter out uninteresting sources
+						if ($distro->getRatedCount() >= 50 and $distro->getStandardDeviation() >= 1.5) {
+							$mean2 = $distro->getMeanScore();
+							$selUsers[$id] = [$u2, $list2, $mean2];
+						} else {
+							unset($u2, $list2, $distro);
+						}
+					}
+				}
+
+				//2.
+				#$simNormalize = 0;
+				foreach ($selUsers as $id => &$data) {
+					//2a. get similarity indexes between me and selected user
+					list ($u2, $list2, $mean2) = $data;
+					$sum1 = $sum2a = $sum2b = 0;
+					foreach ($entries as $e1) {
+						$e2 = $list2->getEntryByID($e1->getID());
+						if ($e2 !== null) {
+							$score1 = $e1->getScore();
+							$score2 = $e2->getScore();
+							$sum1 += ($score1 - $mean1) * ($score2 - $mean2);
+							$sum2a += ($score1 - $mean1) * ($score1 - $mean1);
+							$sum2b += ($score2 - $mean2) * ($score2 - $mean2);
+						}
+					}
+					$sim = $sum1 / max(1, sqrt($sum2a * $sum2b));
+					$data []= $sim;
+
+					//2b. check what titles are on their list
+					foreach ($list2->getEntries() as $e2) {
+						$e1 = $list1->getEntryByID($e2->getID());
+						if (!$filterDontShow($e1)) {
+							$selAM []= $e2->getID();
+						}
+					}
+					#$simNormalize += abs($sim);
+				}
+				#$simNormalize = 1. / max(1, $simNormalize);
+
+				//3. get title ratings
+				$finalAM = [];
+				foreach ($selAM as $id) {
+					$score = 0;
+					foreach ($selUsers as $uid => $data) {
+						list ($u2, $list2, $mean2, $sim) = $data;
+						$e2 = $list2->getEntryByID($id);
+						//filter sources
+						if ($e2 and $e2->getStatus() == UserListEntry::STATUS_COMPLETED) {
+							$score2 = $e2->getScore();
+							if ($score2) {
+								$score += $sim * ($score2 - $mean2);
+							}
+						}
+					}
+					#$score *= $simNormalize;
+					$score += $mean1;
+					$finalAM[$id] = $score;
+				}
+
+				//4. convert title ratings to actual recommendations
+				arsort($finalAM, SORT_NUMERIC);
+				$finalAM = array_keys($finalAM);
+				while (count($finalAM) > 0 and count($recs) < $limit) {
+					$e = $modelAM->get(array_shift($finalAM));
+					//make sure only first unwatched thing in franchise is going to be recommended
+					$franchise = $e->getFranchise();
+					uasort($franchise->entries, function($a, $b) { return $a->getID() > $b->getID() ? 1 : -1; });
+					foreach ($franchise->entries as $e2) {
+						$e1 = $list1->getEntryByID($e2->getID());
+						if (!$filterDontShow($e1)) {
+							$e = $e2;
+							break;
+						}
+					}
+					//don't recommend more than one thing in given franchise
+					foreach ($franchise->entries as $e2) {
+						$id2 = $e2->getID();
+						$finalAM = array_filter($finalAM, function($id) use ($id2) { return $id != $id2; });
+					}
+					$recs []= $e;
+				}
+
 			}
 			$this->view->recs[$u->getID()] = $recs;
 

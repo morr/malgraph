@@ -27,23 +27,72 @@ class MGHelper extends ChibiHelper {
 		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 	}
 
-	public function subTypeText($subType) {
+	public function amText($type = null) {
+		if ($type === null) {
+			$type = ChibiRegistry::getView()->am;
+		}
+		switch ($type) {
+			case AMModel::TYPE_ANIME: return 'anime';
+			case AMModel::TYPE_MANGA: return 'manga';
+		}
+		throw new InvalidAMTypeException();
+	}
+
+	public function epText($type = null, $plural = false) {
+		if ($type === null) {
+			$type = ChibiRegistry::getView()->am;
+		}
+		switch ($type) {
+			case AMModel::TYPE_ANIME: return 'episode' . ($plural ? 's' : '');
+			case AMModel::TYPE_MANGA: return 'chapter' . ($plural ? 's' : '');
+		}
+		throw new InvalidAMTypeException();
+	}
+
+	public function subTypeText($subType, $plural = false) {
 		switch ($subType) {
-			case AnimeEntry::SUBTYPE_OVA: return 'OVA';
-			case AnimeEntry::SUBTYPE_ONA: return 'ONA';
+			case AnimeEntry::SUBTYPE_OVA: return $plural ? 'OVAs' : 'OVA';
+			case AnimeEntry::SUBTYPE_ONA: return $plural ? 'ONAs' : 'ONA';
 			case AnimeEntry::SUBTYPE_TV: return 'TV';
-			case AnimeEntry::SUBTYPE_SPECIAL: return 'Special';
-			case AnimeEntry::SUBTYPE_MUSIC: return 'Music';
-			case AnimeEntry::SUBTYPE_MOVIE: return 'Movie';
-			case MangaEntry::SUBTYPE_MANGA: return 'Manga';
-			case MangaEntry::SUBTYPE_MANHWA: return 'Manhwa';
-			case MangaEntry::SUBTYPE_MANHUA: return 'Manhua';
-			case MangaEntry::SUBTYPE_DOUJIN: return 'Doujin';
-			case MangaEntry::SUBTYPE_NOVEL: return 'Novel';
-			case MangaEntry::SUBTYPE_ONESHOT: return 'One shot';
+			case AnimeEntry::SUBTYPE_SPECIAL: return $plural ? 'specials' : 'special';
+			case AnimeEntry::SUBTYPE_MUSIC: return 'music';
+			case AnimeEntry::SUBTYPE_MOVIE: return $plural ? 'movies' : 'movie';
+			case MangaEntry::SUBTYPE_MANGA: return 'manga';
+			case MangaEntry::SUBTYPE_MANHWA: return 'manhwa';
+			case MangaEntry::SUBTYPE_MANHUA: return 'manhua';
+			case MangaEntry::SUBTYPE_DOUJIN: return $plural ? 'doujinshi' : 'doujin';
+			case MangaEntry::SUBTYPE_NOVEL: return $plural ? ' novels' : 'novel';
+			case MangaEntry::SUBTYPE_ONESHOT: return $plural ? 'one shots' : 'one shot';
 			case '': return 'Unknown';
 			default: throw new Exception('Unknown type: ' . $subType);
 		}
+	}
+
+	public function textVolumes($volumes) {
+		if ($volumes == 0) {
+			return '? volumes';
+		} elseif ($volumes == 1) {
+			return '1 volume';
+		}
+		return $volumes . ' volumes';
+	}
+
+	public function textChapters($chapters) {
+		if ($chapters == 0) {
+			return '? chapters';
+		} elseif ($chapters == 1) {
+			return '1 chapter';
+		}
+		return $chapters . ' chapters';
+	}
+
+	public function textEpisodes($episodes) {
+		if ($episodes == 0) {
+			return '? episodes';
+		} elseif ($episodes == 1) {
+			return '1 episode';
+		}
+		return $episodes . ' episodes';
 	}
 
 	public function statusText($status, $type = null) {
@@ -70,28 +119,6 @@ class MGHelper extends ChibiHelper {
 			$html = ucfirst($text);
 		}
 		return $html;
-	}
-
-	public function amText($type = null) {
-		if ($type === null) {
-			$type = ChibiRegistry::getView()->am;
-		}
-		switch ($type) {
-			case AMModel::TYPE_ANIME: return 'anime';
-			case AMModel::TYPE_MANGA: return 'manga';
-		}
-		throw new InvalidAMTypeException();
-	}
-
-	public function epText($type = null, $plural = false) {
-		if ($type === null) {
-			$type = ChibiRegistry::getView()->am;
-		}
-		switch ($type) {
-			case AMModel::TYPE_ANIME: return 'episode' . ($plural ? 's' : '');
-			case AMModel::TYPE_MANGA: return 'chapter' . ($plural ? 's' : '');
-		}
-		throw new InvalidAMTypeException();
 	}
 
 	public function removeSpaces($subject) {

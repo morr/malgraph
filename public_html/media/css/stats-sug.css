@@ -5,22 +5,20 @@
 .missing table tbody:hover tr td { background: #f5f5f5; } /* multiple tbody are used for highlighting (more) link row along with proposition row */
 .missing table td ul { list-style-type: none; margin: 0; padding: 0; }
 .missing table td ul li { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
-.missing .more { display: block; text-align: center; font-size: 92.5%; color: silver; }
+.missing .more { display: block; text-align: center; color: silver; }
 
 .recs ol { list-style-type: none; margin: 0; padding: 0; }
-.recs li { margin: 0.5em 0; font-size: 120%; }
-.recs li .header { border: 1px solid silver; padding: 0.25em 0.75em; margin: 0 0 0.5em 0; }
-.recs li .header a.more,
-.recs li .header span.year { float: right; }
-.recs li .header a.more { color: gray; margin-right: 2em; }
-.recs li .header a.more:hover { text-decoration: none; color: dimgray; }
+.recs li .header { padding: 0.2em 0.5em; }
+.recs li.active .header,
+.recs li:hover .header { background: #f5f5f5; }
+.recs li .header span.type { float: right; }
+.recs li .wrapper-more-wrapper { position: relative; padding: 0.5em 1em 1em 1em; }
 
-.recs li img { width: 20%; float: left; }
 .recs li table { table-layout: fixed; width: 80%; border-spacing: 0; }
-.recs li table td.img { width: 20%; text-align: center; padding: 0.5em 0.5em 0.5em 0; }
 .recs li table td.key { width: 20%; padding-left: 0.5em; }
 .recs li table td.key:after { content: ': '; }
 .recs li table td.value { width: 60%; }
 .recs li table td.no-wrap { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.recs li .wrapper-more { position: relative; }
+.recs li a.img { display: inline; }
+.recs li a.img img { max-width: 6em; float: left; display: inline; }
 .recs li a.close { position: absolute; right: 0; top: 0; }

@@ -114,7 +114,7 @@ abstract class AMModel extends AbstractModel {
 		$entry->resetGenres();
 		foreach ($xpath->query('//span[starts-with(text(), \'Genres\')]/../a') as $node) {
 			preg_match('/=([0-9]+)/', $node->getAttribute('href'), $matches);
-			$genre = new AMGenreEntry();
+			$genre = AMGenreEntry::factory($entry->getType());
 			$genre->setID(intval($matches[1]));
 			$genre->setName(strtolower(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->textContent)));
 			$entry->addGenre($genre);
