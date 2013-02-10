@@ -139,7 +139,7 @@
 							} },
 							series: [ {
 								type: 'pie',
-								data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ChibiRegistry::getHelper('mg')->subTypeText($key), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
+								data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ucfirst(ChibiRegistry::getHelper('mg')->subTypeText($key)), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
 								point: { events: { click: function(e) {
 									var am = $(e.target).parents('.sub-stats').attr('data-am');
 									toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category, 'am': am});

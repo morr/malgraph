@@ -25,7 +25,7 @@
 						</a>
 						<span class="type">
 							<?php if ($entry->getType() == AMModel::TYPE_ANIME): ?>
-								<?php echo ChibiRegistry::getHelper('mg')->subTypeText($entry->getSubType()) ?>
+								<?php echo ucfirst(ChibiRegistry::getHelper('mg')->subTypeText($entry->getSubType())) ?>
 								<?php if ($entry->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
 									,&nbsp;<em>airing</em>
 								<?php elseif ($entry->getSubType() != AnimeEntry::SUBTYPE_MOVIE): ?>
@@ -55,7 +55,7 @@
 							<table>
 								<tr class="year">
 									<td class="key">Season</td>
-									<td class="value"><?php echo UserListService::getAiredSeason($entry) ?: '?' ?></td>
+									<td class="value"><?php echo AMService::getAiredSeason($entry) ?: '?' ?></td>
 								</tr>
 
 								<tr class="creators">
@@ -63,7 +63,7 @@
 									<td class="value no-wrap"><?php
 										$tmp = [];
 										foreach ($entry->getCreators() as $creator) {
-											if (!UserListService::creatorForbidden($creator)) {
+											if (!AMService::creatorForbidden($creator)) {
 												if ($this->am == AMModel::TYPE_MANGA) {
 													$item = '<a href="http://myanimelist.net/people/' . $creator->getID() . '/">';
 												} else {

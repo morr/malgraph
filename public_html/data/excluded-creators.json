@@ -1,81 +1,79 @@
 {
-"anime":
-[
-	{"id": 15,  "name": "Sony Pictures Entertainment"},
-	{"id": 16,  "name": "TV Tokyo"},
-	{"id": 717,  "name": "TV Tokyo Music"},
-	{"id": 17,  "name": "Aniplex"},
-	{"id": 23,  "name": "Bandai Visual"},
-	{"id": 31,  "name": "Geneon Universal Entertainment"},
-	{"id": 33,  "name": "WOWOW"},
-	{"id": 42,  "name": "GDH"},
-	{"id": 55,  "name": "TV Asahi"},
-	{"id": 58,  "name": "Square Enix"},
-	{"id": 62,  "name": "Shogakukan Productions"},
-	{"id": 76,  "name": "Yomiuri Telecasting Corporation"},
-	{"id": 92,  "name": "Starchild Records"},
-	{"id": 97,  "name": "ADV Films"},
-	{"id": 100, "name": "TV Osaka"},
-	{"id": 102, "name": "FUNimation Entertainment"},
-	{"id": 104, "name": "Lantis"},
-	{"id": 108, "name": "Media Factory"},
-	{"id": 111, "name": "NHK"},
-	{"id": 113, "name": "Kadokawa Shoten"},
-	{"id": 119, "name": "Viz Media"},
-	{"id": 123, "name": "Victor Entertainment"},
-	{"id": 143, "name": "Mainichi Broadcasting"},
-	{"id": 144, "name": "Pony Canyon"},
-	{"id": 145, "name": "TBS"},
-	{"id": 146, "name": "CBC"},
-	{"id": 158, "name": "Kids Station"},
-	{"id": 159, "name": "Kodansha"},
-	{"id": 166, "name": "Movic"},
-	{"id": 169, "name": "Fuji TV"},
-	{"id": 205, "name": "Nihon Ad Systems"},
-	{"id": 215, "name": "Nelvana"},
-	{"id": 217, "name": "The Right Stuf International"},
-	{"id": 224, "name": "Toshiba EMI"},
-	{"id": 233, "name": "Bandai Entertainment"},
-	{"id": 236, "name": "YTV"},
-	{"id": 240, "name": "Capcom"},
-	{"id": 245, "name": "Toho Company"},
-	{"id": 250, "name": "Media Blasters"},
-	{"id": 252, "name": "4Kids Entertainment"},
-	{"id": 262, "name": "Kadokawa Pictures USA"},
-	{"id": 270, "name": "NuTech Digital"},
-	{"id": 277, "name": "Anime Midstream"},
-	{"id": 284, "name": "Central Park Media"},
-	{"id": 296, "name": "Critical Mass"},
-	{"id": 310, "name": "AnimEigo"},
-	{"id": 311, "name": "Enoki Films"},
-	{"id": 317, "name": "NHK Enterprises"},
-	{"id": 321, "name": "Kitty Media"},
-	{"id": 323, "name": "Nippon Columbia"},
-	{"id": 358, "name": "Telescreen BV"},
-	{"id": 359, "name": "Sogo Vision"},
-	{"id": 372, "name": "NIS America, Inc."},
-	{"id": 376, "name": "Sentai Filmworks"},
-	{"id": 382, "name": "Tokuma Shoten"},
-	{"id": 392, "name": "Enterbrain"},
-	{"id": 410, "name": "Adult Source Media"},
-	{"id": 411, "name": "KBS"},
-	{"id": 415, "name": "Warner Bros."},
-	{"id": 417, "name": "Walt Disney Studios"},
-	{"id": 460, "name": "The Klock Worx"},
-	{"id": 467, "name": "Discotek"},
-	{"id": 484, "name": "TOKYOPOP"},
-	{"id": 488, "name": "Anchor Bay Films"},
-	{"id": 490, "name": "Maiden Japan"},
-	{"id": 493, "name": "Aniplex of America"},
-	{"id": 499, "name": "The Pokemon Company International"},
-	{"id": 501, "name": "Miramax Films"},
-	{"id": 505, "name": "Nintendo of America"},
-	{"id": 509, "name": "Fuji Video"},
-	{"id": 573, "name": "JapanAnime"},
-	{"id": 595, "name": "NYAV Post"},
-	{"id": 769, "name": "Fuji Pacific Music Publishing"}
-],
-"manga":
-[
-]
+	"anime": [
+		15,  #Sony Pictures Entertainment
+		16,  #TV Tokyo
+		717, #TV Tokyo Music
+		17,  #Aniplex
+		23,  #Bandai Visual
+		31,  #Geneon Universal Entertainment
+		33,  #WOWOW
+		42,  #GDH
+		55,  #TV Asahi
+		58,  #Square Enix
+		62,  #Shogakukan Productions
+		76,  #Yomiuri Telecasting Corporation
+		92,  #Starchild Records
+		97,  #ADV Films
+		100,  #TV Osaka
+		102,  #FUNimation Entertainment
+		104,  #Lantis
+		108,  #Media Factory
+		111,  #NHK
+		113,  #Kadokawa Shoten
+		119,  #Viz Media
+		123,  #Victor Entertainment
+		143,  #Mainichi Broadcasting
+		144,  #Pony Canyon
+		145,  #TBS
+		146,  #CBC
+		158,  #Kids Station
+		159,  #Kodansha
+		166,  #Movic
+		169,  #Fuji TV
+		205,  #Nihon Ad Systems
+		215,  #Nelvana
+		217,  #The Right Stuf International
+		224,  #Toshiba EMI
+		233,  #Bandai Entertainment
+		236,  #YTV
+		240,  #Capcom
+		245,  #Toho Company
+		250,  #Media Blasters
+		252,  #4Kids Entertainment
+		262,  #Kadokawa Pictures USA
+		270,  #NuTech Digital
+		277,  #Anime Midstream
+		284,  #Central Park Media
+		296,  #Critical Mass
+		310,  #AnimEigo
+		311,  #Enoki Films
+		317,  #NHK Enterprises
+		321,  #Kitty Media
+		323,  #Nippon Columbia
+		358,  #Telescreen BV
+		359,  #Sogo Vision
+		372,  #NIS America, Inc.
+		376,  #Sentai Filmworks
+		382,  #Tokuma Shoten
+		392,  #Enterbrain
+		410,  #Adult Source Media
+		411,  #KBS
+		415,  #Warner Bros.
+		417,  #Walt Disney Studios
+		460,  #The Klock Worx
+		467,  #Discotek
+		484,  #TOKYOPOP
+		488,  #Anchor Bay Films
+		490,  #Maiden Japan
+		493,  #Aniplex of America
+		499,  #The Pokemon Company International
+		501,  #Miramax Films
+		505,  #Nintendo of America
+		509,  #Fuji Video
+		573,  #JapanAnime
+		595,  #NYAV Post
+		769   #Fuji Pacific Music Publishing
+	],
+	"manga": [
+	]
 }

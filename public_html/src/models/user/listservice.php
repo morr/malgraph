@@ -109,65 +109,6 @@ class UserListService {
 		return $monthPeriod;
 	}
 
-	public static function creatorForbidden($creator) {
-		$excluded = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedCreatorsDefFile);
-		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$creator->getType()]);
-		return in_array($creator->getID(), $excludedIDs);
-	}
-
-	public static function genreForbidden($genre) {
-		$excluded = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->excludedGenresDefFile);
-		$excludedIDs = array_map(function($e) { return $e['id']; }, $excluded[$genre->getType()]);
-		return in_array($genre->getID(), $excludedIDs);
-	}
-
-	public static function getAiredSeason(AMEntry $entry) {
-		list(, $monthA) = explode('-', $entry->getAiredFrom() . '-');
-		list(, $monthB) = explode('-', $entry->getAiredTo() . '-');
-		$seasons = [
-			'Spring' => [3, 4, 5],
-			'Summer' => [6, 7, 8],
-			'Fall' => [9, 10, 11],
-			'Winter' => [12, 1, 2],
-		];
-		$month = null;
-		if ($monthA or $monthB) {
-			if (!$monthA) {
-				$month = $monthB;
-			} else {
-				$month = $monthA;
-			}
-		}
-		$season = null;
-		foreach ($seasons as $s => $months) {
-			if (in_array($month, $months)) {
-				$season = $s;
-				break;
-			}
-		}
-		if (!$season) {
-			return self::getAiredYear($entry);
-		}
-		return $season . ' ' . self::getAiredYear($entry);
-	}
-
-	public static function getAiredYear(AMEntry $entry) {
-		$yearA = intval(substr($entry->getAiredFrom(), 0, 4));
-		$yearB = intval(substr($entry->getAiredTo(), 0, 4));
-		if (!$yearA and !$yearB) {
-			return 0;
-		} elseif (!$yearA) {
-			return $yearB;
-		}
-		return $yearA;
-	}
-
-	public static function getAiredDecade(AMEntry $entry) {
-		$year = self::getAiredYear($entry);
-		$decade = floor($year / 10) * 10;
-		return $decade;
-	}
-
 	public static function getFranchises(array $entries, $filter = 'default') {
 		$all = [];
 
@@ -511,8 +452,6 @@ class LengthDistribution extends Distribution {
 }
 
 class CreatorDistribution extends Distribution {
-	private $excluded;
-
 	protected function sortEntries() {
 		foreach ($this->entries as $group => $entries) {
 			uasort($entries, UserListSorters::getByScore());
@@ -527,7 +466,7 @@ class CreatorDistribution extends Distribution {
 		$type = $entry->getType();
 		$creators = $entry->getAMEntry()->getCreators();
 		foreach ($creators as $creator) {
-			if (!UserListService::creatorForbidden($creator)) {
+			if (!AMService::creatorForbidden($creator)) {
 				$this->addToGroup($creator, $entry);
 			}
 		}
@@ -535,8 +474,6 @@ class CreatorDistribution extends Distribution {
 }
 
 class GenreDistribution extends Distribution {
-	private $excluded;
-
 	protected function sortEntries() {
 		foreach ($this->entries as $group => $entries) {
 			uasort($entries, UserListSorters::getByScore());
@@ -551,7 +488,7 @@ class GenreDistribution extends Distribution {
 		$type = $entry->getType();
 		$genres = $entry->getAMEntry()->getGenres();
 		foreach ($genres as $genre) {
-			if (!UserListService::genreForbidden($genre)) {
+			if (!AMService::genreForbidden($genre)) {
 				$this->addToGroup($genre, $entry);
 			}
 		}
@@ -570,7 +507,7 @@ class YearDistribution extends Distribution {
 	}
 
 	public function addEntry(UserListEntry $entry) {
-		$this->addToGroup(UserListService::getAiredYear($entry->getAMEntry()), $entry);
+		$this->addToGroup(AMService::getAiredYear($entry->getAMEntry()), $entry);
 	}
 }
 
@@ -586,6 +523,6 @@ class DecadeDistribution extends Distribution {
 	}
 
 	public function addEntry(UserListEntry $entry) {
-		$this->addToGroup(UserListService::getAiredDecade($entry->getAMEntry()), $entry);
+		$this->addToGroup(AMService::getAiredDecade($entry->getAMEntry()), $entry);
 	}
 }

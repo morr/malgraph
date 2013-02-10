@@ -1,17 +1,15 @@
 {
-"anime":
-[
-	{"id": 25,  "name": "Shoujo"},
-	{"id": 27,  "name": "Shounen"},
-	{"id": 42,  "name": "Seinen"},
-	{"id": 43,  "name": "Josei"}
-],
-"manga":
-[
-	{"id": 25,  "name": "Shoujo"},
-	{"id": 27,  "name": "Shounen"},
-	{"id": 41,  "name": "Seinen"},
-	{"id": 42,  "name": "Josei"},
-	{"id": 43,  "name": "Doujinshi"}
-]
+	"anime": [
+		25, #Shoujo
+		27, #Shounen
+		42, #Seinen
+		43  #Josei
+	],
+	"manga": [
+		25, #Shoujo
+		27, #Shounen
+		41, #Seinen
+		42, #Josei
+		43  #Doujinshi
+	]
 }
