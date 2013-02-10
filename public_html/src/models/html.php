@@ -17,7 +17,7 @@ class HTMLCacheModel extends AbstractModel {
 
 	public function get($key, $policy = AbstractModel::CACHE_POLICY_DEFAULT) {
 		if (!ChibiConfig::getInstance()->misc->htmlCacheEnabled) {
-			return self::get($key, AbstractModel::CACHE_POLICY_FORCE_CACHE);
+			return parent::get($key, AbstractModel::CACHE_POLICY_FORCE_REAL);
 		}
 		return parent::get($key, $policy);
 	}
