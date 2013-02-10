@@ -4,6 +4,10 @@ class SessionHelper extends ChibiHelper {
 	private static $oldData = [];
 	private static $oldId = '';
 
+	public static function stopped() {
+		return self::$stopped;
+	}
+
 	/*public static function init() {
 		if (!session_id()) {
 			self::$stopped = true;
