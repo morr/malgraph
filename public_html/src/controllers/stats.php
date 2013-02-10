@@ -512,29 +512,22 @@ class StatsController extends AbstractController {
 			$filter = UserListFilters::getNonPlanned();
 			$entries = $user->getList($this->view->am)->getEntries($filter);
 
-			ChibiRegistry::getHelper('benchmark')->benchmark('start');
 			$this->view->favCreators[$user->getID()] = new CreatorDistribution($entries);
-			ChibiRegistry::getHelper('benchmark')->benchmark('creators');
 			$this->view->favGenres[$user->getID()] = new GenreDistribution($entries);
-			ChibiRegistry::getHelper('benchmark')->benchmark('genres');
 			$this->view->favYears[$user->getID()] = new YearDistribution($entries);
-			ChibiRegistry::getHelper('benchmark')->benchmark('years');
 			$this->view->favDecades[$user->getID()] = new DecadeDistribution($entries);
-			ChibiRegistry::getHelper('benchmark')->benchmark('decades');
 
 			$this->view->yearScores[$user->getID()] = [];
 			foreach ($this->view->favYears[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $this->view->favYears[$user->getID()]->getGroupEntries($key);
 				$this->view->yearScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
-			ChibiRegistry::getHelper('benchmark')->benchmark('years');
 
 			$this->view->decadeScores[$user->getID()] = [];
 			foreach ($this->view->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $this->view->favDecades[$user->getID()]->getGroupEntries($key);
 				$this->view->decadeScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
-			ChibiRegistry::getHelper('benchmark')->benchmark('decades');
 
 			$this->view->creatorScores[$user->getID()] = [];
 			$this->view->creatorTimeSpent[$user->getID()] = [];
@@ -543,7 +536,6 @@ class StatsController extends AbstractController {
 				$this->view->creatorScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
 				$this->view->creatorTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
-			ChibiRegistry::getHelper('benchmark')->benchmark('creators');
 
 			$this->view->genreScores[$user->getID()] = [];
 			$this->view->genreTimeSpent[$user->getID()] = [];
@@ -552,8 +544,6 @@ class StatsController extends AbstractController {
 				$this->view->genreScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
 				$this->view->genreTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
-			ChibiRegistry::getHelper('benchmark')->benchmark('genres');
-
 		}
 	}
 
