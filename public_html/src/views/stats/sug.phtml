@@ -9,14 +9,14 @@
 			<p>No recommendations. :(</p>
 		<?php else: ?>
 			<?php if ($this->recsStatic): ?>
-				<p>Your <?php echo ChibiRegistry::getHelper('mg')->amText() ?> list is too short for us to properly guess your tastes.<br>
+				<p>Your <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list is too short for us to properly guess your tastes.<br>
 				Here you have some widely recommended titles that you haven&rsquo;t <?php echo $this->am == AMModel::TYPE_ANIME ? 'watched' : 'read' ?> yet:</p>
 			<?php endif ?>
 			<ol><!-- my fetish -->
 			<?php foreach ($this->recs[$user->getID()] as $entry): ?>
 				<li>
 					<div class="header">
-						<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->amText() ?>/<?php echo $entry->getID() ?>">
+						<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $entry->getID() ?>">
 							<i class="icon-pop-out"></i>
 						</a>
 						&nbsp;
@@ -25,7 +25,7 @@
 						</a>
 						<span class="type">
 							<?php if ($entry->getType() == AMModel::TYPE_ANIME): ?>
-								<?php echo ucfirst(ChibiRegistry::getHelper('mg')->subTypeText($entry->getSubType())) ?>
+								<?php echo ucfirst(ChibiRegistry::getHelper('mg')->textSubType($entry->getSubType())) ?>
 								<?php if ($entry->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
 									,&nbsp;<em>airing</em>
 								<?php elseif ($entry->getSubType() != AnimeEntry::SUBTYPE_MOVIE): ?>
@@ -44,7 +44,7 @@
 					<div class="wrapper-more">
 						<div class="wrapper-more-wrapper">
 							<a class="close">&times;</a>
-							<a class="img" href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $entry->getID() ?>">
+							<a class="img" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
 								<?php if (!$entry->getPictureURL()): ?>
 									<img class="unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
 								<?php else: ?>
@@ -88,7 +88,7 @@
 										$tmp = [];
 										if ($entry->getTags()) {
 											foreach ($entry->getTags() as $tag) {
-												$item = '<a href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->amText() . '.php?tag=' . urlencode($tag->getName()) . '">';
+												$item = '<a href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->textAM() . '.php?tag=' . urlencode($tag->getName()) . '">';
 												$item .= $tag->getName();
 												$item .= '</a>';
 												$tmp []= $item;
@@ -96,7 +96,7 @@
 											echo join(', ', $tmp);
 										} elseif ($entry->getGenres()) {
 											foreach ($entry->getGenres() as $genre) {
-												$item = '<a href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->amText() . '.php?genre[]=' . $genre->getID() . '">';
+												$item = '<a href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->textAM() . '.php?genre[]=' . $genre->getID() . '">';
 												$item .= $genre->getName();
 												$item .= '<a/>';
 												$tmp []= $item;
@@ -120,7 +120,7 @@
 										}
 										foreach ($subTypes as $subType => $subEntries) {
 											$item = count($subEntries) . ' ';
-											$item .= ChibiRegistry::getHelper('mg')->subTypeText($subType);
+											$item .= ChibiRegistry::getHelper('mg')->textSubType($subType, count($subEntries));
 											$tmp []= $item;
 											foreach ($subEntries as $subEntry) {
 												if ($entry->getType() == AMModel::TYPE_ANIME) {
@@ -179,7 +179,7 @@
 		<?php if (empty($this->relations[$user->getID()])): ?>
 			<p>Yay! No missing relations!</p>
 		<?php elseif ($user->getList($this->am)->isPrivate()): ?>
-			<p>Since <?php echo $user->getPublicName() ?>&rsquo;s <?php echo $this->mgHelper->amText() ?> list is marked as private, we can&rsquo;t reveal its content by showing suggestions.<br>
+			<p>Since <?php echo $user->getPublicName() ?>&rsquo;s <?php echo $this->mgHelper->textAM() ?> list is marked as private, we can&rsquo;t reveal its content by showing suggestions.<br>
 			If this is your list, click <a href="http://myanimelist.net/editprofile.php?go=listpreferences">here</a> to change privacy settings.</p>
 		<?php else: ?>
 
@@ -197,7 +197,7 @@
 								<ul>
 								<?php foreach ($franchise->ownEntries as $entry): ?>
 									<li data-id="<?php echo $entry->getID() ?>">
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $entry->getID() ?>">
+										<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
 											<?php echo htmlspecialchars($entry->getAMEntry()->getTitle()) ?>
 										</a>
 									</li>
@@ -211,7 +211,7 @@
 											<?php continue ?>
 										<?php else: ?>
 											<li data-id="<?php echo $entry->getID() ?>">
-												<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $entry->getID() ?>">
+												<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
 													<?php echo htmlspecialchars($entry->getTitle()) ?>
 												</a>
 											</li>

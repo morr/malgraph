@@ -133,7 +133,7 @@
 	<div class="section-body">
 		<?php if ($this->scoreDistribution[$user->getID()]->getRatedCount() == 0): ?>
 			<p>Couldn&rsquo;t find ratings on your list.<br>
-			Rate some <?php echo $this->mgHelper->amText() ?> and come back in 24 hours.</p>
+			Rate some <?php echo $this->mgHelper->textAM() ?> and come back in 24 hours.</p>
 		<?php else: ?>
 			<ul class="infobox">
 				<li>

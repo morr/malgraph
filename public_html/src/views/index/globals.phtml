@@ -5,7 +5,7 @@
 
 <?php foreach (AMModel::getTypes() as $am): ?>
 	<div class="section <?php echo $am ?>-score-dist">
-		<h2>Score distribution (<?php echo ChibiRegistry::getHelper('mg')->amText($am) ?>)</h2>
+		<h2>Score distribution (<?php echo ChibiRegistry::getHelper('mg')->textAM($am) ?>)</h2>
 		<?php $scoreDistribution = $this->globals->getAMData($am)->getScoredistribution() ?>
 		<div class="section-body">
 			<ul class="infobox">

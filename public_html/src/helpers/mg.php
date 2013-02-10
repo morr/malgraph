@@ -27,7 +27,8 @@ class MGHelper extends ChibiHelper {
 		return 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 	}
 
-	public function amText($type = null) {
+
+	public function textAM($type = null) {
 		if ($type === null) {
 			$type = ChibiRegistry::getView()->am;
 		}
@@ -38,18 +39,8 @@ class MGHelper extends ChibiHelper {
 		throw new InvalidAMTypeException();
 	}
 
-	public function epText($type = null, $plural = false) {
-		if ($type === null) {
-			$type = ChibiRegistry::getView()->am;
-		}
-		switch ($type) {
-			case AMModel::TYPE_ANIME: return 'episode' . ($plural ? 's' : '');
-			case AMModel::TYPE_MANGA: return 'chapter' . ($plural ? 's' : '');
-		}
-		throw new InvalidAMTypeException();
-	}
-
-	public function subTypeText($subType, $plural = false) {
+	public function textSubType($subType, $number = 1) {
+		$plural = $number > 1;
 		switch ($subType) {
 			case AnimeEntry::SUBTYPE_OVA: return $plural ? 'OVAs' : 'OVA';
 			case AnimeEntry::SUBTYPE_ONA: return $plural ? 'ONAs' : 'ONA';
@@ -61,41 +52,47 @@ class MGHelper extends ChibiHelper {
 			case MangaEntry::SUBTYPE_MANHWA: return 'manhwa';
 			case MangaEntry::SUBTYPE_MANHUA: return 'manhua';
 			case MangaEntry::SUBTYPE_DOUJIN: return $plural ? 'doujinshi' : 'doujin';
-			case MangaEntry::SUBTYPE_NOVEL: return $plural ? ' novels' : 'novel';
+			case MangaEntry::SUBTYPE_NOVEL: return $plural ? 'novels' : 'novel';
 			case MangaEntry::SUBTYPE_ONESHOT: return $plural ? 'one shots' : 'one shot';
 			case '': return 'Unknown';
 			default: throw new Exception('Unknown type: ' . $subType);
 		}
 	}
 
-	public function textVolumes($volumes) {
-		if ($volumes == 0) {
-			return '? volumes';
-		} elseif ($volumes == 1) {
-			return '1 volume';
+	public function textVolumes($number, $short = false, $fmt = '%s %s') {
+		$txt = $short ? 'vol' : 'volume';
+		if ($number == 0) {
+			$number = '?';
+			$txt .= 's';
+		} elseif ($number > 1) {
+			$txt .= 's';
 		}
-		return $volumes . ' volumes';
+		return sprintf($fmt, $number, $txt);
 	}
 
-	public function textChapters($chapters) {
-		if ($chapters == 0) {
-			return '? chapters';
-		} elseif ($chapters == 1) {
-			return '1 chapter';
+	public function textChapters($number, $short = false, $fmt = '%s %s') {
+		$txt = $short ? 'chap' : 'chapter';
+		if ($number == 0) {
+			$number = '?';
+			$txt .= 's';
+		} elseif ($number > 1) {
+			$txt .= 's';
 		}
-		return $chapters . ' chapters';
+		return sprintf($fmt, $number, $txt);
 	}
 
-	public function textEpisodes($episodes) {
-		if ($episodes == 0) {
-			return '? episodes';
-		} elseif ($episodes == 1) {
-			return '1 episode';
+	public function textEpisodes($number, $short = false, $fmt = '%s %s') {
+		$txt = $short ? 'ep' : 'episode';
+		if ($number == 0) {
+			$number = '?';
+			$txt .= 's';
+		} elseif ($number > 1) {
+			$txt .= 's';
 		}
-		return $episodes . ' episodes';
+		return sprintf($fmt, $number, $txt);
 	}
 
-	public function statusText($status, $type = null) {
+	public function textStatus($status, $type = null) {
 		if ($type === null) {
 			$type = ChibiRegistry::getView()->am;
 		}
@@ -108,6 +105,7 @@ class MGHelper extends ChibiHelper {
 			default: throw new Exception('Unknown status: ' . $status);
 		}
 	}
+
 
 	public function headerLink($user, $text, $forcePlural = false) {
 		$view = ChibiRegistry::getView();

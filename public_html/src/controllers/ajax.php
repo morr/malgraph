@@ -103,7 +103,7 @@ class AjaxController extends AbstractController {
 				$year = $this->inputHelper->getInt('year');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = function(UserListEntry $entry) use ($year) {
-					return UserListService::getAiredYear($entry) == $year;
+					return AMService::getAiredYear($entry->getAMEntry()) == $year;
 				};
 				$filter = UserListFilters::combine($filter1, $filter2);
 				$this->view->year = $year;
@@ -115,7 +115,7 @@ class AjaxController extends AbstractController {
 				$decade = $this->inputHelper->getInt('decade');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = function(UserListEntry $entry) use ($decade) {
-					return UserListService::getAiredDecade($entry) == $decade;
+					return AMService::getAiredDecade($entry->getAMEntry()) == $decade;
 				};
 				$filter = UserListFilters::combine($filter1, $filter2);
 				$this->view->decade = $decade;

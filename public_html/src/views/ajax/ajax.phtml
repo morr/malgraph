@@ -8,7 +8,7 @@
 		<?php endif ?>
 
 	<?php elseif ($this->sender == AjaxController::SENDER_YEAR or $this->sender == AjaxController::SENDER_DECADE): ?>
-		<?php echo ucfirst($this->mgHelper->amText()) ?>
+		<?php echo ucfirst($this->mgHelper->textAM()) ?>
 		&nbsp;from&nbsp;
 		<?php if ($this->sender == AjaxController::SENDER_YEAR): ?>
 			<?php echo $this->year ?: 'unknown year' ?>
@@ -17,19 +17,19 @@
 		<?php endif ?>
 
 	<?php elseif ($this->sender == AjaxController::SENDER_GENRE): ?>
-		<?php echo ucfirst($this->mgHelper->amText()) ?>
+		<?php echo ucfirst($this->mgHelper->textAM()) ?>
 		&nbsp;tagged as&nbsp;
 		<?php echo ucfirst($this->genre->getName()) ?>
 
 	<?php elseif ($this->sender == AjaxController::SENDER_CREATOR): ?>
-		<?php echo ucfirst($this->mgHelper->amText()) ?>
+		<?php echo ucfirst($this->mgHelper->textAM()) ?>
 		&nbsp;from&nbsp;
 		<?php echo $this->creator->getName() ?>
 
 	<?php elseif ($this->sender == AjaxController::SENDER_SUB_TYPE): ?>
-		<?php echo ucfirst($this->mgHelper->amText()) ?>
+		<?php echo ucfirst($this->mgHelper->textAM()) ?>
 		&nbsp;in&nbsp;
-		<?php echo ChibiRegistry::getHelper('mg')->subTypeText($this->subType) ?>
+		<?php echo ChibiRegistry::getHelper('mg')->textSubType($this->subType) ?>
 		&nbsp;category
 
 	<?php elseif ($this->sender == AjaxController::SENDER_DAILY_ACTIVITY): ?>
@@ -54,7 +54,11 @@
 		Franchises consisting of at least two titles
 
 	<?php elseif ($this->sender == AjaxController::SENDER_MISMATCHED_EPS): ?>
-		Titles that have mismatching <?php echo ChibiRegistry::getHelper('mg')->epText() ?> count
+		<?php if ($this->am == AMModel::TYPE_ANIME): ?>
+			Titles that have mismatching episode count
+		<?php else: ?>
+			Titles that have mismatching chapter count
+		<?php endif ?>
 	<?php endif ?>:
 
 	<?php if (!empty($this->entries)): ?>
@@ -87,14 +91,14 @@
 				<li>
 					<?php foreach ($franchise->ownEntries as $entry): ?>
 						<?php $amEntry = $entry->getAMEntry(); ?>
-						<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
+						<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $amEntry->getID() ?>">
 							<?php echo $amEntry->getTitle() ?>
 						</a>
 						<span class="details">&nbsp;(
 							<?php if ($this->am == AMModel::TYPE_ANIME): ?>
-								<?php echo $amEntry->getEpisodeCount() ?: $entry->getCompletedEpisodes() . '+' ?>&nbsp;eps
+								<?php echo ChibiRegistry::getHelper('mg')->textEpisodes($amEntry->getEpisodeCount() ?: $entry->getCompletedEpisodes() . '+', true) ?>
 							<?php elseif ($this->am == AMModel::TYPE_MANGA): ?>
-								<?php echo $amEntry->getChapterCount() ?: $entry->getCompletedChapters() . '+' ?>&nbsp;chaps
+								<?php echo ChibiRegistry::getHelper('mg')->textChapters($amEntry->getChapterCount() ?: $entry->getCompletedChapters() . '+', true) ?>
 							<?php endif ?>,&nbsp;
 							<?php if ($entry->getScore() == 0): ?>
 								not rated
@@ -112,7 +116,7 @@
 			<?php foreach ($this->entries as $entry): ?>
 				<?php $amEntry = $entry->getAMEntry() ?>
 				<li>
-					<a href="http://myanimelist.net/<?php echo $this->mgHelper->amText() ?>/<?php echo $amEntry->getID() ?>">
+					<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $amEntry->getID() ?>">
 						<?php echo $amEntry->getTitle() ?>
 					</a>
 					<span class="details">&nbsp;(
@@ -146,14 +150,14 @@
 								<?php if ($entry->getAMEntry()->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
 									but it&rsquo;s still publishing
 								<?php else: ?>
-									should be <?php echo $entry->getAMEntry()->getChapterCount() ?> chapters
+									should be <?php echo ChibiRegistry::getHelper('mg')->textChapters($entry->getAMEntry()->getChapterCount()) ?>
 								<?php endif ?>
 							<?php else: ?>
 								on your list: <?php echo $entry->getCompletedEpisodes() ?>,&nbsp;
 								<?php if ($entry->getAMEntry()->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
 									but it&rsquo;s still airing
 								<?php else: ?>
-									should be  <?php echo $entry->getAMEntry()->getEpisodeCount() ?> episodes
+									should be  <?php echo ChibiRegistry::getHelper('mg')->textEpisodes($entry->getAMEntry()->getEpisodeCount()) ?>
 								<?php endif ?>
 							<?php endif ?>
 						<?php endif ?>

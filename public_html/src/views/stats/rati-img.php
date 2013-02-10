@@ -136,7 +136,7 @@ foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
 	$tc[TEXT_TITLE] = array
 	(
 		'font' => $fontPath,
-		'text' => ucfirst($this->mgHelper->amText($am)),
+		'text' => ucfirst($this->mgHelper->textAM($am)),
 		'color' => $this->colors[COLOR_TITLE],
 		'size' => 10.5,
 		'shiftX' => 0,

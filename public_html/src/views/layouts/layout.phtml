@@ -103,7 +103,7 @@
 					<div class="actions">
 						<?php foreach (AMModel::getTypes() as $am): ?>
 							<div>
-								<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->amText($am)) ?></p>
+								<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->textAM($am)) ?></p>
 								<ul class="action">
 									<?php foreach ($menu as $item): ?>
 										<?php if (ChibiRegistry::getView()->actionName == $item['action'] and ChibiRegistry::getView()->am == $am): ?>

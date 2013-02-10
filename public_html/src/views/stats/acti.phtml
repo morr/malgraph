@@ -11,7 +11,13 @@
 					<?php $eps = array_sum(array_map(function($p) { return count($p); }, array_values($this->dayPeriods[$user->getID()]))) ?>
 					<span class="prefix">Last 3 weeks</span>
 					<span class="subject"><?php echo $eps ?></span>
-					<span class="suffix"><?php echo ChibiRegistry::getHelper('mg')->epText(null, count($eps) > 0) ?></span>
+					<span class="suffix">
+						<?php if ($this->am == AMModel::TYPE_ANIME): ?>
+							<?php echo ChibiRegistry::getHelper('mg')->textEpisodes($eps, false, '%2$s') ?>
+						<?php else: ?>
+							<?php echo ChibiRegistry::getHelper('mg')->textChapters($eps, false, '%2$s') ?>
+						<?php endif ?>
+					</span>
 				</div>
 			</li>
 			<li>
@@ -71,14 +77,14 @@
 	</h2>
 	<div class="section-body">
 		<?php if (empty($this->monthPeriods[$user->getID()])): ?>
-			<p>No <?php echo $this->mgHelper->amText() ?> you've completed has its completion date specified.<br>
+			<p>No <?php echo $this->mgHelper->textAM() ?> you've completed has its completion date specified.<br>
 			This graph won&rsquo;t work without this data.</p>
 		<?php elseif (count($this->monthPeriods[$user->getID()]) == 1): ?>
 			<?php $p = array_keys($this->monthPeriods[$user->getID()])[0] ?>
 			<?php if ($p == '?'): ?>
 				<p>No information was found about long-term completion date of your titles.</p>
 			<?php else: ?>
-				<p>You completed <?php echo $this->mgHelper->amText() ?> from only period and that is <?php echo array_keys($this->monthPeriods[$user->getID()])[0] ?>, so a graph isn&rsquo;t needed.</p>
+				<p>You completed <?php echo $this->mgHelper->textAM() ?> from only period and that is <?php echo array_keys($this->monthPeriods[$user->getID()])[0] ?>, so a graph isn&rsquo;t needed.</p>
 			<?php endif ?>
 		<?php else: ?>
 			<div class="wrapper wrapper-target">

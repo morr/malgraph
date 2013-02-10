@@ -83,7 +83,7 @@ class StatsController extends AbstractController {
 			'nick' => $this->view->users[0]->getPublicName(),
 			'nicks_amp' => implode(' & ', array_map(function($user) { return $user->getPublicName(); }, $this->view->users)),
 			'nicks_and' => implode(' and ', array_map(function($user) { return $user->getPublicName(); }, $this->view->users)),
-			'am' => $this->mgHelper->amText()
+			'am' => $this->mgHelper->textAM()
 		];
 
 		if (isset($titles[$this->view->actionName])) {

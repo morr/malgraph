@@ -112,8 +112,8 @@
 <?php foreach (AMModel::getTypes() as $type): ?>
 	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
 	<?php $profileInfo = $this->profileInfo[$user->getRuntimeID()][$type] ?>
-	<div class="section sub-stats" data-am="<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>">
-		<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, ChibiRegistry::getHelper('mg')->amText($type) . ' summary') ?></h2>
+	<div class="section sub-stats" data-am="<?php echo ChibiRegistry::getHelper('mg')->textAM($type) ?>">
+		<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, ChibiRegistry::getHelper('mg')->textAM($type) . ' summary') ?></h2>
 		<div class="section-body">
 			<?php if ($profileInfo->completed > 0): ?>
 				<div class="wrapper-target">
@@ -122,7 +122,7 @@
 				</div>
 
 				<script type="text/javascript">
-					$('#user-<?php echo $user->getRuntimeID() ?> .sub-stats[data-am=\'<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>\'] .target').each(function() {
+					$('#user-<?php echo $user->getRuntimeID() ?> .sub-stats[data-am=\'<?php echo ChibiRegistry::getHelper('mg')->textAM($type) ?>\'] .target').each(function() {
 						var chart = new Highcharts.Chart({
 							chart: { renderTo: this, spacingTop: 0, spacingBottom: 0, spacingLeft: 0, spacingRight: 0 },
 							yAxis: { title: { text: 'Count' } },
@@ -139,7 +139,7 @@
 							} },
 							series: [ {
 								type: 'pie',
-								data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ucfirst(ChibiRegistry::getHelper('mg')->subTypeText($key)), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
+								data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ucfirst(ChibiRegistry::getHelper('mg')->textSubType($key)), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
 								point: { events: { click: function(e) {
 									var am = $(e.target).parents('.sub-stats').attr('data-am');
 									toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category, 'am': am});
@@ -186,7 +186,7 @@
 					read
 				<?php endif ?>&#32;
 				<?php $diff = $profileInfo->scoreDistribution->getMeanScore() - $this->globalInfo->getAMData($type)->getScoreDistribution()->getMeanScore() ?>
-				<strong><?php printf('%.02f', $profileInfo->completed * 100.0 / max(1, $this->globalInfo->getAMData($type)->getDBSize())) ?>%</strong> of all <?php echo ChibiRegistry::getHelper('mg')->amText($type) ?> on MAL
+				<strong><?php printf('%.02f', $profileInfo->completed * 100.0 / max(1, $this->globalInfo->getAMData($type)->getDBSize())) ?>%</strong> of all <?php echo ChibiRegistry::getHelper('mg')->textAM($type) ?> on MAL
 				<?php if ($profileInfo->scoreDistribution->getRatedCount() > 0): ?>
 					&#32;and your ratings are <strong><?php printf('%.02f', abs($diff)) ?></strong> points <strong><?php echo $diff < 0 ? 'lower' : 'higher' ?></strong> than global average.
 				<?php else: ?>
@@ -198,13 +198,12 @@
 				<p>
 					Most common&#32;
 					<?php if ($type == AMModel::TYPE_ANIME): ?>
-						TV series
+						TV series length:&nbsp;
+						<?php echo ChibiRegistry::getHelper('mg')->textEpisodes(str_replace('-', '&nbsp;to&nbsp;', $profileInfo->lengthDistribution->getLargestGroupKey()), false, '<strong>%s</strong> %s') ?>
 					<?php elseif ($type == AMModel::TYPE_MANGA): ?>
-						manga
+						manga length:&nbsp;
+						<?php echo ChibiRegistry::getHelper('mg')->textChapters(str_replace('-', '&nbsp;to&nbsp;', $profileInfo->lengthDistribution->getLargestGroupKey()), false, '<strong>%s</strong> %s') ?>
 					<?php endif ?>&#32;
-					length:&nbsp;
-						<strong><?php echo str_replace('-', '&nbsp;to&nbsp;', $profileInfo->lengthDistribution->getLargestGroupKey()) ?></strong>&nbsp;
-					<?php echo ChibiRegistry::getHelper('mg')->epText($type) ?>s
 				</p>
 			<?php endif ?>
 
@@ -213,7 +212,7 @@
 	</div>
 	<?php }); ?>
 	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
-	<div class="section sub-stats" data-am="<?php echo ChibiRegistry::getHelper('mg')->amText($type) ?>">
+	<div class="section sub-stats" data-am="<?php echo ChibiRegistry::getHelper('mg')->textAM($type) ?>">
 		<div class="wrapper-more">
 		</div>
 	</div>
