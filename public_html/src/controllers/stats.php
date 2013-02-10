@@ -555,7 +555,7 @@ class StatsController extends AbstractController {
 			$entries = $u->getList($this->view->am)->getEntries($filter);
 			$limit = 15;
 
-			$this->view->recsStatic = count($entries) <= 20;
+			$this->view->recsStatic[$u->getID()] = count($entries) <= 20;
 			$this->sessionHelper->restore();
 			$sessionKey = 'recs-' . $this->view->am . '-' . $u->getID();
 			if (isset($_SESSION[$sessionKey])) {

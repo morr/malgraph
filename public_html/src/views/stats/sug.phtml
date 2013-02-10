@@ -8,11 +8,10 @@
 		<?php if (empty($this->recs[$user->getID()])): ?>
 			<p>No recommendations. :(</p>
 		<?php else: ?>
-			<?php if ($this->recsStatic): ?>
-				<p>Your <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list is too short for us to guess your tastes, but don&rsquo;t worry!<br>
-				Here are some widely recommended titles that you haven&rsquo;t <?php echo $this->am == AMModel::TYPE_ANIME ? 'watched' : 'read' ?> yet:</p>
+			<?php if ($this->recsStatic[$user->getID()]): ?>
+				<p>Your <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list is too short for us to guess your tastes, but don&rsquo;t&nbsp;worry! Here&nbsp;are some widely recommended titles that you haven&rsquo;t <?php echo $this->am == AMModel::TYPE_ANIME ? 'watched' : 'read' ?> yet:</p>
 			<?php else: ?>
-				<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->textAM()) ?> recommendations tailored to your taste. The system says you will<br>like them, but we take no responsibility for injuries due to bad suggestions.</p>
+				<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->textAM()) ?> recommendations tailored to your taste. The system says you will like them, but we take no responsibility for injuries due to bad suggestions.</p>
 			<?php endif ?>
 			<ol><!-- my fetish -->
 			<?php foreach ($this->recs[$user->getID()] as $entry): ?>
