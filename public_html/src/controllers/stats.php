@@ -555,19 +555,13 @@ class StatsController extends AbstractController {
 			$entries = $u->getList($this->view->am)->getEntries($filter);
 			$limit = 15;
 
-			$this->view->recsStatic[$u->getID()] = count($entries) <= 20;
-			$this->sessionHelper->restore();
-			$sessionKey = 'recs-' . $this->view->am . '-' . $u->getID();
-			if (isset($_SESSION[$sessionKey])) {
-				$this->view->recs[$u->getID()] = unserialize($_SESSION[$sessionKey]);
-				continue;
-			}
-			$this->sessionHelper->close();
-
 			$recs = [];
+			$recsStatic = count($entries) <= 20;
 			$modelAM = AMModel::factory($this->view->am);
+
 			//static recommendations
-			if ($this->view->recsStatic) {
+			if ($recsStatic) {
+				$this->view->recsStatic[$u->getID()] =  true;
 				$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
 				foreach ($staticRecs[$this->view->am] as $id) {
 					$userEntry = $u->getList($this->view->am)->getEntryByID($id);
@@ -582,6 +576,7 @@ class StatsController extends AbstractController {
 
 			//dynamic recommendations
 			if (empty($recs)) {
+				$this->view->recsStatic[$u->getID()] =  false;
 				$goal = 50;
 				$selUsers = [];
 				$selAM = [];
@@ -698,7 +693,6 @@ class StatsController extends AbstractController {
 			}
 
 			$this->sessionHelper->restore();
-			$_SESSION[$sessionKey] = serialize($recs);
 			$this->view->recs[$u->getID()] = $recs;
 		}
 
