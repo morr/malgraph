@@ -10,11 +10,6 @@ class AbstractController extends ChibiController {
 		if (!file_exists('../local.ini')) {
 			throw new Exception('local.ini doesn\'t exist. Please create one.');
 		}
-		foreach (parse_ini_file('../local.ini', true) as $section => $values) {
-			foreach ($values as $key => $value) {
-				ChibiConfig::getInstance()->$section->$key = $value;
-			}
-		}
 
 		$this->view = ChibiRegistry::getView();
 		$this->sessionHelper = $this->view->sessionHelper = ChibiRegistry::getHelper('session');

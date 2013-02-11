@@ -2,13 +2,14 @@
 ini_set('memory_limit', '120M');
 
 require 'lib/routers/basic.php';
-$configPaths = array(
-	'conf.ini',
-	'../conf.ini',
-);
-foreach ($configPaths as $p) {
-	if (file_exists($p)) {
-		ChibiConfig::load($p);
+if (file_exists('../conf.ini')) {
+	ChibiConfig::load('../conf.ini');
+}
+if (file_exists('../local.ini')) {
+	foreach (parse_ini_file('../local.ini', true) as $section => $values) {
+		foreach ($values as $key => $value) {
+			ChibiConfig::getInstance()->$section->$key = $value;
+		}
 	}
 }
 if (!ChibiConfig::getInstance()) {
