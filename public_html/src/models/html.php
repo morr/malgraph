@@ -37,19 +37,19 @@ class HTMLCacheModel extends AbstractModel {
 
 	public function pathToKey($path) {
 		$key = str_replace($this->suffix, '', basename($path));
-		$key = base64_decode($key);
+		$key = hex2bin($key);
 		$key = gzuncompress($key);
 		$key = json_decode($key, true);
 		return $key;
 	}
 
 	public function keyToPath($key) {
-		$key = json_encode($key);
-		$key = strtolower($key);
-		$key = gzcompress($key);
-		$key = base64_encode($key);
-		$key = str_replace('=', '', $key);
-		return str_replace('//', '/', $this->folder . '/' . $key . $this->suffix);
+		$path = json_encode($key);
+		$path = strtolower($path);
+		$path = gzcompress($path);
+		$path = bin2hex($path);
+		$path = str_replace('//', '/', $this->folder . '/' . $path . $this->suffix);
+		return $path;
 	}
 }
 
