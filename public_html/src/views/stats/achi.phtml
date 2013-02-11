@@ -76,15 +76,4 @@
 		</div>
 	<?php endforeach ?>
 <?php endif ?>
-
-
-
-<script type="text/javascript">
-	$('#user-<?php echo $user->getRuntimeID() ?> .more-trigger').click(function(e) {
-		var k = $(this).parents('div.section').attr('data-id');
-		var target = $('#user-<?php echo $user->getRuntimeID() ?> .section[data-id=\'' + k + '\'] .wrapper-more');
-		toggleMoreWrappers(target, [], false);
-		e.preventDefault();
-	});
-</script>
 <?php }); ?>

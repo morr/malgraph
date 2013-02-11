@@ -7,4 +7,11 @@ $(function() {
 			$(this).trigger('load');
 		}
 	});
+
+	$('.franchises, .mismatched-eps').click(function(e) {
+		var sender = $(this).attr('class');
+		var am = $(this).parents('.sub-stats').attr('data-am');
+		toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': sender, 'am': am});
+		e.preventDefault();
+	});
 });

@@ -104,21 +104,4 @@
 	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') == $(this).attr('data-score2') && $(this).attr('data-score1') > 0; }).each(function() { $(this).addClass('same-score').attr('data-tooltip', 'Rated with the same score.'); });
 	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') == $(this).attr('data-score2') && $(this).attr('data-score1') == 0; }).each(function() { $(this).addClass('no-score').attr('data-tooltip', 'Neither side rated this title.'); });
 	uniqueRows.find('td.score').attr('data-tooltip', 'This title is unique to this user.');
-
-	$(function() {
-		if ($('th.unique').length > 0) {
-			sortList = [[1,0],[2,0]];
-		} else {
-			sortList = [[2,1],[1,0]];
-		}
-		$('table').tablesorter({
-			textExtraction: function(node) {
-				return $(node).attr('data-sorter');
-			},
-			sortList : sortList
-		});
-
-		$(window).trigger('resize');
-	});
-
 </script>
