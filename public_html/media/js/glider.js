@@ -9,7 +9,28 @@ function animateGlider() {
 		left = 0;
 	}
 	$('#glider .target').css('background-position', left + 'px ' + top + 'px');
+
+	var diff = (new Date() - $('#glider').data('start')) / 1000;
+	for (var i in messages) {
+		var subMessages = messages[i];
+		var message = subMessages[Math.floor(Math.random() * subMessages.length)];
+		if (diff >= i) {
+			delete messages[i];
+			$('#glider p').fadeOut(function() {
+				$(this).html(message).fadeIn();
+			});
+			break;
+		}
+	}
 }
+
+var messages = {
+	5: [ 'downloading your data&hellip;', 'performing magic tricks&hellip;', 'reticulating splines&hellip;' ],
+	10: [ 'applying final touches&hellip;', 'antialiasing buttons&hellip;' ],
+	20: [ 'this shouldn&rsquo;t take much longer.', 'don&rsquo;t panic yet.' ],
+	30: [ 'does your list even end?', 'ah, the cable was unplugged.' ],
+	40: [ 'your stats will appear any second now.', 'good things come to those who wait.' ]
+};
 
 //show glider
 function showGlider() {
@@ -20,6 +41,7 @@ function showGlider() {
 //show glider with short delay
 var timeout;
 function showGliderDelayed() {
+	$('#glider').data('start', new Date());
 	timeout = window.setTimeout(showGlider, 550);
 }
 

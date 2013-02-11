@@ -165,7 +165,7 @@ div.section+div.section { margin-top: 1.5em; }
 		top: 200px;
 		position: relative;
 		margin: 0 auto;
-		box-shadow: 0 0 0.5em 1.5em white;
+		box-shadow: 0 0 0.5em 1em white;
 		background-color: white;
 		width: 96px;
 	}
@@ -176,6 +176,7 @@ div.section+div.section { margin-top: 1.5em; }
 		width: 96px;
 		height: 96px;
 	}
+	#glider p { margin-bottom: 0; }
 
 
 
