@@ -99,6 +99,10 @@ function toggleMoreWrappers(targets, data, ajax) {
 $(function() {
 	$('.wrapper-more').on('click', '.close', function(e) {
 		e.preventDefault();
-		$(this).parents('.users').find('.wrapper-more').stop(true, true).slideUp('fast');
+		var target = $(this).parents('.users').find('.wrapper-more');
+		if ($(target).hasClass('singular')) {
+			target = $(this).parents('.wrapper-more');
+		}
+		target.stop(true, true).slideUp('fast');
 	});
 });

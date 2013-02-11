@@ -40,10 +40,8 @@ $(function() {
 		e.preventDefault();
 	});
 
-	$('.wrapper-more').off('click', '.close').on('click', '.close', function(e) {
-		e.preventDefault();
+	$('.wrapper-more').on('click', '.close', function(e) {
 		$(this).parents('li').toggleClass('active');
-		$(this).parents('.wrapper-more').stop(true, true).slideUp('fast');
 	});
 });
 
