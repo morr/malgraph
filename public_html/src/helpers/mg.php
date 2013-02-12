@@ -219,7 +219,7 @@ class MGHelper extends ChibiHelper {
 			}
 		}
 
-		$contents = '<?xml encoding="utf-8" ?>' . $contents;
+		$contents = '<?xml encoding="utf-8" ?'.'>' . $contents;
 		//別ハックは、	Another hack
 		//私は静かに	makes me
 		//泣きます		quietly weep
