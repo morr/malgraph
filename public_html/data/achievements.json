@@ -2,10 +2,10 @@
 	"manga": {
 		"mahou shoujo": {
 			"achievements": [
-				{ "threshold": "15-29", "id": "manga-mahoushoujo-1", "level": "Mahou Shoujo: level 1",   "title": "Signed the contract",       "desc": "Became a magical girl and started saving the world, step by step." },
-				{ "threshold": "30-49", "id": "manga-mahoushoujo-2", "level": "Mahou Shoujo: level 2",   "title": "Magic is my middle name",   "desc": "Transformed into a magical girl: level two. In the name of the Moon, I will punish you!" },
-				{ "threshold": "50-79", "id": "manga-mahoushoujo-3", "level": "Mahou Shoujo: level 3",   "title": "Too magical to comprehend", "desc": "Read so many mahou shoujo manga that you sparkle occasionally." },
-				{ "threshold": "80+",   "id": "manga-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "Are you a wizard",          "desc": "All limiters removed. You can call yourself a god, a wizard, or whatever you wish. You set the rules." }
+				{ "threshold": "15-29", "id": "manga-mahoushoujo-1", "level": "Mahou Shoujo: level 1",   "title": "", "desc": "" },
+				{ "threshold": "30-49", "id": "manga-mahoushoujo-2", "level": "Mahou Shoujo: level 2",   "title": "", "desc": "" },
+				{ "threshold": "50-79", "id": "manga-mahoushoujo-3", "level": "Mahou Shoujo: level 3",   "title": "", "desc": "" },
+				{ "threshold": "80+",   "id": "manga-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "", "desc": "" }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				3167,  #A Little Snow Fairy Sugar
@@ -139,6 +139,15 @@
 			],
 			"requirement": { "type": "genre-titles", "genre": 30 }
 		},
+		"mystery": {
+			"achievements": [
+				{ "threshold": "15-29", "id": "manga-mystery-1", "level": "Mystery: level 1",    "title": "", "desc": "mystery 1" },
+				{ "threshold": "30-49", "id": "manga-mystery-2", "level": "Mystery: level 2",    "title": "", "desc": "mystery 2" },
+				{ "threshold": "50-79", "id": "manga-mystery-3", "level": "Mystery: level 3",    "title": "", "desc": "mystery 3" },
+				{ "threshold": "80+",   "id": "manga-mystery-4", "level": "Mystery: level MAX",  "title": "", "desc": "mystery max" }
+			],
+			"requirement": { "type": "genre-titles", "genre": 7 }
+		},
 		"count": {
 			"achievements": [
 				{ "threshold": "100-199",   "id": "numbers-manga-100",   "level": "Passed 100 mark",   "title": "Casual reader",      "desc": "Read over 100 manga. Or manhwa. Or other printed media. Anyway, you did it!" },
@@ -146,7 +155,7 @@
 				{ "threshold": "300-399",   "id": "numbers-manga-300",   "level": "Passed 300 mark",   "title": "Dat scent",          "desc": "Read over 300 manga. There&rsquo;s nothing better than the smell of freshly opened book. Or a PNG." },
 				{ "threshold": "400-499",   "id": "numbers-manga-400",   "level": "Passed 400 mark",   "title": "Not enough space",   "desc": "Read over 400 manga. Consider investing in another bookshelf." },
 				{ "threshold": "500-749",   "id": "numbers-manga-500",   "level": "Passed 500 mark",   "title": "Half a grand",       "desc": "Read over 500 manga. Read another five hundred and you can start bragging." },
-				{ "threshold": "750-999",   "id": "numbers-manga-750",   "level": "Passed 750 mark",   "title": "Read or die",        "desc": "Read over 750 manga. Started wearing glasses. Please don&rsquo;t try to make the paper bulletproof." },
+				{ "threshold": "750-999",   "id": "numbers-manga-750",   "level": "Passed 750 mark",   "title": "Read or die",        "desc": "Read over 750 manga. Made a bow out of paper. Please remember that paper doesn&rsquo;t work well as a bulletproof shield." },
 				{ "threshold": "1000-1499", "id": "numbers-manga-1000",  "level": "Passed 1000 mark",  "title": "Librarian",          "desc": "Read over 1000 manga. You work with books, right? Right?&hellip;" },
 				{ "threshold": "1500-2499", "id": "numbers-manga-1500",  "level": "Passed 1500 mark",  "title": "The floor is books", "desc": "Read over 1500 manga. Sleeping on books must be pretty hard." },
 				{ "threshold": "2500-4999", "id": "numbers-manga-2500",  "level": "Passed 2500 mark",  "title": "Still not enough",   "desc": "Read over 2500 manga. You&rsquo;ve read six lifetimes worth of words." },
