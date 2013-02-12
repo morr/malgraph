@@ -150,7 +150,7 @@
 		},
 		"count": {
 			"achievements": [
-				{ "threshold": "100-199",   "id": "numbers-manga-100",   "level": "Passed 100 mark",   "title": "Casual reader",      "desc": "Read over 100 manga. Or manhwa. Or other printed media. Anyway, you did it!" },
+				{ "threshold": "100-199",   "id": "numbers-manga-100",   "level": "Passed 100 mark",   "title": "Casual reader",      "desc": "Read over 100 manga. Looks like reading doesn&rsquo;t hurt." },
 				{ "threshold": "200-299",   "id": "numbers-manga-200",   "level": "Passed 200 mark",   "title": "Bookworm",           "desc": "Read over 200 manga. Sitting in your comfortable chair, reading favorite Mongolian comics. This is bliss." },
 				{ "threshold": "300-399",   "id": "numbers-manga-300",   "level": "Passed 300 mark",   "title": "Dat scent",          "desc": "Read over 300 manga. There&rsquo;s nothing better than the smell of freshly opened book. Or a PNG." },
 				{ "threshold": "400-499",   "id": "numbers-manga-400",   "level": "Passed 400 mark",   "title": "Not enough space",   "desc": "Read over 400 manga. Consider investing in another bookshelf." },
