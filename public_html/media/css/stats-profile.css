@@ -15,7 +15,7 @@
 .basic dl { margin-bottom: 1em; }
 
 dl { display: inline-block; margin: 0; }
-dt { clear: left; font-weight: bold; width: 10em; float: left; margin-left: 0.5em; }
+dt { clear: left; font-weight: bold; width: 8em; float: left; margin-left: 0.5em; }
 dt:after { content: ': '; }
 dd { float: left; margin: 0; padding: 0; }
 dd a { margin-left: 0.5em; }
@@ -23,9 +23,11 @@ dd a { margin-left: 0.5em; }
 #main .wrapper-more ul.franchises { list-style-type: disc; padding-left: 2em; }
 #main .wrapper-more ul.franchises li { margin-bottom: 1em; }
 
-.sub-stats .table-wrapper { float: right; width: 20em; min-height: 10em; }
+.sub-stats .table-wrapper { float: right; width: 15em; min-height: 10em; }
 .sub-stats table tr { cursor: pointer; }
 .sub-stats table th,
-.sub-stats table td { text-align: center; vertical-align: top; }
+.sub-stats table td { text-align: center; vertical-align: top; white-space: nowrap; }
 .sub-stats table th:first-child,
 .sub-stats table td:first-child { text-align: left; }
+
+.sub-stats .wrapper-more { margin-top: 1em; }

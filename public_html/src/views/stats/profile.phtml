@@ -112,7 +112,7 @@
 							<tr>
 								<th>Type</th>
 								<th>Count</th>
-								<th>Mean score</th>
+								<th data-tooltip="Mean score">Score</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -174,10 +174,7 @@
 
 			<div class="clear"></div>
 		</div>
-	</div>
-	<?php }); ?>
-	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
-	<div class="section sub-stats" data-am="<?php echo ChibiRegistry::getHelper('mg')->textAM($type) ?>">
+
 		<div class="wrapper-more">
 		</div>
 	</div>
