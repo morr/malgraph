@@ -195,7 +195,11 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section score-length-dist">
 	<h2>
-		<i data-tooltip="Placeholder" class="icon-tooltip"></i>
+		<?php if ($this->am == AMModel::TYPE_ANIME): ?>
+			<i data-tooltip="Do you prefer longer or shorter|series? (Movies are not counted.)" class="icon-tooltip"></i>
+		<?php else: ?>
+			<i data-tooltip="Do you prefer longer|or shorter series?" class="icon-tooltip"></i>
+		<?php endif ?>
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'Ratings vs. ' . ($this->am == AMModel::TYPE_ANIME ? 'episode' : 'chapter') . ' count') ?>
 	</h2>
 	<div class="section-body">
@@ -210,6 +214,14 @@
 					<span class="prefix">Most common</span>
 					<span class="subject"><?php echo $num ?></span>
 					<span class="suffix"><?php echo $txt ?></span>
+				</div>
+			</li>
+
+			<li>
+				<div>
+					<span class="prefix">Which is</span>
+					<span class="subject"><?php echo $this->lengthDistribution[$user->getID()]->getLargestGroupSize() ?></span>
+					<span class="suffix">titles</span>
 				</div>
 			</li>
 		</ul>
