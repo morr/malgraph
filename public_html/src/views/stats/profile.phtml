@@ -222,7 +222,7 @@
 		<?php else: ?>
 			<div class="scrollable">
 				<?php $friends = $user->getFriends() ?>
-				<?php usort($friends, function($a, $b) { return strcmp($a->getName(), $b->getName()); }) ?>
+				<?php usort($friends, function($a, $b) { return strcasecmp($a->getName(), $b->getName()); }) ?>
 				<ul>
 					<?php foreach ($friends as $friend): ?>
 						<li>
@@ -253,7 +253,7 @@
 		<?php else: ?>
 			<div class="scrollable">
 				<?php $clubs = $user->getClubs() ?>
-				<?php usort($clubs, function($a, $b) { return strcmp($a->getName(), $b->getName()); }) ?>
+				<?php usort($clubs, function($a, $b) { return strcasecmp($a->getName(), $b->getName()); }) ?>
 				<ul>
 					<?php foreach ($clubs as $club): ?>
 						<li>
