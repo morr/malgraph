@@ -5,6 +5,7 @@ require_once 'src/models/user/listservice.php';
 class AjaxController extends AbstractController {
 	const SENDER_SCORE = 'score';
 	const SENDER_SCORE_TIME = 'score-time';
+	const SENDER_SCORE_LENGTH = 'score-length';
 	const SENDER_YEAR = 'year';
 	const SENDER_DECADE = 'decade';
 	const SENDER_CREATOR = 'creator';
@@ -20,6 +21,7 @@ class AjaxController extends AbstractController {
 		return [
 			self::SENDER_SCORE,
 			self::SENDER_SCORE_TIME,
+			self::SENDER_SCORE_LENGTH,
 			self::SENDER_YEAR,
 			self::SENDER_DECADE,
 			self::SENDER_CREATOR,
@@ -97,6 +99,16 @@ class AjaxController extends AbstractController {
 				$filter = UserListFilters::combine($filter1, $filter2);
 				$this->view->score = $score;
 				$this->view->entries = $list->getEntries($filter);
+				break;
+
+			case self::SENDER_SCORE_LENGTH:
+				$length = $this->inputHelper->getStringSafe('length');
+				$filter1 = UserListFilters::getNonPlanned();
+				$entries = $list->getEntries($filter1);
+				$lengthDistribution = new LengthDistribution($entries);
+				$entries = $lengthDistribution->getGroupEntries($length);
+				$this->view->length = $length;
+				$this->view->entries = $entries;
 				break;
 
 			case self::SENDER_YEAR:

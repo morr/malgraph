@@ -126,13 +126,9 @@ class StatsController extends AbstractController {
 				$entriesNonPlanned = $u->getList($type)->getEntries(UserListFilters::getNonPlanned());
 				$entriesCompleted = $u->getList($type)->getEntries(UserListFilters::getCompleted());
 				$scoreDistribution = new ScoreDistribution();
-				$lengthDistribution = new LengthDistribution();
 				$subTypeDistribution = new SubTypeDistribution();
 				foreach ($entriesCompleted as $entry) {
 					$info[$type]->completed += 1;
-					if ($entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE) {
-						$lengthDistribution->addEntry($entry);
-					}
 					$subTypeDistribution->addEntry($entry);
 				}
 				foreach ($entriesNonPlanned as $entry) {
@@ -149,7 +145,6 @@ class StatsController extends AbstractController {
 					}
 				}
 				$subTypeDistribution->finalize();
-				$info[$type]->lengthDistribution = $lengthDistribution;
 				$info[$type]->scoreDistribution = $scoreDistribution;
 				$info[$type]->subTypeDistribution = $subTypeDistribution;
 				$info[$type]->epsMismatched = UserListService::getMismatchedEntries($entriesNonPlanned);
@@ -281,8 +276,24 @@ class StatsController extends AbstractController {
 			$filter = UserListFilters::getNonPlanned();
 			$entries = $userEntry->getList($this->view->am)->getEntries($filter);
 
-			$this->view->scoreDistribution[$userEntry->getID()] = new ScoreDistribution($entries);
-			$this->view->scoreDurationDistribution[$userEntry->getID()] = new ScoreDurationDistribution($entries);
+			$scoreDistribution = new ScoreDistribution();
+			$scoreDurationDistribution = new ScoreDurationDistribution();
+			$lengthDistribution = new LengthDistribution();
+
+			foreach ($entries as $entry) {
+				$scoreDistribution->addEntry($entry);
+				$scoreDurationDistribution->addEntry($entry);
+				if ($entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE) {
+					$lengthDistribution->addEntry($entry);
+				}
+			}
+			$scoreDistribution->finalize();
+			$scoreDurationDistribution->finalize();
+			$lengthDistribution->finalize();
+
+			$this->view->scoreDistribution[$userEntry->getID()] = $scoreDistribution;
+			$this->view->scoreDurationDistribution[$userEntry->getID()] = $scoreDurationDistribution;
+			$this->view->lengthDistribution[$userEntry->getID()] = $lengthDistribution;
 
 			//add some random information
 			list($year, $month, $day) = explode('-', $userEntry->getUserData()->getJoinDate());

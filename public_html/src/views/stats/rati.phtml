@@ -189,3 +189,72 @@
 	</div>
 </div>
 <?php }); ?>
+
+
+
+<?php iterateUsers(function($user, $otherUser) { ?>
+<div class="section score-length-dist">
+	<h2>
+		<i data-tooltip="Placeholder" class="icon-tooltip"></i>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'Ratings vs. ' . ($this->am == AMModel::TYPE_ANIME ? 'episode' : 'chapter') . ' count') ?>
+	</h2>
+	<div class="section-body">
+		<ul class="infobox">
+			<li>
+				<div>
+					<?php if ($this->am == AMModel::TYPE_ANIME): ?>
+						<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textEpisodes(str_replace('-', '&nbsp;to&nbsp;', $this->lengthDistribution[$user->getID()]->getLargestGroupKey()))) ?>
+					<?php elseif ($this->am == AMModel::TYPE_MANGA): ?>
+						<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textChapters(str_replace('-', '&nbsp;to&nbsp;', $this->lengthDistribution[$user->getID()]->getLargestGroupKey()))) ?>
+					<?php endif ?>
+					<span class="prefix">Most common</span>
+					<span class="subject"><?php echo $num ?></span>
+					<span class="suffix"><?php echo $txt ?></span>
+				</div>
+			</li>
+		</ul>
+
+		<div class="wrapper-target">
+			<div class="target"></div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="wrapper-more">
+		</div>
+
+		<script type="text/javascript">
+			$('#user-<?php echo $user->getRuntimeID() ?> .score-length-dist .target').each(function() {
+				var chart = new Highcharts.Chart({
+					chart: { renderTo: this, type: 'line', marginTop: 15, marginRight: 15 },
+					xAxis: {
+						categories: <?php echo json_encode($this->lengthDistribution[$user->getID()]->getGroupsKeys()) ?>,
+						labels: { rotation: -45, align: 'right' },
+						title: { text: '<?php echo $this->am == AMModel::TYPE_ANIME ? 'Episode' : 'Chapter' ?> count', margin: 15 } },
+					yAxis: { title: { text: 'Mean score', margin: 15 } },
+					tooltip: { formatter: function() {
+						var text;
+						if (this.x == '-') {
+							text = 'Mean score for titles of unknown length: ' + Math.round(this.y * 100) / 100.0;
+						} else {
+							text = 'Mean score for titles of length ' + this.x + ': ';
+							if (this.y > 0) {
+								text += this.y.toFixed(2);
+							} else {
+								text += 'unrated!';
+							}
+						}
+						return text;
+					} },
+					series: [ {
+						data: <?php echo json_encode(array_map(function($entries) { return UserListService::getMeanScore($entries); }, array_values($this->lengthDistribution[$user->getID()]->getGroupsEntries()))) ?>,
+						point: { events: { click: function(e) {
+							toggleMoreWrappers($('.score-length-dist .wrapper-more'), {'sender': 'score-length', 'length': this.category});
+						} } }
+					} ]
+				});
+			});
+		</script>
+	</div>
+
+</div>
+<?php }); ?>

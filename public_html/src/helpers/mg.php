@@ -36,7 +36,7 @@ class MGHelper extends ChibiHelper {
 			case AMModel::TYPE_ANIME: return 'anime';
 			case AMModel::TYPE_MANGA: return 'manga';
 		}
-		throw new InvalidAMTypeException();
+		throw new InvalidAMTypeException($type);
 	}
 
 	public function textSubType($subType, $number = 1) {

@@ -7,6 +7,13 @@
 			Titles rated with <?php echo $this->score ?>
 		<?php endif ?>
 
+	<?php elseif ($this->sender == AjaxController::SENDER_SCORE or $this->sender == AjaxController::SENDER_SCORE_LENGTH): ?>
+		<?php if ($this->length == '?'): ?>
+			Titles with unknown length
+		<?php else: ?>
+			Titles of length <?php echo $this->length ?>
+		<?php endif ?>
+
 	<?php elseif ($this->sender == AjaxController::SENDER_YEAR or $this->sender == AjaxController::SENDER_DECADE): ?>
 		<?php echo ucfirst($this->mgHelper->textAM()) ?>
 		&nbsp;from&nbsp;
@@ -122,18 +129,12 @@
 					<span class="details">&nbsp;(
 						<?php if ($this->sender == AjaxController::SENDER_SCORE or $this->sender == AjaxController::SENDER_SCORE_TIME): ?>
 							<?php echo $entry->getCompletedDuration() ?> min.
-						<?php elseif ($this->sender == AjaxController::SENDER_YEAR or $this->sender == AjaxController::SENDER_DECADE): ?>
+						<?php elseif (in_array($this->sender, [AjaxController::SENDER_YEAR, AjaxController::SENDER_DECADE, AjaxController::SENDER_GENRE, AjaxController::SENDER_CREATOR, AjaxController::SENDER_SUB_TYPE, AjaxController::SENDER_SCORE_LENGTH])): ?>
+							<!--<?php echo $entry->getCompletedDuration() ?>&nbsp;min.,&nbsp;-->
 							<?php if ($entry->getScore() == 0): ?>
 								not rated
 							<?php else: ?>
 								rated with <?php echo $entry->getScore() ?>
-							<?php endif ?>
-						<?php elseif ($this->sender == AjaxController::SENDER_GENRE or $this->sender == AjaxController::SENDER_CREATOR or $this->sender == AjaxController::SENDER_SUB_TYPE): ?>
-							<?php echo $entry->getCompletedDuration() ?>&nbsp;min.,&nbsp;
-							<?php if ($entry->getScore() == 0): ?>
-								not rated
-							<?php else: ?>
-								rated&nbsp;with&nbsp;<?php echo $entry->getScore() ?>
 							<?php endif ?>
 						<?php elseif ($this->sender == AjaxController::SENDER_DAILY_ACTIVITY): ?>
 							<?php if ($entry->getType() == AMModel::TYPE_MANGA): ?>

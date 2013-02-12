@@ -184,19 +184,6 @@
 				<?php endif ?>
 			</p>
 
-			<?php if ($profileInfo->completed > 0 and $profileInfo->lengthDistribution->getLargestGroupSize() > 0 /* only titles of unknown length */): ?>
-				<p>
-					Most common&#32;
-					<?php if ($type == AMModel::TYPE_ANIME): ?>
-						TV series length:&nbsp;
-						<?php echo ChibiRegistry::getHelper('mg')->textEpisodes(str_replace('-', '&nbsp;to&nbsp;', $profileInfo->lengthDistribution->getLargestGroupKey()), false, '<strong>%s</strong> %s') ?>
-					<?php elseif ($type == AMModel::TYPE_MANGA): ?>
-						manga length:&nbsp;
-						<?php echo ChibiRegistry::getHelper('mg')->textChapters(str_replace('-', '&nbsp;to&nbsp;', $profileInfo->lengthDistribution->getLargestGroupKey()), false, '<strong>%s</strong> %s') ?>
-					<?php endif ?>&#32;
-				</p>
-			<?php endif ?>
-
 			<div class="clear"></div>
 		</div>
 	</div>

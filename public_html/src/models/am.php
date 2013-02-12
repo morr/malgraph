@@ -9,8 +9,8 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am/service.php';
 
 class InvalidAMTypeException extends Exception {
-	public function __construct() {
-		parent::__construct('Invalid entry type');
+	public function __construct($type = null) {
+		parent::__construct('Invalid entry type' . ($type === null ? '' : ' (' . $type . ')'));
 	}
 }
 
