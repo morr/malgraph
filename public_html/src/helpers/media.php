@@ -33,7 +33,9 @@ class MediaHelper extends ChibiHelper {
 				UrlHelper::url('media/css/core.css'),
 				'http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js',
 				UrlHelper::url('media/js/jquery.ui.position.js'),
-				UrlHelper::url('media/js/core.js'),
+				UrlHelper::url('media/js/misc.js'),
+				UrlHelper::url('media/js/sections.js'),
+				UrlHelper::url('media/js/tooltips.js'),
 				UrlHelper::url('media/js/glider.js')];
 			case self::INFOBOX: return [
 				UrlHelper::url('media/css/infobox.css')];
