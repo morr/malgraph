@@ -64,6 +64,11 @@
 	</div>
 
 
+	<?php if (ChibiRegistry::getView()->controllerName == 'stats' and ChibiConfig::getInstance()->misc->googleAdsEnabled): ?>
+		<div id="google-ads">
+		</div>
+	<?php endif ?>
+
 	<div class="main-wrapper">
 		<div id="menu-wrapper">
 			<div id="menu">
