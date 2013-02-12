@@ -3,7 +3,6 @@
 table .title { width: 100%; }
 table .ord { text-align: center; }
 table .mean, table .time, table .count { text-align: right; }
-
 table.tablesorter thead th:first-child { padding-left: 6px; padding-right: 6px; }
 
 span.info { font-size: 7pt; color: gray; }
