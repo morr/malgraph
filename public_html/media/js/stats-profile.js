@@ -33,4 +33,15 @@ $(function() {
 		text += ' (' + $(this).text() + ')';
 		$(this).text(text);
 	});
+
+	$('table tbody tr').click(function(e) {
+		e.preventDefault();
+		var subType = $(this).attr('data-sub-type');
+		var am = $(e.target).parents('.sub-stats').attr('data-am');
+		console.log('yo');
+		toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': 'sub-type', 'sub-type': subType, 'am': am});
+	});
+	$('table').tablesorter({
+		sortList: [[1,1],[2,1]]
+	});
 });

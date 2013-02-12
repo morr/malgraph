@@ -106,38 +106,26 @@
 		<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, ChibiRegistry::getHelper('mg')->textAM($type) . ' summary') ?></h2>
 		<div class="section-body">
 			<?php if ($profileInfo->completed > 0): ?>
-				<div class="wrapper-target">
-					<div class="target"></div>
-					<div class="clear"></div>
+				<div class="table-wrapper">
+					<table class="tablesorter">
+						<thead>
+							<tr>
+								<th>Type</th>
+								<th>Count</th>
+								<th>Mean score</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($profileInfo->subTypeDistribution->getGroupsKeys() as $key): ?>
+								<tr data-sub-type="<?php echo $key ?>">
+									<td><?php echo ucfirst(ChibiRegistry::getHelper('mg')->textSubType($key)) ?></td>
+									<td><?php echo $profileInfo->subTypeDistribution->getGroupSize($key) ?></td>
+									<td><?php echo sprintf('%.02f', UserListService::getMeanScore($profileInfo->subTypeDistribution->getGroupEntries($key))) ?></td>
+								</tr>
+							<?php endforeach ?>
+						</tbody>
+					</table>
 				</div>
-
-				<script type="text/javascript">
-					$('#user-<?php echo $user->getRuntimeID() ?> .sub-stats[data-am=\'<?php echo ChibiRegistry::getHelper('mg')->textAM($type) ?>\'] .target').each(function() {
-						var chart = new Highcharts.Chart({
-							chart: { renderTo: this, spacingTop: 0, spacingBottom: 0, spacingLeft: 0, spacingRight: 0 },
-							yAxis: { title: { text: 'Count' } },
-							plotOptions: {
-								pie: {
-									size: '100%', shadow: false,
-									dataLabels: { enabled: true, formatter: function() { return this.percentage < 10 ? '' : this.key; }, distance: -30, color: 'white' },
-							} },
-							tooltip: { formatter: function() {
-								var text = this.key + ': ' + this.y;
-								var percent = this.y * 100.0 / <?php echo max(1, $profileInfo->subTypeDistribution->getTotalSize()) ?>;
-								text = text + ' (' + (Math.round(percent * 100.0) / 100.0) + '%)';
-								return text;
-							} },
-							series: [ {
-								type: 'pie',
-								data: <?php echo json_encode(array_map(function($key) use ($profileInfo) { return ['name' => ucfirst(ChibiRegistry::getHelper('mg')->textSubType($key)), 'category' => $key, 'y' => $profileInfo->subTypeDistribution->getGroupSize($key)]; }, $profileInfo->subTypeDistribution->getGroupsKeys())) ?>,
-								point: { events: { click: function(e) {
-									var am = $(e.target).parents('.sub-stats').attr('data-am');
-									toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': 'sub-type', 'sub-type': this.category, 'am': am});
-								} } }
-							} ]
-						});
-					});
-				</script>
 			<?php endif ?>
 
 			<dl>

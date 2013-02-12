@@ -3,26 +3,29 @@
 .list-views .suffix { margin-left: 0.67em; color: gray; }
 
 #main ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
-	.clubs .scrollable, .friends .scrollable { max-height: 15em; }
-	.friends li, .clubs li { overflow: hidden; display: block; text-overflow: ellipsis; }
-	.friends a, .clubs a { position: relative; }
+.clubs .scrollable, .friends .scrollable { max-height: 15em; }
+.friends a, .clubs a { position: relative; }
+.friends ul li, .clubs ul li { overflow: hidden; display: block; text-overflow: ellipsis; }
 	.friends ul li { float: left; width: 33%; }
 	.clubs ul li { float: left; width: 50%; }
-	.friends i, .clubs i { position: absolute; }
-	.friends span, .clubs span { display: inline-block; margin-left: 21px; }
+.friends i, .clubs i { position: absolute; }
+.friends span, .clubs span { display: inline-block; margin-left: 21px; }
 
 #main [class^='icon-'] { margin-right: 5px; }
 .basic dl { margin-bottom: 1em; }
 
 dl { display: inline-block; margin: 0; }
-	dt { clear: left; font-weight: bold; width: 10em; float: left; margin-left: 0.5em; }
-		dt:after { content: ': '; }
-		dd { float: left; margin: 0; padding: 0; }
-			dd a { margin-left: 0.5em; }
-
-.wrapper-target { float: right; width: 40%; margin-left: 1em; }
-.target { height: 15em; }
-.target text { pointer-events: none !important; }
+dt { clear: left; font-weight: bold; width: 10em; float: left; margin-left: 0.5em; }
+dt:after { content: ': '; }
+dd { float: left; margin: 0; padding: 0; }
+dd a { margin-left: 0.5em; }
 
 #main .wrapper-more ul.franchises { list-style-type: disc; padding-left: 2em; }
-	#main .wrapper-more ul.franchises li { margin-bottom: 1em; }
+#main .wrapper-more ul.franchises li { margin-bottom: 1em; }
+
+.sub-stats .table-wrapper { float: right; width: 20em; min-height: 10em; }
+.sub-stats table tr { cursor: pointer; }
+.sub-stats table th,
+.sub-stats table td { text-align: center; vertical-align: top; }
+.sub-stats table th:first-child,
+.sub-stats table td:first-child { text-align: left; }

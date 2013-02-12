@@ -112,7 +112,7 @@ class StatsController extends AbstractController {
 
 
 	public function profileAction() {
-		MediaHelper::addMedia([MediaHelper::HIGHCHARTS]);
+		MediaHelper::addMedia([MediaHelper::TABLESORTER]);
 		$this->view->profileInfo = [];
 
 		foreach ($this->view->users as $u) {
