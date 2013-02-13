@@ -28,7 +28,8 @@ $(function() {
 		} else if (diff < 86400) {
 			text = (diff / 3600).toFixed(1) + ' hours ago';
 		} else {
-			text = (diff / 86400).toFixed(1) + ' days ago';
+			//text = (diff / 86400).toFixed(1) + ' days ago';
+			text = 'update in progress';
 		}
 		text += ' (' + $(this).text() + ')';
 		$(this).text(text);
