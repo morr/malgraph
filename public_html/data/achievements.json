@@ -1178,7 +1178,7 @@
 		"historical": {
 			"achievements": [
 				{ "threshold": "25-39", "id": "anime-historical-1", "level": "Historical: level 1",   "title": "History class", "desc": "History doesn&rsquo;t have to be boring. There&rsquo;s a lot to learn." },
-				{ "threshold": "40-59", "id": "anime-historical-2", "level": "Historical: level 2",   "title": "Looking back",  "desc": "Instead of dreaming of the future, you prefer to look back at the past." },
+				{ "threshold": "40-59", "id": "anime-historical-2", "level": "Historical: level 2",   "title": "Passing time",  "desc": "Instead of dreaming of the future, you prefer to look back at the past." },
 				{ "threshold": "60-99", "id": "anime-historical-3", "level": "Historical: level 3",   "title": "Archaeologist", "desc": "You found a calendar that says the world will end in 2012? Hah, who would fall for that?" },
 				{ "threshold": "100+",  "id": "anime-historical-4", "level": "Historical: level MAX", "title": "Time machine",  "desc": "Kids these days are boring. You&rsquo;d rather watch something heartwarming about siblings catching fireflies." }
 			],
