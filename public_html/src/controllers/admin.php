@@ -167,12 +167,6 @@ class AdminController extends AbstractController {
 				$start = microtime(true);
 				$model->get($userName, AbstractModel::CACHE_POLICY_FORCE_REAL);
 				$time = microtime(true) - $start;
-				$modelCache = new HTMLCacheModel();
-				foreach ($modelCache->getKeys() as $key) {
-					if (strtolower($key['u']) == strtolower($userName)) {
-						$modelCache->delete($key);
-					}
-				}
 				$this->success($userName . ' refreshed in ' . sprintf('%.02f', $time) . 's');
 				break;
 			default:

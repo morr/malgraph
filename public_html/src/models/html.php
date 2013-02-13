@@ -15,6 +15,15 @@ class HTMLCacheModel extends AbstractModel {
 		return $entry;
 	}
 
+	public static function deleteUser($userName) {
+		$modelCache = new self();
+		foreach ($modelCache->getKeys() as $key) {
+			if (strtolower($key['u']) == strtolower($userName)) {
+				$modelCache->delete($key);
+			}
+		}
+	}
+
 	public function get($key, $policy = AbstractModel::CACHE_POLICY_DEFAULT) {
 		if (!ChibiConfig::getInstance()->misc->htmlCacheEnabled) {
 			return parent::get($key, AbstractModel::CACHE_POLICY_FORCE_REAL);
