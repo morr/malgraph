@@ -1645,18 +1645,18 @@
 		},
 		"count": {
 			"achievements": [
-				{ "threshold": "100-199",   "id": "numbers-anime-100",   "level": "Passed 100 mark",   "title": "The first step",        "desc": "Watched over 100 anime. That&rsquo;s a pretty good start." },
-				{ "threshold": "200-299",   "id": "numbers-anime-200",   "level": "Passed 200 mark",   "title": "Casual watcher",        "desc": "Watched over 200 anime. You&rsquo;re used to seeing character&rsquo;s eyes bigger than their nose. If they have any nose." },
-				{ "threshold": "300-399",   "id": "numbers-anime-300",   "level": "Passed 300 mark",   "title": "A millionaire",         "desc": "Watched over 300 anime. You DID buy all of them, right?" },
-				{ "threshold": "400-499",   "id": "numbers-anime-400",   "level": "Passed 400 mark",   "title": "Bragging rights",       "desc": "Watched over 400 anime. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
-				{ "threshold": "500-749",   "id": "numbers-anime-500",   "level": "Passed 500 mark",   "title": "A lot of free time",    "desc": "Watched over 500 anime. Now think of what kind of person you&rsquo;d be if you didn&rsquo;t start watching anime then. On that particular day&hellip;" },
-				{ "threshold": "750-999",   "id": "numbers-anime-750",   "level": "Passed 750 mark",   "title": "I see the light",       "desc": "Watched over 750 anime. Your power level is way above others&rsquo;. The only way is up." },
-				{ "threshold": "1000-1499", "id": "numbers-anime-1000",  "level": "Passed 1000 mark",  "title": "Gotta watch them all!", "desc": "Watched over 1000 anime. Congratulations, you broke the magical number. Take a breath now, it will only get more difficult." },
-				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "Passed 1500 mark",  "title": "The Collector",         "desc": "Watched over 1500 animes. No, wait. The plural of anime is anime." },
-				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Passed 2500 mark",  "title": "The Maniac",            "desc": "Watched over 2500 anime. Is this healthy? You should contact your doctor." },
-				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Passed 5000 mark",  "title": "The Living Legend",     "desc": "Watched over 5000 anime. You&rsquo;re one of the chosen ones. You don&rsquo;t even have to brag, since everyone heard about you." },
-				{ "threshold": "7500-9999", "id": "numbers-anime-7500",  "level": "Passed 7500 mark",  "title": "Database breaker",      "desc": "Watched over 7500 anime. Are you having fun, breaking all the rules? By the way, do we even have that many anime in the database?!" },
-				{ "threshold": "10000+",    "id": "numbers-anime-10000", "level": "Passed 10000 mark", "title": "This is it.",           "desc": "Watched over 10000 anime. There is no higher level. You can stop now. Everyone, go home." }
+				{ "threshold": "100-199",   "id": "numbers-anime-100",   "level": "Passed 100 mark",   "title": "The first step",         "desc": "Watched over 100 anime. That&rsquo;s a pretty good start." },
+				{ "threshold": "200-299",   "id": "numbers-anime-200",   "level": "Passed 200 mark",   "title": "Casual watcher",         "desc": "Watched over 200 anime. You&rsquo;re used to seeing character&rsquo;s eyes bigger than their nose. If they have any nose." },
+				{ "threshold": "300-399",   "id": "numbers-anime-300",   "level": "Passed 300 mark",   "title": "A millionaire",          "desc": "Watched over 300 anime. You DID buy all of them, right?" },
+				{ "threshold": "400-499",   "id": "numbers-anime-400",   "level": "Passed 400 mark",   "title": "Bragging rights",        "desc": "Watched over 400 anime. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
+				{ "threshold": "500-749",   "id": "numbers-anime-500",   "level": "Passed 500 mark",   "title": "A lot of free time",     "desc": "Watched over 500 anime. Now think of what kind of person you&rsquo;d be if you didn&rsquo;t start watching anime then. On that particular day&hellip;" },
+				{ "threshold": "750-999",   "id": "numbers-anime-750",   "level": "Passed 750 mark",   "title": "Not even my final form", "desc": "Watched over 750 anime. Your power level is way above others&rsquo;. The only way is up." },
+				{ "threshold": "1000-1499", "id": "numbers-anime-1000",  "level": "Passed 1000 mark",  "title": "Gotta watch them all!",  "desc": "Watched over 1000 anime. Congratulations, you broke the magical number. Take a breath now, it will only get more difficult." },
+				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "Passed 1500 mark",  "title": "The Collector",          "desc": "Watched over 1500 animes. No, wait. The plural of anime is anime." },
+				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Passed 2500 mark",  "title": "The Maniac",             "desc": "Watched over 2500 anime. Is this healthy? You should contact your doctor." },
+				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Passed 5000 mark",  "title": "The Living Legend",      "desc": "Watched over 5000 anime. You&rsquo;re one of the chosen ones. You don&rsquo;t even have to brag, since everyone heard about you." },
+				{ "threshold": "7500-9999", "id": "numbers-anime-7500",  "level": "Passed 7500 mark",  "title": "Database breaker",       "desc": "Watched over 7500 anime. Are you having fun, breaking all the rules? By the way, do we even have that many anime in the database?!" },
+				{ "threshold": "10000+",    "id": "numbers-anime-10000", "level": "Passed 10000 mark", "title": "This is it.",            "desc": "Watched over 10000 anime. There is no higher level. You can stop now. Everyone, go home." }
 			],
 			"requirement": { "type": "completed-titles" }
 		}
