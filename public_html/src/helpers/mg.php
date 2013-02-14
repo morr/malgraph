@@ -294,7 +294,7 @@ class MGHelper extends ChibiHelper {
 			curl_multi_remove_handle($multicurl, $ch);
 			$result = curl_multi_getcontent($ch);
 			$documents[$key] = self::parseDownloadResult($result);
-			if (!empty(ChibiConfig::getInstance()->misc->mirrorDir)) {
+			if (ChibiConfig::getInstance()->misc->mirrorEnabled) {
 				file_put_contents($mirrors[$key], $result);
 			}
 		}
