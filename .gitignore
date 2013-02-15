@@ -1,14 +1,6 @@
 #cache stuff
 logs
 scripts
-data/cache/anime/*
-data/cache/manga/*
-data/cache/users/*
-data/cache/html/*
-data/mirror/*
-data/anons.json
-data/globals.dat
-data/mg.log
 
 #ide
 tags
