@@ -17,8 +17,9 @@ class HTMLCacheModel extends AbstractModel {
 
 	public static function deleteUser($userName) {
 		$modelCache = new self();
+		$u = strtolower($userName);
 		foreach ($modelCache->getKeys() as $key) {
-			if (strtolower($key['u']) == strtolower($userName)) {
+			if (in_array($u, explode(',', strtolower($key['u'])))) {
 				$modelCache->delete($key);
 			}
 		}

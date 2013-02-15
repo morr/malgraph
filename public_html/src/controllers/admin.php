@@ -162,6 +162,7 @@ class AdminController extends AbstractController {
 				} else {
 					$this->success($userName . ' marked is no longer blocked');
 				}
+				HTMLCacheModel::deleteUser($userName);
 				break;
 			case 'refresh':
 				$start = microtime(true);
