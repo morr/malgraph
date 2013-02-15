@@ -146,6 +146,10 @@ class AdminController extends AbstractController {
 		}
 
 		switch ($_GET['action']) {
+			case 'remove-cache':
+				HTMLCacheModel::deleteUser($userName);
+				$this->success($userName . ' cache deleted OK');
+				break;
 			case 'remove':
 				if (!$model->cacheExists($userName)) {
 					$this->success($userName . ' was already deleted');
@@ -157,12 +161,12 @@ class AdminController extends AbstractController {
 				$user = $model->get($userName);
 				$user->getUserData()->setBlocked(!$user->getUserData()->isBlocked());
 				$model->put($userName, $user);
+				HTMLCacheModel::deleteUser($userName);
 				if ($user->getUserData()->isBlocked()) {
 					$this->success($userName . ' marked is now blocked');
 				} else {
 					$this->success($userName . ' marked is no longer blocked');
 				}
-				HTMLCacheModel::deleteUser($userName);
 				break;
 			case 'refresh':
 				$start = microtime(true);
