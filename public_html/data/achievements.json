@@ -157,7 +157,7 @@
 				{ "threshold": "500-749",   "id": "numbers-manga-500",   "level": "Passed 500 mark",   "title": "Half a grand",       "desc": "Read over 500 manga. Read another five hundred and you can start bragging." },
 				{ "threshold": "750-999",   "id": "numbers-manga-750",   "level": "Passed 750 mark",   "title": "Read or die",        "desc": "Read over 750 manga. Made a bow out of paper. Please remember that paper doesn&rsquo;t work well as a bulletproof shield." },
 				{ "threshold": "1000-1499", "id": "numbers-manga-1000",  "level": "Passed 1000 mark",  "title": "Librarian",          "desc": "Read over 1000 manga. You work with books, right? Right?&hellip;" },
-				{ "threshold": "1500-2499", "id": "numbers-manga-1500",  "level": "Passed 1500 mark",  "title": "The floor is books", "desc": "Read over 1500 manga. Sleeping on books must be pretty hard." },
+				{ "threshold": "1500-2499", "id": "numbers-manga-1500",  "level": "Passed 1500 mark",  "title": "The floor is books", "desc": "Read over 1500 manga. Sleeping on books must be pretty&hellip;&nbsp;hard?" },
 				{ "threshold": "2500-4999", "id": "numbers-manga-2500",  "level": "Passed 2500 mark",  "title": "Still not enough",   "desc": "Read over 2500 manga. You&rsquo;ve read six lifetimes worth of words." },
 				{ "threshold": "5000-7499", "id": "numbers-manga-5000",  "level": "Passed 5000 mark",  "title": "Sleep deprivation",  "desc": "Read over 5000 manga. Think of all the mangakas and writers that couldn&rsquo;t sleep just to make this moment happen." },
 				{ "threshold": "7500-9999", "id": "numbers-manga-7500",  "level": "Passed 7500 mark",  "title": "Reincarnation",      "desc": "Read over 7500 manga. How, exactly? This is not possible within one lifetime." },

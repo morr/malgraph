@@ -25,14 +25,14 @@ function animateGlider() {
 }
 
 var messages = {
-	5: [ 'downloading your data&hellip;', 'performing magic tricks&hellip;', 'reticulating splines&hellip;' ],
-	10: [ 'applying final touches&hellip;', 'antialiasing buttons&hellip;' ],
-	15: [ 'the game.', 'the thing above is called a glider.' ],
-	20: [ 'this shouldn&rsquo;t take much longer.', 'don&rsquo;t panic yet.' ],
-	25: [ 'yep, still loading.' ],
-	30: [ 'does your list even end?', 'ah, the cable was unplugged.' ],
-	40: [ 'your stats will appear any second now.', 'good things come to those who wait.' ],
-	50: [ 'loading&hellip;' ]
+	5: [ 'downloading your data&hellip;', 'performing magic tricks&hellip;', 'reticulating splines&hellip;', 'making you read this text&hellip;' ],
+	10: [ 'applying final touches&hellip;', 'antialiasing buttons&hellip;', 'rendering gradients&hellip;' ],
+	15: [ 'the game.', 'the thing above is called a glider.', '[your ad here]' ],
+	22: [ 'this shouldn&rsquo;t take much longer.', 'don&rsquo;t panic yet.' ],
+	30: [ 'yep, still loading.', 'loading proceeds according to keikaku.' ],
+	40: [ 'does your list even end?', 'ah, the cable was unplugged.', 'you should have clicked harder.' ],
+	50: [ 'your stats will appear any second now.', 'good things come to those who wait.' ],
+	60: [ 'loading&hellip;' ]
 };
 
 //show glider
