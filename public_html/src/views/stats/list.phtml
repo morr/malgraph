@@ -26,8 +26,6 @@
 						</tr>
 					</thead>
 
-					<?php ChibiRegistry::getHelper('benchmark')->benchmark('tbody') ?>
-
 					<tbody>
 						<?php $k = 1 ?>
 						<?php foreach ($user->getList($this->am)->getEntries() as $e): ?>
@@ -64,8 +62,6 @@
 							</tr>
 						<?php endforeach ?>
 					</tbody>
-
-					<?php ChibiRegistry::getHelper('benchmark')->benchmark('/tbody') ?>
 				</table>
 			</div>
 		<?php endif ?>

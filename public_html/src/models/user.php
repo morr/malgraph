@@ -15,8 +15,8 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 class UserModel extends AbstractModel {
 	const URL_ANIME1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all';
 	const URL_MANGA1 = 'http://myanimelist.net/malappinfo.php?u={user}&status=all&type=manga';
-	const URL_ANIME2 = 'http://myanimelist.net/animelist/{user}&sclick=1&status=3';
-	const URL_MANGA2 = 'http://myanimelist.net/mangalist/{user}&sclick=1&status=3';
+	const URL_ANIME2 = 'http://myanimelist.net/animelist/{user}&status=3';
+	const URL_MANGA2 = 'http://myanimelist.net/mangalist/{user}&status=3';
 	const URL_PROFILE = 'http://myanimelist.net/profile/{user}';
 	const URL_HISTORY = 'http://myanimelist.net/history/{user}';
 	const URL_CLUBS = 'http://myanimelist.net/showclubs.php?id={user-id}';
