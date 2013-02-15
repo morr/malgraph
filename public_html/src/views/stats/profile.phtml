@@ -78,13 +78,13 @@
 					</a>
 				</li>
 				<li>
-					<a href="http://myanimelist.net/animelist/<?php echo $user->getUserName() ?>&sclick=1">
+					<a href="http://myanimelist.net/animelist/<?php echo $user->getUserName() ?>&amp;sclick=1">
 						<i class="icon-pop-out"></i>
 						MAL anime list
 					</a>
 				</li>
 				<li>
-					<a href="http://myanimelist.net/mangalist/<?php echo $user->getUserName() ?>&sclick=1">
+					<a href="http://myanimelist.net/mangalist/<?php echo $user->getUserName() ?>&amp;sclick=1">
 						<i class="icon-pop-out"></i>
 						MAL manga list
 					</a>
@@ -100,6 +100,7 @@
 
 
 <?php foreach (AMModel::getTypes() as $type): ?>
+	<div class="sub-stats-wrapper">
 	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
 	<?php $profileInfo = $this->profileInfo[$user->getRuntimeID()][$type] ?>
 	<div class="section sub-stats" data-am="<?php echo ChibiRegistry::getHelper('mg')->textAM($type) ?>">
@@ -175,10 +176,13 @@
 			<div class="clear"></div>
 		</div>
 
-		<div class="wrapper-more">
-		</div>
 	</div>
 	<?php }); ?>
+	<?php iterateUsers(function($user, $otherUser) use ($type) { ?>
+		<div class="wrapper-more">
+		</div>
+	<?php }); ?>
+	</div>
 <?php endforeach ?>
 
 

@@ -10,8 +10,8 @@ $(function() {
 
 	$('.franchises, .mismatched-eps').click(function(e) {
 		var sender = $(this).attr('class');
-		var am = $(this).parents('.sub-stats').attr('data-am');
-		toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': sender, 'am': am});
+		var am = $(e.target).parents('.sub-stats').attr('data-am');
+		toggleMoreWrappers($(this).parents('.sub-stats-wrapper').find('.wrapper-more'), {'sender': sender, 'am': am});
 		e.preventDefault();
 	});
 
@@ -39,8 +39,7 @@ $(function() {
 		e.preventDefault();
 		var subType = $(this).attr('data-sub-type');
 		var am = $(e.target).parents('.sub-stats').attr('data-am');
-		console.log('yo');
-		toggleMoreWrappers($('.sub-stats[data-am=\'' + am + '\'] .wrapper-more'), {'sender': 'sub-type', 'sub-type': subType, 'am': am});
+		toggleMoreWrappers($(this).parents('.sub-stats-wrapper').find('.wrapper-more'), {'sender': 'sub-type', 'sub-type': subType, 'am': am});
 	});
 	$('table').tablesorter({
 		sortList: [[1,1],[2,1]]
