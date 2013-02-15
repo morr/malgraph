@@ -1,11 +1,14 @@
 #cache stuff
 logs
 scripts
-public_html/data/cache
-public_html/data/mirror
-public_html/data/anons.json
-public_html/data/globals.dat
-public_html/data/mg.log
+data/cache/anime/*
+data/cache/manga/*
+data/cache/users/*
+data/cache/html/*
+data/mirror/*
+data/anons.json
+data/globals.dat
+data/mg.log
 
 #ide
 tags
