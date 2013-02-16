@@ -248,9 +248,7 @@ class MGHelper extends ChibiHelper {
 		$headers = [];
 		$headers['Connection'] = 'close';
 		$headers['User-Agent'] = 'Mozilla/5.0 (MALgraph crawler)';
-		if (ChibiConfig::getInstance()->misc->sendReferrer) {
-			$headers['Referer'] = 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI']);
-		}
+		$headers['Referer'] = 'http://' . str_replace('//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI']);
 
 		$curlHeaders = [];
 		foreach ($headers as $k => $v) {

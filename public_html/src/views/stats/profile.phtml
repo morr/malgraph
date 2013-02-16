@@ -78,13 +78,13 @@
 					</a>
 				</li>
 				<li>
-					<a href="http://myanimelist.net/animelist/<?php echo $user->getUserName() ?>&amp;sclick=1">
+					<a href="http://myanimelist.net/animelist/<?php echo $user->getUserName() ?><?php if (ChibiConfig::getInstance()->misc->sendReferrer) echo '&amp;sclick=1'; ?>">
 						<i class="icon-pop-out"></i>
 						MAL anime list
 					</a>
 				</li>
 				<li>
-					<a href="http://myanimelist.net/mangalist/<?php echo $user->getUserName() ?>&amp;sclick=1">
+					<a href="http://myanimelist.net/mangalist/<?php echo $user->getUserName() ?><?php if (ChibiConfig::getInstance()->misc->sendReferrer) echo '&amp;sclick=1'; ?>">
 						<i class="icon-pop-out"></i>
 						MAL manga list
 					</a>
