@@ -44,16 +44,14 @@
 		<div class="control-group">
 			<div>
 				<p>You can also paste IDs below:</p>
-				<textarea rows="5" name="ids"></textarea><br>
-				<button class="btn btn-primary get-ids">Shove numbers to input field!</button>
+				<textarea rows="5" name="ids"></textarea>
 				<p>(plaintext garbage is OK)</p>
 			</div>
 		</div>
 
 		<div class="control-group">
 			<div>
-				<button class="btn btn-danger" type="submit" name="action" value="remove">Remove</button>&nbsp;
-				<button class="btn btn-success" type="submit" name="action" value="refresh">Refresh</button>
+				<button class="btn btn-success" type="submit" name="action" value="refresh">Refresh</button>&nbsp;
 			</div>
 		</div>
 
@@ -73,10 +71,9 @@
 
 		<div class="control-group">
 			<div>
-				<button class="btn btn-danger" type="submit" name="action" value="remove-cache">Remove cache</button>&nbsp;
-				<button class="btn btn-danger" type="submit" name="action" value="remove">Remove</button>&nbsp;
 				<button class="btn btn-success" type="submit" name="action" value="refresh">Refresh</button>&nbsp;
-				<button class="btn btn-warning" type="submit" name="action" value="toggle-block">Toggle block</button>&nbsp;
+				<button class="btn btn-warning" type="submit" name="action" value="remove-html-cache">Remove HTML cache</button>&nbsp;
+				<button class="btn btn-danger" type="submit" name="action" value="toggle-block">Toggle block</button>&nbsp;
 			</div>
 		</div>
 
@@ -84,17 +81,22 @@
 </form>
 
 <script type="text/javascript">
-	$('.btn.get-ids').click(function(e) {
-		var text = $('textarea[name=\'ids\']').val();
-		var regex = /(\d+)/g;
-		var ids = [];
-		while ((match = regex.exec(text)) != null) {
-			var id = match[1];
-			if (ids.lastIndexOf(id) == -1) {
-				ids.push(id);
-			}
+	var timeout = null;
+	$('textarea').keydown(function(e) {
+		if (timeout == null) {
+			timeout = window.setTimeout(function() {
+				var text = $('textarea[name=\'ids\']').val();
+				var regex = /(\d+)/g;
+				var ids = [];
+				while ((match = regex.exec(text)) != null) {
+					var id = match[1];
+					if (ids.lastIndexOf(id) == -1) {
+						ids.push(id);
+					}
+				}
+				$('input[name=\'am-id\']').val(ids.join(','));
+				timeout = null;
+			}, 100);
 		}
-		$('input[name=\'am-id\']').val(ids.join(','));
-		e.preventDefault();
 	});
 </script>

@@ -103,23 +103,6 @@ class AdminController extends AbstractController {
 		}
 
 		switch ($_GET['action']) {
-			case 'remove':
-				$c1 = 0;
-				$c2 = 0;
-				foreach ($ids as $id) {
-					if (!$model->cacheExists($id)) {
-						$c2 ++;
-					} else {
-						$model->delete($id);
-						$c1 ++;
-					}
-				}
-				if ($c2 > 0) {
-					$this->success($c1 . ' entries deleted OK');
-				} else {
-					$this->success($c1 . ' entries deleted OK, ' . $c2 . ' were already deleted');
-				}
-				break;
 			case 'refresh':
 				$start = microtime(true);
 				foreach ($ids as $id) {
@@ -149,13 +132,6 @@ class AdminController extends AbstractController {
 			case 'remove-cache':
 				HTMLCacheModel::deleteUser($userName);
 				$this->success($userName . ' cache deleted OK');
-				break;
-			case 'remove':
-				if (!$model->cacheExists($userName)) {
-					$this->success($userName . ' was already deleted');
-				}
-				$model->delete($userName);
-				$this->success($userName . ' deleted OK');
 				break;
 			case 'toggle-block':
 				$user = $model->get($userName);
