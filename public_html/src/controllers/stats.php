@@ -199,7 +199,12 @@ class StatsController extends AbstractController {
 						$subject = count($entriesOwned);
 						break;
 					case 'genre-titles':
-						$filter = UserListFilters::getGenre($groupData['requirement']['genre']);
+						$filterBase = UserListFilters::getGenre($groupData['requirement']['genre']);
+						if (!empty($groupData['requirement']['titles'])) {
+							$filter = function($e) use ($groupData, $filterBase) { return $filterBase($e) or in_array($e->getID(), $groupData['requirement']['titles']); };
+						} else {
+							$filter = $filterBase;
+						}
 						$entriesOwned = array();
 						foreach ($entriesCompleted as $e) {
 							if ($filter($e)) {
