@@ -1183,445 +1183,88 @@
 				{ "threshold": "100+",  "id": "anime-historical-4", "level": "Historical: level MAX", "title": "Time machine",            "desc": "Kids these days are boring. You&rsquo;d rather watch something heartwarming about siblings catching fireflies." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
-				11545, #108 Ward Inside and Out: Make-Up Artist
-				3835,  #Ai no Gakko Cuore Monogatari
-				2548,  #Ai no Wakakusa Monogatari
-				2558,  #Ai no Wakakusa Monogatari II
-				2554,  #Ai Shoujo Pollyanna Monogatari
-				656,   #Air in Summer
-				11275, #Akado Suzunosuke
-				283,   #Akage no Anne
-				8950,  #Akage no Anne: Green Gables e no Michi
-				5157,  #Alexander Senki Gekijouban
-				10112, #Alexandros no Ketsudan
 				2546,  #Alps Monogatari: Watashi no Annette
-				2225,  #Alps no Shoujo Heidi
-				9547,  #Alps no Shoujo Heidi (1979)
-				9548,  #Alps no Shoujo Heidi: Alm no Yama Hen
-				9549,  #Alps no Shoujo Heidi: Heidi to Clara Hen
-				3359,  #Amatsuki
-				2333,  #Anime Sanjushi
-				2334,  #Anime Sanjushi: Aramis no Bouken
-				7610,  #Anju to Zushioumaru
-				6093,  #Anmitsu Hime
-				3829,  #Anne no Nikki
-				12027, #Anne no Nikki: Anne Frank Monogatari
 				4723,  #Animated Classics of Japanese Literature
-				2334,  #Anime Sanjushi: Aramis no Bouken
-				7193,  #Aoi Bungaku Series
-				10901, #Aoi Hitomi no Onna no Ko no Ohanashi
-				5673,  #Apfelland Monogatari
-				1946,  #Ashita no Nadja
-				8475,  #Asura
-				586,   #Ayakashi: Japanese Classic Horror
 				2251,  #Baccano!
-				3901,  #Baccano! Specials
-				1576,  #Bakumatsu Kikansetsu Irohanihoheto
-				8092,  #Bakumatsu no Spasibo
-				67,    #Basilisk: Kouga Ninpou Chou
 				12561, #Benkeitai Ushiwaka
-				9613,  #Big X
-				4151,  #Blade of the Immortal
 				405,   #Blood: The Last Vampire
-				4680,  #Botchan
-				11241, #Brave 10
-				13169, #Buta
 				2800,  #Candy Candy
 				723,   #Candy Candy (Movie)
 				2802,  #Candy Candy: Candy no Natsuyasumi
 				2801,  #Candy Candy: Haru no Yobigoe
-				2836,  #Chiisana Viking Vickie
 				2800,  #Chikara to Onna no Yo no Naka
 				2915,  #Chikyuuga Ugoita Hi
-				4201,  #Chocchan Monogatari
-				13349, #Chouyaku Hyakuninsshu: Uta Koi
 				60,    #Chrno Crusade
-				4450,  #Chrno Crusade: Azmaria's Lessons
-				3935,  #Clockwork Fighters: Hiwou's War
-				2755,  #Cleopatra
-				3132,  #Cristopher Columbus
 				1842,  #D.Gray-man
-				1778,  #Dae Jang Geum: Jand Geum’s Dream
-				9200,  #Dae Jang Geum: Jang Geum’s Dream 2
-				496,   #Dagger of Kamui
-				8915,  #Dantalian no Shoka
-				12879, #Dantalian no Shoka: Ibarahime
-				8915,  #Dojoji Temple
-				1026,  #Eight Clouds Rising
-				345,   #Eikoku Koi Monogatari Emma
-				2517,  #Eikoku Koi Monogatari Emma: Intermission
-				2035,  #Eikoku Koi Monogatari Emma: Molders Hen
-				4199,  #Entaku no Kishi Monogatari: Moero Arthur
 				714,   #Enzai
-				5178,  #First Squad: The Moment of Truth
 				2553,  #Flanders no Inu
 				2623,  #Flanders no Inu (Movie)
-				2624,  #Flanders no Inu, Boku no Patrasche
-				3367,  #Furusato Japan
-				13163, #Furusato Saisei: Nihon no Mukashi Banashi
-				13335, #Fuse Teppou Musume no Torimonochou
 				7775,  #Futatsu no Kurumi
-				2238,  #Fuyu no Semi
-				10048, #Fuyu no Semi: Tokubetsu Henshuuhan
 				1049,  #Gauche the Cellist
-				918,   #Gintama
-				2951,  #Gintama Jump Festa 2005 Special
-				9969,  #Gintama’
 				10643, #Gintama: Dai Hanseikai
-				6945,  #Gintama: Jump Anime Tour 2008 Special
-				7472,  #Gintama: Shinyaku Benizakura Hen
-				9735,  #Gintama: Shinyaku Benizakura Hen Special
 				336,   #Ginyuu Mokushiroku Meine Liebe
-				771,   #Ginyuu Mokushiroku Meine Liebe Wieder
-				578,   #Grave of the Fireflies
-				8233,  #Genji
-				3488,  #Genji Monogatari
-				5155,  #Genji Monogatari Sennenki
-				3646,  #Glass no Usagi
 				7867,  #Gon
 				8425,  #Gosick
 				10504, #Gosick Recap
-				578,   #Grave of the Fireflies
 				1200,  #Gun-dou Musashi
 				10270, #Gun-dou Musashi Recap
-				2579,  #Hachijunichikan Sekai Isshuu
-				1824,  #Hadashi no Gen
-				1825,  #Hadashi no Gen 2
 				1663,  #Haha wo Tazunete Sanzenri
-				3335,  #Haikara-san ga Tooru
-				5168,  #Hairy Tale
-				8764,  #Hajime Ningen Gon
 				8736,  #Hajime Ningen Gyatoruz
-				4513,  #Hakujaden
-				6895,  #Hakuouki
-				9065,  #Hakuouki Hekketsuroku
-				9723,  #Hakuouki Hekketsuroku Episode 0
-				13117, #Hakuouki Movie 1
-				13119, #Hakuouki Movie 2
-				11663, #Hakuouki OVA
-				13115, #Hakuouki Reimeiroku
-				10350, #Hakuouki Sekkaroku
 				4551,  #Hakushaku to Yousei
-				8533,  #Hana no Kage
-				14145, #Hanayaka Nari, Waga Ichizoku
-				1904,  #Harukanaru Toki no Naka de 2: Shiroki Ryuu no Miko
-				3227,  #Harukanaru Toki no Naka de 3: Kurenai no Tsuki
 				4190,  #Harukanaru Toki no Naka de 3: Onsen Chibi Special
 				7254,  #Harukanaru Toki no Naka de 3: Owarinaki Unmei
-				647,   #Harukanaru Toki no Naka de: Ajisai Yumegatari
-				1905,  #Harukanaru Toki no Naka de: Character Endings
-				247,   #Harukanaru Toki no Naka de: Hachiyou Shou
-				1907,  #Harukanaru Toki no Naka de: Kokoro no Yukue
-				1906,  #Harukanaru Toki no Naka de: Maihitoyo
-				8554,  #Hashire Melos
 				4876,  #Hashire Melos!
 				2405,  #Hello! Lady Lynn
-				5929,  #Hi no Ame ga Furu
-				13639, #Hi no Youjin
-				2694,  #Hidamari no Ki
-				7967,  #Hiroshima ni Ichiban Densha ga Hashitta
-				2810,  #Himitsu no Hanazono
-				5060,  #Hetalia Axis Powers
-				9865,  #Hetalia Axis Powers Fan Disc
-				8479,  #Hetalia World Series
-				10497, #Hetalia World Series Extra Episodes
-				1371,  #Hi no Tori
-				2997,  #Hi no Tori: Houou Hen
-				2999,  #Hi no Tori: Yamato Hen
-				1977,  #Hijikata Toshizou: Shiro no Kiseki
-				3873,  #Honey Honey no Suteki na Bouken
-				6150,  #Hong Xing Xiao Yong Shi
-				11101, #Honoo no Alpen Rose
-				3807,  #Honoo no Alpen Rose: Judy & Randy
-				9957,  #Hoshizora no Violin
-				7170,  #House of Flames
-				2545,  #Huckleberry no Boukeni
 				4800,  #Huckleberry Finn Monogatarii
-				279,   #Hundred Stories
-				9996,  #Hyouge Mono
-				2828,  #Ie Naki Ko
 				2831,  #Ie Naki Ko (Movie)
 				2829,  #Ie Naki Ko Remi
 				10471, #Ie Naki Ko Remi Specials
-				9938,  #Ikoku Meiro no Croisée
-				10905, #Ikoku Meiro no Croisée Picture Drama
-				10804, #Ikoku Meiro no Croisée Special
-				10832, #Ikoku Meiro no Croisée: Yune & Alice
-				2282,  #In The Beginning: The Bible Stories
-				3326,  #Inaka Isha
 				249,   #InuYasha
-				449,   #InuYasha: Guren no Houraijima
-				450,   #InuYasha: Kagami no Naka no Mugenjo
 				6811,  #InuYasha: Kanketsu-hen
 				4886,  #InuYasha: Kuroi Tessaiga
-				451,   #InuYasha: Tenka Hadou no Ken
-				452,   #InuYasha: Toki wo Koeru Omoi
-				14211, #Instant History
-				5876,  #IZUMO
 				5900,  #Jean Valjean Monogatari
-				1759,  #Jigen Sengokushi: Kuro no Shishi - Jinnai Hen
-				3435,  #Joou Heika no Petite Angie
-				9525,  #Junod
-				2138,  #Kage
-				1622,  #Kai Doh Maru
-				3010,  #Kaiketsu Zorro
-				5023,  #Kamui the Ninja
-				1658,  #Karakuri no Kimi
-				2243,  #Karasu Tengu Kabuto
-				1371,  #Karasu Tengu Kabuto: Ougon no Me no Kemono
-				1036,  #Kasho no Tsuki
 				3110,  #Kaze no Naka no Shoujo: Kinpatsu no Jeanie
-				1878,  #Kaze no Shoujo Emily
 				1063,  #Kaze to Ki no Uta Sanctus: Sei Naru Kana
-				606,   #Kazemakase Tsukikage Ran
 				8436,  #Ketsudan
-				1058,  #Kidou Shinsengumi Moeyo Ken
-				511,   #Kidou Shinsengumi Moeyo Ken TV
-				5192,  #Kiku-chan to Ookami
-				12031, #Kingdom
-				6012,  #Kinpatsu no Jeanie
-				3061,  #Kishin Corps
 				4262,  #Koihime†Musou
 				5305,  #Koihime†Musou OVA
-				4393,  #Kokka Kimigayo
-				10029, #Kokurikozaka Kara
-				10335, #Kompeki no Kantai Tokubetsu Hen: Sourai Kaihatsu Monogatari
-				6229,  #Konpeki no Kantai
-				5924,  #Koukoku Ichidai Otoko
-				2162,  #Koutetsu Sangokushi
-				8304,  #Koutetsu Sangokushi Special
-				3866,  #Kuro ga Ita Natsu
 				4898,  #Kuroshitsuji
 				6707,  #Kuroshitsuji II
 				9136,  #Kuroshitsuji II Specials
 				8068,  #Kuroshitsuji Picture Drama
 				6163,  #Kuroshitsuji Recap
 				6793,  #Kuroshitsuji Special
-				5039,  #Kurozuka
-				6230,  #Kyokujitsu no Kantai
-				5415,  #La Rose de Versailles
-				2227,  #Lady Lady!!
 				9773,  #Lady Lady!! (1988)
-				1013,  #Le Chevalier D'Eon
-				1695,  #Les Misérables: Shoujo Cosette
-				1032,  #Like the Clouds, Like the Wind
-				5600,  #Little El Cid Bouken
-				7500,  #Maabou no Shounen Koukuu Tsuwamono
-				7524,  #Mahou no Pen
-				3162,  #Makiba no Shoujo Katori
-				11829, #Manga Mitoukoumon
-				9856,  #Manga Nihon Emaki
-				11245, #Manga Nihonshi
-				10282, #Manga Nippon Mukashibanashi
-				6277,  #Manga Nippon Mukashibanashi (1976)
-				10285, #Manga Nippon Mukashibanashi (Movie)
-				5091,  #Manga Sarutobi Sasuke
-				6262,  #Manga Sekai Mukashibanashi
 				4926,  #Marco: Haha wo Tazunete Sanzenri
-				5935,  #Marco Polo no Boken
-				9821,  #McDull and Chinese Culture
-				4187,  #Megumi
-				3836,  #Meiken Jolie
-				2981,  #Midori: Shoujo Tsubaki
-				7497,  #Mikanbun
-				1033,  #Millennium Actress
-				7857,  #Mini Sengoku Basara: Chousokabe-kun to Mouri-kun
-				9630,  #Mini Sengoku Basara Two: Tsukiyo no Katakura-
-				5386,  #Miyamoto Musashi: Souken no Haseru Yume
 				9395,  #Miyanishi Tatasuya Gekijou: Omae Umasou da na
-				4096,  #Mizu no Tane
-				4614,  #Moero Arthur: Hakuba no Ouji
-				6857,  #Momotarou no Umiwashi
 				2246,  #Mononoke
-				3309,  #Mozu no Nie
-				6769,  #Mura Matsuri
 				1375,  #My Daddy Long Legs
-				1279,  #Mysterious Cities of Gold
-				1252,  #Nadia: The Motion Picture
-				1251,  #Nadia, the Secret of Blue Water
 				3381,  #Nadia, the Secret of Blue Water Omakes
-				3465,  #Nagasaki 1945: Angelus no Kane
-				1937,  #Nakoruru: Ano Hito kara no Okurimono
-				8896,  #Natsufuku no Shoujotachi
-				5184,  #Negibouzu no Asataro
-				12165, #Niji no Kanata e! Shoujo Diana no Monogatari
-				7651,  #Ningen Shikaku: Director’s Cut Ban
-				1455,  #Ninja Resurrection
-				617,   #Ninja Scroll
 				618,   #Ninja Scroll: The Series
 				912,   #Ninku
-				2851,  #Ninku (Movie)
-				12181, #Nippon Omoshiro Mukashi Banashi
-				1203,  #Nitaboh
-				8777,  #Nobara no Julie
-				11933, #Oda Nobuna no Yabou
 				14181, #Oedo wa Nemurenai!
-				2152,  #Oh! Edo Rocket
-				8415,  #Oi! Ryouma
-				10500, #Ojii-san no Lamp
-				9501,  #Olympus Guardian
 				9204,  #Omae Umasou da na
-				7171,  #Oni
 				8487,  #Onigamiden
-				5439,  #Ooedo Forty Eight
-				785,   #Otaku no Video
-				14213, #Otogi Manga Calendar
-				525,   #Otogizoushi
-				13673, #Otome Nadeshiko Koi Tenchou
-				8476,  #Otome Youkai Zakuro
 				10180, #Otome Youkai Zakuro Picture Drama
-				3879,  #Paris no Isabel
 				1035,  #Patalliro Saiyuki!
-				6688,  #Pattenrai! Minami no Shima no Mizu Monogatari
-				161,   #Peace Maker Kurogane
-				9568,  #Peace Maker Kurogane Special
-				2549,  #Perrine Monogatari
-				7117,  #Pika Don
-				416,   #Porco Rosso
-				3424,  #Porfy no Nagai Tabi
-				163,   #Power Stone
-				9806,  #Qin Shi Ming Yue
-				11841, #Qin Shi Ming Yue 2:Night Ends - Daybreak
-				11835, #Qin Shi Ming Yue 3: Hundred Schools of Thought
-				1329,  #Rail of the Star: A True Story of Children
 				6114,  #Rainbow: Nisha Rokubou no Shichinin
-				9959,  #Rainyantsuuri no Uta
-				2244,  #Rakugo Tennyo Oyui
-				1442,  #Reign: The Conqueror
-				7473,  #Rennyo to Sono Haha
-				2543,  #Robin Hood no Daibouken
-				970,   #Romance of the Three Kingdoms
-				2559,  #Romeo no Aoi Sora
-				338,   #Rose of Versailles
-				3868,  #Rose of Versailles Movie
-				45,    #Rurouni Kenshin
-				6591,  #Rurouni Kenshin DVD-BOX Special Ending
-				46,    #Rurouni Kenshin: Ishinshishi e no Requiem
-				10334, #Rurouni Kenshin Recap
 				9716,  #Rurouni Kenshin: Review Special
-				401,   #Rurouni Kenshin: Seisouhen
-				11441, #Rurouni Kenshin: Shin Kyoto Hen
-				12067, #Rurouni Kenshin Special
 				4664,  #Rurouni Kenshin: Special Techniques
-				44,    #Rurouni Kenshin: Tsuiokuhen
-				5997,  #Sabu to Ichi Torimono Hikae
-				6902,  #Saikyou Bushouden: Sangoku Engi
-				957,   #Saiunkoku Monogatari
-				1914,  #Saiunkoku Monogatari 2nd Season
-				2193,  #Saiunkoku Monogatari Soushuuhen
-				2192,  #Saiunkoku Monogatari Specials
-				12531, #Sakamichi no Apollon
-				419,   #Samurai Deeper Kyo
-				1167,  #Samurai Gun
-				2591,  #Samurai Spirits
-				836,   #Samurai Spirits 2
+				839,   #Samurai Spirits 2
 				2698,  #Sanctuary
-				8677,  #Sangokushi
-				7696,  #Sangokushi Daiichibu Eiyuu-tachi no Yoake
-				7697,  #Sangokushi Dainibu Choukou Moyu
-				7698,  #Sangokushi Daisanbu Harukanaru Taichi
-				8678,  #Sangokushi II
-				7588,  #Saraiya Goyou
 				6057,  #Sasuke
-				3877,  #Sasurai no Shoujo Nell
-				12907, #Sekiei Ayakashi Mangatan
-				5355,  #Sengoku Basara
-				6581,  #Sengoku Basara: Setonai no Gekitotsu! Hi wo Fuku Umi no Daiyousai - Fugaku!!
-				9745,  #Sengoku Basara: The Last Party
-				6634,  #Sengoku Basara Two
-				10483, #Sengoku Basara Two: Ryuko, Itadaki no Chikai! Atsuki Mirai e Kakeru Tamashii!!
-				7242,  #Sengoku Gyoujin Dullahan: Kagen no Keishousha
-				10308, #Sengoku Otome: Momoiro Paradox
-				11547, #Sengoku☆Paradise Kiwami
-				6973,  #Senkou no Night Raid
-				10201, #Senkou no Night Raid Picture Drama
-				8840,  #Senkou no Night Raid Recap
-				8800,  #Senkou no Night Raid Specials
 				3038,  #Senya Ichiya Monogatari
-				4514,  #Seton Doubutsuki: Kuma no Ko Jacky
-				2216,  #Shigurui
-				959,   #Shin Chou Kyou Ryo: Condor Hero
-				960,   #Shin Chou Kyou Ryo: Condor Hero II
-				5854,  #Shin Chou Kyou Ryo: Condor Hero III
-				1938,  #Shin Kaikei Gunkan
 				6112,  #Shin Koihime†Musou
 				7774,  #Shin Koihime†Musou OVA
 				8635,  #Shin Koihime†Musou: Live Revolution
 				8057,  #Shin Koihime†Musou: Otome Tairan
 				10297, #Shin Koihime†Musou: Otome Tairan OVA
-				5693,  #Shinran-sama: Negai, Soshite Hikari
-				989,   #Shinshaku Sengoku Eiyuu Densetsu: Sanada Juu Yuushi
-				988,   #Shinshaku Sengoku Eiyuu Densetsu: Sanada Juu Yuushi The Animation
-				7052,  #Shinshuu Sudama Hen
-				8337,  #Shoka
-				3369,  #Shoubushi Densetsu Tetsuya
-				10369, #Shougeki Shinsengumi
-				2547,  #Shoukoujo Sara
-				1557,  #Shounen Onmyouji
-				10014, #Shouwa Monogatari
-				10013, #Shouwa Monogatari (Movie)
-				340,   #Shura no Toki
-				1863,  #Silk Road Shounen Yuuto
-				4558,  #Snow Night Stories
-				10774, #Soccer Fever
-				11561, #Sougen no Ko Tenguri
-				1541,  #Souten no Ken
-				3864,  #Souten no Ken Specials
-				5226,  #Souten Kouro
-				3054,  #Star of the Seine
-				565,   #Steamboy
-				554,   #Steel Angel Kurumi
-				557,   #Steel Angel Kurumi Encore
-				2882,  #Superbook
-				3936,  #Superbook 2
-				1072,  #Sweat Punch: Kigeki
 				1452,  #Sword for Truth
-				2418,  #Sword of the Stranger
 				173,   #Tactics
-				2618,  #Takarajima
-				11685, #Takarajima Memorial: Yuunagi to tobareta Otoko
-				1208,  #Taro the Dragon Boy
-				8214,  #Tekkamen wo Oe! Dartanyan Monogatari Yori
-				1587,  #Tenpou Ibun Ayakashi Ayashi
-				3248,  #Tenpou Ibun Ayakashi Ayashi Inferno OVA
-				7014,  #Tezuka Osamu no Buddha: Akai Sabaku yo! Utsukushiku
-				2500,  #The Cockpit
-				3075,  #The Flying House
-				3496,  #The Golden Laws
-				1822,  #The Hakkenden
-				12715, #The Hakkenden: Shin Shou
-				7985,  #The Laws of the Sun
 				6503,  #The Legend
-				7861,  #The Rose and Women of Versailles
-				12321, #Thermae Romae
-				12727, #Thermae Romae Specials
-				5895,  #Tistou Midori no Oyayubi
-				2577,  #Tom Sawyer no Bouken
-				7591,  #Tono to Issho
-				9794,  #Tono to Issho 1.5
-				10324, #Tono to Issho: Gantai no Yabou
 				8961,  #Tono to Issho: Ippunkan Gekijou
-				6124,  #Toshishun
-				2557,  #Trapp Ikka Monogatari
 				5917,  #Tsuru ni Notte: Tomoko no Bouken
-				12903, #Tsushima Maru: Sayounara Okinawa
-				6273,  #Tsuyu no Hitoshizuku
-				6835,  #Umi no Mizu wa Naze Karai
-				7485,  #Urashima Tarou
-				1102,  #Urda
-				2753,  #Ushiro no Shoumen Dare
-				4991,  #Wakakusa Monogatari
-				3196,  #Wakakusa Charlotte
-				4132,  #Wakakusa no Yon Shimai
-				3761,  #Wanwan Sanjushi
-				3215,  #Winter Days
-				2024,  #Yoshimune
-				4660,  #Yoshino no Hime
-				6272,  #Zakuro Yashiki La Grenadiere
-				4790,  #Zeno: Kagiri Naki Ai ni
-				12763, #Zero-sen Hayato
-				29,    #Zipang
-				7808   #Zukokke Knight: Don De La Mancha
+				4132   #Wakakusa no Yon Shimai
 			]}
 		},
 		"boku no pico": {
