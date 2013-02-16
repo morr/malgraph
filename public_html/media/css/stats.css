@@ -28,7 +28,7 @@ div.users { padding-bottom: 2em; }
 	.wrapper-more { display: none; }
 		.wrapper-more ul { margin: 0; padding-top: 1em; }
 		.wrapper-more .close { float: right; font-size: 20pt; line-height: 20pt; text-decoration: none; color: silver; cursor: pointer; }
-		.wrapper-more ul span.details { color: gray; margin-left: 0.5em; font-size: 92.5%; }
+		.wrapper-more span.details { color: gray; margin-left: 0.5em; font-size: 92.5%; }
 
 	@media (max-width: 800px) {
 		.compare-mode div.users { background: none !important; }

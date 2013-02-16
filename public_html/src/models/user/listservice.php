@@ -123,6 +123,7 @@ class UserListService {
 					unset($entries[$id]);
 				}
 			}
+			$franchise->meanScore = UserListService::getMeanScore($franchise->ownEntries);
 			$franchises []= $franchise;
 		}
 
@@ -136,7 +137,7 @@ class UserListService {
 			$franchises = array_filter($franchises, $filter);
 		}
 
-		uasort($franchises, function($a, $b) { return count($b->ownEntries) - count($a->ownEntries); });
+		uasort($franchises, function($a, $b) { return $b->meanScore > $a->meanScore ? 1 : -1; });
 		return $franchises;
 	}
 

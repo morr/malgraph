@@ -109,6 +109,7 @@ class AjaxController extends AbstractController {
 				$entries = $lengthDistribution->getGroupEntries($length);
 				$this->view->length = $length;
 				$this->view->entries = $entries;
+				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
 
 			case self::SENDER_YEAR:
@@ -142,6 +143,7 @@ class AjaxController extends AbstractController {
 				$filter = UserListFilters::combine($filter1, $filter2);
 				$this->view->subType = $subType;
 				$this->view->entries = $list->getEntries($filter);
+				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
 				break;
 
 			case self::SENDER_CREATOR:

@@ -20,8 +20,8 @@ dt:after { content: ': '; }
 dd { float: left; margin: 0; padding: 0; }
 dd a { margin-left: 0.5em; }
 
-#main .wrapper-more ul.franchises { list-style-type: disc; padding-left: 2em; }
-#main .wrapper-more ul.franchises li { margin-bottom: 1em; }
+#main .wrapper-more .franchises { padding-left: 2em; }
+#main .wrapper-more .franchises li { margin-bottom: 1em; }
 
 .sub-stats .table-wrapper { float: right; width: 15em; min-height: 10em; }
 .sub-stats table tr { cursor: pointer; }

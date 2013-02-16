@@ -93,7 +93,7 @@
 <?php else: ?>
 
 	<?php if ($this->sender == AjaxController::SENDER_FRANCHISES): ?>
-		<ul class="franchises">
+		<ol class="franchises">
 			<?php foreach ($this->entries as $franchise): ?>
 				<li>
 					<?php foreach ($franchise->ownEntries as $entry): ?>
@@ -114,9 +114,10 @@
 							<?php endif ?>
 						)</span><br>
 					<?php endforeach ?>
+					<span class="details">(<?php echo count($franchise->ownEntries) ?> titles, mean score: <?php printf('%.02f', $franchise->meanScore) ?>)</span>
 				</li>
 			<?php endforeach ?>
-		</ul>
+		</ol>
 
 	<?php else: ?>
 		<ul>
