@@ -2,20 +2,12 @@
 ini_set('memory_limit', '120M');
 
 require 'lib/routers/basic.php';
-if (file_exists('../conf.ini')) {
-	ChibiConfig::load('../conf.ini');
-}
-if (file_exists('../local.ini')) {
-	foreach (parse_ini_file('../local.ini', true) as $section => $values) {
-		foreach ($values as $key => $value) {
-			ChibiConfig::getInstance()->$section->$key = $value;
-		}
-	}
+if (file_exists('../conf')) {
+	ChibiConfig::load('../conf');
 }
 if (!ChibiConfig::getInstance()) {
 	header('Content-Type: text/plain; charset=utf-8');
-	echo 'Configuration file not found - tried: ' . PHP_EOL;
-	echo join(PHP_EOL, $configPaths);
+	echo 'Configuration directory not found';
 	die;
 }
 
