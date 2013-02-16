@@ -81,6 +81,17 @@ class AdminController extends AbstractController {
 
 
 
+	public function removeHTMLCacheAction() {
+		$model = new HTMLCacheModel();
+		$k = 0;
+		foreach ($model->getKeys() as $key) {
+			$k += $model->delete($key);
+		}
+		$this->success($k . ' HTML cache file(s) removed');
+	}
+
+
+
 	public function amAction() {
 		if (empty($_GET['am-id'])) {
 			throw new Exception('ID cannot be empty.');
@@ -109,7 +120,7 @@ class AdminController extends AbstractController {
 					$model->get($id, AbstractModel::CACHE_POLICY_FORCE_REAL);
 				}
 				$time = microtime(true) - $start;
-				$this->success(count($ids) . ' entries refreshed in ' . sprintf('%.02f', $time) . 's');
+				$this->success(count($ids) . ' title(s) refreshed in ' . sprintf('%.02f', $time) . 's');
 				break;
 			default:
 				throw new Exception('Unknown action: ' . $_GET['action']);
@@ -139,9 +150,9 @@ class AdminController extends AbstractController {
 				$model->put($userName, $user);
 				HTMLCacheModel::deleteUser($userName);
 				if ($user->getUserData()->isBlocked()) {
-					$this->success($userName . ' marked is now blocked');
+					$this->success($userName . ' is now blocked');
 				} else {
-					$this->success($userName . ' marked is no longer blocked');
+					$this->success($userName . ' is no longer blocked');
 				}
 				break;
 			case 'refresh':

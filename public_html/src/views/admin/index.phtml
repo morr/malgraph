@@ -5,7 +5,10 @@
 	</script>
 <?php endif ?>
 
+<div class="right">
 <a class="btn logout" href="<?php echo UrlHelper::url('a/logout') ?>">Get me outta here</a>
+<a class="btn btn-danger remove-html-cache" href="<?php echo UrlHelper::url('a/remove-html-cache') ?>">Wipe HTML cache</a>
+</div>
 <h1>Admin panel!</h1>
 
 <p>Just don’t do stupid things. Useful links:</p>
@@ -22,12 +25,10 @@
 			<label for="am-model">Model</label>
 			<div>
 				<label id="am-model" for="am-model-anime">
-					<input checked="checked" type="radio" name="am-model" id="am-model-anime" value="anime"/>&nbsp;
-					Anime
+					<input checked="checked" type="radio" name="am-model" id="am-model-anime" value="anime"/>&nbsp;Anime
 				</label>
 				<label id="am-model" for="am-model-manga">
-					<input type="radio" name="am-model" id="am-model-manga" value="manga"/>&nbsp;
-					Manga
+					<input type="radio" name="am-model" id="am-model-manga" value="manga"/>&nbsp;Manga
 				</label>
 			</div>
 			</select>
@@ -51,7 +52,7 @@
 
 		<div class="control-group">
 			<div>
-				<button class="btn btn-success" type="submit" name="action" value="refresh">Refresh</button>&nbsp;
+				<button class="btn btn-success" type="submit" name="action" value="refresh">Refresh</button>
 			</div>
 		</div>
 
@@ -71,9 +72,9 @@
 
 		<div class="control-group">
 			<div>
-				<button class="btn btn-success" type="submit" name="action" value="refresh">Refresh</button>&nbsp;
-				<button class="btn btn-warning" type="submit" name="action" value="remove-html-cache">Remove HTML cache</button>&nbsp;
-				<button class="btn btn-danger" type="submit" name="action" value="toggle-block">Toggle block</button>&nbsp;
+				<button class="btn btn-success" type="submit" name="action" value="refresh">Refresh</button>
+				<button class="btn btn-warning" type="submit" name="action" value="remove-html-cache">Remove HTML cache</button>
+				<button class="btn btn-danger" type="submit" name="action" value="toggle-block">Toggle block</button>
 			</div>
 		</div>
 
