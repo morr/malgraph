@@ -67,16 +67,25 @@ class AdminController extends AbstractController {
 
 	public function indexAction() {
 		if (!empty($_SESSION['message'])) {
+			$this->view->messageType = $_SESSION['message-type'];
 			$this->view->message = $_SESSION['message'];
 			unset($_SESSION['message']);
 		}
 	}
 
 
-	private function success($message) {
+	private function error($message) {
+		$_SESSION['message-type'] = 'error';
 		$_SESSION['message'] = $message;
 		$this->forward(UrlHelper::url('a/index'));
-		exit();
+		exit;
+	}
+
+	private function success($message) {
+		$_SESSION['message-type'] = 'success';
+		$_SESSION['message'] = $message;
+		$this->forward(UrlHelper::url('a/index'));
+		exit;
 	}
 
 
@@ -94,7 +103,7 @@ class AdminController extends AbstractController {
 
 	public function amAction() {
 		if (empty($_GET['am-id'])) {
-			throw new Exception('ID cannot be empty.');
+			$this->error('ID cannot be empty.');
 		}
 		$ids = $_GET['am-id'];
 		$ids = explode(',', $ids);
@@ -131,7 +140,7 @@ class AdminController extends AbstractController {
 
 	public function userAction() {
 		if (empty($_GET['user-name'])) {
-			throw new Exception('User name cannot be empty.');
+			$this->error('User name cannot be empty.');
 		}
 		$userName = $_GET['user-name'];
 		$model = new UserModel(true);
@@ -140,12 +149,15 @@ class AdminController extends AbstractController {
 		}
 
 		switch ($_GET['action']) {
-			case 'remove-cache':
+			case 'remove-html-cache':
 				HTMLCacheModel::deleteUser($userName);
 				$this->success($userName . ' cache deleted OK');
 				break;
 			case 'toggle-block':
-				$user = $model->get($userName);
+				if (!$model->cacheExists($userName)) {
+					$this->error($userName . ' does not exist in DB');
+				}
+				$user = $model->get($userName, AbstractModel::CACHE_POLICY_FORCE_CACHE);
 				$user->getUserData()->setBlocked(!$user->getUserData()->isBlocked());
 				$model->put($userName, $user);
 				HTMLCacheModel::deleteUser($userName);
@@ -157,7 +169,11 @@ class AdminController extends AbstractController {
 				break;
 			case 'refresh':
 				$start = microtime(true);
-				$model->get($userName, AbstractModel::CACHE_POLICY_FORCE_REAL);
+				try {
+					$model->get($userName, AbstractModel::CACHE_POLICY_FORCE_REAL);
+				} catch (InvalidEntryException $e) {
+					$this->error($userName . ' does not even exist on MAL&hellip;');
+				}
 				$time = microtime(true) - $start;
 				$this->success($userName . ' refreshed in ' . sprintf('%.02f', $time) . 's');
 				break;

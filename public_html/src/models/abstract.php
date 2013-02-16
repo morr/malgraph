@@ -1,5 +1,9 @@
 <?php
-class InvalidEntryException extends Exception {}
+class InvalidEntryException extends Exception {
+	public function __construct($key, $msg = null) {
+		parent::__construct('Invalid entry: ' . $key . ($msg ? ' (' . $msg . ')' : ''));
+	}
+}
 class DownloadException extends Exception {
 	public function __construct($url) {
 		$this->message = 'Error while downloading ' . $url;

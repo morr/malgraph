@@ -62,11 +62,11 @@ abstract class AMModel extends AbstractModel {
 		//title
 		$node1 = $xpath->query('//h1')->item(0);
 		if (empty($node1)) {
-			throw new InvalidEntryException('Title node broken (1)');
+			throw new InvalidEntryException($entry->getID(), 'Title node broken (1)');
 		}
 		$node2 = $node1->childNodes->item(1);
 		if (empty($node2)) {
-			throw new InvalidEntryException('Title node broken (2)');
+			throw new InvalidEntryException($entry->getID(), 'Title node broken (2)');
 		}
 		$entry->setTitle(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node2->textContent));
 

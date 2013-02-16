@@ -16,4 +16,6 @@ form.aligned .control-group div * { margin: 0 auto; }
 form.aligned .control-group div label { margin-right: 1em; }
 form.aligned .control-group>label:first-of-type { width: 60px; position: absolute; margin-left: 0 !important; }
 
-p.alert { padding: 0.75em 1.5em; border-radius: 1em; -webkit-border-radius: 1em; border: 1px solid rgba(0,0,0,0.1); background-color: #dfd; }
+p.alert { padding: 0.75em 1.5em; border-radius: 1em; -webkit-border-radius: 1em; border: 1px solid rgba(0,0,0,0.1); }
+p.alert.success { background-color: #dfd; }
+p.alert.error { background-color: #fdd; }

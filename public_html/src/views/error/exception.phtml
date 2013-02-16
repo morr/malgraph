@@ -1,6 +1,6 @@
 <h1>Serious error</h1>
 <p>If you see this, please mail chrupky@gmail.com with following information:</p>
-<p><?php echo $this->errorString ?> at <?php echo $this->errorFile ?>:<?php echo $this->errorLine ?></p>
+<p><?php echo $this->exception->getMessage() ?> at <?php echo $this->exception->getFile() ?>:<?php echo $this->exception->getLine() ?></p>
 <ul>
 	<?php for ($k = 0, $i = 0; $i < count($this->backtrace); $i ++, $k ++): ?>
 		<?php $b = $this->backtrace[$i]; ?>

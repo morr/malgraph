@@ -1,13 +1,12 @@
 <?php if (!empty($this->message)): ?>
-	<p class="alert"><?php echo $this->message ?></p>
+	<p class="alert <?php echo $this->messageType ?>"><?php echo $this->message ?></p>
 	<script type="text/javascript">
-		$('p.alert').delay(1500).fadeOut();
+		$('p.alert').delay(5000).fadeOut('slow');
 	</script>
 <?php endif ?>
 
 <div class="right">
 <a class="btn logout" href="<?php echo UrlHelper::url('a/logout') ?>">Get me outta here</a>
-<a class="btn btn-danger remove-html-cache" href="<?php echo UrlHelper::url('a/remove-html-cache') ?>">Wipe HTML cache</a>
 </div>
 <h1>Admin panel!</h1>
 
@@ -81,8 +80,25 @@
 	</fieldset>
 </form>
 
+<form class="aligned">
+	<fieldset>
+		<legend>General stuff</legend>
+		<div class="control-group">
+			<label>Cache</label>
+			<div>
+				<a class="btn btn-danger remove-html-cache" href="<?php echo UrlHelper::url('a/remove-html-cache') ?>">Wipe HTML cache for all users</a>
+			</div>
+		</div>
+	</fieldset>
+</form>
+
 <script type="text/javascript">
 	var timeout = null;
+	$('.btn-danger').click(function(e) {
+		if (!confirm('Are you sure?')) {
+			e.preventDefault();
+		}
+	});
 	$('textarea').keydown(function(e) {
 		if (timeout == null) {
 			timeout = window.setTimeout(function() {
