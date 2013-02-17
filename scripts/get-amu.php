@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 require_once dirname(__FILE__) . '/../public_html/lib/router.php';
-ChibiConfig::load(dirname(__FILE__) . '/../conf.ini');
+ChibiConfig::load(dirname(__FILE__) . '/../conf');
 $config = ChibiConfig::getInstance();
 $config->chibi->runtime->rootFolder = dirname(__FILE__) . '/../public_html';
 require_once dirname(__FILE__) . '/../public_html/src/models/abstract.php';
