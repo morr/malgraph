@@ -114,7 +114,13 @@
 							<?php endif ?>
 						)</span><br>
 					<?php endforeach ?>
-					<span class="details">(<?php echo count($franchise->ownEntries) ?> titles, mean score: <?php printf('%.02f', $franchise->meanScore) ?>)</span>
+					<span class="details">(<?php echo count($franchise->ownEntries) ?> titles,
+						<?php if ($franchise->meanScore): ?>
+							mean score: <?php printf('%.02f', $franchise->meanScore) ?>
+						<?php else: ?>
+							none rated
+						<?php endif ?>
+					)</span>
 				</li>
 			<?php endforeach ?>
 		</ol>
