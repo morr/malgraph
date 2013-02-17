@@ -132,19 +132,19 @@
 		},
 		"sports": {
 			"achievements": [
-				{ "threshold": "15-29", "id": "manga-sports-1", "level": "Sports: level 1",    "title": "", "desc": "sports 1" },
-				{ "threshold": "30-49", "id": "manga-sports-2", "level": "Sports: level 2",    "title": "", "desc": "sports 2" },
-				{ "threshold": "50-79", "id": "manga-sports-3", "level": "Sports: level 3",    "title": "", "desc": "sports 3" },
-				{ "threshold": "80+",   "id": "manga-sports-4", "level": "Sports: FULL SWING", "title": "", "desc": "sports max" }
+				{ "threshold": "15-29", "id": "manga-sports-1", "level": "Sports: level 1",   "title": "The stakes are high", "desc": "Joined the game for real. The more you read, the more addictive it gets." },
+				{ "threshold": "30-49", "id": "manga-sports-2", "level": "Sports: level 2",   "title": "Do you even read?",   "desc": "Even during the most exhausting excercise you still find time to read. Can&rsquo;t miss a chapter." },
+				{ "threshold": "50-79", "id": "manga-sports-3", "level": "Sports: level 3",   "title": "Got balls",           "desc": "Looking at all this struggling inspires you to become strong yourself." },
+				{ "threshold": "80+",   "id": "manga-sports-4", "level": "Sports: lexel MAX", "title": "",                    "desc": "sports max" }
 			],
 			"requirement": { "type": "genre-titles", "genre": 30 }
 		},
 		"mystery": {
 			"achievements": [
-				{ "threshold": "15-29", "id": "manga-mystery-1", "level": "Mystery: level 1",    "title": "", "desc": "mystery 1" },
-				{ "threshold": "30-49", "id": "manga-mystery-2", "level": "Mystery: level 2",    "title": "", "desc": "mystery 2" },
-				{ "threshold": "50-79", "id": "manga-mystery-3", "level": "Mystery: level 3",    "title": "", "desc": "mystery 3" },
-				{ "threshold": "80+",   "id": "manga-mystery-4", "level": "Mystery: level MAX",  "title": "", "desc": "mystery max" }
+				{ "threshold": "15-29", "id": "manga-mystery-1", "level": "Mystery: level 1",   "title": "", "desc": "mystery 1" },
+				{ "threshold": "30-49", "id": "manga-mystery-2", "level": "Mystery: level 2",   "title": "", "desc": "mystery 2" },
+				{ "threshold": "50-79", "id": "manga-mystery-3", "level": "Mystery: level 3",   "title": "", "desc": "mystery 3" },
+				{ "threshold": "80+",   "id": "manga-mystery-4", "level": "Mystery: level MAX", "title": "", "desc": "mystery max" }
 			],
 			"requirement": { "type": "genre-titles", "genre": 7 }
 		},
