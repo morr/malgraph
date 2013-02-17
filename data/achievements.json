@@ -627,11 +627,11 @@
 			],
 			"requirement": {"type": "genre-titles", "genre": 18, "titles": [
 				5289,  #Beast Wars Second: LioConvoy in Imminent Danger!
-				8728,  #Code Geass: Hangyaku no Lelouch - Kiseki no Birthday Picture Drama
+				#8728,  #Code Geass: Hangyaku no Lelouch - Kiseki no Birthday Picture Drama
 				9591,  #Code Geass: Hangyaku no Lelouch R2: Flash Specials
 				10534, #Doraemon: Nobita and the New Steel Troops - Angel Wings
 				2665,  #Doraemon: Nobita and the Platoon of Iron Men
-				72,    #Full Metal Panic Fumoffu
+				#72,    #Full Metal Panic Fumoffu
 				1015,  #Full Metal Panic! The Second Raid OVA
 				10050, #Macross Frontier Music Clip Shuu: Nyankuri
 				4939,  #Macross Fufonfia
@@ -659,7 +659,7 @@
 			],
 			"requirement": {"type": "genre-titles", "genre": 13, "titles": [
 				2546,  #Alps Monogatari: Watashi no Annette
-				4723,  #Animated Classics of Japanese Literature
+				4723,  #Animated Classics of Japanese Literature (Seishun Anime Zenshuu)
 				2251,  #Baccano!
 				12561, #Benkeitai Ushiwaka
 				405,   #Blood: The Last Vampire
@@ -668,10 +668,9 @@
 				2802,  #Candy Candy: Candy no Natsuyasumi
 				2801,  #Candy Candy: Haru no Yobigoe
 				2800,  #Chikara to Onna no Yo no Naka
-				2915,  #Chikyuuga Ugoita Hi
 				60,    #Chrno Crusade
-				1842,  #D.Gray-man
-				714,   #Enzai
+				1482,  #D.Gray-man
+				724,   #Enzai
 				2553,  #Flanders no Inu
 				2623,  #Flanders no Inu (Movie)
 				7775,  #Futatsu no Kurumi
@@ -684,10 +683,8 @@
 				1200,  #Gun-dou Musashi
 				10270, #Gun-dou Musashi Recap
 				1663,  #Haha wo Tazunete Sanzenri
-				8736,  #Hajime Ningen Gyatoruz
+				8763,  #Hajime Ningen Gyatoruz
 				4551,  #Hakushaku to Yousei
-				4190,  #Harukanaru Toki no Naka de 3: Onsen Chibi Special
-				7254,  #Harukanaru Toki no Naka de 3: Owarinaki Unmei
 				4876,  #Hashire Melos!
 				2405,  #Hello! Lady Lynn
 				4800,  #Huckleberry Finn Monogatarii
@@ -699,10 +696,9 @@
 				4886,  #InuYasha: Kuroi Tessaiga
 				5900,  #Jean Valjean Monogatari
 				3110,  #Kaze no Naka no Shoujo: Kinpatsu no Jeanie
-				1063,  #Kaze to Ki no Uta Sanctus: Sei Naru Kana
 				8436,  #Ketsudan
-				4262,  #Koihime†Musou
-				5305,  #Koihime†Musou OVA
+				#4262,  #Koihime†Musou
+				#5305,  #Koihime†Musou OVA
 				4898,  #Kuroshitsuji
 				6707,  #Kuroshitsuji II
 				9136,  #Kuroshitsuji II Specials
@@ -714,10 +710,9 @@
 				9395,  #Miyanishi Tatasuya Gekijou: Omae Umasou da na
 				2246,  #Mononoke
 				1375,  #My Daddy Long Legs
-				3381,  #Nadia, the Secret of Blue Water Omakes
+				3381,  #Nadia the Secret of Blue Water Omakes
 				618,   #Ninja Scroll: The Series
 				912,   #Ninku
-				14181, #Oedo wa Nemurenai!
 				9204,  #Omae Umasou da na
 				8487,  #Onigamiden
 				10180, #Otome Youkai Zakuro Picture Drama
@@ -726,17 +721,15 @@
 				9716,  #Rurouni Kenshin: Review Special
 				4664,  #Rurouni Kenshin: Special Techniques
 				839,   #Samurai Spirits 2
-				2698,  #Sanctuary
 				6057,  #Sasuke
 				3038,  #Senya Ichiya Monogatari
-				6112,  #Shin Koihime†Musou
-				7774,  #Shin Koihime†Musou OVA
-				8635,  #Shin Koihime†Musou: Live Revolution
-				8057,  #Shin Koihime†Musou: Otome Tairan
-				10297, #Shin Koihime†Musou: Otome Tairan OVA
-				1452,  #Sword for Truth
+				#6112,  #Shin Koihime†Musou
+				#7774,  #Shin Koihime†Musou OVA
+				#8635,  #Shin Koihime†Musou: Live Revolution
+				#8057,  #Shin Koihime†Musou: Otome Tairan
+				#10297, #Shin Koihime†Musou: Otome Tairan OVA
 				173,   #Tactics
-				6503,  #The Legend
+				1452,  #The Samurai
 				8961,  #Tono to Issho: Ippunkan Gekijou
 				5917,  #Tsuru ni Notte: Tomoko no Bouken
 				4132   #Wakakusa no Yon Shimai
