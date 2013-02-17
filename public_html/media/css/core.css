@@ -30,7 +30,7 @@ img { border: 0; /* ie image border */ }
 #menu .user-pics { margin-bottom: 1em; }
 #menu .user-pic { text-align: center; }
 #menu .user-pic a { font-size: 0; line-height: 0; margin: 0; padding: 0; }
-#menu .user-pic img { border: 1px solid gray; padding: 0; margin: 0 auto; background-color: rgba(255, 255, 255, 0.6); background-size: cover; background-repeat: no-repeat; background-position: top center; width: 120px; height: 160px; max-width: 100%; }
+#menu .user-pic img { box-shadow: 0 0 2px rgba(96,96,96,0.5) inset; -webkit-box-shadow: 0 0 2px rgba(96,96,96,0.5) inset; border-radius: 4px; -webkit-border-radius: 4px; padding: 0; margin: 0 auto; background-color: rgba(255, 255, 255, 0.6); background-size: cover; background-repeat: no-repeat; background-position: top center; width: 120px; height: 160px; max-width: 100%; }
 #menu .user-pic img.unavailable { background-image: url('../img/anon.png'); }
 #menu .user-nick { margin: 0; font-weight: bold; text-align: center; }
 #menu .user-nick a { max-width: 100%; overflow: hidden; text-overflow: ellipsis; display: inline-block; }
