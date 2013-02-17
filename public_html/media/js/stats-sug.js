@@ -35,8 +35,8 @@ $(function() {
 	});
 
 	$('.recs .header .more').click(function(e) {
-		toggleMoreWrappers($(this).parents('li').find('.wrapper-more'), [], false);
-		$(this).parents('li').toggleClass('active');
+		toggleMoreWrappers($(this).parents('tr').next().find('.wrapper-more'), [], false);
+		$(this).parents('tr').toggleClass('active');
 		e.preventDefault();
 	});
 

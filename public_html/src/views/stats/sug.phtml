@@ -13,37 +13,40 @@
 			<?php else: ?>
 				<p><?php echo ucfirst(ChibiRegistry::getHelper('mg')->textAM()) ?> recommendations tailored to your taste. The system says you will like them, but we take no responsibility for injuries due to bad suggestions.</p>
 			<?php endif ?>
-			<ol><!-- my fetish -->
+			<table>
+			<tbody>
 			<?php foreach ($this->recs[$user->getID()] as $entry): ?>
-				<li>
-					<div class="header">
-						<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $entry->getID() ?>">
+				<tr class="header">
+					<td class="title">
+						<a class="pop-out" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $entry->getID() ?>">
 							<i class="icon-pop-out"></i>
+							&nbsp;
 						</a>
-						&nbsp;
-						<a class="title more" href="#">
+						<a class="more" href="#">
 							<?php echo $entry->getTitle() ?>
 						</a>
-						<span class="type">
-							<?php if ($entry->getType() == AMModel::TYPE_ANIME): ?>
-								<?php echo ucfirst(ChibiRegistry::getHelper('mg')->textSubType($entry->getSubType())) ?>
-								<?php if ($entry->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
-									,&nbsp;<em>airing</em>
-								<?php elseif ($entry->getSubType() != AnimeEntry::SUBTYPE_MOVIE): ?>
-									,&nbsp;<?php echo ChibiRegistry::getHelper('mg')->textEpisodes($entry->getEpisodeCount()) ?>
-								<?php endif ?>
-							<?php else: ?>
-								<?php if ($entry->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
-									<em>publishing</em>
-								<?php else: ?>
-									<?php echo ChibiRegistry::getHelper('mg')->textVolumes($entry->getVolumeCount()) ?>,&nbsp;
-									<?php echo ChibiRegistry::getHelper('mg')->textChapters($entry->getChapterCount()) ?>
-								<?php endif ?>
+					</td>
+					<td class="type">
+						<?php if ($entry->getType() == AMModel::TYPE_ANIME): ?>
+							<?php echo ucfirst(ChibiRegistry::getHelper('mg')->textSubType($entry->getSubType())) ?>
+							<?php if ($entry->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
+								,&nbsp;<em>airing</em>
+							<?php elseif ($entry->getSubType() != AnimeEntry::SUBTYPE_MOVIE): ?>
+								,&nbsp;<?php echo ChibiRegistry::getHelper('mg')->textEpisodes($entry->getEpisodeCount()) ?>
 							<?php endif ?>
-						</span>
-					</div>
-					<div class="wrapper-more singular">
-						<div class="wrapper-more-wrapper">
+						<?php else: ?>
+							<?php if ($entry->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
+								<em>publishing</em>
+							<?php else: ?>
+								<?php echo ChibiRegistry::getHelper('mg')->textVolumes($entry->getVolumeCount()) ?>,&nbsp;
+								<?php echo ChibiRegistry::getHelper('mg')->textChapters($entry->getChapterCount()) ?>
+							<?php endif ?>
+						<?php endif ?>
+					</td>
+				</tr>
+				<tr class="details">
+					<td colspan="2">
+						<div class="wrapper-more singular">
 							<a class="close">&times;</a>
 							<a class="img" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
 								<?php if (!$entry->getPictureURL()): ?>
@@ -157,11 +160,11 @@
 
 							<div class="clear"></div>
 						</div>
-					</div>
-				</li>
+					</td>
+				</tr>
 			<?php endforeach ?>
-
-			</ol>
+			</tbody>
+			</table>
 		<?php endif ?>
 	</div>
 </div>

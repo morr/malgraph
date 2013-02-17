@@ -7,18 +7,21 @@
 .missing table td ul li { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
 .missing .more { display: block; text-align: center; color: silver; }
 
-.recs ol { list-style-type: none; margin: 0; padding: 0; }
-.recs li .header { padding: 0.2em 0.5em; }
-.recs li.active .header,
-.recs li:hover .header { background: #f5f5f5; }
-.recs li .header span.type { float: right; }
-.recs li .wrapper-more-wrapper { position: relative; padding: 0.5em 1em 1em 1em; }
+.recs table { table-layout: fixed; width: 100%; border-spacing: 0; }
+.recs tr.header td { padding: 0.1em 0.25em; white-space: nowrap; }
+.recs tr.active .header,
+.recs tr:hover .header { background: #f5f5f5; }
+.recs tr.header .title a.pop-out { float: left; }
+.recs tr.header .title a.more { float: left; display: inline-block; overflow: hidden; max-width: 90%; text-overflow: ellipsis; }
+.recs tr.header .title { width: 70%; }
+.recs tr.header .type { text-align: right; width: 30%; }
 
-.recs li table { table-layout: fixed; width: 80%; border-spacing: 0; }
-.recs li table td.key { width: 20%; padding-left: 0.5em; }
-.recs li table td.key:after { content: ': '; }
-.recs li table td.value { width: 60%; }
-.recs li table td.no-wrap { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.recs li a.img { display: inline; }
-.recs li a.img img { max-width: 6em; float: left; display: inline; }
-.recs li a.close { position: absolute; right: 0; top: 0; }
+.recs tr.details { padding: 0.5em 1em 1em 1em; }
+.recs tr.details .wrapper-more { position: relative; }
+.recs tr.details table { table-layout: fixed; width: 80%; border-spacing: 0; }
+.recs tr.details table td.key { width: 20%; padding-left: 0.5em; }
+.recs tr.details table td.key:after { content: ': '; }
+.recs tr.details table td.value { width: 60%; }
+.recs tr.details table td.no-wrap { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.recs tr.details a.img img { max-width: 6em; float: left; }
+.recs tr.details a.close { position: absolute; right: 0; top: 0; }
