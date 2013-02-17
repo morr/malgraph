@@ -412,214 +412,51 @@
 				{ "threshold": "100+",  "id": "anime-sliceoflife-4", "level": "Slice Of Life: level MAX", "title": "Prima Undine",                    "desc": "Awarded Ph.D. degree in sliceoflife-ology. You can teach others how to stay calm and take it easy." }
 			],
 			"requirement": {"type": "genre-titles", "genre": 36, "titles": [
-				1689,  #5 Centimeters per Second
-				8120,  #5-tou ni Naritai.
-				2950,  #Animal Crossing
-				9989,  #Ano Hi Mita Hana no Namae wo Bokutachi wa Mada Shiranai
-				11433, #Ano Natsu de Matteru
-				66,    #Azumanga Daioh
-				9776,  #A-Channel
-				10737, #A-Channel: +A-Channel
-				11339, #A-Channel: A-Channel+smile
 				12291, #Acchi Kocchi
-				9689,  #Agukaru
-				101,   #Air
 				713,   #Air (Movie)
-				53,    #Ai Yori Aoshi
-				394,   #Ai Yori Aoshi: Enishi
-				6709,  #Ai Yori Aoshi: Yumegatari
-				8713,  #Akai Ito
-				6164,  #Aoi Hana
-				8701,  #Apartment!
-				477,   #Aria the Animation
-				962,   #Aria the Natural
-				5244,  #Aria the Natural Special
-				3297,  #Aria the Origination
-				5196,  #Aria the Origination Picture Drama
-				4772,  #Aria the Origination Special
-				2563,  #Aria the OVA: Arietta
-				659,   #Azumanga Daioh: The Very Short Movie
-				1593,  #Azumanga Web Daioh
-				1589,  #Bartender
-				1214,  #Binbou Shimai Monogatari
-				7597,  #Boku, Otaryman
 				10719, #Boku wa Tomodachi ga Sukunai
-				951,   #Chibi Maruko-chan
-				2830,  #Chibikko Remi to Meiken Kapi
-				9383,  #Chie-chan Funsenki: Jarinko Chie
-				6024,  #Chis New Address
-				3841,  #Chis Sweet Home
-				7972,  #Chis Sweet Home OVA
 				14741, #Chuunibyou demo Koi ga Shitai!
 				15687, #Chuunibyou demo Koi ga Shitai! Lite
 				15879, #Chuunibyou demo Koi ga Shitai!: Depth of Field - Ai to Nikushimi Gekijyo
 				2167,  #Clannad
-				4181,  #Clannad: After Story
 				1723,  #Clannad (Movie)
-				4059,  #Clannad: Another World, Tomoyo Chapter
 				6351,  #Clannad: Another World, Kyou Chapter
-				11843, #Danshi Koukousei no Nichijou
-				12893, #Danshi Koukousei no Nichijou Specials
 				9379,  #Denpa Onna to Seishun Otoko
 				10638, #Denpa Onna to Seishun Otoko Special
 				10838, #Double-J
-				3312,  #Dr. Slump
-				2222,  #Dr. Slump: Arale-chan
-				1524,  #Fuujin Monogatari
-				5670,  #GA: Geijutsuka Art Design Class
-				240,   #Genshiken
-				2508,  #Genshiken 2
-				1813,  #Genshiken OVA
-				387,   #Haibane Renmei
-				2004,  #Hanada Shounen-Shi
-				6574,  #Hanamaru Youchien
-				9289,  #Hanasaku Iroha
-				14175, #Hanasaku Iroha: Home Sweet Home
-				1592,  #Hataraki Man
-				1852,  #Hidamari Sketch
-				11239, #Hidamari Sketch 4th Season
-				3165,  #Hidamari Sketch Specials
-				3604,  #Hidamari Sketch x 365
-				6984,  #Hidamari Sketch x 365 Specials
-				7062,  #Hidamari Sketch x Hoshimittsu
-				9563,  #Hidamari Sketch x Hoshimittsu Specials
-				11237, #Hidamari Sketch x SP
 				16,    #Honey and Clover
 				1142,  #Honey and Clover II
-				644,   #Honey and Clover Specials
 				8426,  #Hourou Musuko
 				10935, #Hourou Musuko Specials
-				4550,  #Hyakko
 				6958,  #Hyakko OVA
-				488,   #Ichigo Mashimaro
-				4811,  #Ichigo Mashimaro Encore
-				1888,  #Ichigo Mashimaro OVA
-				2828,  #Ie Naki Ko
-				9938,  #Ikoku Meiro no Croisee
-				10804, #Ikoku Meiro no Croisee Special
-				3947,  #Jarinko Chie
-				3946,  #Jarinko Chie (Movie)
 				863,   #Joshi Kousei
-				6657,  #Joshi Kousei Specials
-				1116,  #Junkers Come Here
-				5680,  #K-On!
-				9617,  #K-On! (Movie)
-				6862,  #K-On! Special: Live House!
-				7791,  #K-On!!
-				9734,  #K-On!! Special
-				5914,  #Kanamemo
-				144,   #Kanon
 				1530,  #Kanon (2006)
-				704,   #Kanon Kazahana
-				1087,  #Kimagure Orange Road
-				147,   #Kimi ga Nozomu Eien
 				3318,  #Kimi ga Nozomu Eien: Next Season
-				10460, #Kimi to Boku.
-				11739, #Kimi to Boku. 2
 				1379,  #Kino no Tabi: Nanika wo Suru Tame ni - Life Goes On.
-				486,   #Kino no Tabi: The Beautiful World
 				2175,  #Kino no Tabi: The Beautiful World - Byouki no Kuni: For You
 				3466,  #Kino no Tabi: The Beautiful World - Tou no Kuni
-				148,   #Kita e: Diamond Dust Drops
 				5678,  #Kobato.
 				10098, #Kobato. Special: Hajimete no Kobato.
-				9423,  #Koko ni Iru
 				11887, #Kokoro Connect
-				16001, #Kokoro Connect: Michi Random
-				9213,  #Kowarekake no Orgel
-				10122, #Kowarekake no Orgel Special
-				6604,  #Kuruneko
 				13655, #Little Busters!
-				1887,  #Lucky Star
-				4472,  #Lucky Star OVA
-				273,   #Mahou Tsukai ni Taisetsu na Koto
-				4483,  #Mahou Tsukai ni Taisetsu na Koto: Natsu no Sora
-				6116,  #Mainichi Kaasan
-				14045, #Mangirl
-				158,   #Maria-sama ga Miteru
 				444,   #Maria-sama ga Miteru: Haru
-				1729,  #Maria-sama ga Miteru 3rd
-				3750,  #Maria-sama ga Miteru 4th
-				2963,  #Minami-ke
-				5713,  #Minami-ke Betsubara
-				5162,  #Minami-ke Okaeri
-				3225,  #Minami-ke Okawari
-				7627,  #Mitsudomoe
-				9396,  #Mitsudomoe Special
-				9510,  #Mitsudomoe Zouryouchuu!
-				10671, #Morita-san wa Mukuchi (TV)
-				11615, #Morita-san wa Mukuchi (TV) 2
 				1738,  #Muteki Kanban Musume
-				5085,  #Nakedyouth
-				4081,  #Natsume Yuujinchou
-				10379, #Natsume Yuujinchou San
-				11665, #Natsume Yuujinchou Shi
-				12119, #Natsuiro Kiseki
-				10165, #Nichijou
-				1698,  #Nodame Cantabile
 				5690,  #Nodame Cantabile Finale
 				8038,  #Nodame Cantabile Finale Special
-				6187,  #Nodame Cantabile OVA
 				8190,  #Nodame Cantabile OVA 2
-				4477,  #Nodame Cantabile Paris Chapter
-				3965,  #Nodame Cantabile Special
-				743,   #Ocean Waves
-				13283, #One Off
-				1029,  #Only Yesterday
-				11179, #Papa no Iukoto wo Kikinasai!
 				12673, #Papa no Iukoto wo Kikinasai! Special
-				325,   #Peach Girl
 				611,   #Platonic Chain
-				328,   #Piano
-				12021, #Poyopoyo Kansatsu Nikki
-				13173, #Puka Puka Juju
-				210,   #Ranma 1/2
-				10819, #Ranma 1/2: Tendou-ke no Oyobidenai Yatsura!
 				11491, #Recorder to Randoseru Do
 				13377, #Recorder to Randoseru Re
 				14627, #Recorder to Randoseru Special
-				5984,  #Ristorante Paradiso
 				8675,  #Seitokai Yakuindomo
 				10119, #Seitokai Yakuindomo OVA
-				1004,  #She and Her Cat
-				10407, #Shimanchu MiRiKa
-				11501, #Shimanchu MiRiKa 2nd Series
-				8557,  #Shinryaku! Ika Musume
-				10378, #Shinryaku!? Ika Musume
-				13267, #Shinryaku! Ika Musume OVA
 				9888,  #Shinryaku! Ika Musume Specials
-				2942,  #Sketchbook: Full Colors
-				8726,  #Soredemo Machi wa Mawatteiru
-				9055,  #Tamayura
-				10232, #Tamayura: Hitotose
-				2150,  #Tanoshii Moomin Ikka
-				5712,  #Tanoshii Moomin Ikka Bouken Nikki
-				13333, #Tari Tari
-				10278, #The iDOLM@STER
-				472,   #To Heart
-				4224,  #Toradora!
-				11553, #Toradora!: Bentou no Gokui
 				6127,  #Toradora!: SOS!
-				12431, #Uchuu Kyoudai
-				10162, #Usagi Drop
-				11113, #Usagi Drop Specials
 				1210,  #Welcome to the NHK
-				585,   #Whisper of the Heart
-				1718,  #Winter Garden
-				6956,  #Working!!
-				10521, #Working'!!
 				14335, #Yama no Susume
-				975,   #Yokohama Kaidashi Kikou
-				976,   #Yokohama Kaidashi Kikou: Quiet Country Cafe
 				6586,  #Yumeiro Pâtissière
-				9441,  #Yumeiro Pâtissière SP Professional
-				10495, #Yuru Yuri
-				12403, #Yuru Yuri ♪♪
-				12665, #Yuru Yuri: Doushite Tomaranai Tokimeki Doki Doki Paradox Eternal
-				6148,  #Yurumates
-				12123, #Yurumates 3D
-				11699, #Yurumates ha
-				5300   #Zoku Natsume Yuujinchou
+				12665  #Yuru Yuri: Doushite Tomaranai Tokimeki Doki Doki Paradox Eternal
 			]}
 		},
 		"gar": {
@@ -788,391 +625,29 @@
 				{ "threshold": "60-99", "id": "anime-mecha-3", "level": "Mecha: level 3",   "title": "Mechazawa",                  "desc": "Having watched over 60 mecha anime, you&rsquo;ve probably became a robot already. Nice job, hero." },
 				{ "threshold": "100+",  "id": "anime-mecha-4", "level": "Mecha: level MAX", "title": "Pierce the H E A V E N S !", "desc": "Do the impossible. See the invisible. ROW ROW FIGHT THE POWAH! &hellip;You just sang that in your head, didn&rsquo;t you?" }
 			],
-			"requirement": {"type": "given-titles", "titles": [
-				7113,  #30th Gundam Perfect Mission
-				1346,  #AD Police Files
-				92,    #After War Gundam X
-				5270,  #All That Gundam
-				598,   #Android Kikaider: The Animation
-				937,   #Appleseed
-				54,    #Appleseed (Movie)
-				2969,  #Appleseed Saga Ex Machina
-				9737,  #Appleseed XIII
-				10689, #Appleseed XIII: Gekijou Remix Han 1: Yuigon
-				10693, #Appleseed XIII: Gekijou Remix Han 2: Yogen
-				10447, #Aquarion Evol
-				6032,  #Aquarion Movie: Ippatsu Gyakuten Hen
-				2837,  #Ariel
-				2839,  #Ariel Visual
-				5421,  #Ark
-				1079,  #Armitage III
-				492,   #Armitage III Dual-Matrix
-				493,   #Armitage III Polymatrix
-				2048,  #Armor Hunter Mellowlink
-				2582,  #Armored Trooper Votoms
-				2583,  #Armored Trooper Votoms: The Last Red Shoulder
-				2584,  #Armored Trooper Votoms: Big Battle
-				2585,  #Armored Trooper Votoms: Red Shoulder Document - Roots of Treachery
-				2586,  #Armored Trooper Votoms: The Defrost
-				3256,  #Armored Trooper Votoms: Pailsen Files
-				7536,  #Armored Trooper Votoms: Pailsen Files the Movie
-				8017,  #Armored Trooper Votoms: Phantom Arc
-				8248,  #Armored Trooper Votoms: Case; Irvine
-				8250,  #Armored Trooper Votoms: Alone Again
-				12337, #Armored Trooper Votoms Recaps
-				12439, #Armored Trooper Votoms: Vol.1 Stories of the A.T. Votoms
-				12441, #Armored Trooper Votoms: Vol.2 Highlights of the A.T. Votoms
-				5342,  #Asura Cryin
-				6676,  #Asura Cryin 2
-				929,   #Aura Battler Dunbine
-				5372,  #Aura Battler Dunbine OVA
-				109,   #Bakuretsu Tenshi
-				5675,  #Basquash!
-				1016,  #Battle Angel Alita
-				6511,  #Beast Wars Neo
-				5070,  #Beast Wars Second Chou Seimeitai Transformers
+			"requirement": {"type": "genre-titles", "genre": 18, "titles": [
 				5289,  #Beast Wars Second: LioConvoy in Imminent Danger!
-				567,   #Big O
-				3079,  #Blue Comet SPT Layzner
-				5755,  #Blue Comet SPT Layzner OVA
-				58,    #Blue Gender
-				1380,  #Blue Gender: The Warrior
-				1051,  #Blue Submarine No. 6
-				1690,  #Bokurano
-				1542,  #Brain Powerd
-				6772,  #Break Blade 1: Kakusei no Toki
-				8514,  #Break Blade 2: Ketsubetsu no Michi
-				9252,  #Break Blade 3: Kyoujin no Ato
-				9465,  #Break Blade 4: Sanka no Chi
-				9724,  #Break Blade 5: Shisen no Hate
-				10092, #Break Blade 6: Doukoku no Toride
-				1347,  #Bubblegum Crisis
-				568,   #Bubblegum Crisis Tokyo 2040
-				2258,  #Choro Q Dagram
-				8132,  #Chou Deneiban SD Gundam Sangokuden Brave Battle Warriors
-				9274,  #Chou Seimeitai Transformers Beast Wars Metals: Convoy Daihenshin!
-				2127,  #Chouja Raideen
-				2255,  #Choujuu Kishin Dancougar
-				5266,  #Choujuu Kishin Dancougar: God Bless Dancougar
-				5629,  #Choujuu Kishin Dancougar: Hakunetsu no Shuushou
-				2256,  #Choujuu Kishin Dancougar: Ushinawareta Monotachi e no Requiem
-				8888,  #Code Geass Gaiden: Boukoku no Akito
-				1575,  #Code Geass: Hangyaku no Lelouch
 				8728,  #Code Geass: Hangyaku no Lelouch - Kiseki no Birthday Picture Drama
-				1953,  #Code Geass: Hangyaku no Lelouch Picture Drama
-				2904,  #Code Geass: Hangyaku no Lelouch R2
-				5163,  #Code Geass: Hangyaku no Lelouch R2 Picture Drama
-				6768,  #Code Geass: Hangyaku no Lelouch R2 Special Edition Zero Requiem
 				9591,  #Code Geass: Hangyaku no Lelouch R2: Flash Specials
-				2124,  #Code Geass: Hangyaku no Lelouch Recaps
-				4596,  #Code Geass: Hangyaku no Lelouch Special Edition Black Rebellion
-				1312,  #Dai-Guard
-				956,   #Daikuu Maryuu Gaiking
-				9972,  #Document Taiyou no Kiba Dagram
 				10534, #Doraemon: Nobita and the New Steel Troops - Angel Wings
 				2665,  #Doraemon: Nobita and the Platoon of Iron Men
-				3135,  #Dragon's Heaven
-				992,   #Dual Parallel! Trouble Adventures
-				993,   #Dual Parallel! Trouble Adventures Special
-				12885, #Dynamic Super Robots Grand Battle
-				182,   #Escaflowne
-				393,   #Escaflowne: A Girl in Gaea
-				237,   #Eureka Seven
-				12471, #Eureka Seven AO
-				1631,  #Eureka Seven: Navigation ray=out
-				13731, #Eureka Seven: New Order
-				4246,  #Eureka Seven: Pocket ga Niji de Ippai
-				2759,  #Evangelion: 1.0 You Are (Not) Alone
-				3784,  #Evangelion: 2.0 You Can (Not) Advance
-				3785,  #Evangelion: 3.0 You Can (Not) Redo
-				3786,  #Evangelion: 4.0
-				2042,  #Five Star Stories
-				1299,  #Flag
-				227,   #FLCL
 				72,    #Full Metal Panic Fumoffu
-				71,    #Full Metal Panic!
-				73,    #Full Metal Panic! The Second Raid
-				6291,  #Full Metal Panic! The Second Raid Episode 000
 				1015,  #Full Metal Panic! The Second Raid OVA
-				1845,  #Gaiking
-				890,   #GaoGaiGar
-				1382,  #GaoGaiGar Final
-				4416,  #GaoGaiGar Final Grand Glorious Gathering
-				5776,  #GaoGaiGar: Blockaded Numbers Special
-				909,   #Geneshaft
-				3579,  #Getter Robo
-				8252,  #Getter Robo (Movie)
-				4486,  #Getter Robo G
-				5292,  #Getter Robo Go
-				978,   #Getter Robo: Armageddon
-				43,    #Ghost in the Shell
-				468,   #Ghost in the Shell 2: Innocence
-				4672,  #Ghost in the Shell 2.0
-				467,   #Ghost in the Shell: Stand Alone Complex
-				1566,  #Ghost in the Shell: Stand Alone Complex - Solid State Society
-				3447,  #Ghost in the Shell: Stand Alone Complex - Solid State Society - Uchikoma no Hibi
-				10090, #Ghost in the Shell: Stand Alone Complex - Solid State Society 3D
-				10950, #Ghost in the Shell: Stand Alone Complex - Solid State Society 3D - Tachikoma no Hibi
-				1335,  #Ghost in the Shell: Stand Alone Complex - Tachikoma na Hibi
-				10870, #Ghost in the Shell: Stand Alone Complex - Tachikoma na Hibi (TV)
-				10949, #Ghost in the Shell: Stand Alone Complex - Tachikoma no Hibi Fan Disc
-				2449,  #Ghost in the Shell: Stand Alone Complex - The Laughing Man
-				10947, #Ghost in the Shell: Stand Alone Complex - The Laughing Man - Tachikoma no Hibi
-				801,   #Ghost in the Shell: Stand Alone Complex 2nd GIG
-				2448,  #Ghost in the Shell: Stand Alone Complex 2nd GIG - Individual Eleven
-				10948, #Ghost in the Shell: Stand Alone Complex 2nd GIG - Individual Eleven - Tachikoma no Hibi
-				3485,  #Ghost in the Shell: Stand Alone Complex 2nd GIG - Tachikoma na Hibi
-				3327,  #Giant Gorg
-				2321,  #Giant Robo
-				2322,  #Giant Robo Gaiden Ginrei
-				2987,  #Ginga Hyouryuu Vifam
-				5250,  #God Mazinger
-				7781,  #Gothicmade: Hana no Utame
-				3146,  #GR: Giant Robo
-				5658,  #Great Mazinger
-				4385,  #Great Mazinger vs. Getter Robo
-				4386,  #Great Mazinger vs. Getter Robo G: Kuuchuu Dai-Gekitotsu
-				3481,  #Grendizer: Getter Robo G - Great Mazinger Kessen! Daikaijuu
-				411,   #Gun x Sword
-				7248,  #Gunbuster Renewal EX
-				1911,  #Gunbuster vs. Diebuster
-				3288,  #Gundam Evolve
-				8839,  #Gundam Neo Experience 0087: Green Divers
-				4540,  #Gundam: Mission to the Rise
-				266,   #Gunparade March: Arata Naru Kougunka
-				858,   #Gunparade Orchestra
-				2598,  #Heavy Metal L-Gaim
-				2599,  #Heavy Metal L-Gaim I: Pentagona Window + Lady Gyabure
-				2600,  #Heavy Metal L-Gaim II: Farewell My Lovely + Pentagona Doors
-				2601,  #Heavy Metal L-Gaim III: Full Metal Soldier
-				2002,  #Heroic Age
-				2291,  #Iczer-One
-				1230,  #Innocent Venus
-				9041,  #IS: Infinite Stratos
-				141,   #Jinki:Extend
-				848,   #Jinki:Extend OVA
-				11767, #Justeen
-				1991,  #Juusou Kikou Dancougar Nova
-				143,   #Kannazuki no Miko
-				8486,  #Kihei Senki Legacies
-				9170,  #Kimi ga Nozomu Eien: Gundam Parody
-				766,   #Kishin Houkou Demonbane
-				1067,  #Kishin Houkou Demonbane (2006)
-				4198,  #Koutetsu Jeeg
-				2157,  #Koutetsushin Jeeg
-				3653,  #Kurogane no Linebarrels
-				7540,  #Kurogane no Linebarrels Specials
-				1088,  #Macross
-				5165,  #Macross 25th Anniversary Special Eizou: All That VF Macross F Version
-				5164,  #Macross 25th Anniversary Special Eizou: All That VF Macross Zero Version
-				1397,  #Macross 7
-				1399,  #Macross 7 Encore
-				6209,  #Macross 7 Plus
-				1400,  #Macross 7: Ginga ga Ore wo Yonde Iru
-				1398,  #Macross Dynamite 7
-				1504,  #Macross Flash Back 2012
-				3572,  #Macross Frontier
-				4454,  #Macross Frontier Deculture Edition
 				10050, #Macross Frontier Music Clip Shuu: Nyankuri
-				10361, #Macross Frontier: Chou Jikuu Gekijou
-				5310,  #Macross Frontier: Itsuwari no Utahime
-				7222,  #Macross Frontier: Sayonara no Tsubasa
 				4939,  #Macross Fufonfia
-				1262,  #Macross II: Lovers Again
-				474,   #Macross Plus
-				1211,  #Macross Plus Movie Edition
-				5051,  #Macross XX
-				194,   #Macross Zero
-				1089,  #Macross: Do You Remember Love
-				435,   #Magic Knight Rayearth
-				1563,  #Magic Knight Rayearth II
 				1954,  #Magic Knight Rayearth OVA
-				4058,  #Makyou Gaiden Le Deus
-				218,   #Martian Successor Nadesico
-				219,   #Martian Successor Nadesico: The Prince of Darkness
-				2253,  #Mazinger Z
-				10625, #Mazinger Z (Movie)
-				3898,  #Mazinger Z vs. Devilman
-				4388,  #Mazinger Z vs. Dr. Hell
-				4406,  #Mazinger Z vs. General Dark
-				1064,  #Mazinkaiser
-				8666,  #Mazinkaiser SKL
-				2734,  #Mazinkaiser: Shitou! Ankoku Dai Shogun
-				1935,  #Megazone 23
-				1285,  #MD Geist
-				1832,  #Mei Ou Project Zeorymer
-				96,    #Mobile Fighter G Gundam
-				1288,  #Mobile Police Patlabor
 				2733,  #Mobile Police Patlabor Minimum
-				1289,  #Mobile Police Patlabor: The New Files
-				80,    #Mobile Suit Gundam
-				2581,  #Mobile Suit Gundam 00
-				3927,  #Mobile Suit Gundam 00 Second Season
-				7270,  #Mobile Suit Gundam 00 Special Edition
-				6288,  #Mobile Suit Gundam 00 The Movie: A Wakening of the Trailblazer
-				5351,  #Mobile Suit Gundam 00: Tenshitachi no Kiseki
-				82,    #Mobile Suit Gundam 0080: War in the Pocket
-				84,    #Mobile Suit Gundam 0083: Stardust Memory
-				10581, #Mobile Suit Gundam 0083: Stardust Memory - The Mayfly of Space
-				2695,  #Mobile Suit Gundam 0083: The Fading Light of Zeon
-				10808, #Mobile Suit Gundam AGE
-				88,    #Mobile Suit Gundam F91
-				1090,  #Mobile Suit Gundam I
-				1091,  #Mobile Suit Gundam II: Soldiers of Sorrow
-				1092,  #Mobile Suit Gundam III: Encounters in Space
-				4232,  #Mobile Suit Gundam MS IGLOO 2: Gravity of the Battlefront
-				1916,  #Mobile Suit Gundam MS IGLOO: Apocalypse 0079
-				1917,  #Mobile Suit Gundam MS IGLOO: The Hidden One Year War
-				93,    #Mobile Suit Gundam Seed
-				1215,  #Mobile Suit Gundam Seed C.E.73: Stargazer
-				94,    #Mobile Suit Gundam Seed Destiny
-				1241,  #Mobile Suit Gundam Seed Destiny Final Plus: The Chosen Future
-				2294,  #Mobile Suit Gundam Seed Destiny Special Edition
-				864,   #Mobile Suit Gundam Seed MSV Astray
-				2269,  #Mobile Suit Gundam Seed Special Edition
-				2298,  #Mobile Suit Gundam Seed: After-Phase Between the Stars
 				2743,  #Mobile Suit Gundam Seed: Seed Supernova - Tanekyara Gekijo
-				6336,  #Mobile Suit Gundam Unicorn
-				90,    #Mobile Suit Gundam Wing
-				91,    #Mobile Suit Gundam Wing: Endless Waltz
-				2273,  #Mobile Suit Gundam Wing: Endless Waltz Movie
-				3626,  #Mobile Suit Gundam Wing: Operation Meteor
-				86,    #Mobile Suit Gundam ZZ
-				9708,  #Mobile Suit Gundam ZZ: Gundam Frag.
-				87,    #Mobile Suit Gundam: Chars Counterattack
-				5723,  #Mobile Suit Gundam: More Information on the Universal Century
-				81,    #Mobile Suit Gundam: The 08th MS Team
-				83,    #Mobile Suit Gundam: The 08th MS Team - Millers Report
-				10937, #Mobile Suit Gundam: The Origin
-				9098,  #Mobile Suit SD Gundam Festival
-				2302,  #Mobile Suit SD Gundam Mk I
-				2303,  #Mobile Suit SD Gundam Mk II
-				2305,  #Mobile Suit SD Gundam Mk III
-				2304,  #Mobile Suit SD Gundam Mk IV
-				6792,  #Mobile Suit SD Gundam Mk V
-				9087,  #Mobile Suit SD Gundam Musha Knight Commando
-				2306,  #Mobile Suit SD Gundams Counterattack
-				89,    #Mobile Suit Victory Gundam
-				85,    #Mobile Suit Zeta Gundam
-				1967,  #Mobile Suit Zeta Gundam: A New Translation - Heir to the Stars
-				1968,  #Mobile Suit Zeta Gundam: A New Translation II - Lovers
-				1969,  #Mobile Suit Zeta Gundam: A New Translation III - Love Is the Pulse of the Stars
-				9040,  #Mokei Senshi Gunpla Builders Beginning G
-				593,   #Mugen no Ryvius
-				2200,  #Muteki Choujin Zanbot 3
-				3305,  #Muteki Koujin Daitarn 3
-				11021, #Muv-Luv Alternative: Total Eclipse
-				16335, #Muv-Luv Alternative: Total Eclipse Recap - Climax Chokuzen Special
-				1163,  #Neo Ranga
-				30,    #Neon Genesis Evangelion
-				31,    #Neon Genesis Evangelion: Death & Rebirth
-				32,    #Neon Genesis Evangelion: The End of Evangelion
-				2978,  #New Getter Robo
-				3059,  #Ninja Senshi Tobikage
-				1792,  #Overman King Gainer
-				5153,  #Panzer World Galient
-				10751, #Panzer World Galient OVA
-				324,   #Patlabor
-				1096,  #Patlabor 2: The Movie
-				1290,  #Patlabor WXIII
-				1095,  #Patlabor: The Movie
 				4130,  #Petit Eva: Evangelion@School
-				165,   #RahXephon
 				559,   #RahXephon Interlude: Her and Herself // Thatness and Thereness
-				5288,  #RahXephon Specials
-				758,   #RahXephon: Pluralitas Concentio
-				1693,  #Reideen
-				2094,  #Relic Armor Legaciam
-				4618,  #RideBack
-				7060,  #Ring of Gundam
-				11227, #Rinne no Lagrange
-				12281, #Rinne no Lagrange 2
-				2000,  #Roujin Z
-				561,   #Sakura Taisen
-				1964,  #Sakura Taisen: Ecole de Paris
-				1166,  #Sakura Taisen: Gouka Kenran
-				608,   #Sakura Taisen: Katsudou Shashin
-				562,   #Sakura Taisen: Le Nouveau Paris
 				2168,  #Sakura Taisen: New York
-				1165,  #Sakura Taisen: Ouka Kenran
-				1999,  #Sakura Taisen: Sumire
-				2391,  #SD Gundam Force
-				1939,  #SD Gundam Gaiden
-				8287,  #SD Gundam Sangokuden Brave Battle Warriors
-				7242,  #Sengoku Gyoujin Dullahan: Kagen no Keishousha
-				938,   #Shin Getter Robo vs. Neo Getter Robo
-				5485,  #Shin Mazinger Shougeki! Z-Hen
-				1602,  #Soukou no Strain
-				478,   #Sousei no Aquarion
-				2170,  #Sousei no Aquarion OVA
-				930,   #Space Runaway Ideon
-				8934,  #Star Driver: Kagayaki no Takuto
-				12857, #Star Driver: Kagayaki no Takuto Movie
 				3252,  #Super Express Mazinger 7
-				1603,  #Super Robot Taisen OG: Divine Wars
-				4075,  #Super Robot Taisen OG: Divine Wars Special
-				1544,  #Super Robot Taisen OG: The Animation
-				9241,  #Super Robot Taisen OG: The Inspector
-				2257,  #Taiyou no Kiba Dagram
-				1459,  #Tekkaman Blade
-				1460,  #Tekkaman Blade 2
-				2299,  #Tekkaman Blade OVA: Burning Clock
-				2301,  #Tekkaman Blade OVA: Missing Link
-				2300,  #Tekkaman Blade OVA: Twin Blood
-				2001,  #Tengen Toppa Gurren Lagann
 				5947,  #Tengen Toppa Gurren Lagann Gekijouban Zenyasai Special: Virals Sweet Dream
-				4107,  #Tengen Toppa Gurren Lagann Movie: Gurren-hen
-				4565,  #Tengen Toppa Gurren Lagann Movie: Lagann-hen
 				10622, #Tengen Toppa Gurren Lagann OVA
 				4705,  #Tengen Toppa Gurren Lagann Parallel Works
-				8348,  #Tengen Toppa Gurren Lagann Parallel Works 2
-				3352,  #Tengen Toppa Gurren Lagann Special
-				3287,  #Tenkuu Danzato Skelter Heaven
-				2686,  #Tetsujin 28-go
-				4208,  #Tetsujin 28-go (1980)
-				2337,  #Tetsujin 28-go (2004)
-				10319, #Tetsujin 28-go FX
-				10005, #Tetsujin 28-go: Hakuchuu no Zangetsu
 				1762,  #The Heroic Legend of Arslan
-				2760,  #The Ideon: A Contact
-				2761,  #The Ideon: Be Invoked
 				14401, #Titan Rain
-				10954, #Toei Robot Girls
-				949,   #Top wo Nerae!
-				1002,  #Top wo Nerae! 2
-				5462,  #Top wo Nerae! Science Lesson
-				1675,  #Transformers Armada
-				928,   #Transformers Galaxy Force
-				2268,  #Transformers Generation 1
-				925,   #Transformers Headmasters
-				924,   #Transformers Masterforce
-				927,   #Transformers Superlink
-				9528,  #Transformers Superlink Special
-				2265,  #Transformers the Movie
-				926,   #Transformers Victory
-				6038,  #Transformers Zone
-				7862,  #Transformers: Robot Masters
-				2284,  #Transformers: Robots in Disguise
-				6800,  #Transformers: Scramble City
-				95,    #Turn A Gundam
-				3963,  #Turn A Gundam I: Earth Light
-				3964,  #Turn A Gundam II: Moonlight Butterfly
-				1458,  #Uchuu no Kishi Tekkaman
-				4387,  #UFO Robo Grendizer tai Great Mazinger
-				180,   #Vandread
-				1111,  #Vandread Gekitouhen
-				1112,  #Vandread Taidouhen
-				181,   #Vandread: The Second Stage
-				8249,  #Votoms Finder Armored Trooperoid
-				1986,  #Wakusei Robo Danguard Ace
-				8707,  #Wakusei Robo Danguard Ace tai Konchuu Robot Gundan
-				5515,  #Wakusei Robo Danguard Ace: Uchuu Daikaisen
-				2128,  #Yuusha Raideen
-				878,   #Zegapain
-				763,   #Zoids
-				1746,  #Zoids Fuzors
-				712,   #Zoids Genesis
-				764    #Zoids Shin Seiki/Zero
+				5462   #Top wo Nerae! Science Lesson
 			]}
 		},
 		"historical": {
