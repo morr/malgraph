@@ -37,7 +37,7 @@
 		</div>
 
 		<script type="text/javascript">
-			$('#user-<?php echo $user->getRuntimeID() ?> .acti-line-daily .target').each(function() {
+			$('.user-<?php echo $user->getRuntimeID() ?> .acti-line-daily .target').each(function() {
 				var chart = new Highcharts.Chart({
 					chart: { renderTo: this, type: 'column', marginTop: 8 },
 					xAxis: { categories: <?php echo json_encode(array_keys($this->dayPeriods[$user->getID()])) ?>, title: { text: 'Days ago', margin: 15 }, labels: { style: { fontSize: '10px !important' } } },
@@ -106,7 +106,7 @@
 			?>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .target').each(function() {
+				$('.user-<?php echo $user->getRuntimeID() ?> .acti-line-monthly .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'area', marginTop: 8, marginBottom: 56 },
 						xAxis: {

@@ -19,7 +19,7 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $user->getRuntimeID() ?> .decades .target').each(function() {
+				$('.user-<?php echo $user->getRuntimeID() ?> .decades .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'line', marginTop: 8 },
 						xAxis: {
@@ -158,7 +158,7 @@
 </div>
 
 <script type="text/javascript">
-	$('#user-<?php echo $user->getRuntimeID() ?> .creators .more-trigger').click(function(e) {
+	$('.user-<?php echo $user->getRuntimeID() ?> .creators .more-trigger').click(function(e) {
 		e.preventDefault();
 		toggleMoreWrappers($('.creators .wrapper-more'), {'sender': 'creator', 'creator': $(this).attr('data-id')});
 	});
@@ -196,7 +196,7 @@
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
-								<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>.php?genre[]=<?php echo $genre->getID() ?>">
+								<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>.php?genre%5b%5d=<?php echo $genre->getID() ?>">
 									<i class="icon-pop-out"></i>
 								</a>
 								&nbsp;

@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<?php echo HeadHelper::render() ?>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta property="og:title" content="<?php echo HeadHelper::getTitle() ?>">
 	<meta property="og:description" content="<?php echo HeadHelper::getDescription() ?>">
 	<meta property="og:image" content="<?php echo UrlHelper::url('media/img/logo3.png') ?>">
@@ -192,9 +193,9 @@
 						}
 						echo '<div class="user-wrapper">';
 						if ($user->isAnonymous()) {
-							echo '<div class="user anonymous" id="user-' . $user->getRuntimeID() . '" data-user-name="' . $user->getLinkableName() . '">';
+							echo '<div class="user anonymous user-' . $user->getRuntimeID() . '" data-user-name="' . $user->getLinkableName() . '">';
 						} else {
-							echo '<div class="user" id="user-' . $user->getRuntimeID() . '" data-user-name="' . $user->getLinkableName() . '">';
+							echo '<div class="user user-' . $user->getRuntimeID() . '" data-user-name="' . $user->getLinkableName() . '">';
 						}
 						$callback($user, $otherUser);
 						echo '</div>';

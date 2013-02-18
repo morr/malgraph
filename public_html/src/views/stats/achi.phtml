@@ -20,10 +20,10 @@
 			<?php if (!empty($ach['path'])): ?>
 				<img class="achi<?php if (!empty($ach['entries'])): ?> more-trigger<?php endif ?>" alt="<?php echo $ach['title'] ?>" src="<?php echo UrlHelper::url('media/img/ach/' . $ach['path']) ?>">
 			<?php endif ?>
+			<p class="level"><?php echo $ach['level'] ?></p>
 			<h3>
 				<?php echo $ach['title'] ?>
 				<?php if (!empty($ach['level'])): ?>
-					<p class="level"><?php echo $ach['level'] ?></p>
 				<?php endif ?>
 			</h3>
 			<div class="section-body">

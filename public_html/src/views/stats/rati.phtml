@@ -83,7 +83,7 @@
 							<?php endif ?>
 							<div class="preview">
 								<p>Preview (may be scaled):</p>
-								<img alt="Preview">
+								<img alt="Preview" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
 							</div>
 						</div>
 						<div class="clear"></div>
@@ -92,7 +92,7 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $user->getRuntimeID() ?> .score-dist .target').each(function() {
+				$('.user-<?php echo $user->getRuntimeID() ?> .score-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 35 },
 						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, $this->scoreDistribution[$user->getID()]->getGroupsKeys())) ?>, title: { text: 'Rating' } },
@@ -170,7 +170,7 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $user->getRuntimeID() ?> .score-time-dist .target').each(function() {
+				$('.user-<?php echo $user->getRuntimeID() ?> .score-time-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'bar', marginRight: 15 },
 						xAxis: { categories: <?php echo json_encode(array_map(function($x) { return $x == 0 ? '-' : $x; }, $this->scoreDistribution[$user->getID()]->getGroupsKeys())) ?>, title: { text: 'Rating' } },
@@ -249,7 +249,7 @@
 			</div>
 
 			<script type="text/javascript">
-				$('#user-<?php echo $user->getRuntimeID() ?> .score-length-dist .target').each(function() {
+				$('.user-<?php echo $user->getRuntimeID() ?> .score-length-dist .target').each(function() {
 					var chart = new Highcharts.Chart({
 						chart: { renderTo: this, type: 'line', marginTop: 15, marginRight: 15 },
 						xAxis: {

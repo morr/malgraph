@@ -100,9 +100,9 @@
 											echo join(', ', $tmp);
 										} elseif ($entry->getGenres()) {
 											foreach ($entry->getGenres() as $genre) {
-												$item = '<a href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->textAM() . '.php?genre[]=' . $genre->getID() . '">';
+												$item = '<a href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->textAM() . '.php?genre%5b%5d=' . $genre->getID() . '">';
 												$item .= $genre->getName();
-												$item .= '<a/>';
+												$item .= '</a>';
 												$tmp []= $item;
 											}
 											echo join(', ', $tmp);
@@ -149,9 +149,9 @@
 									<td class="key">Add to MAL</td>
 									<td class="value">
 										<?php if ($entry->getType() == AMModel::TYPE_ANIME): ?>
-											<a href="http://myanimelist.net/panel.php?go=add&selected_series_id=<?php echo $entry->getID() ?>">
+											<a href="http://myanimelist.net/panel.php?go=add&amp;selected_series_id=<?php echo $entry->getID() ?>">
 										<?php else: ?>
-											<a href="http://myanimelist.net/panel.php?go=addmanga&selected_manga_id=<?php echo $entry->getID() ?>">
+											<a href="http://myanimelist.net/panel.php?go=addmanga&amp;selected_manga_id=<?php echo $entry->getID() ?>">
 										<?php endif ?>
 											Click (must be logged in)</a>
 									</td>
