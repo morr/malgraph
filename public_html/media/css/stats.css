@@ -18,7 +18,7 @@ div.user h2 { margin-bottom: 0.7em; padding-left: 0.3em; }
 .wrapper-more .close { float: right; font-size: 20pt; line-height: 20pt; text-decoration: none; color: silver; cursor: pointer; }
 .wrapper-more span.details { color: gray; margin-left: 0.5em; font-size: 92.5%; }
 
-@media (max-width: 800px) {
+@media screen and (max-width: 800px), (max-device-width: 800px) {
 	.compare-mode div.users { background: none !important; }
 	.compare-mode div.user-wrapper { width: 100% !important; }
 	.compare-mode div.user { margin: 0 !important; padding: 1em; }

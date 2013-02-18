@@ -53,7 +53,7 @@ img { border: 0; /* ie image border */ }
 }
 
 /* small screens */
-@media (max-width: 800px) {
+@media (max-width: 800px), (max-device-width: 800px) {
 	#main { width: 100%; }
 	.main-wrapper { width: 96%; }
 	#menu-wrapper { float: none !important; width: 100% !important; max-width: 100% !important; }

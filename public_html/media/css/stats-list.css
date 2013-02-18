@@ -1,12 +1,12 @@
 div.table { max-height: 100%; position: relative; }
 
-	td.same-score { color: black; }
-	td.higher-score { color: #0a0; }
-	td.lower-score { color: red; }
-	td.no-score { color: #aaa; }
-	.compare-mode tr.unique .score { color: #ddd; }
+td.same-score { color: black; }
+td.higher-score { color: #0a0; }
+td.lower-score { color: red; }
+td.no-score { color: #aaa; }
+.compare-mode tr.unique .score { color: #ddd; }
 
 th,
 td { padding: 2px 2px; text-align: center; }
-	th.title,
-	td.title { width: 100%; padding: 2px 8px; text-align: left; }
+th.title,
+td.title { width: 100%; padding: 2px 8px; text-align: left; }
