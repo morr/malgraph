@@ -135,7 +135,7 @@
 				{ "threshold": "15-29", "id": "manga-sports-1", "level": "Sports: level 1",   "title": "The stakes are high", "desc": "Joined the game for real. The more you read, the more addictive it gets." },
 				{ "threshold": "30-49", "id": "manga-sports-2", "level": "Sports: level 2",   "title": "Do you even read?",   "desc": "Even during the most exhausting excercise you still find time to read. Can&rsquo;t miss a chapter." },
 				{ "threshold": "50-79", "id": "manga-sports-3", "level": "Sports: level 3",   "title": "Got balls",           "desc": "Looking at all this struggling inspires you to become strong yourself." },
-				{ "threshold": "80+",   "id": "manga-sports-4", "level": "Sports: lexel MAX", "title": "",                    "desc": "sports max" }
+				{ "threshold": "80+",   "id": "manga-sports-4", "level": "Sports: lexel MAX", "title": "Kuro Basket",         "desc": "You know the rules of all games already. The podium is yours." }
 			],
 			"requirement": { "type": "genre-titles", "genre": 30 }
 		},
@@ -150,18 +150,18 @@
 		},
 		"count": {
 			"achievements": [
-				{ "threshold": "100-199",   "id": "numbers-manga-100",   "level": "Passed 100 mark",   "title": "Casual reader",         "desc": "Read over 100 manga. Looks like reading doesn&rsquo;t hurt." },
-				{ "threshold": "200-299",   "id": "numbers-manga-200",   "level": "Passed 200 mark",   "title": "Bookworm",              "desc": "Read over 200 manga. Sitting in your comfortable chair, reading favorite Korean comics. This is bliss." },
-				{ "threshold": "300-399",   "id": "numbers-manga-300",   "level": "Passed 300 mark",   "title": "Dat scent",             "desc": "Read over 300 manga. There&rsquo;s nothing better than the smell of freshly opened book. Or a PDF." },
-				{ "threshold": "400-499",   "id": "numbers-manga-400",   "level": "Passed 400 mark",   "title": "Where do I put these?", "desc": "Read over 400 manga. Consider investing in another bookshelf, or you&rsquo;ll be swimming in books soon." },
-				{ "threshold": "500-749",   "id": "numbers-manga-500",   "level": "Passed 500 mark",   "title": "Half a grand",          "desc": "Read over 500 manga. Now think of what kind of person you&rsquo;d be if you didn&rsquo;t start reading manga then. On that particular day&hellip;" },
-				{ "threshold": "750-999",   "id": "numbers-manga-750",   "level": "Passed 750 mark",   "title": "Read or die",           "desc": "Read over 750 manga. Made a bow out of paper. Please remember that paper doesn&rsquo;t work well as a bulletproof shield." },
-				{ "threshold": "1000-1499", "id": "numbers-manga-1000",  "level": "Passed 1000 mark",  "title": "Librarian",             "desc": "Read over 1000 manga. You work with books, right? Right?&hellip;" },
-				{ "threshold": "1500-2499", "id": "numbers-manga-1500",  "level": "Passed 1500 mark",  "title": "The floor is books",    "desc": "Read over 1500 manga. Sleeping on books must be pretty&hellip;&nbsp;hard?" },
-				{ "threshold": "2500-4999", "id": "numbers-manga-2500",  "level": "Passed 2500 mark",  "title": "Still not enough",      "desc": "Read over 2500 manga. You&rsquo;ve read six lifetimes worth of words." },
-				{ "threshold": "5000-7499", "id": "numbers-manga-5000",  "level": "Passed 5000 mark",  "title": "Sleep deprivation",     "desc": "Read over 5000 manga. Think of all the mangakas and writers that couldn&rsquo;t sleep just to make this moment happen." },
-				{ "threshold": "7500-9999", "id": "numbers-manga-7500",  "level": "Passed 7500 mark",  "title": "Reincarnation",         "desc": "Read over 7500 manga. How, exactly? This is not possible within one lifetime." },
-				{ "threshold": "10000+",    "id": "numbers-manga-10000", "level": "Passed 10000 mark", "title": "So many zeros",         "desc": "Read over 10000 manga. An average user&rsquo;s list is shorter than your list of titles starting with &bdquo;A&rdquo; alone." }
+				{ "threshold": "100-199",   "id": "numbers-manga-100",   "level": "Passed 100 mark",   "title": "Casual reader",         "desc": "Read 100 manga. Looks like reading doesn&rsquo;t hurt." },
+				{ "threshold": "200-299",   "id": "numbers-manga-200",   "level": "Passed 200 mark",   "title": "Bookworm",              "desc": "Read 200 manga. Sitting in your comfortable chair, reading favorite Korean comics. This is bliss." },
+				{ "threshold": "300-399",   "id": "numbers-manga-300",   "level": "Passed 300 mark",   "title": "Dat scent",             "desc": "Read 300 manga. There&rsquo;s nothing better than the smell of freshly opened book. Or a PDF." },
+				{ "threshold": "400-499",   "id": "numbers-manga-400",   "level": "Passed 400 mark",   "title": "Where do I put these?", "desc": "Read 400 manga. Consider investing in another bookshelf, or you&rsquo;ll be swimming in books soon." },
+				{ "threshold": "500-749",   "id": "numbers-manga-500",   "level": "Passed 500 mark",   "title": "Half a grand",          "desc": "Read 500 manga. Now think of what kind of person you&rsquo;d be if you didn&rsquo;t start reading manga then. On that particular day&hellip;" },
+				{ "threshold": "750-999",   "id": "numbers-manga-750",   "level": "Passed 750 mark",   "title": "Read or die",           "desc": "Read 750 manga. Made a bow out of paper. Please remember that paper doesn&rsquo;t work well as a bulletproof shield." },
+				{ "threshold": "1000-1499", "id": "numbers-manga-1000",  "level": "Passed 1000 mark",  "title": "Librarian",             "desc": "Read 1000 manga. You work with books, right? Right?&hellip;" },
+				{ "threshold": "1500-2499", "id": "numbers-manga-1500",  "level": "Passed 1500 mark",  "title": "The floor is books",    "desc": "Read 1500 manga. Sleeping on books must be pretty&hellip;&nbsp;hard?" },
+				{ "threshold": "2500-4999", "id": "numbers-manga-2500",  "level": "Passed 2500 mark",  "title": "Still not enough",      "desc": "Read 2500 manga. You&rsquo;ve read six lifetimes worth of words." },
+				{ "threshold": "5000-7499", "id": "numbers-manga-5000",  "level": "Passed 5000 mark",  "title": "Sleep deprivation",     "desc": "Read 5000 manga. Think of all the mangakas and writers that couldn&rsquo;t sleep just to make this moment happen." },
+				{ "threshold": "7500-9999", "id": "numbers-manga-7500",  "level": "Passed 7500 mark",  "title": "Reincarnation",         "desc": "Read 7500 manga. How, exactly? This is not possible within one lifetime." },
+				{ "threshold": "10000+",    "id": "numbers-manga-10000", "level": "Passed 10000 mark", "title": "So many zeros",         "desc": "Read 10000 manga. An average user&rsquo;s list is shorter than your list of titles starting with &bdquo;A&rdquo; alone." }
 			],
 			"requirement": { "type": "completed-titles" }
 		}
@@ -756,18 +756,18 @@
 		},
 		"count": {
 			"achievements": [
-				{ "threshold": "100-199",   "id": "numbers-anime-100",   "level": "Passed 100 mark",   "title": "The first step",         "desc": "Watched over 100 anime. Congratulations, you broke the magical number. Take a breath now, it will only get more difficult." },
-				{ "threshold": "200-299",   "id": "numbers-anime-200",   "level": "Passed 200 mark",   "title": "Casual watcher",         "desc": "Watched over 200 anime. You&rsquo;re used to seeing character&rsquo;s eyes bigger than their nose. If they have any nose." },
-				{ "threshold": "300-399",   "id": "numbers-anime-300",   "level": "Passed 300 mark",   "title": "A millionaire",          "desc": "Watched over 300 anime. You DID buy all of them, right?" },
-				{ "threshold": "400-499",   "id": "numbers-anime-400",   "level": "Passed 400 mark",   "title": "Bragging rights",        "desc": "Watched over 400 anime. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
-				{ "threshold": "500-749",   "id": "numbers-anime-500",   "level": "Passed 500 mark",   "title": "A lot of free time",     "desc": "Watched over 500 anime. Now pause, take a breath and stretch a bit. Remember not to sit too close to the screen." },
-				{ "threshold": "750-999",   "id": "numbers-anime-750",   "level": "Passed 750 mark",   "title": "Not even my final form", "desc": "Watched over 750 anime. Your power level is way above others&rsquo;. The only way is up." },
-				{ "threshold": "1000-1499", "id": "numbers-anime-1000",  "level": "Passed 1000 mark",  "title": "Gotta watch them all!",  "desc": "Watched over 1000 anime. You should already know what that picture means." },
-				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "Passed 1500 mark",  "title": "The Collector",          "desc": "Watched over 1500 animes. No, wait. The plural of anime is anime." },
-				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Passed 2500 mark",  "title": "The Maniac",             "desc": "Watched over 2500 anime. Is this healthy? You should contact your doctor." },
-				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Passed 5000 mark",  "title": "The Living Legend",      "desc": "Watched over 5000 anime. You&rsquo;re one of the chosen ones. You don&rsquo;t even have to brag, since everyone heard about you." },
-				{ "threshold": "7500-9999", "id": "numbers-anime-7500",  "level": "Passed 7500 mark",  "title": "Database breaker",       "desc": "Watched over 7500 anime. Are you having fun, breaking all the rules? By the way, do we even have that many anime in the database?!" },
-				{ "threshold": "10000+",    "id": "numbers-anime-10000", "level": "Passed 10000 mark", "title": "This is it.",            "desc": "Watched over 10000 anime. There is no higher level. You can stop now. Everyone, go home." }
+				{ "threshold": "100-199",   "id": "numbers-anime-100",   "level": "Passed 100 mark",   "title": "The first step",         "desc": "Watched 100 anime. Congratulations, you broke the magical number. Take a breath now, it will only get more difficult." },
+				{ "threshold": "200-299",   "id": "numbers-anime-200",   "level": "Passed 200 mark",   "title": "Casual watcher",         "desc": "Watched 200 anime. You&rsquo;re used to seeing character&rsquo;s eyes bigger than their nose. If they have any nose." },
+				{ "threshold": "300-399",   "id": "numbers-anime-300",   "level": "Passed 300 mark",   "title": "A millionaire",          "desc": "Watched 300 anime. You DID buy all of them, right?" },
+				{ "threshold": "400-499",   "id": "numbers-anime-400",   "level": "Passed 400 mark",   "title": "Bragging rights",        "desc": "Watched 400 anime. That&rsquo;s&hellip; a lot. You can be proud of yourself, that&rsquo;s for sure." },
+				{ "threshold": "500-749",   "id": "numbers-anime-500",   "level": "Passed 500 mark",   "title": "A lot of free time",     "desc": "Watched 500 anime. Now pause, take a breath and stretch a bit. Remember not to sit too close to the screen." },
+				{ "threshold": "750-999",   "id": "numbers-anime-750",   "level": "Passed 750 mark",   "title": "Not even my final form", "desc": "Watched 750 anime. Your power level is way above others&rsquo;. The only way is up." },
+				{ "threshold": "1000-1499", "id": "numbers-anime-1000",  "level": "Passed 1000 mark",  "title": "Gotta watch them all!",  "desc": "Watched 1000 anime. You should already know what that picture means." },
+				{ "threshold": "1500-2499", "id": "numbers-anime-1500",  "level": "Passed 1500 mark",  "title": "The Collector",          "desc": "Watched 1500 animes. No, wait. The plural of anime is anime." },
+				{ "threshold": "2500-4999", "id": "numbers-anime-2500",  "level": "Passed 2500 mark",  "title": "The Maniac",             "desc": "Watched 2500 anime. Is this healthy? You should contact your doctor." },
+				{ "threshold": "5000-7499", "id": "numbers-anime-5000",  "level": "Passed 5000 mark",  "title": "The Living Legend",      "desc": "Watched 5000 anime. You&rsquo;re one of the chosen ones. You don&rsquo;t even have to brag, since everyone heard about you." },
+				{ "threshold": "7500-9999", "id": "numbers-anime-7500",  "level": "Passed 7500 mark",  "title": "Database breaker",       "desc": "Watched 7500 anime. Are you having fun, breaking all the rules? By the way, do we even have that many anime in the database?!" },
+				{ "threshold": "10000+",    "id": "numbers-anime-10000", "level": "Passed 10000 mark", "title": "This is it.",            "desc": "Watched 10000 anime. There is no higher level. You can stop now. Everyone, go home." }
 			],
 			"requirement": { "type": "completed-titles" }
 		}
