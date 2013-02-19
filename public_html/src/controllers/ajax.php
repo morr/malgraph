@@ -81,6 +81,7 @@ class AjaxController extends AbstractController {
 	public function ajaxAction() {
 		$filter = null;
 		$list = $this->view->user->getList($this->view->am);
+		$sort = true;
 
 		switch ($this->view->sender) {
 			case self::SENDER_SCORE:
@@ -198,6 +199,7 @@ class AjaxController extends AbstractController {
 				$daysAgo = $this->inputHelper->getInt('days-ago');
 				$this->view->daysAgo = $daysAgo;
 				$this->view->entries = $this->view->user->getHistory($this->view->am)->getEntriesByDaysAgo($daysAgo);
+				$sort = false;
 				break;
 
 			case self::SENDER_MONTHLY_ACTIVITY:
@@ -216,6 +218,7 @@ class AjaxController extends AbstractController {
 				$filter = UserListFilters::getNonPlanned();
 				$entries = $list->getEntries($filter);
 				$this->view->entries = UserListService::getFranchises($entries);
+				$sort = false;
 				break;
 
 			case self::SENDER_MISMATCHED_EPS:
@@ -223,6 +226,10 @@ class AjaxController extends AbstractController {
 				$entries = $list->getEntries($filter);
 				$this->view->entries = UserListService::getMismatchedEntries($entries);
 				break;
+		}
+
+		if ($sort) {
+			uasort($this->view->entries, UserListSorters::getByTitle());
 		}
 	}
 }
