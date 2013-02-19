@@ -2,7 +2,7 @@
 <div class="section acti-line-daily">
 	<h2>
 		<i data-tooltip="Number of <?php echo $this->am == AMModel::TYPE_MANGA ? "chapters you've read" : "episodes you've watched" ?>|within given day. Shows last 3 weeks|with 24 h accuracy." class="icon-tooltip"></i>
-		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'activity timeline (daily)') ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'daily activity') ?>
 	</h2>
 	<div class="section-body">
 		<ul class="infobox">
@@ -73,7 +73,7 @@
 <div class="section acti-line-monthly">
 	<h2>
 		<i data-tooltip="Number of titles you've completed|within given month, or with no|specified completion date." class="icon-tooltip"></i>
-		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'activity timeline (monthly)') ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'monthly activity') ?>
 	</h2>
 	<div class="section-body">
 		<?php if (empty($this->monthPeriods[$user->getID()])): ?>

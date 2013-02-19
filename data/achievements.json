@@ -135,13 +135,13 @@
 				{ "threshold": "15-29", "id": "manga-sports-1", "level": "Sports: level 1",   "title": "The stakes are high", "desc": "Joined the game for real. The more you read, the more addictive it gets." },
 				{ "threshold": "30-49", "id": "manga-sports-2", "level": "Sports: level 2",   "title": "Do you even read?",   "desc": "Even during the most exhausting excercise you still find time to read. Can&rsquo;t miss a chapter." },
 				{ "threshold": "50-79", "id": "manga-sports-3", "level": "Sports: level 3",   "title": "Got balls",           "desc": "Looking at all this struggling inspires you to become strong yourself." },
-				{ "threshold": "80+",   "id": "manga-sports-4", "level": "Sports: lexel MAX", "title": "Kuro Basket",         "desc": "You know the rules of all games already. The podium is yours!" }
+				{ "threshold": "80+",   "id": "manga-sports-4", "level": "Sports: level MAX", "title": "Kuro Basket",         "desc": "You know the rules of all games already. The podium is yours!" }
 			],
 			"requirement": { "type": "genre-titles", "genre": 30 }
 		},
 		"mystery": {
 			"achievements": [
-				{ "threshold": "15-29", "id": "manga-mystery-1", "level": "Mystery: level 1",   "title": "Curiosity",     "desc": "If it is you who is curious, no case will be left unsolved." },
+				{ "threshold": "15-29", "id": "manga-mystery-1", "level": "Mystery: level 1",   "title": "Curiosity",     "desc": "If it is you who is curious, no case shall remain unsolved." },
 				{ "threshold": "30-49", "id": "manga-mystery-2", "level": "Mystery: level 2",   "title": "Determination", "desc": "No matter who the villain is&hellip; you WILL find out the answers." },
 				{ "threshold": "50-79", "id": "manga-mystery-3", "level": "Mystery: level 3",   "title": "", "desc": "mystery 3" },
 				{ "threshold": "80+",   "id": "manga-mystery-4", "level": "Mystery: level MAX", "title": "", "desc": "mystery max" }
