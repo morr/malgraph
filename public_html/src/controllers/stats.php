@@ -566,6 +566,8 @@ class StatsController extends AbstractController {
 
 
 	public function sugAction() {
+		$this->view->recsStatic = [];
+		$this->view->recs = [];
 		foreach ($this->view->users as $u) {
 			$filter = UserListFilters::getCompleted();
 			$entries = $u->getList($this->view->am)->getEntries($filter);
@@ -577,7 +579,7 @@ class StatsController extends AbstractController {
 
 			//static recommendations
 			if ($recsStatic) {
-				$this->view->recsStatic[$u->getID()] =  true;
+				$this->view->recsStatic[$u->getID()] = true;
 				$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
 				foreach ($staticRecs[$this->view->am] as $id) {
 					$userEntry = $u->getList($this->view->am)->getEntryByID($id);
@@ -592,7 +594,7 @@ class StatsController extends AbstractController {
 
 			//dynamic recommendations
 			if (empty($recs)) {
-				$this->view->recsStatic[$u->getID()] =  false;
+				$this->view->recsStatic[$u->getID()] = false;
 				$goal = 50;
 				$selUsers = [];
 				$selAM = [];
@@ -712,7 +714,10 @@ class StatsController extends AbstractController {
 			$this->view->recs[$u->getID()] = $recs;
 		}
 
+		$this->view->relations = [];
 		foreach ($this->view->users as $u) {
+			$filter = UserListFilters::getNonPlanned();
+			$entries = $u->getList($this->view->am)->getEntries($filter);
 			$relations = UserListService::getFranchises($entries, null);
 			//remove ids user has seen
 			foreach ($relations as $franchise) {
