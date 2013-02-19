@@ -148,8 +148,8 @@ a:hover .icon-twitter   { background-position: -256px -16px; }
 .icon-facebook  { background-position: -240px 0; }
 .icon-twitter   { background-position: -256px 0; }
 
-.icon-tooltip { background-position: -296px 0; width: 24px; height: 24px; margin: 0; float: left; }
-.icon-go-back { background-position: -272px 0; width: 24px; height: 24px; margin: 0; }
+.icon-tooltip { background-position: -296px 0; width: 24px; height: 24px; margin: 0; }
+.icon-go-back { background-position: -272px 0; width: 24px; height: 24px; margin: 0; float: left; }
 .icon-close { background-position: -320px 0; width: 24px; height: 24px; margin: 0; }
 
 
