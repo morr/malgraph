@@ -16,8 +16,8 @@
 .recs tr.header .title { width: 70%; }
 .recs tr.header .type { text-align: right; width: 30%; }
 
-.recs tr.details { padding: 0.5em 1em 1em 1em; }
 .recs tr.details .wrapper-more { position: relative; }
+.recs tr.details .wrapper-more-wrapper { padding: 0.5em 1em 1em 1em; }
 .recs tr.details table { table-layout: fixed; width: 80%; border-spacing: 0; }
 .recs tr.details table td.key { width: 20%; padding-left: 0.5em; }
 .recs tr.details table td.key:after { content: ': '; }

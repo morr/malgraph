@@ -47,7 +47,8 @@
 				<tr class="details">
 					<td colspan="2">
 						<div class="wrapper-more singular">
-							<a class="close">&times;</a>
+                            <div class="wrapper-more-wrapper">
+							<a class="close"><i class="icon-close"></i></a>
 							<a class="img" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
 								<?php if (!$entry->getPictureURL()): ?>
 									<img class="unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
@@ -159,6 +160,7 @@
 							</table>
 
 							<div class="clear"></div>
+						</div>
 						</div>
 					</td>
 				</tr>

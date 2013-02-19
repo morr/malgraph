@@ -41,7 +41,7 @@ $(function() {
 	});
 
 	$('.wrapper-more').on('click', '.close', function(e) {
-		$(this).parents('li').toggleClass('active');
+		$(this).parents('tr').prev().toggleClass('active');
 	});
 });
 

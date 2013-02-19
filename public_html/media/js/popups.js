@@ -24,7 +24,7 @@ function togglePopup(target) {
 
 $(function() {
 	$('body').append($('<div id="popup-wrapper"></div>'));
-	$('.popup .title').prepend($('<a href="#" class="close">&times;</a>'));
+	$('.popup .title').prepend($('<a class="close">&times;</a>'));
 	$('.popup .cancel.btn, .popup .title .close').click(function(e) {
 		e.preventDefault();
 		hidePopup($(this).parents('.popup'));
