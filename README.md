@@ -1,7 +1,7 @@
 **MALgraph is an extension of your MyAnimeList profile**, showing you lots of stats, lists, anime/manga recommendations, and even allowing you to compare your stats with other users. It works for anime and manga lists, and the more titles you have listed, the more accurate results you can expect.
 
 
-# [Click here to visit MALgraph!](url=http://mal.oko.im/)
+# [Click here to visit MALgraph!](http://mal.oko.im/)
 
 
 ## Features
