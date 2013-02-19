@@ -32,13 +32,13 @@
 #### Activity
 * a visual representation of your watching/reading history from last 21 days
 * check how many episodes from different series you've watched in last 3 weeks
-* timeline broke down to months, showing you number of series you've completed
+* timeline broken down to months, showing you number of series you've completed
 * both charts are interactive - clicking on data points shows detailed list of titles
 * easily see complete list of titles with unspecified completion date, so you can fix them
 
 
 #### Favorites
-* favorite decades **and years** - were series from 2008 better than 2003? 80's worse than now?
+* favorite decades **and years** - were series from 2008 better than 2003? 80s worse than now?
 * favorite anime studios and manga authors, with counters, mean score and total time
 * list of genres you seem to like (action+comedy anyone?)
 
