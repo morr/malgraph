@@ -1,8 +1,12 @@
-.user.anonymous .mal-links li { text-decoration: line-through; }
+#main [class^='icon-'] { margin-right: 5px; }
 .updated { float: right; font-size: 65%; padding-top: 0.25em; opacity: .25; }
 .list-views .suffix { margin-left: 0.67em; color: gray; }
 
-#main ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
+.basic dl { margin-bottom: 1em; width: 50%; float: left; }
+.basic .user.anonymous .mal-links li { text-decoration: line-through; }
+.basic .mal-links { float: left; }
+
+.friends ul, .clubs ul, .basic ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
 .clubs .scrollable, .friends .scrollable { max-height: 15em; }
 .friends a, .clubs a { position: relative; }
 .friends ul li, .clubs ul li { overflow: hidden; display: block; text-overflow: ellipsis; }
@@ -10,9 +14,6 @@
 	.clubs ul li { float: left; width: 50%; }
 .friends i, .clubs i { position: absolute; }
 .friends span, .clubs span { display: inline-block; margin-left: 21px; }
-
-#main [class^='icon-'] { margin-right: 5px; }
-.basic dl { margin-bottom: 1em; }
 
 dl { display: inline-block; margin: 0; }
 dt { clear: left; font-weight: bold; width: 8em; float: left; margin-left: 0.5em; }

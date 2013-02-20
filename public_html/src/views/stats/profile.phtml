@@ -10,7 +10,6 @@
 
 	<div class="section-body">
 		<dl>
-
 			<dt>Gender</dt>
 			<?php if (!$user->isAnonymous()): ?>
 				<?php if ($user->getUserData()->getGender() == UserData::GENDER_FEMALE): ?>
@@ -92,8 +91,8 @@
 			<?php endif ?>
 		</ul>
 
-	</div>
 	<div class="clear"></div>
+	</div>
 </div>
 <?php }); ?>
 
