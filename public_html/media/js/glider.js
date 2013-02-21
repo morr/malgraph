@@ -25,14 +25,17 @@ function animateGlider() {
 }
 
 var messages = {
-	5: [ 'downloading your data&hellip;', 'performing magic tricks&hellip;', 'reticulating splines&hellip;', 'making you read this text&hellip;' ],
-	10: [ 'applying final touches&hellip;', 'antialiasing buttons&hellip;', 'rendering gradients&hellip;' ],
-	15: [ 'the game.', 'the thing above is called a glider.', '[your ad here]' ],
-	22: [ 'this shouldn&rsquo;t take much longer.', 'don&rsquo;t panic yet.' ],
-	30: [ 'yep, still loading.', 'loading proceeds according to keikaku.' ],
-	40: [ 'does your list even end?', 'ah, the cable was unplugged.', 'you should have clicked harder.' ],
-	50: [ 'your stats will appear any second now.', 'good things come to those who wait.' ],
-	60: [ 'loading&hellip;' ]
+	5: [ 'downloading your data&hellip;', 'performing magic tricks&hellip;', 'reticulating splines&hellip;', 'making you read this text&hellip;', 'preparing the awesome&hellip;', 'cropping avatars&hellip;' ],
+	10: [ 'applying final touches&hellip;', 'antialiasing buttons&hellip;', 'rendering gradients&hellip;', 'please wait&hellip;', 'connecting the dots&hellip;' ],
+	15: [ '[your ad here]', 'proving P=NP&hellip;', 'warming up the server&hellip;', 'breaking fourth wall&hellip;', 'signing the contract&hellip;' ],
+	22: [ 'this shouldn&rsquo;t take much longer.', 'don&rsquo;t panic yet.', 'the engine needs some oil.', 'moving the gears&hellip;', 'randomizing messages&hellip;' ],
+	30: [ 'yep, still loading.', 'loading just according to keikaku.', 'analyzing your taste&hellip;', 'transforming to final form&hellip;' ],
+	40: [ 'does your list even end?', 'you should have clicked harder.', 'there&rsquo;s a reward at the end.', 'tick&hellip; tock&hellip;' ],
+	50: [ 'the game.', 'your stats will appear any second now.', 'good things come to those who wait.', 'it&rsquo;ll be worth the wait.' ],
+	60: [ 'loading&hellip;' ],
+	90: [ 'yawn.', 'hmm&hellip;' ],
+	100: [ 'does your list even end?', 'please wait a bit longer.' ],
+	110: [ 'loading&hellip;' ]
 };
 
 //show glider
