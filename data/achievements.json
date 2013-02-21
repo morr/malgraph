@@ -3,9 +3,9 @@
 		"mahou shoujo": {
 			"achievements": [
 				{ "threshold": "15-29", "id": "manga-mahoushoujo-1", "level": "Mahou Shoujo: level 1",   "title": "Let me lift that curse", "desc": "If you wish hard enough, you can become a magical girl in the blink of an eye." },
-				{ "threshold": "30-49", "id": "manga-mahoushoujo-2", "level": "Mahou Shoujo: level 2",   "title": "", "desc": "" },
-				{ "threshold": "50-79", "id": "manga-mahoushoujo-3", "level": "Mahou Shoujo: level 3",   "title": "", "desc": "" },
-				{ "threshold": "80+",   "id": "manga-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "", "desc": "" }
+				{ "threshold": "30-49", "id": "manga-mahoushoujo-2", "level": "Mahou Shoujo: level 2",   "title": "Conflict Breaker",       "desc": "Fighting hardly solves any problems. There are better ways to live our lives." },
+				{ "threshold": "50-79", "id": "manga-mahoushoujo-3", "level": "Mahou Shoujo: level 3",   "title": "Aim for the top",        "desc": "Even if you work alone, never forget your friends who helped you overcome all fears." },
+				{ "threshold": "80+",   "id": "manga-mahoushoujo-4", "level": "Mahou Shoujo: MAX POWER", "title": "Complete control",       "desc": "Read over 80 mahou shoujo manga. At this level magic circles form around you at will." }
 			],
 			"requirement": {"type": "given-titles", "titles": [
 				3167,  #A Little Snow Fairy Sugar
