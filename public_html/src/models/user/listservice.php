@@ -113,14 +113,18 @@ class UserListService {
 		$all = [];
 
 		$franchises = [];
+		$checked = [];
 		foreach ($entries as $entry) {
+			if (isset($checked[$entry->getID()])) {
+				continue;
+			}
 			$franchise = $entry->getAMEntry()->getFranchise();
 			$franchise->ownEntries = [];
 			foreach ($franchise->entries as $franchiseEntry) {
 				$id = $franchiseEntry->getID();
 				if (isset($entries[$id])) {
 					$franchise->ownEntries []= $entries[$id];
-					unset($entries[$id]);
+					$checked[$id] = true;
 				}
 			}
 			$franchise->meanScore = UserListService::getMeanScore($franchise->ownEntries);
