@@ -122,7 +122,10 @@ class UserModel extends AbstractModel {
 		$userEntry->setUserName(substr($tmp, 0, strpos($tmp, '\'s Profile')));
 
 		//static information
-		$userData->setProfilePictureURL($xpath->query('//td[@class = \'profile_leftcell\']//img')->item(0)->getAttribute('src'));
+		$node = $xpath->query('//td[@class = \'profile_leftcell\']//img')->item(0);
+		if (!empty($node)) {
+			$userData->setProfilePictureURL($node->getAttribute('src'));
+		}
 		$userData->setJoinDate(ChibiRegistry::getInstance()->getHelper('mg')->fixDate($xpath->query('//td[text() = \'Join Date\']/following-sibling::td')->item(0)->nodeValue));
 		$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($xpath->query('//a[text() = \'All Comments\']')->item(0)->getAttribute('href'));
 		$userEntry->setID(intval($url['query']['id']));
@@ -243,13 +246,17 @@ class UserModel extends AbstractModel {
 			$xpath = new DOMXPath($doc);
 
 			preg_match('/ has (\d+) friends/', $contents, $results);
-			$max = intval($results[1]);
+			if (!isset($results[1])) {
+				#throw new DownloadException($url);
+			} else {
+				$max = intval($results[1]);
 
-			$nodes = $xpath->query('//table//div[contains(@style, \'margin\')]/a[contains(@href, \'profile\')]');
-			foreach ($nodes as $node) {
-				$friend = new UserFriendEntry();
-				$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
-				$userEntry->addFriend($friend);
+				$nodes = $xpath->query('//table//div[contains(@style, \'margin\')]/a[contains(@href, \'profile\')]');
+				foreach ($nodes as $node) {
+					$friend = new UserFriendEntry();
+					$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+					$userEntry->addFriend($friend);
+				}
 			}
 
 			$shift += $page;
