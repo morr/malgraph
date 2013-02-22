@@ -118,17 +118,32 @@ class UserListService {
 			if (isset($checked[$entry->getID()])) {
 				continue;
 			}
-			$franchise = $entry->getAMEntry()->getFranchise();
-			$franchise->ownEntries = [];
-			foreach ($franchise->entries as $franchiseEntry) {
+			$actualFranchise = $entry->getAMEntry()->getFranchise();
+			$franchise = null;
+			$add  = false;
+			//check if any id was set anywhere. sadly, anime relations on mal can be one-way.
+			foreach ($actualFranchise->entries as $franchiseEntry) {
+				$id = $franchiseEntry->getID();
+				if (isset($checked[$id])) {
+					$franchise = $checked[$id];
+				}
+			}
+			if ($franchise === null) {
+				$franchise = $actualFranchise;
+				$franchise->ownEntries = [];
+				$add = true;
+			}
+			foreach ($actualFranchise->entries as $franchiseEntry) {
 				$id = $franchiseEntry->getID();
 				if (isset($entries[$id])) {
 					$franchise->ownEntries []= $entries[$id];
-					$checked[$id] = true;
+					$checked[$id] = $franchise;
 				}
 			}
 			$franchise->meanScore = UserListService::getMeanScore($franchise->ownEntries);
-			$franchises []= $franchise;
+			if ($add) {
+				$franchises []= $franchise;
+			}
 		}
 
 		//remove groups with less than 2 titles
