@@ -3,6 +3,9 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
+class LockException extends Exception { }
+
+
 class GlobalAnimeData extends GlobalAMData {
 	use AnimeModelDecorator;
 }
@@ -141,7 +144,7 @@ class GlobalsModel extends AbstractModel {
 	private static $fp = null;
 	private static function specialRead() {
 		$path = (new self())->keyToPath(null);
-		$fp = fopen($path, 'c+b');
+		$fp = fopen($path, 'r+b');
 		self::$fp = $fp;
 		if (flock($fp, LOCK_EX)) {
 			fseek($fp, 0, SEEK_END);
@@ -154,13 +157,18 @@ class GlobalsModel extends AbstractModel {
 				$return = unserialize($data);
 			}
 		} else {
-			throw new Exception('Couldn\'t acquire lock for ' . $path);
+			fclose($fp);
+			self::$fp = null;
+			throw new LockException('Couldn\'t acquire lock for ' . $path);
 		}
 		return $return;
 	}
 
 	private static function specialPut($data) {
 		$fp = self::$fp;
+		if (empty(self::$fp)) {
+			throw new LockException('Lost the lock!');
+		}
 		fseek($fp, 0, SEEK_SET);
 		ftruncate($fp, 0);
 		fwrite($fp, serialize($data));
