@@ -140,7 +140,7 @@ class GlobalsModel extends AbstractModel {
 	private static $fp = null;
 	private static function specialRead() {
 		$path = (new self())->keyToPath(null);
-		$fp = fopen($path, 'r+b');
+		$fp = fopen($path, 'c+b');
 		self::$fp = $fp;
 		if (flock($fp, LOCK_EX)) {
 			fseek($fp, 0, SEEK_END);
@@ -150,7 +150,7 @@ class GlobalsModel extends AbstractModel {
 				$return = (new self())->getReal(null);
 			} else {
 				$data = fread($fp, $size);
-				$return = unserialize($data);
+				$return = unserialize(gzuncompress($data));
 			}
 		} else {
 			fclose($fp);
@@ -167,7 +167,7 @@ class GlobalsModel extends AbstractModel {
 		}
 		fseek($fp, 0, SEEK_SET);
 		ftruncate($fp, 0);
-		fwrite($fp, serialize($data));
+		fwrite($fp, gzcompress(serialize($data)));
 		fflush($fp);
 		flock($fp, LOCK_UN);
 		fclose($fp);

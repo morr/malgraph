@@ -117,7 +117,7 @@ abstract class AbstractModel implements CachableModel {
 			fclose($fp);
 			throw new LockException();
 		}
-		$data = unserialize($contents);
+		$data = unserialize(gzuncompress($contents));
 		return $data;
 	}
 
@@ -140,6 +140,6 @@ abstract class AbstractModel implements CachableModel {
 
 	public function put($key, $data) {
 		$path = $this->keyToPath($key);
-		return file_put_contents($path, serialize($data), LOCK_EX);
+		return file_put_contents($path, gzcompress(serialize($data)), LOCK_EX);
 	}
 }
