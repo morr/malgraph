@@ -569,7 +569,7 @@ class StatsController extends AbstractController {
 		$this->view->recsStatic = [];
 		$this->view->recs = [];
 
-		ChibiRegistry::getHelper('benchmark')->benchmark('init');
+		#ChibiRegistry::getHelper('benchmark')->benchmark('init');
 		//get list of source users
 		$goal = 50;
 		$coolUsers = GlobalsModel::getData()->getCoolUsersForCF($this->view->am);
@@ -586,7 +586,7 @@ class StatsController extends AbstractController {
 			$selUser->meanScore = $list2->getScoreDistributionForCF()->getMeanScore();
 			$selUsers[$id] = $selUser;
 		}
-		ChibiRegistry::getHelper('benchmark')->benchmark('got users');
+		#ChibiRegistry::getHelper('benchmark')->benchmark('got users');
 
 
 		foreach ($this->view->users as $u) {
@@ -597,7 +597,7 @@ class StatsController extends AbstractController {
 			$modelAM = AMModel::factory($this->view->am);
 			$finalAM = [];
 
-			ChibiRegistry::getHelper('benchmark')->benchmark('init ' . $u->getUserName());
+			#ChibiRegistry::getHelper('benchmark')->benchmark('init ' . $u->getUserName());
 			if ($recsStatic) {
 				$this->view->recsStatic[$u->getID()] = true;
 
@@ -639,7 +639,7 @@ class StatsController extends AbstractController {
 				}
 				$selAM = array_keys($selAM);
 				#$simNormalize = 1. / max(1, $simNormalize);
-				ChibiRegistry::getHelper('benchmark')->benchmark('got titles');
+				#ChibiRegistry::getHelper('benchmark')->benchmark('got titles');
 
 				//get title ratings
 				$finalAM = [];
@@ -661,14 +661,14 @@ class StatsController extends AbstractController {
 				}
 				arsort($finalAM, SORT_NUMERIC);
 				$finalAM = array_keys($finalAM);
-				ChibiRegistry::getHelper('benchmark')->benchmark('got scores');
+				#ChibiRegistry::getHelper('benchmark')->benchmark('got scores');
 			}
 
 			//always append at the end shuffled static recommendations
 			$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
 			shuffle($staticRecs[$this->view->am]);
 			$finalAM = array_merge($finalAM, $staticRecs[$this->view->am]);
-			ChibiRegistry::getHelper('benchmark')->benchmark('added static recs');
+			#ChibiRegistry::getHelper('benchmark')->benchmark('added static recs');
 
 			//now, compute final recommendations
 			$limit = 15;
@@ -706,7 +706,7 @@ class StatsController extends AbstractController {
 				$rec->amEntry = $amEntry;
 				$recs []= $rec;
 			}
-			ChibiRegistry::getHelper('benchmark')->benchmark('computed final recs');
+			#ChibiRegistry::getHelper('benchmark')->benchmark('computed final recs');
 
 			$this->sessionHelper->restore();
 			$this->view->recs[$u->getID()] = $recs;
