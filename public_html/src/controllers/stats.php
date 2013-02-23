@@ -584,7 +584,7 @@ class StatsController extends AbstractController {
 			$selUser->user = $u2;
 			$selUser->list = $list2;
 			$selUser->meanScore = $list2->getScoreDistributionForCF()->getMeanScore();
-			$selUsers[$id] = &$selUser;
+			$selUsers[$id] = $selUser;
 		}
 		ChibiRegistry::getHelper('benchmark')->benchmark('got users');
 
@@ -611,7 +611,7 @@ class StatsController extends AbstractController {
 				//get titles that are worth checking out
 				#$simNormalize = 0;
 				$selAM = [];
-				foreach ($selUsers as $id => $selUser) {
+				foreach ($selUsers as $id => &$selUser) {
 					//compute similarity indexes between "me" and selected user
 					$sum1 = $sum2a = $sum2b = 0;
 					foreach ($entries as $e1) {
@@ -628,27 +628,27 @@ class StatsController extends AbstractController {
 					}
 					$selUser->sim = $sum1 / max(1, sqrt($sum2a * $sum2b));
 
-					//2b. check what titles are on their list
+					//check what titles are on their list
 					foreach ($selUser->list->getEntries() as $e2) {
 						$e1 = $list->getEntryByID($e2->getID());
 						if (!$e1 or $e1->getStatus() == UserListEntry::STATUS_PLANNED) {
-							$selAM []= $e2->getID();
+							$selAM[$e2->getID()] = true;
 						}
 					}
 					#$simNormalize += abs($selUser->sim);
 				}
+				$selAM = array_keys($selAM);
 				#$simNormalize = 1. / max(1, $simNormalize);
 				ChibiRegistry::getHelper('benchmark')->benchmark('got titles');
 
 				//get title ratings
-				$selAM = array_unique($selAM);
 				$finalAM = [];
 				foreach ($selAM as $id) {
 					$score = 0;
 					foreach ($selUsers as $selUser) {
 						$e2 = $selUser->list->getEntryByID($id);
 						//filter sources
-						if ($e2 and $e2->getStatus() == UserListEntry::STATUS_COMPLETED) {
+						if ($e2) {
 							$score2 = $e2->getScore();
 							if ($score2) {
 								$score += $selUser->sim * ($score2 - $selUser->meanScore);
