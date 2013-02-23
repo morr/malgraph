@@ -163,6 +163,9 @@ abstract class AMEntry extends AbstractModelEntry {
 				if ($relation->getType() != $this->getType()) {
 					continue;
 				}
+				if ($relation->getRelation() == 'other' or $relation->getRelation() == 'character') {
+					continue;
+				}
 				array_push($stack, $relation->getAMEntry());
 			}
 		}
