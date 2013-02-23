@@ -35,13 +35,13 @@ $(function() {
 	});
 
 	$('.recs .header .more').click(function(e) {
-		toggleMoreWrappers($(this).parents('tr').next().find('.wrapper-more'), [], false);
+		toggleMoreWrappers($(this).parents('tbody').find('.wrapper-more'), [], false);
 		$(this).parents('tr').toggleClass('active');
 		e.preventDefault();
 	});
 
 	$('.wrapper-more').on('click', '.close', function(e) {
-		$(this).parents('tr').prev().toggleClass('active');
+		$(this).parents('tbody').find('tr.header').toggleClass('active');
 	});
 });
 

@@ -571,42 +571,24 @@ class StatsController extends AbstractController {
 		foreach ($this->view->users as $u) {
 			$filter = UserListFilters::getCompleted();
 			$entries = $u->getList($this->view->am)->getEntries($filter);
-			$limit = 15;
 
-			$recs = [];
 			$recsStatic = count($entries) <= 20;
 			$modelAM = AMModel::factory($this->view->am);
+			$finalAM = [];
 
-			//static recommendations
 			if ($recsStatic) {
 				$this->view->recsStatic[$u->getID()] = true;
-				$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
-				foreach ($staticRecs[$this->view->am] as $id) {
-					$userEntry = $u->getList($this->view->am)->getEntryByID($id);
-					if ($userEntry !== null and $userEntry->getStatus() == UserListEntry::STATUS_COMPLETED) {
-						continue;
-					}
-					$recs []= $modelAM->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
-				}
-				shuffle($recs);
-				$recs = array_slice($recs, 0, $limit);
-			}
 
 			//dynamic recommendations
-			if (empty($recs)) {
+			} else {
 				$this->view->recsStatic[$u->getID()] = false;
 				$goal = 50;
 				$selUsers = [];
 				$selAM = [];
 
-				$u1 = $u;
-				$list1 = $u1->getList($this->view->am);
-				$mean1 = UserListService::getMeanScore($entries);
-				$filterDontShow = function($e) {
-					if (!$e) return true;
-					if ($e->getStatus() != UserListEntry::STATUS_PLANNED) return true;
-					return false;
-				};
+				$list = $u->getList($this->view->am);
+				$meanScore = UserListService::getMeanScore($entries);
+				ChibiRegistry::getHelper('benchmark')->benchmark('init');
 
 				//1. get some user base
 				$modelUsers = new UserModel();
@@ -622,93 +604,115 @@ class StatsController extends AbstractController {
 						$distro = $list2->getScoreDistributionForCF();
 						//filter out uninteresting sources
 						if ($distro->getRatedCount() >= 50 and $distro->getStandardDeviation() >= 1.5) {
-							$mean2 = $distro->getMeanScore();
-							$selUsers[$id] = [$u2, $list2, $mean2];
+							$selUser = new StdClass;
+							$selUser->user = $u2;
+							$selUser->list = $list2;
+							$selUser->meanScore = $distro->getMeanScore();
+							$selUsers[$id] = &$selUser;
 						} else {
 							unset($u2, $list2, $distro);
 						}
 					}
 				}
+				ChibiRegistry::getHelper('benchmark')->benchmark('got users');
 
 				//2.
 				#$simNormalize = 0;
-				foreach ($selUsers as $id => &$data) {
+				foreach ($selUsers as $id => $selUser) {
 					//2a. get similarity indexes between me and selected user
-					list ($u2, $list2, $mean2) = $data;
 					$sum1 = $sum2a = $sum2b = 0;
 					foreach ($entries as $e1) {
-						$e2 = $list2->getEntryByID($e1->getID());
+						$e2 = $selUser->list->getEntryByID($e1->getID());
 						if ($e2 !== null) {
 							$score1 = $e1->getScore();
 							$score2 = $e2->getScore();
-							$sum1 += ($score1 - $mean1) * ($score2 - $mean2);
-							$sum2a += ($score1 - $mean1) * ($score1 - $mean1);
-							$sum2b += ($score2 - $mean2) * ($score2 - $mean2);
+							$tmp1 = ($score1 - $meanScore);
+							$tmp2 = ($score2 - $selUser->meanScore);
+							$sum1 += $tmp1 * $tmp2;
+							$sum2a += $tmp1 * $tmp1;
+							$sum2b += $tmp2 * $tmp2;
 						}
 					}
-					$sim = $sum1 / max(1, sqrt($sum2a * $sum2b));
-					$data []= $sim;
+					$selUser->sim = $sum1 / max(1, sqrt($sum2a * $sum2b));
 
 					//2b. check what titles are on their list
-					foreach ($list2->getEntries() as $e2) {
-						$e1 = $list1->getEntryByID($e2->getID());
-						if (!$filterDontShow($e1)) {
+					foreach ($selUser->list->getEntries() as $e2) {
+						$e1 = $list->getEntryByID($e2->getID());
+						if (!$e1 or $e1->getStatus() == UserListEntry::STATUS_PLANNED) {
 							$selAM []= $e2->getID();
 						}
 					}
-					#$simNormalize += abs($sim);
+					#$simNormalize += abs($selUser->sim);
 				}
 				#$simNormalize = 1. / max(1, $simNormalize);
+				ChibiRegistry::getHelper('benchmark')->benchmark('got titles');
 
 				//3. get title ratings
+				$selAM = array_unique($selAM);
 				$finalAM = [];
 				foreach ($selAM as $id) {
 					$score = 0;
-					foreach ($selUsers as $uid => $data) {
-						list ($u2, $list2, $mean2, $sim) = $data;
-						$e2 = $list2->getEntryByID($id);
+					foreach ($selUsers as $selUser) {
+						$e2 = $selUser->list->getEntryByID($id);
 						//filter sources
 						if ($e2 and $e2->getStatus() == UserListEntry::STATUS_COMPLETED) {
 							$score2 = $e2->getScore();
 							if ($score2) {
-								$score += $sim * ($score2 - $mean2);
+								$score += $selUser->sim * ($score2 - $selUser->meanScore);
 							}
 						}
 					}
 					#$score *= $simNormalize;
-					$score += $mean1;
+					$score += $meanScore;
 					$finalAM[$id] = $score;
 				}
-
-				//4. convert title ratings to actual recommendations
 				arsort($finalAM, SORT_NUMERIC);
 				$finalAM = array_keys($finalAM);
-				while (count($finalAM) > 0 and count($recs) < $limit) {
-					//make sure only first unwatched thing in franchise is going to be recommended
-					$franchise = $modelAM->get(array_shift($finalAM))->getFranchise();
-					uasort($franchise->entries, function($a, $b) { return $a->getID() > $b->getID() ? 1 : -1; });
-					$e = null;
-					foreach ($franchise->entries as $e2) {
-						if ($e2->getStatus() == AMEntry::STATUS_NOT_YET_PUBLISHED) {
-							continue;
-						}
-						$e1 = $list1->getEntryByID($e2->getID());
-						if (!$filterDontShow($e1)) {
-							$e = $e2;
-							break;
-						}
-					}
-					if (empty($e)) {
+				ChibiRegistry::getHelper('benchmark')->benchmark('got scores');
+			}
+
+			//always append at the end shuffled static recommendations
+			$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
+			shuffle($staticRecs[$this->view->am]);
+			$finalAM = array_merge($finalAM, $staticRecs[$this->view->am]);
+			ChibiRegistry::getHelper('benchmark')->benchmark('added static recs');
+
+			$limit = 15;
+			$recs = [];
+			$nonPlannedRecs = 0;
+			while (count($finalAM) > 0 and $nonPlannedRecs < $limit) {
+				//make sure only first unwatched thing in franchise is going to be recommended
+				$franchise = $modelAM->get(array_shift($finalAM))->getFranchise();
+				uasort($franchise->entries, function($a, $b) { return $a->getID() > $b->getID() ? 1 : -1; });
+				$amEntry = null;
+				foreach ($franchise->entries as $franchiseEntry) {
+					if ($franchiseEntry->getStatus() == AMEntry::STATUS_NOT_YET_PUBLISHED) {
 						continue;
 					}
-					//don't recommend more than one thing in given franchise
-					foreach ($franchise->entries as $e2) {
-						$id2 = $e2->getID();
-						$finalAM = array_filter($finalAM, function($id) use ($id2) { return $id != $id2; });
+					$userEntry = $u->getList($this->view->am)->getEntryByID($franchiseEntry->getID());
+					if (!$userEntry) {
+						$amEntry = $franchiseEntry;
+						$nonPlannedRecs ++;
+						break;
+					} elseif ($userEntry->getStatus() == UserListEntry::STATUS_PLANNED) {
+						$amEntry = $franchiseEntry;
+						break;
 					}
-					$recs []= $e;
 				}
+				if (empty($amEntry)) {
+					continue;
+				}
+				//don't recommend more than one thing in given franchise
+				foreach ($franchise->entries as $franchiseEntry) {
+					$id2 = $franchiseEntry->getID();
+					$finalAM = array_filter($finalAM, function($id) use ($id2) { return $id != $id2; });
+				}
+				$rec = new StdClass;
+				$rec->userEntry = $userEntry;
+				$rec->amEntry = $amEntry;
+				$recs []= $rec;
 			}
+			ChibiRegistry::getHelper('benchmark')->benchmark('computed final recs');
 
 			$this->sessionHelper->restore();
 			$this->view->recs[$u->getID()] = $recs;
