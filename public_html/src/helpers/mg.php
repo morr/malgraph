@@ -306,10 +306,10 @@ class MGHelper extends ChibiHelper {
 
 
 
-	public function suppressErrors() {
+	public static function suppressErrors() {
 		set_error_handler(function($errno, $errstr, $errfile, $errline) {});
 	}
-	public function restoreErrors() {
+	public static function restoreErrors() {
 		restore_error_handler();
 	}
 

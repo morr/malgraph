@@ -94,7 +94,10 @@ abstract class AbstractModel implements CachableModel {
 		if (!file_exists($path)) {
 			return false;
 		}
-		return unlink($path);
+		ChibiRegistry::getHelper('mg')->suppressErrors();
+		$ret = unlink($path);
+		ChibiRegistry::getHelper('mg')->restoreErrors();
+		return $ret;
 	}
 
 	public function getCached($key) {
