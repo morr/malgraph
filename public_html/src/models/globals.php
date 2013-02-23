@@ -62,11 +62,17 @@ abstract class GlobalAMData {
 class GlobalData extends AbstractModelEntry {
 	private $amData;
 	private $userCount;
+	private $usersCF;
 
 	public function __construct() {
-		$this->amData[AMModel::TYPE_ANIME] = new GlobalAnimeData();
-		$this->amData[AMModel::TYPE_MANGA] = new GlobalMangaData();
-
+		$this->amData = [
+			AMModel::TYPE_ANIME => new GlobalAnimeData(),
+			AMModel::TYPE_MANGA => new GlobalMangaData(),
+		];
+		$this->usersCF = [
+			AMModel::TYPE_ANIME => [],
+			AMModel::TYPE_MANGA => [],
+		];
 		$this->userCount = 0;
 	}
 
@@ -90,16 +96,29 @@ class GlobalData extends AbstractModelEntry {
 		return $this->amData[$type];
 	}
 
+	public function getCoolUsersForCF($type) {
+		return $this->usersCF[$type];
+	}
+
 
 
 	public function addUser(UserEntry $user) {
 		if (!$user->getID()) {
 			return;
 		}
+
+		foreach (AMModel::getTypes() as $type) {
+			$distro = $user->getList($type)->getScoreDistributionForCF();
+			//filter out uninteresting sources
+			if ($distro->getRatedCount() >= 50 and $distro->getStandardDeviation() >= 1.5) {
+				$this->usersCF[$type] []= $user->getUserName();
+			}
+		}
 		$this->userCount ++;
 		foreach (AMModel::getTypes() as $type) {
 			$this->getAMData($type)->addUser($user);
 		}
+
 		$this->setGenerationTime(time());
 	}
 
@@ -107,10 +126,16 @@ class GlobalData extends AbstractModelEntry {
 		if (!$user->getID()) {
 			return;
 		}
+
+		foreach (AMModel::getTypes() as $type) {
+			$name = $user->getUserName();
+			$this->usersCF[$type] = array_filter($this->usersCF[$type], function($subName) use ($name) { return $subName != $name; });
+		}
 		$this->userCount --;
 		foreach (AMModel::getTypes() as $type) {
 			$this->getAMData($type)->delUser($user);
 		}
+
 		$this->setGenerationTime(time());
 	}
 

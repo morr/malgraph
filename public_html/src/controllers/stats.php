@@ -568,6 +568,27 @@ class StatsController extends AbstractController {
 	public function sugAction() {
 		$this->view->recsStatic = [];
 		$this->view->recs = [];
+
+		ChibiRegistry::getHelper('benchmark')->benchmark('init');
+		//get list of source users
+		$goal = 50;
+		$coolUsers = GlobalsModel::getData()->getCoolUsersForCF($this->view->am);
+		shuffle($coolUsers);
+		$coolUsers = array_slice($coolUsers, 0, $goal);
+		$modelUsers = new UserModel();
+		$selUsers = [];
+		foreach ($coolUsers as $id) {
+			$u2 = $modelUsers->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
+			$list2 = $u2->getList($this->view->am);
+			$selUser = new StdClass;
+			$selUser->user = $u2;
+			$selUser->list = $list2;
+			$selUser->meanScore = $list2->getScoreDistributionForCF()->getMeanScore();
+			$selUsers[$id] = &$selUser;
+		}
+		ChibiRegistry::getHelper('benchmark')->benchmark('got users');
+
+
 		foreach ($this->view->users as $u) {
 			$filter = UserListFilters::getCompleted();
 			$entries = $u->getList($this->view->am)->getEntries($filter);
@@ -576,50 +597,22 @@ class StatsController extends AbstractController {
 			$modelAM = AMModel::factory($this->view->am);
 			$finalAM = [];
 
+			ChibiRegistry::getHelper('benchmark')->benchmark('init ' . $u->getUserName());
 			if ($recsStatic) {
 				$this->view->recsStatic[$u->getID()] = true;
 
-			//dynamic recommendations
+			//dynamic recommendations...
 			} else {
 				$this->view->recsStatic[$u->getID()] = false;
-				$goal = 50;
-				$selUsers = [];
-				$selAM = [];
 
 				$list = $u->getList($this->view->am);
 				$meanScore = UserListService::getMeanScore($entries);
-				ChibiRegistry::getHelper('benchmark')->benchmark('init');
 
-				//1. get some user base
-				$modelUsers = new UserModel();
-				$allIds = $modelUsers->getKeys();
-				shuffle($allIds);
-				$iters = 0;
-				while (count($allIds) > 0 and count($selUsers) < $goal) {
-					$iters ++;
-					$id = array_shift($allIds);
-					if (!isset($selUsers[$id])) {
-						$u2 = $modelUsers->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
-						$list2 = $u2->getList($this->view->am);
-						$distro = $list2->getScoreDistributionForCF();
-						//filter out uninteresting sources
-						if ($distro->getRatedCount() >= 50 and $distro->getStandardDeviation() >= 1.5) {
-							$selUser = new StdClass;
-							$selUser->user = $u2;
-							$selUser->list = $list2;
-							$selUser->meanScore = $distro->getMeanScore();
-							$selUsers[$id] = &$selUser;
-						} else {
-							unset($u2, $list2, $distro);
-						}
-					}
-				}
-				ChibiRegistry::getHelper('benchmark')->benchmark('got users');
-
-				//2.
+				//get titles that are worth checking out
 				#$simNormalize = 0;
+				$selAM = [];
 				foreach ($selUsers as $id => $selUser) {
-					//2a. get similarity indexes between me and selected user
+					//compute similarity indexes between "me" and selected user
 					$sum1 = $sum2a = $sum2b = 0;
 					foreach ($entries as $e1) {
 						$e2 = $selUser->list->getEntryByID($e1->getID());
@@ -647,7 +640,7 @@ class StatsController extends AbstractController {
 				#$simNormalize = 1. / max(1, $simNormalize);
 				ChibiRegistry::getHelper('benchmark')->benchmark('got titles');
 
-				//3. get title ratings
+				//get title ratings
 				$selAM = array_unique($selAM);
 				$finalAM = [];
 				foreach ($selAM as $id) {
@@ -677,6 +670,7 @@ class StatsController extends AbstractController {
 			$finalAM = array_merge($finalAM, $staticRecs[$this->view->am]);
 			ChibiRegistry::getHelper('benchmark')->benchmark('added static recs');
 
+			//now, compute final recommendations
 			$limit = 15;
 			$recs = [];
 			$nonPlannedRecs = 0;
