@@ -132,7 +132,7 @@ abstract class AMModel extends AbstractModel {
 
 		//relations
 		$entry->resetRelations();
-		$lastRelation = '';
+		$lastRelationType = '';
 		foreach ($xpath->query('//h2[starts-with(text(), \'Related\')]/../*') as $node) {
 			if ($node->nodeName == 'h2' and strpos($node->textContent, 'Related') === false) {
 				break;
@@ -143,11 +143,11 @@ abstract class AMModel extends AbstractModel {
 			$link = $node->attributes->getNamedItem('href')->nodeValue;
 
 			//relation
-			$relation = strtolower(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->previousSibling->textContent));
-			if ($relation == ',') {
-				$relation = $lastRelation;
+			$relationType = strtolower(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->previousSibling->textContent));
+			if ($relationType == ',') {
+				$relationType = $lastRelationType;
 			} else {
-				$lastRelation = $relation;
+				$lastRelationType = $relationType;
 			}
 
 			//id
@@ -168,7 +168,7 @@ abstract class AMModel extends AbstractModel {
 
 			$relation = new AMRelationEntry();
 			$relation->setType($type);
-			$relation->setRelation($relation);
+			$relation->setRelation($relationType);
 			$relation->setID($id);
 			$entry->addRelation($relation);
 		}

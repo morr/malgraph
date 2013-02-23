@@ -21,7 +21,7 @@ class AMRelationEntry {
 	}
 
 	public function getRelation() {
-		return $this->relation;
+		return strtolower($this->relation);
 	}
 
 	public function setRelation($relation) {
