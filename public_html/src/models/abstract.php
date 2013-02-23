@@ -1,4 +1,6 @@
 <?php
+class LockException extends Exception { }
+
 class InvalidEntryException extends Exception {
 	public function __construct($key, $msg = null) {
 		parent::__construct('Invalid entry: ' . $key . ($msg ? ' (' . $msg . ')' : ''));
@@ -100,7 +102,18 @@ abstract class AbstractModel implements CachableModel {
 		if (!file_exists($path)) {
 			return null;
 		}
-		$contents = file_get_contents($path);
+		$fp = fopen($path, 'rb');
+		if (flock($fp, LOCK_SH)) {
+			fseek($fp, 0, SEEK_END);
+			$size = ftell($fp);
+			fseek($fp, 0, SEEK_SET);
+			$contents = fread($fp, $size);
+			flock($fp, LOCK_UN);
+			fclose($fp);
+		} else {
+			fclose($fp);
+			throw new LockException();
+		}
 		$data = unserialize($contents);
 		return $data;
 	}

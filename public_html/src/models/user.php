@@ -10,6 +10,7 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/history.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/historyentry.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/globals.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/html.php';
 
 
 class UserModel extends AbstractModel {

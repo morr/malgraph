@@ -3,7 +3,6 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
-class LockException extends Exception { }
 
 
 class GlobalAnimeData extends GlobalAMData {
@@ -127,9 +126,6 @@ class GlobalsModel extends AbstractModel {
 		$globalData = new GlobalData();
 		$globalData->setGenerationTime(time());
 		$globalData->setExpirationTime(null);
-		$modelUsers = new UserModel();
-		$allUsers = $modelUsers->getKeys();
-
 		return $globalData;
 	}
 
