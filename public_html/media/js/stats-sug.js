@@ -1,4 +1,17 @@
 $(function() {
+	if ($('.recs .planned').length > 0) {
+		$('.planned').find('td').wrapInner('<div style="display: none">');
+		var link = $('<a class="more" href="#">(show already planned titles)</a>').click(function(e) {
+			e.preventDefault();
+			$('.planned').show();
+			$('.recs .planned td>div').slideDown(function() {
+				link.slideUp();
+				$(this).replaceWith($(this).contents());
+			});
+		});
+		$('.recs .section-body').append(link);
+	}
+
 	$('.missing tr').each(function() {
 		var num1 = 8;
 		var num2 = 5;

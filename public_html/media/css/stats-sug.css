@@ -5,6 +5,7 @@
 .missing table tbody:hover tr td { background: #f5f5f5; } /* multiple tbody are used for highlighting (more) link row along with proposition row */
 .missing table td ul { list-style-type: none; margin: 0; padding: 0; }
 .missing table td ul li { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+.recs table~.more,
 .missing .more { display: block; text-align: center; color: silver; }
 
 .recs table { table-layout: fixed; width: 100%; border-spacing: 0; }

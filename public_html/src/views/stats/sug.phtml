@@ -31,6 +31,9 @@
 						</a>
 					</td>
 					<td class="type">
+						<?php if ($rec->userEntry and $rec->userEntry->getStatus() == UserListEntry::STATUS_PLANNED): ?>
+							<i data-tooltip="This title is already on|your Plan To <?php echo $this->am == AMModel::TYPE_ANIME ? 'Watch' : 'Read' ?> list." class="icon-schedule"></i>&nbsp;
+						<?php endif ?>
 						<?php if ($rec->amEntry->getType() == AMModel::TYPE_ANIME): ?>
 							<?php echo ucfirst(ChibiRegistry::getHelper('mg')->textSubType($rec->amEntry->getSubType())) ?>
 							<?php if ($rec->amEntry->getStatus() == AMEntry::STATUS_PUBLISHING): ?>
