@@ -1,7 +1,7 @@
 $(function() {
-	if ($('.recs .planned').length > 0) {
-		$('.recs').each(function() {
-			var target = $(this);
+	$('.recs').each(function() {
+		var target = $(this);
+		if (target.find('.planned').length > 0) {
 			target.find('.planned td').wrapInner('<div style="display: none">');
 			var link = $('<a class="more" href="#">(show already planned titles)</a>').click(function(e) {
 				e.preventDefault();
@@ -12,8 +12,8 @@ $(function() {
 				});
 			});
 			target.find('.section-body').append(link);
-		});
-	}
+		}
+	});
 
 	$('.missing tr').each(function() {
 		var num1 = 8;
