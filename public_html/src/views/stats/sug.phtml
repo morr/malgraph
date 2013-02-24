@@ -16,9 +16,9 @@
 			<table>
 			<?php foreach ($this->recs[$user->getID()] as $rec): ?>
 				<?php if ($rec->userEntry and $rec->userEntry->getStatus() == UserListEntry::STATUS_PLANNED): ?>
-					<tbody class="planned">
+					<tbody class="planned" data-id="<?php echo $rec->amEntry->getID() ?>">
 				<?php else: ?>
-					<tbody>
+					<tbody data-id="<?php echo $rec->amEntry->getID() ?>">
 				<?php endif ?>
 				<tr class="header">
 					<td class="title">
@@ -204,8 +204,8 @@
 					</tr>
 				</thead>
 				<?php foreach ($this->relations[$user->getID()] as $franchise): ?>
-					<tbody>
-						<tr data-ids="<?php echo join(' ', array_map(function($entry) { return $entry->getID(); }, $franchise->ownEntries)) ?>">
+					<tbody data-ids="<?php echo join(' ', array_map(function($entry) { return $entry->getID(); }, $franchise->ownEntries)) ?>">
+						<tr>
 							<td class="subject">
 								<ul>
 								<?php foreach ($franchise->ownEntries as $entry): ?>
