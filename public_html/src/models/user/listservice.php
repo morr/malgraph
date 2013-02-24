@@ -211,6 +211,7 @@ abstract class Distribution {
 	}
 
 	const IGNORE_NULL_KEY = 1;
+	const IGNORE_EMPTY_GROUPS = 2;
 
 	public function __construct(array $entries = []) {
 		foreach ($entries as $entry) {
@@ -240,10 +241,12 @@ abstract class Distribution {
 	}
 
 	protected function addGroup($key) {
-		$this->keys[(string)$key] = $key;
-		$this->groups[(string)$key] = 0;
-		if ($this->entries !== null) {
-			$this->entries[(string)$key] = [];
+		if (!isset($this->keys[(string)$key])) {
+			$this->keys[(string)$key] = $key;
+			$this->groups[(string)$key] = 0;
+			if ($this->entries !== null) {
+				$this->entries[(string)$key] = [];
+			}
 		}
 	}
 
@@ -285,6 +288,9 @@ abstract class Distribution {
 		if ($flags & self::IGNORE_NULL_KEY) {
 			unset($x[(string)$this->getNullGroupKey()]);
 		}
+		if ($flags & self::IGNORE_EMPTY_GROUPS) {
+			$x = array_filter($x, function($key) { return $this->getGroupSize($key) > 0; });
+		}
 		$x = array_values($x);
 		return $x;
 	}
@@ -293,11 +299,11 @@ abstract class Distribution {
 		if (!$this->entriesEnabled()) {
 			return null;
 		}
-		$x = $this->entries;
-		if ($flags & self::IGNORE_NULL_KEY) {
-			unset($x[(string)$this->getNullGroupKey()]);
+		$keys = $this->getGroupsKeys($flags);
+		$x = [];
+		foreach ($keys as $key) {
+			$x[(string) $key] = $this->getGroupEntries($key);
 		}
-		$x = array_values($x);
 		return $x;
 	}
 
@@ -316,13 +322,15 @@ abstract class Distribution {
 	}
 
 	public function getGroupsSizes($flags = 0) {
-		$x = $this->groups;
-		if ($flags & self::IGNORE_NULL_KEY) {
-			unset($x[(string)$this->getNullGroupKey()]);
+		$keys = $this->getGroupsKeys($flags);
+		$x = [];
+		foreach ($keys as $key) {
+			$x[(string) $key] = $this->getGroupSize($key);
 		}
 		$x = array_values($x);
 		return $x;
 	}
+
 
 
 	public function getLargestGroupSize($flags = 0) {
@@ -347,11 +355,7 @@ abstract class Distribution {
 	}
 
 	public function getTotalSize($flags = 0) {
-		$x = $this->groups;
-		if ($flags & self::IGNORE_NULL_KEY) {
-			unset($x[(string)$this->getNullGroupKey()]);
-		}
-		return array_sum($x);
+		return array_sum($this->getGroupsSizes($flags));
 	}
 }
 
@@ -552,6 +556,22 @@ class YearDistribution extends Distribution {
 		krsort($this->entries, SORT_NUMERIC);
 	}
 
+	public function addEmptyYears() {
+		if (!empty($this->keys)) {
+			$min = $max = reset($this->keys);
+			while (list($i,) = each($this->keys)) {
+				if ($min > $i) {
+					$min = $i;
+				} elseif ($max < $i) {
+					$max = $i;
+				}
+			}
+			for ($i = $min + 1; $i < $max; $i ++) {
+				$this->addGroup($i);
+			}
+		}
+	}
+
 	public function getNullGroupKey() {
 		return 0;
 	}
@@ -566,6 +586,22 @@ class DecadeDistribution extends Distribution {
 		krsort($this->keys, SORT_NUMERIC);
 		krsort($this->groups, SORT_NUMERIC);
 		krsort($this->entries, SORT_NUMERIC);
+	}
+
+	public function addEmptyDecades() {
+		if (!empty($this->keys)) {
+			$min = $max = reset($this->keys);
+			while (list($i,) = each($this->keys)) {
+				if ($min > $i) {
+					$min = $i;
+				} elseif ($max < $i) {
+					$max = $i;
+				}
+			}
+			for ($i = $min + 10; $i < $max; $i += 10) {
+				$this->addGroup($i);
+			}
+		}
 	}
 
 	public function getNullGroupKey() {

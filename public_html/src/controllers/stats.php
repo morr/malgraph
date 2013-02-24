@@ -536,6 +536,7 @@ class StatsController extends AbstractController {
 				$favYears->addEntry($entry);
 				$favDecades->addEntry($entry);
 			}
+			$favDecades->addEmptyDecades();
 			$favCreators->finalize();
 			$favGenres->finalize();
 			$favYears->finalize();

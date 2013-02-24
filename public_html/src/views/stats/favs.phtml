@@ -70,7 +70,7 @@
 							name: 'decades',
 							data: <?php echo json_encode(array_reverse(array_map(function($decade) use ($user) {
 								return [$decade + 4.5, $this->decadeScores[$user->getID()][$decade]]; },
-							$this->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY)))) ?>,
+							$this->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY | Distribution::IGNORE_EMPTY_GROUPS)))) ?>,
 							point: { events: { click: function(e) {
 								toggleMoreWrappers($('.decades .wrapper-more'), {'sender': 'decade', 'decade': Math.floor(this.category / 10) * 10});
 							} } }
