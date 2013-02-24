@@ -136,7 +136,7 @@ class UserListService {
 			foreach ($actualFranchise->entries as $franchiseEntry) {
 				$id = $franchiseEntry->getID();
 				if (isset($entries[$id])) {
-					$franchise->ownEntries []= $entries[$id];
+					$franchise->ownEntries[$id] = $entries[$id];
 					$checked[$id] = $franchise;
 				}
 			}
