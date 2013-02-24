@@ -526,42 +526,56 @@ class StatsController extends AbstractController {
 			$filter = UserListFilters::getNonPlanned();
 			$entries = $user->getList($this->view->am)->getEntries($filter);
 
-			$this->view->favCreators[$user->getID()] = new CreatorDistribution($entries);
-			$this->view->favGenres[$user->getID()] = new GenreDistribution($entries);
-			$this->view->favYears[$user->getID()] = new YearDistribution($entries);
-			$this->view->favDecades[$user->getID()] = new DecadeDistribution($entries);
+			$favCreators = new CreatorDistribution();
+			$favGenres = new GenreDistribution();
+			$favYears = new YearDistribution();
+			$favDecades = new DecadeDistribution();
+			foreach ($entries as $entry) {
+				$favCreators->addEntry($entry);
+				$favGenres->addEntry($entry);
+				$favYears->addEntry($entry);
+				$favDecades->addEntry($entry);
+			}
+			$favCreators->finalize();
+			$favGenres->finalize();
+			$favYears->finalize();
+			$favDecades->finalize();
+			$this->view->favCreators[$user->getID()] = $favCreators;
+			$this->view->favGenres[$user->getID()] = $favGenres;
+			$this->view->favYears[$user->getID()] = $favYears;
+			$this->view->favDecades[$user->getID()] = $favDecades;
 
 			$this->view->yearScores[$user->getID()] = [];
-			foreach ($this->view->favYears[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
-				$subEntries = $this->view->favYears[$user->getID()]->getGroupEntries($key);
+			foreach ($favYears->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $favYears->getGroupEntries($key);
 				$this->view->yearScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
 
 			$this->view->decadeScores[$user->getID()] = [];
-			foreach ($this->view->favDecades[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
-				$subEntries = $this->view->favDecades[$user->getID()]->getGroupEntries($key);
+			foreach ($favDecades->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $favDecades->getGroupEntries($key);
 				$this->view->decadeScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
 
 			$this->view->creatorScores[$user->getID()] = [];
 			$this->view->creatorValues[$user->getID()] = [];
 			$this->view->creatorTimeSpent[$user->getID()] = [];
-			foreach ($this->view->favCreators[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
-				$subEntries = $this->view->favCreators[$user->getID()]->getGroupEntries($key);
+			foreach ($favCreators->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $favCreators->getGroupEntries($key);
 				$this->view->creatorScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
 				$this->view->creatorTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
-			$this->view->creatorValues[$user->getID()] = UserListService::evaluateDistribution($this->view->favCreators[$user->getID()]);
+			$this->view->creatorValues[$user->getID()] = UserListService::evaluateDistribution($favCreators);
 
 			$this->view->genreScores[$user->getID()] = [];
 			$this->view->genreValues[$user->getID()] = [];
 			$this->view->genreTimeSpent[$user->getID()] = [];
-			foreach ($this->view->favGenres[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
-				$subEntries = $this->view->favGenres[$user->getID()]->getGroupEntries($key);
+			foreach ($favGenres->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $favGenres->getGroupEntries($key);
 				$this->view->genreScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
 				$this->view->genreTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
-			$this->view->genreValues[$user->getID()] = UserListService::evaluateDistribution($this->view->favGenres[$user->getID()]);
+			$this->view->genreValues[$user->getID()] = UserListService::evaluateDistribution($favGenres);
 		}
 	}
 
