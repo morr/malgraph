@@ -544,20 +544,24 @@ class StatsController extends AbstractController {
 			}
 
 			$this->view->creatorScores[$user->getID()] = [];
+			$this->view->creatorValues[$user->getID()] = [];
 			$this->view->creatorTimeSpent[$user->getID()] = [];
 			foreach ($this->view->favCreators[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $this->view->favCreators[$user->getID()]->getGroupEntries($key);
 				$this->view->creatorScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
 				$this->view->creatorTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
+			$this->view->creatorValues[$user->getID()] = UserListService::evaluateDistribution($this->view->favCreators[$user->getID()]);
 
 			$this->view->genreScores[$user->getID()] = [];
+			$this->view->genreValues[$user->getID()] = [];
 			$this->view->genreTimeSpent[$user->getID()] = [];
 			foreach ($this->view->favGenres[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $this->view->favGenres[$user->getID()]->getGroupEntries($key);
 				$this->view->genreScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
 				$this->view->genreTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
+			$this->view->genreValues[$user->getID()] = UserListService::evaluateDistribution($this->view->favGenres[$user->getID()]);
 		}
 	}
 

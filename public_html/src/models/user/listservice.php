@@ -92,6 +92,23 @@ class UserListService {
 		return $sum;
 	}
 
+	public static function evaluateDistribution(Distribution $dist) {
+		$values = [];
+		$allEntries = $dist->getAllEntries();
+		$meanScore = self::getMeanScore($allEntries);
+		foreach ($dist->getGroupsKeys() as $key) {
+			$entry = [];
+			$scoreDist = new ScoreDistribution($dist->getGroupEntries($key));
+			$localMeanScore = $scoreDist->getRatedCount() * $scoreDist->getMeanScore() + $scoreDist->getUnratedCount() * $meanScore;
+			$localMeanScore /= (float)max(1, $dist->getGroupSize($key));
+			$weight = $dist->getGroupSize($key) / max(1, $dist->getLargestGroupSize());
+			$weight = 1 - pow(1 - pow($weight, 8. / 9.), 2);
+			$value = $meanScore + ($localMeanScore - $meanScore) * $weight;
+			$values[(string) $key] = $value;
+		}
+		return $values;
+	}
+
 	public static function getMonthPeriod(UserListEntry $entry) {
 		$finishedA = explode('-', $entry->getStartDate());
 		$finishedB = explode('-', $entry->getFinishDate());
@@ -245,7 +262,7 @@ abstract class Distribution {
 	}
 
 	public function getGroupEntries($key) {
-		if (!$this->entriesenabled()) {
+		if (!$this->entriesEnabled()) {
 			return null;
 		}
 		if (!isset($this->entries[(string)$key])) {
@@ -281,6 +298,20 @@ abstract class Distribution {
 			unset($x[(string)$this->getNullGroupKey()]);
 		}
 		$x = array_values($x);
+		return $x;
+	}
+
+	public function getAllEntries($flags = 0) {
+		$groups = self::getGroupsEntries($flags);
+		if ($groups === null) {
+			return null;
+		}
+		$x = [];
+		foreach ($groups as $key => $entries) {
+			foreach ($entries as $entry) {
+				$x[$entry->getID()] = $entry;
+			}
+		}
 		return $x;
 	}
 

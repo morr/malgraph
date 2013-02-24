@@ -110,9 +110,10 @@
 						<tr>
 							<th class="ord">#</th>
 							<th class="title">Name</th>
-							<th class="count" data-tooltip="Count of titles from this creator.">Count</th>
-							<th class="mean">Mean</th>
-							<th class="time">Hours</th>
+							<th class="count" data-tooltip="Count of titles from given creator.">C</th>
+							<th class="mean" data-tooltip="Mean score of given creator.">M</th>
+							<th class="value" data-tooltip="Weighted score of given creator.">W</th>
+							<th class="time">Time</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -144,6 +145,7 @@
 									<?php printf('%.02f', $this->creatorScores[$user->getID()][$creator->getID()]) ?>
 								<?php endif ?>
 							</td>
+							<td class="value"><?php printf('%.02f', $this->creatorValues[$user->getID()][(string) $creator]) ?></td>
 							<td class="time"><?php printf('%.02f', $this->creatorTimeSpent[$user->getID()][$creator->getID()] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>
@@ -184,9 +186,10 @@
 						<tr>
 							<th class="ord">#</th>
 							<th class="title">Name</th>
-							<th class="count"><span data-tooltip="Count of titles from this genre.">Count</span></th>
-							<th class="mean">Mean</th>
-							<th class="time">Hours</th>
+							<th class="count" data-tooltip="Count of titles from given genre.">C</th>
+							<th class="mean" data-tooltip="Mean user score of given genre.">M</th>
+							<th class="value" data-tooltip="Weighted user score of given genre.">W</th>
+							<th class="time">Time</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -212,6 +215,7 @@
 									<?php printf('%.02f', $this->genreScores[$user->getID()][$genre->getID()]) ?>
 								<?php endif ?>
 							</td>
+							<td class="value"><?php printf('%.02f', $this->genreValues[$user->getID()][(string) $genre]) ?></td>
 							<td class="time"><?php printf('%.02f', $this->genreTimeSpent[$user->getID()][$genre->getID()] / 60.0) ?>h</td>
 						</tr>
 					<?php endforeach ?>

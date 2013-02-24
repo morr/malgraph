@@ -16,7 +16,7 @@ $(function() {
 	$('table').tablesorter({
 		headers: { 0: { sorter: false }, 4: { sorter: 'percent' } },
 		widgets: ['ord'],
-		sortList: [[2,1],[3,1]]
+		sortList: [[4,1]]
 	});
 });
 
