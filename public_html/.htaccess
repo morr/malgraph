@@ -7,13 +7,6 @@ RewriteEngine On
 #ErrorDocument 404 /error/http?code=404
 #ErrorDocument 500 /error/http?code=500
 
-#block access to conf.ini
-RewriteRule ^conf.ini$ - [F]
-RewriteRule ^data/mg.log$ - [F]
-RewriteRule ^data/anons.json$ - [F]
-RewriteRule ^data/mirror - [F]
-RewriteRule ^data/cache - [F]
-
 RewriteRule ^/?$ /s/index [QSA,L]
 RewriteRule ^/?s/(.*) /dispatch.php?request=index/$1 [QSA,L]
 RewriteRule ^/?a/(.*) /dispatch.php?request=admin/$1 [QSA,L]
