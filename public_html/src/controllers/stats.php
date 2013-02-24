@@ -129,9 +129,9 @@ class StatsController extends AbstractController {
 				$subTypeDistribution = new SubTypeDistribution();
 				foreach ($entriesCompleted as $entry) {
 					$info[$type]->completed += 1;
-					$subTypeDistribution->addEntry($entry);
 				}
 				foreach ($entriesNonPlanned as $entry) {
+					$subTypeDistribution->addEntry($entry);
 					$scoreDistribution->addEntry($entry);
 					if ($type == AMModel::TYPE_ANIME) {
 						$a = $entry->getCompletedEpisodes();
@@ -141,8 +141,6 @@ class StatsController extends AbstractController {
 						$b = $entry->getAMEntry()->getChapterCount();
 					}
 					$info[$type]->eps += $a;
-					if ($a != $b and $entry->getStatus() == UserListEntry::STATUS_COMPLETED) {
-					}
 				}
 				$subTypeDistribution->finalize();
 				$info[$type]->scoreDistribution = $scoreDistribution;
