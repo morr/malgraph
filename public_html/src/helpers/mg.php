@@ -1,6 +1,43 @@
 <?php
+class LockException extends Exception { }
+
 class MGHelper extends ChibiHelper {
 	public static $descSuffix = ' on MALgraph, an online tool that extends your MyAnimeList profile.'; //suffix for <meta> description tag
+
+	private static $lockTable = [];
+	private static function getLockPath($path) {
+		return '/tmp/' . md5($path) . '.lock';
+	}
+
+	public static function lockFile($path, $action = LOCK_EX) {
+		$lockPath = self::getLockPath($path);
+		if (!isset(self::$lockTable[$path])) {
+			$fp = fopen($lockPath, 'wb');
+			if (!$fp) {
+				return false;
+			}
+			self::$lockTable[$path] = $fp;
+		}
+		$ret = flock(self::$lockTable[$path], $action);
+		if ($action == LOCK_UN and $ret) {
+			fclose(self::$lockTable[$path]);
+			self::$lockTable[$path] = null;
+			self::suppressErrors();
+			unlink($lockPath);
+			self::restoreErrors();
+		}
+		return $ret;
+	}
+
+	public function __destruct() {
+		foreach (self::$lockTable as $path => $fp) {
+			$lockPath = self::getLockPath($path);
+			fclose($fp);
+			self::suppressErrors();
+			unlink($lockPath);
+			self::restoreErrors();
+		}
+	}
 
 	public function log($message) {
 		$ip = null;

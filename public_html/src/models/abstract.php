@@ -1,6 +1,4 @@
 <?php
-class LockException extends Exception { }
-
 class InvalidEntryException extends Exception {
 	public function __construct($key, $msg = null) {
 		parent::__construct('Invalid entry: ' . $key . ($msg ? ' (' . $msg . ')' : ''));
@@ -105,16 +103,10 @@ abstract class AbstractModel implements CachableModel {
 		if (!file_exists($path)) {
 			return null;
 		}
-		$fp = fopen($path, 'rb');
-		if (flock($fp, LOCK_SH)) {
-			fseek($fp, 0, SEEK_END);
-			$size = ftell($fp);
-			fseek($fp, 0, SEEK_SET);
-			$contents = fread($fp, $size);
-			flock($fp, LOCK_UN);
-			fclose($fp);
+		if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_SH)) {
+			$contents = file_get_contents($path);
+			ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
 		} else {
-			fclose($fp);
 			throw new LockException();
 		}
 		$data = unserialize(gzuncompress($contents));
@@ -140,6 +132,13 @@ abstract class AbstractModel implements CachableModel {
 
 	public function put($key, $data) {
 		$path = $this->keyToPath($key);
-		return file_put_contents($path, gzcompress(serialize($data)), LOCK_EX);
+		$contents = gzcompress(serialize($data));
+		if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_EX)) {
+			$return = file_put_contents($path, $contents);
+			ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
+		} else {
+			throw new LockException();
+		}
+		return $return;
 	}
 }

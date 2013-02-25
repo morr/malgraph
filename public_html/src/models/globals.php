@@ -165,37 +165,24 @@ class GlobalsModel extends AbstractModel {
 	private static $fp = null;
 	private static function specialRead() {
 		$path = (new self())->keyToPath(null);
-		$fp = fopen($path, 'c+b');
-		self::$fp = $fp;
-		if (flock($fp, LOCK_EX)) {
-			fseek($fp, 0, SEEK_END);
-			$size = ftell($fp);
-			fseek($fp, 0, SEEK_SET);
-			if ($size == 0) {
-				$return = (new self())->getReal(null);
-			} else {
-				$data = fread($fp, $size);
+		if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_EX)) {
+			if (file_exists($path)) {
+				$data = file_get_contents($path);
 				$return = unserialize(gzuncompress($data));
+			} else {
+				$return = (new self())->getReal(null);
 			}
 		} else {
-			fclose($fp);
-			self::$fp = null;
 			throw new LockException('Couldn\'t acquire lock for ' . $path);
 		}
 		return $return;
 	}
 
 	private static function specialPut($data) {
-		$fp = self::$fp;
-		if (empty(self::$fp)) {
-			throw new LockException('Lost the lock!');
-		}
-		fseek($fp, 0, SEEK_SET);
-		ftruncate($fp, 0);
-		fwrite($fp, gzcompress(serialize($data)));
-		fflush($fp);
-		flock($fp, LOCK_UN);
-		fclose($fp);
+		$path = (new self())->keyToPath(null);
+		$contents = gzcompress(serialize($data));
+		file_put_contents($path, $contents);
+		ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
 	}
 
 	public static function addUser(UserEntry $user) {

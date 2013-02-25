@@ -9,7 +9,14 @@ class AnonService {
 	public static function init() {
 		self::$lookupTableFile = ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->anonLookupFile;
 		if (file_exists(self::$lookupTableFile)) {
-			self::$lookupTable = json_decode(file_get_contents(self::$lookupTableFile), true);
+			$path = self::$lookupTableFile;
+			if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_SH)) {
+				$contents = file_get_contents($path);
+				ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
+			} else {
+				throw new LockException();
+			}
+			self::$lookupTable = json_decode($contents, true);
 		}
 	}
 
@@ -35,7 +42,14 @@ class AnonService {
 			self::$lookupTable['u2a'][$userName] = $anonName;
 			self::$lookupTable['a2u'][$anonName] = $userName;
 		}
-		file_put_contents(self::$lookupTableFile, json_encode(self::$lookupTable), LOCK_EX);
+		$path = self::$lookupTableFile;
+		$contents = json_encode(self::$lookupTable);
+		if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_EX)) {
+			file_put_contents($path, $contents);
+			ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
+		} else {
+			throw new LockException();
+		}
 	}
 }
 AnonService::init();
