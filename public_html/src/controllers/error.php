@@ -20,6 +20,8 @@ class ErrorController extends AbstractController {
 			ChibiRegistry::getView()->errorCode = $this->errorCode;
 		} elseif (!empty($_REQUEST['code'])) {
 			ChibiRegistry::getView()->errorCode = $_REQUEST['code'];
+		} else {
+			ChibiRegistry::getView()->errorCode = null;
 		}
 
 		if (!empty($this->message)) {
