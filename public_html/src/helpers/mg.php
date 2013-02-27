@@ -11,21 +11,30 @@ class MGHelper extends ChibiHelper {
 
 	public static function lockFile($path, $action = LOCK_EX) {
 		$lockPath = self::getLockPath($path);
-		if ($action == LOCK_EX or $action == LOCK_SH) {
-			shell_exec('while ! ln -s "' . $path . '" "' . $lockPath . '"; do :; done');
-		} else {
-			shell_exec('mv "' . $lockPath . '" "' . $lockPath . '~" && rm "' . $lockPath . '~"');
+		if (!isset(self::$lockTable[$path])) {
+			$fp = fopen($lockPath, 'wb');
+			if (!$fp) {
+				return false;
+			}
+			self::$lockTable[$path] = $fp;
 		}
-		self::$lockTable[$path] = true;
-		return true;
+		$ret = flock(self::$lockTable[$path], $action);
+		if ($action == LOCK_UN and $ret) {
+			self::suppressErrors();
+			fclose(self::$lockTable[$path]);
+			unset(self::$lockTable[$path]);
+			unlink($lockPath);
+			self::restoreErrors();
+		}
+		return $ret;
 	}
 
 	public function __destruct() {
-		foreach (self::$lockTable as $path => $tmp) {
+		foreach (self::$lockTable as $path => $fp) {
 			$lockPath = self::getLockPath($path);
+			fclose($fp);
 			self::suppressErrors();
 			unlink($lockPath);
-			unlink("$lockPath~");
 			self::restoreErrors();
 		}
 	}
