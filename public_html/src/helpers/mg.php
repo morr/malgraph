@@ -4,39 +4,35 @@ class LockException extends Exception { }
 class MGHelper extends ChibiHelper {
 	public static $descSuffix = ' on MALgraph, an online tool that extends your MyAnimeList profile.'; //suffix for <meta> description tag
 
-	private static $lockTable = [];
-	private static function getLockPath($path) {
-		return '/tmp/' . md5($path) . '.lock';
-	}
-
 	public static function lockFile($path, $action = LOCK_EX) {
-		$lockPath = self::getLockPath($path);
-		if (!isset(self::$lockTable[$path])) {
-			$fp = fopen($lockPath, 'wb');
-			if (!$fp) {
-				return false;
-			}
-			self::$lockTable[$path] = $fp;
+		$db = ChibiRegistry::getHelper('database');
+		$table = ChibiConfig::getInstance()->sql->table;
+		switch ($action) {
+			case LOCK_SH:
+				return true;
+				#$query = 'LOCK TABLES `' . $table . '` READ;';
+				#break;
+			case LOCK_EX:
+				$query = 'LOCK TABLES `' . $table . '` WRITE;';
+				break;
+			case LOCK_UN:
+				$query = 'UNLOCK TABLES;';
+				break;
 		}
-		$ret = flock(self::$lockTable[$path], $action);
-		if ($action == LOCK_UN and $ret) {
-			self::suppressErrors();
-			fclose(self::$lockTable[$path]);
-			unset(self::$lockTable[$path]);
-			unlink($lockPath);
-			self::restoreErrors();
+		$db->query($query);
+		$err = $db->lastError();
+		if ($err) {
+			throw new Exception($err);
 		}
-		return $ret;
+		return true;
 	}
 
-	public function __destruct() {
-		foreach (self::$lockTable as $path => $fp) {
-			$lockPath = self::getLockPath($path);
-			fclose($fp);
-			self::suppressErrors();
-			unlink($lockPath);
-			self::restoreErrors();
-		}
+	public function init() {
+		register_shutdown_function(function() {
+			$table = ChibiConfig::getInstance()->sql->table;
+			$db = ChibiRegistry::getHelper('database');
+			$db->query('UNLOCK TABLES ' . $table);
+		});
 	}
 
 	public function log($message) {
