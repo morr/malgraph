@@ -139,7 +139,7 @@ class AjaxController extends AbstractController {
 
 			case self::SENDER_SUB_TYPE:
 				$subType = $this->inputHelper->getStringSafe('sub-type');
-				$filter1 = UserListFilters::getCompleted();
+				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getSubType($subType);
 				$filter = UserListFilters::combine($filter1, $filter2);
 				$this->view->subType = $subType;
