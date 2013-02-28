@@ -34,7 +34,7 @@
 		<?php echo $this->creator->getName() ?>
 
 	<?php elseif ($this->sender == AjaxController::SENDER_SUB_TYPE): ?>
-		<?php echo ucfirst($this->mgHelper->textAM()) ?>
+		Non-planned <?php echo $this->mgHelper->textAM() ?>
 		&nbsp;in&nbsp;
 		<?php echo ChibiRegistry::getHelper('mg')->textSubType($this->subType) ?>
 		&nbsp;category
