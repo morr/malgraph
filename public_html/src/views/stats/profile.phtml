@@ -188,28 +188,32 @@
 
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section friends">
-	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'friends (' . count($user->getFriends()) . ')') ?></h2>
+	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'friends (' . $user->getFriendCount() . ')') ?></h2>
 	<div class="section-body">
 		<?php if ($user->isAnonymous()): ?>
 			<p>This user wanted to be anonymous, so their friends aren&rsquo;t shown.</p>
 		<?php elseif (count($user->getFriends()) == 0): ?>
 			<p>This user has no friends on MAL. :(</p>
 		<?php else: ?>
-			<div class="scrollable">
-				<?php $friends = $user->getFriends() ?>
-				<?php usort($friends, function($a, $b) { return strcasecmp($a->getName(), $b->getName()); }) ?>
-				<ul>
-					<?php foreach ($friends as $friend): ?>
-						<li>
-							<a class="mg waitable" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [reset($this->userNames), $friend->getName()]) ?>">
-								<i class="icon-mg"></i>
-								<span><?php echo $friend->getName() ?></span>
-							</a>
-						</li>
-					<?php endforeach ?>
-				</ul>
-				<div class="clear"></div>
-			</div>
+			<?php $friends = $user->getFriends() ?>
+			<?php usort($friends, function($a, $b) { return strcasecmp($a->getName(), $b->getName()); }) ?>
+			<ul>
+				<?php foreach ($friends as $friend): ?>
+					<li>
+						<a class="mg waitable" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [reset($this->userNames), $friend->getName()]) ?>">
+							<i class="icon-mg"></i>
+							<span><?php echo $friend->getName() ?></span>
+						</a>
+					</li>
+				<?php endforeach ?>
+			</ul>
+			<div class="clear"></div>
+			<?php if (!$user->isAnonymous() and $user->getFriendCount() != count($user->getFriends())): ?>
+				<a class="more" target="_blank" href="http://myanimelist.net/friends.php?id=<?php echo $user->getID() ?>">
+					<i class="icon-pop-out"></i>
+					(more&hellip;)
+				</a>
+			<?php endif ?>
 		<?php endif ?>
 	</div>
 </div>
@@ -219,28 +223,32 @@
 
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section clubs">
-	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'clubs (' . count($user->getClubs())  . ')') ?></h2>
+	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'clubs (' . $user->getClubCount()  . ')') ?></h2>
 	<div class="section-body">
 		<?php if ($user->isAnonymous()): ?>
 			<p>Neither will we tell you their clubs.</p>
 		<?php elseif (count($user->getClubs()) == 0): ?>
 			<p>This user doesn&rsquo;t belong to any clubs.</p>
 		<?php else: ?>
-			<div class="scrollable">
-				<?php $clubs = $user->getClubs() ?>
-				<?php usort($clubs, function($a, $b) { return strcasecmp($a->getName(), $b->getName()); }) ?>
-				<ul>
-					<?php foreach ($clubs as $club): ?>
-						<li>
-							<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club->getID() ?>">
-								<i class="icon-club"></i>
-								<span><?php echo $club->getName() ?></span>
-							</a>
-						</li>
-					<?php endforeach ?>
-				</ul>
-				<div class="clear"></div>
-			</div>
+			<?php $clubs = $user->getClubs() ?>
+			<?php usort($clubs, function($a, $b) { return strcasecmp($a->getName(), $b->getName()); }) ?>
+			<ul>
+				<?php foreach ($clubs as $club): ?>
+					<li>
+						<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club->getID() ?>">
+							<i class="icon-club"></i>
+							<span><?php echo $club->getName() ?></span>
+						</a>
+					</li>
+				<?php endforeach ?>
+			</ul>
+			<div class="clear"></div>
+			<?php if (!$user->isAnonymous() and $user->getClubCount() != count($user->getClubs())): ?>
+				<a class="more" target="_blank" href="http://myanimelist.net/showclubs.php?id=<?php echo $user->getID() ?>">
+					<i class="icon-pop-out"></i>
+					(more&hellip;)
+				</a>
+			<?php endif ?>
 		<?php endif ?>
 	</div>
 </div>

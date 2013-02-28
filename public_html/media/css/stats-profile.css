@@ -7,13 +7,13 @@
 .basic .mal-links { float: left; }
 
 .friends ul, .clubs ul, .basic ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
-.clubs .scrollable, .friends .scrollable { max-height: 15em; }
 .friends a, .clubs a { position: relative; }
 .friends ul li, .clubs ul li { overflow: hidden; display: block; text-overflow: ellipsis; }
 	.friends ul li { float: left; width: 33%; }
 	.clubs ul li { float: left; width: 50%; }
-.friends i, .clubs i { position: absolute; }
-.friends span, .clubs span { display: inline-block; margin-left: 21px; }
+.friends ul i, .clubs ul i { position: absolute; }
+.friends ul span, .clubs ul span { display: inline-block; margin-left: 21px; }
+.friends a.more, .clubs a.more { display: inline-block; margin-top: 0.5em; }
 
 dl { display: inline-block; margin: 0; }
 dt { clear: left; font-weight: bold; width: 8em; float: left; margin-left: 0.5em; }

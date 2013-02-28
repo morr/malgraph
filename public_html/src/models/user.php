@@ -20,8 +20,6 @@ class UserModel extends AbstractModel {
 	const URL_MANGA2 = 'http://myanimelist.net/mangalist/{user}&status=3';
 	const URL_PROFILE = 'http://myanimelist.net/profile/{user}';
 	const URL_HISTORY = 'http://myanimelist.net/history/{user}';
-	const URL_CLUBS = 'http://myanimelist.net/showclubs.php?id={user-id}';
-	const URL_FRIENDS = 'http://myanimelist.net/friends.php?id={user-id}&show={shift}';
 
 	public function __construct() {
 		$this->folder = ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->userCacheDir;
@@ -170,17 +168,14 @@ class UserModel extends AbstractModel {
 		$node = $xpath->query('//div[@class = \'spaceit_pad\'][contains(text(), \'Total Clubs\')]')->item(0);
 		if (!empty($node)) {
 			$clubCount = intval(substr($node->nodeValue, 13));
-			if ($clubCount <= 15) {
-				$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'/club\')]');
-				foreach ($q as $node) {
-					$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($node->getAttribute('href'));
-					$club = new UserClubEntry();
-					$club->setID(intval($url['query']['cid']));
-					$club->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
-					$userEntry->addClub($club);
-				}
-			} else {
-				$this->loadClubs($userEntry);
+			$userEntry->setClubCount($clubCount);
+			$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'/club\')]');
+			foreach ($q as $node) {
+				$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($node->getAttribute('href'));
+				$club = new UserClubEntry();
+				$club->setID(intval($url['query']['cid']));
+				$club->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+				$userEntry->addClub($club);
 			}
 		}
 
@@ -188,81 +183,16 @@ class UserModel extends AbstractModel {
 		$node = $xpath->query('//div[@class = \'spaceit_pad\'][contains(text(), \'Total Friends\')]')->item(0);
 		if (!empty($node)) {
 			$friendCount = intval(substr($node->nodeValue, 15));
-			if ($friendCount <= 30) {
-				$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'profile\')]');
-				foreach ($q as $node) {
-					$friend = new UserFriendEntry();
-					$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
-					$userEntry->addFriend($friend);
-				}
-			} else {
-				$this->loadFriends($userEntry);
+			$userEntry->setFriendCount($friendCount);
+			$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'profile\')]');
+			foreach ($q as $node) {
+				$friend = new UserFriendEntry();
+				$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+				$userEntry->addFriend($friend);
 			}
 		}
 	}
 
-
-	protected function loadClubs(UserEntry &$userEntry) {
-		$userEntry->resetClubs();
-		$url = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_CLUBS, ['user-id' => $userEntry->getID()]);
-		list(, $contents) = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
-		if (empty($contents)) {
-			throw new DownloadException($url);
-		}
-
-		$doc = new DOMDocument;
-		$doc->preserveWhiteSpace = false;
-		ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
-		$doc->loadHTML($contents);
-		ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
-		$xpath = new DOMXPath($doc);
-
-		$nodes = $xpath->query('//ol//li//a');
-		foreach ($nodes as $node) {
-			$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($node->getAttribute('href'));
-			$club = new UserClubEntry();
-			$club->setID(intval($url['query']['cid']));
-			$club->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
-			$userEntry->addClub($club);
-		}
-	}
-
-	protected function loadFriends(UserEntry &$userEntry) {
-		$userEntry->resetFriends();
-		$max = 0;
-		$shift = 0;
-		$page = 6 * 7;
-		do {
-			$url = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_FRIENDS, ['user-id' => $userEntry->getID(), 'shift' => $shift]);
-			list(, $contents) = ChibiRegistry::getInstance()->getHelper('mg')->download($url);
-			if (empty($contents)) {
-				throw new DownloadException($url);
-			}
-
-			$doc = new DOMDocument;
-			$doc->preserveWhiteSpace = false;
-			ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
-			$doc->loadHTML($contents);
-			ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
-			$xpath = new DOMXPath($doc);
-
-			preg_match('/ has (\d+) friends/', $contents, $results);
-			if (!isset($results[1])) {
-				#throw new DownloadException($url);
-			} else {
-				$max = intval($results[1]);
-
-				$nodes = $xpath->query('//table//div[contains(@style, \'margin\')]/a[contains(@href, \'profile\')]');
-				foreach ($nodes as $node) {
-					$friend = new UserFriendEntry();
-					$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
-					$userEntry->addFriend($friend);
-				}
-			}
-
-			$shift += $page;
-		} while ($shift < $max);
-	}
 
 	protected function loadHistory(UserEntry &$userEntry, array &$documents) {
 		list($headers, $contents) = $documents[self::URL_HISTORY];
