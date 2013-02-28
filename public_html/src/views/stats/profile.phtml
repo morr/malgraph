@@ -71,19 +71,19 @@
 
 			<?php else: ?>
 				<li>
-					<a href="http://myanimelist.net/profile/<?php echo $user->getUserName() ?>">
+					<a target="_blank" href="http://myanimelist.net/profile/<?php echo $user->getUserName() ?>">
 						<i class="icon-pop-out"></i>
 						MAL profile
 					</a>
 				</li>
 				<li>
-					<a href="http://myanimelist.net/animelist/<?php echo $user->getUserName() ?><?php if (ChibiConfig::getInstance()->misc->sendReferrer) echo '&amp;sclick=1'; ?>">
+					<a target="_blank" href="http://myanimelist.net/animelist/<?php echo $user->getUserName() ?><?php if (ChibiConfig::getInstance()->misc->sendReferrer) echo '&amp;sclick=1'; ?>">
 						<i class="icon-pop-out"></i>
 						MAL anime list
 					</a>
 				</li>
 				<li>
-					<a href="http://myanimelist.net/mangalist/<?php echo $user->getUserName() ?><?php if (ChibiConfig::getInstance()->misc->sendReferrer) echo '&amp;sclick=1'; ?>">
+					<a target="_blank" href="http://myanimelist.net/mangalist/<?php echo $user->getUserName() ?><?php if (ChibiConfig::getInstance()->misc->sendReferrer) echo '&amp;sclick=1'; ?>">
 						<i class="icon-pop-out"></i>
 						MAL manga list
 					</a>
@@ -235,7 +235,7 @@
 			<ul>
 				<?php foreach ($clubs as $club): ?>
 					<li>
-						<a href="http://myanimelist.net/clubs.php?cid=<?php echo $club->getID() ?>">
+						<a target="_blank" href="http://myanimelist.net/clubs.php?cid=<?php echo $club->getID() ?>">
 							<i class="icon-club"></i>
 							<span><?php echo $club->getName() ?></span>
 						</a>

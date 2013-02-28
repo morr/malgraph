@@ -22,7 +22,7 @@
 				<?php endif ?>
 				<tr class="header">
 					<td class="title">
-						<a class="pop-out" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $rec->amEntry->getID() ?>">
+						<a class="pop-out" target="_blank" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $rec->amEntry->getID() ?>">
 							<i class="icon-pop-out"></i>
 							&nbsp;
 						</a>
@@ -56,7 +56,7 @@
 						<div class="wrapper-more singular">
 						<div class="wrapper-more-wrapper">
 							<a class="close"><i class="icon-close"></i></a>
-							<a class="img" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $rec->amEntry->getID() ?>">
+							<a class="img" target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $rec->amEntry->getID() ?>">
 								<?php if (!$rec->amEntry->getPictureURL()): ?>
 									<img class="unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
 								<?php else: ?>
@@ -77,9 +77,9 @@
 										foreach ($rec->amEntry->getCreators() as $creator) {
 											if (!AMService::creatorForbidden($creator)) {
 												if ($this->am == AMModel::TYPE_MANGA) {
-													$item = '<a href="http://myanimelist.net/people/' . $creator->getID() . '/">';
+													$item = '<a target="_blank" href="http://myanimelist.net/people/' . $creator->getID() . '/">';
 												} else {
-													$item = '<a href="http://myanimelist.net/anime.php?p=' . $creator->getID() . '">';
+													$item = '<a target="_blank" href="http://myanimelist.net/anime.php?p=' . $creator->getID() . '">';
 												}
 												$item .= $creator->getName();
 												$item .= '</a>';
@@ -100,7 +100,7 @@
 										$tmp = [];
 										if ($rec->amEntry->getTags()) {
 											foreach ($rec->amEntry->getTags() as $tag) {
-												$item = '<a href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->textAM() . '.php?tag=' . urlencode($tag->getName()) . '">';
+												$item = '<a target="_blank" href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->textAM() . '.php?tag=' . urlencode($tag->getName()) . '">';
 												$item .= $tag->getName();
 												$item .= '</a>';
 												$tmp []= $item;
@@ -108,7 +108,7 @@
 											echo join(', ', $tmp);
 										} elseif ($rec->amEntry->getGenres()) {
 											foreach ($rec->amEntry->getGenres() as $genre) {
-												$item = '<a href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->textAM() . '.php?genre%5b%5d=' . $genre->getID() . '">';
+												$item = '<a target="_blank" href="http://myanimelist.net/' . ChibiRegistry::getHelper('mg')->textAM() . '.php?genre%5b%5d=' . $genre->getID() . '">';
 												$item .= $genre->getName();
 												$item .= '</a>';
 												$tmp []= $item;
@@ -157,9 +157,9 @@
 									<td class="key">Add to MAL</td>
 									<td class="value">
 										<?php if ($rec->amEntry->getType() == AMModel::TYPE_ANIME): ?>
-											<a href="http://myanimelist.net/panel.php?go=add&amp;selected_series_id=<?php echo $rec->amEntry->getID() ?>">
+											<a target="_blank" href="http://myanimelist.net/panel.php?go=add&amp;selected_series_id=<?php echo $rec->amEntry->getID() ?>">
 										<?php else: ?>
-											<a href="http://myanimelist.net/panel.php?go=addmanga&amp;selected_manga_id=<?php echo $rec->amEntry->getID() ?>">
+											<a target="_blank" href="http://myanimelist.net/panel.php?go=addmanga&amp;selected_manga_id=<?php echo $rec->amEntry->getID() ?>">
 										<?php endif ?>
 											Click (must be logged in)</a>
 									</td>
@@ -193,7 +193,7 @@
 			<p>Yay! No missing relations!</p>
 		<?php elseif ($user->getList($this->am)->isPrivate()): ?>
 			<p>Since <?php echo $user->getPublicName() ?>&rsquo;s <?php echo $this->mgHelper->textAM() ?> list is marked as private, we can&rsquo;t reveal its content by showing suggestions.<br>
-			If this is your list, click <a href="http://myanimelist.net/editprofile.php?go=listpreferences">here</a> to change privacy settings.</p>
+			If this is your list, click <a target="_blank" href="http://myanimelist.net/editprofile.php?go=listpreferences">here</a> to change privacy settings.</p>
 		<?php else: ?>
 
 			<table>
@@ -210,7 +210,7 @@
 								<ul>
 								<?php foreach ($franchise->ownEntries as $entry): ?>
 									<li data-id="<?php echo $entry->getID() ?>">
-										<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
+										<a target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
 											<?php echo htmlspecialchars($entry->getAMEntry()->getTitle()) ?>
 										</a>
 									</li>
@@ -224,7 +224,7 @@
 											<?php continue ?>
 										<?php else: ?>
 											<li data-id="<?php echo $entry->getID() ?>">
-												<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
+												<a target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
 													<?php echo htmlspecialchars($entry->getTitle()) ?>
 												</a>
 											</li>

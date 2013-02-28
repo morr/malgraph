@@ -10,7 +10,7 @@
 			<p>Sadly, <?php echo $user->getPublicName() ?>&rsquo;s <?php echo $this->mgHelper->textAM() ?> list is empty.<br>
 			If this is your list, add (and rate) something and come back in 24 hours.</p>
 		<?php elseif ($user->getList($this->am)->isPrivate()): ?>
-			<p>Sadly, <?php echo $this->mgHelper->textAM() ?> list of this user is private.</p><p>If this is your list, you can <a href="http://myanimelist.net/editprofile.php?go=listpreferences">click here</a> and change your privacy settings to make it visible.</p>
+			<p>Sadly, <?php echo $this->mgHelper->textAM() ?> list of this user is private.</p><p>If this is your list, you can <a target="_blank" href="http://myanimelist.net/editprofile.php?go=listpreferences">click here</a> and change your privacy settings to make it visible.</p>
 		<?php else: ?>
 
 			<div class="table">
@@ -47,7 +47,7 @@
 								<?php endif ?>
 
 								<td class="title" data-sorter="<?php echo $e->getAMEntry()->getTitle() ?>">
-									<a href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $e->getID() ?>">
+									<a target="_blank" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $e->getID() ?>">
 										<?php echo $e->getAMEntry()->getTitle() ?>
 									</a>
 								</td>

@@ -98,7 +98,7 @@
 				<li>
 					<?php foreach ($franchise->ownEntries as $entry): ?>
 						<?php $amEntry = $entry->getAMEntry(); ?>
-						<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $amEntry->getID() ?>">
+						<a target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $amEntry->getID() ?>">
 							<?php echo $amEntry->getTitle() ?>
 						</a>
 						<span class="details">&nbsp;(
@@ -114,7 +114,7 @@
 							<?php endif ?>
 						)</span><br>
 					<?php endforeach ?>
-					<span class="details">(<?php echo count($franchise->ownEntries) ?> titles, 
+					<span class="details">(<?php echo count($franchise->ownEntries) ?> titles,&nbsp;
 						<?php if ($franchise->meanScore): ?>
 							mean score: <?php printf('%.02f', $franchise->meanScore) ?>
 						<?php else: ?>
@@ -130,7 +130,7 @@
 			<?php foreach ($this->entries as $entry): ?>
 				<?php $amEntry = $entry->getAMEntry() ?>
 				<li>
-					<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $amEntry->getID() ?>">
+					<a target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $amEntry->getID() ?>">
 						<?php echo $amEntry->getTitle() ?>
 					</a>
 					<span class="details">&nbsp;(

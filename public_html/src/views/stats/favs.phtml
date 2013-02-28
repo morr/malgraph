@@ -123,7 +123,7 @@
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
-								<a
+								<a target="_blank"
 									<?php if ($this->am == AMModel::TYPE_MANGA): ?>
 										href="http://myanimelist.net/people/<?php echo $creator->getID() ?>/"
 									<?php else: ?>
@@ -199,7 +199,7 @@
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
-								<a href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>.php?genre%5b%5d=<?php echo $genre->getID() ?>">
+								<a target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>.php?genre%5b%5d=<?php echo $genre->getID() ?>">
 									<i class="icon-pop-out"></i>
 								</a>
 								&nbsp;
