@@ -82,7 +82,7 @@
 			<div id="menu">
 				<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
 					<div class="user-pics">
-						<?php foreach (ChibiRegistry::getView()->users as $user): ?>
+						<?php foreach (ChibiRegistry::getView()->users as $i => $user): ?>
 							<div class="user-pic-wrapper user<?php echo $user->getRuntimeID() ?>">
 								<div class="user-pic">
 									<a href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile') ?>">
@@ -99,6 +99,12 @@
 									</a>
 								</p>
 							</div>
+
+							<?php if ($i == 1 and count(ChibiRegistry::getView()->users) > 1): ?>
+								<a data-tooltip="Swap profiles" id="switcher" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [end(ChibiRegistry::getView()->userNames), reset(ChibiRegistry::getView()->userNames)]) ?>">
+									<i class="icon-switch"></i>
+								</a>
+							<?php endif ?>
 						<?php endforeach ?>
 						<div class="clear"></div>
 					</div>
@@ -175,12 +181,6 @@
 
 		<div id="main">
 			<?php if (ChibiRegistry::getView()->controllerName == 'stats'): ?>
-				<?php if (count(ChibiRegistry::getView()->users) > 1): ?>
-					<a id="switcher" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [end(ChibiRegistry::getView()->userNames), reset(ChibiRegistry::getView()->userNames)]) ?>">
-						<i class="icon-switch"></i>
-					</a>
-				<?php endif ?>
-
 				<?php function iterateUsers($callback) {
 					$keys = (array_keys(ChibiRegistry::getView()->users));
 					echo '<div class="users">';

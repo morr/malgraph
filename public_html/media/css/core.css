@@ -37,7 +37,7 @@ img { border: 0; /* ie image border */ }
 .compare-mode #menu .user-pics { position: relative; max-width: 12.5em; }
 .compare-mode #menu .user-pic img { width: 100px; height: 140px; }
 .compare-mode #menu .user-pic-wrapper { position: absolute; float: left; }
-.compare-mode #menu .user-pic-wrapper:nth-child(2) { position: relative; margin-top: 2em; float: right; }
+.compare-mode #menu .user-pic-wrapper.user2 { position: relative; margin-top: 2em; float: right; }
 
 
 /* layout */

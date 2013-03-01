@@ -9,7 +9,7 @@ div.user h2 { margin-bottom: 0.7em; padding-left: 0.3em; }
 .compare-mode div.user-wrapper:nth-child(2) div.user { margin-left: 4px; padding-left: 1em; }
 
 /* switcher */
-#switcher { position: absolute; left: 50%; top: 0.5em; z-index: 3; background-color: white; margin-left: -8px; }
+#switcher { position: absolute; left: 110px; }
 #switcher i { margin: 0 !important; }
 
 /* "more" divs */
@@ -23,5 +23,4 @@ div.user h2 { margin-bottom: 0.7em; padding-left: 0.3em; }
 	.compare-mode div.users { background: none !important; }
 	.compare-mode div.user-wrapper { width: 100% !important; }
 	.compare-mode div.user { margin: 0 !important; padding: 1em; }
-	#switcher { display: none; }
 }
