@@ -3,7 +3,7 @@
 .list-views .suffix { margin-left: 0.67em; color: gray; }
 
 .basic dl { margin-bottom: 1em; width: 60%; float: left; }
-.basic .user.anonymous .mal-links li { text-decoration: line-through; }
+.anonymous .basic .mal-links li { text-decoration: line-through; }
 .basic .mal-links { float: left; }
 
 .friends ul, .clubs ul, .basic ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
