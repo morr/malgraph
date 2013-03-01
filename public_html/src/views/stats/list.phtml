@@ -1,10 +1,25 @@
+<form id="filter-form">
+	<label for="filter-title">Filter:</label>
+	<input type="text" name="filter-title" id="filter-title" placeholder="Title&hellip;"/>
+	<select name="filter-status" id="filter-status">
+		<option value="">All</option>
+		<option value="<?php echo UserListEntry::STATUS_COMPLETING ?>"><?php echo $this->am == AMModel::TYPE_ANIME ? 'Watching' : 'Reading' ?></option>
+		<option value="<?php echo UserListEntry::STATUS_COMPLETED ?>">Completed</option>
+		<option value="<?php echo UserListEntry::STATUS_ONHOLD ?>">On-hold</option>
+		<option value="<?php echo UserListEntry::STATUS_DROPPED ?>">Dropped</option>
+		<option value="<?php echo UserListEntry::STATUS_PLANNED ?>">Plan to <?php echo $this->am == AMModel::TYPE_ANIME ? 'watch' : 'read' ?></option>
+	</select>
+	<input class="btn" type="reset" name="filter-clear" id="filter-clear">
+	<div class="clear"></div>
+</form>
+
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section list">
 	<h2>
-		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, $this->mgHelper->textAM() . ' titles') ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, $this->mgHelper->textAM() . ' list') ?>
+		<span class="filter-hint">&nbsp;(<span class="filter-hint-shown"></span> of <span class="filter-hint-total"></span>)</span>
 	</h2>
 	<?php $showUnique = ((count($this->users) > 1) and (!$otherUser->getList($this->am)->isPrivate())) ?>
-
 	<div class="section-body">
 		<?php if (count($user->getList($this->am)->getEntries()) == 0): ?>
 			<p>Sadly, <?php echo $user->getPublicName() ?>&rsquo;s <?php echo $this->mgHelper->textAM() ?> list is empty.<br>
@@ -13,57 +28,55 @@
 			<p>Sadly, <?php echo $this->mgHelper->textAM() ?> list of this user is private.</p><p>If this is your list, you can <a target="_blank" href="http://myanimelist.net/editprofile.php?go=listpreferences">click here</a> and change your privacy settings to make it visible.</p>
 		<?php else: ?>
 
-			<div class="table">
-				<table class="tablesorter">
-					<thead>
-						<tr>
-							<th class="status" data-tooltip="Status">S</th>
-							<?php if ($showUnique): ?>
-								<th class="unique" data-tooltip="Unique - titles marked with &bdquo;+&rdquo;|are unique to this user.">U</th>
-							<?php endif ?>
-							<th class="title">Title</th>
-							<th class="score" data-tooltip="Rating">R</th>
-						</tr>
-					</thead>
+			<table class="tablesorter">
+				<thead>
+					<tr>
+						<th class="status" data-tooltip="Status">S</th>
+						<?php if ($showUnique): ?>
+							<th class="unique" data-tooltip="Unique - titles marked with &bdquo;+&rdquo;|are unique to this user.">U</th>
+						<?php endif ?>
+						<th class="title">Title</th>
+						<th class="score" data-tooltip="Rating">R</th>
+					</tr>
+				</thead>
 
-					<tbody>
-						<?php $k = 1 ?>
-						<?php foreach ($user->getList($this->am)->getEntries() as $e): ?>
-							<?php $e2 = null ?>
-							<?php if ($showUnique): ?>
-								<?php $e2 = $otherUser->getList($this->am)->getEntryByID($e->getID()) ?>
-								<?php if (empty($e2)): ?>
-									<tr class="unique">
-								<?php else: ?>
-									<tr class="not-unique">
-								<?php endif ?>
+				<tbody>
+					<?php $k = 1 ?>
+					<?php foreach ($user->getList($this->am)->getEntries() as $e): ?>
+						<?php $e2 = null ?>
+						<?php if ($showUnique): ?>
+							<?php $e2 = $otherUser->getList($this->am)->getEntryByID($e->getID()) ?>
+							<?php if (empty($e2)): ?>
+								<tr class="unique">
 							<?php else: ?>
-								<tr>
+								<tr class="not-unique">
 							<?php endif ?>
-								<td class="status status-<?php echo $e->getStatus() ?>"></td>
+						<?php else: ?>
+							<tr>
+						<?php endif ?>
+							<td class="status status-<?php echo $e->getStatus() ?>"></td>
 
-								<?php if ($showUnique): ?>
-									<td class="unique"></td>
-								<?php endif ?>
+							<?php if ($showUnique): ?>
+								<td class="unique"></td>
+							<?php endif ?>
 
-								<td class="title" data-sorter="<?php echo $e->getAMEntry()->getTitle() ?>">
-									<a target="_blank" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $e->getID() ?>">
-										<?php echo $e->getAMEntry()->getTitle() ?>
-									</a>
-								</td>
+							<td class="title" data-sorter="<?php echo $e->getAMEntry()->getTitle() ?>">
+								<a target="_blank" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $e->getID() ?>">
+									<?php echo $e->getAMEntry()->getTitle() ?>
+								</a>
+							</td>
 
-								<?php if (empty($e2)): ?>
-									<td class="score" data-score1="<?php echo $e->getScore() ?>" data-score2="0">
-								<?php else: ?>
-									<td class="score" data-score1="<?php echo $e->getScore() ?>" data-score2="<?php echo $e2->getScore() ?>">
-								<?php endif ?>
-									<?php echo !$e->getScore() ? '-' : $e->getScore() ?>
-								</td>
-							</tr>
-						<?php endforeach ?>
-					</tbody>
-				</table>
-			</div>
+							<?php if (empty($e2)): ?>
+								<td class="score" data-score1="<?php echo $e->getScore() ?>" data-score2="0">
+							<?php else: ?>
+								<td class="score" data-score1="<?php echo $e->getScore() ?>" data-score2="<?php echo $e2->getScore() ?>">
+							<?php endif ?>
+								<?php echo !$e->getScore() ? '-' : $e->getScore() ?>
+							</td>
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
 		<?php endif ?>
 
 	</div>

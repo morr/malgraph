@@ -12,7 +12,7 @@ img { border: 0; /* ie image border */ }
 
 
 /* menu */
-#menu-wrapper { float: left; }
+#menu-wrapper { float: left; padding-bottom: 1em; }
 #menu { padding-right: 1em; }
 #menu ul { list-style-type: none; margin: 0; padding: 0; line-height: 1.5em; }
 #menu ul li { margin: 0; padding: 0; }
