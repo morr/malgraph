@@ -1,0 +1,9 @@
+SetEnv PHP_VER 5_4
+DirectorySlash Off
+Options -Indexes
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ /maintenance.html [B,L]
+RewriteRule ^/?$ /maintenance.html [B,L]

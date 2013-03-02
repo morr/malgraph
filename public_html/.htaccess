@@ -7,11 +7,6 @@ RewriteEngine On
 #ErrorDocument 404 /error/http?code=404
 #ErrorDocument 500 /error/http?code=500
 
-#uncomment to enter maintenance mode
-#RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteRule ^.*$ /maintenance.html [B,L]
-
 RewriteRule ^/?$ /s/index [QSA,L]
 RewriteRule ^/?s/(.*) /dispatch.php?request=index/$1 [QSA,L]
 RewriteRule ^/?a/(.*) /dispatch.php?request=admin/$1 [QSA,L]
