@@ -14,7 +14,7 @@ $(function() {
 	});
 
 	$('table').tablesorter({
-		headers: { 0: { sorter: false }, 4: { sorter: 'percent' } },
+		headers: { 0: { sorter: false }, 5: { sorter: 'percent' } },
 		widgets: ['ord'],
 		sortList: [[4,1]]
 	});
