@@ -144,7 +144,7 @@ class GlobalData extends AbstractModelEntry {
 
 class GlobalsModel extends AbstractModel {
 	protected function keyToPath($key) {
-		return ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/' . ChibiConfig::getInstance()->misc->globalsCacheFile;
+		return null;
 	}
 
 	public function getReal($key) {
@@ -162,27 +162,69 @@ class GlobalsModel extends AbstractModel {
 		return (new self())->put(null, $data);
 	}
 
-	private static $fp = null;
+	private static $conn = null;
 	private static function specialRead() {
-		$path = (new self())->keyToPath(null);
-		if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_EX)) {
-			if (file_exists($path)) {
-				$data = file_get_contents($path);
-				$return = unserialize(gzuncompress($data));
-			} else {
-				$return = (new self())->getReal(null);
-			}
+		$host = ChibiConfig::getInstance()->sql->host;
+		$user = ChibiConfig::getInstance()->sql->user;
+		$pass = ChibiConfig::getInstance()->sql->password;
+		$db = ChibiConfig::getInstance()->sql->database;
+		$table = ChibiConfig::getInstance()->misc->globalsTable;
+		$conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass);
+		self::$conn = $conn;
+
+		$sql = 'CREATE TABLE IF NOT EXISTS ' . $table . ' (`id` INT NOT NULL, `data` BLOB NOT NULL, PRIMARY KEY (`id`))';
+		$q = $conn->prepare($sql);
+		$q->execute();
+
+		$sql = 'LOCK TABLES ' . $table . ' WRITE';
+		$q = $conn->prepare($sql);
+		$q->execute();
+
+		$sql = 'SELECT * FROM ' . $table;
+		$q = $conn->prepare($sql);
+		$q->execute();
+		$q->bindColumn(1, $id);
+		$q->bindColumn(2, $data);
+		$row = $q->fetch(PDO::FETCH_BOUND);
+
+		if ($row and $data) {
+			$return = unserialize(gzuncompress($data));
 		} else {
-			throw new LockException('Couldn\'t acquire lock for ' . $path);
+			$return = (new self())->getReal(null);
+
+			$id = 1;
+			$data = gzcompress(serialize($return));
+			$sql = 'INSERT INTO ' . $table . '(id,data) VALUES(?,?)';
+			$q = $conn->prepare($sql);
+			$q->bindParam(1, $id);
+			$q->bindParam(2, $data);
+			$q->execute();
 		}
 		return $return;
 	}
 
-	private static function specialPut($data) {
-		$path = (new self())->keyToPath(null);
-		$contents = gzcompress(serialize($data));
-		file_put_contents($path, $contents);
-		ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
+	public function getCached($key) {
+		$return = self::specialRead();
+		self::$conn = null;
+		return $return;
+	}
+
+	private static function specialPut($return) {
+		$conn = self::$conn;
+		$table = ChibiConfig::getInstance()->misc->globalsTable;
+
+		$data = gzcompress(serialize($return));
+		$sql = 'UPDATE ' . $table . ' SET data=?';
+		$q = $conn->prepare($sql);
+		$q->bindParam(1, $data);
+		$q->execute();
+
+		$sql = 'UNLOCK TABLES';
+		$q = $conn->prepare($sql);
+		$q->execute();
+
+		self::$conn = null;
+		return true;
 	}
 
 	public static function addUser(UserEntry $user) {
