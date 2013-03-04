@@ -116,9 +116,9 @@ class UserListService {
 		$yearB = intval($finishedB[0]);
 		$monthA = isset($finishedA[1]) ? intval($finishedA[1]) : false;
 		$monthB = isset($finishedB[1]) ? intval($finishedB[1]) : false;
-		if ($yearB and $monthB) {
+		if ($yearB > 1900 and $monthB) {
 			$monthPeriod = sprintf('%04d-%02d', $yearB, $monthB);
-		} elseif ($yearA and $monthA) {
+		} elseif ($yearA > 1900 and $monthA) {
 			$monthPeriod = sprintf('%04d-%02d', $yearA, $monthA);
 		} else {
 			$monthPeriod = '?';
