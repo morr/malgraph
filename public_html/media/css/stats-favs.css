@@ -1,4 +1,7 @@
+.decades .wrapper-target { width: 100%; }
 .decades .target { height: 300px; width: 100%; }
+.lengths .target { height: 200px; width: 100%; }
+.lengths ul.infobox { height: 200px; }
 
 table .title { width: 100%; }
 table .ord { text-align: center; }

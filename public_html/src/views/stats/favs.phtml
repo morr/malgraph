@@ -87,6 +87,80 @@
 
 
 <?php iterateUsers(function($user, $otherUser) { ?>
+<div class="section lengths">
+	<h2>
+		<i data-tooltip="Colorful pie chart that shows|how many titles fall in a given|length threshold.|(Movies are not counted.)" class="icon-tooltip"></i>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, ($this->am == AMModel::TYPE_ANIME ? 'episode' : 'chapter') . ' count chart') ?>
+	</h2>
+	<div class="section-body">
+
+		<?php if ($this->favLengths[$user->getID()]->getLargestGroupSize() == 0): ?>
+			<p>No title length data available.</p>
+		<?php else: ?>
+			<ul class="infobox">
+				<li>
+					<div>
+						<span class="prefix">Sweet spot</span>
+						<span class="subject"><?php printf('%s', $tmp = $this->favLengths[$user->getID()]->getLargestGroupKey()) ?></span>
+						<span class="suffix"><?php echo $this->am == AMModel::TYPE_ANIME ? 'episode' : 'chapter'; echo intval($tmp) > 1 ? 's' : '' ?></span>
+					</div>
+				</li>
+			</ul>
+
+			<div class="wrapper-target">
+				<div class="target"></div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="wrapper-more">
+			</div>
+
+			<script type="text/javascript">
+				$('.user-<?php echo $user->getRuntimeID() ?> .lengths .target').each(function() {
+					var chart = new Highcharts.Chart({
+						chart: { renderTo: this, type: 'pie', spacingTop: 0, spacingBottom: 0, pieChart: true },
+						legend: { enabled: true, layout: 'vertical', align: 'left', verticalAlign: 'middle', x: 20, },
+						xAxis: {
+							categories: <?php echo json_encode($this->favLengths[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY)) ?>,
+							labels: { enabled: false },
+							title: { text: 'Lengths', margin: 15 },
+						},
+						yAxis: { title: { text: 'Mean score' } },
+						tooltip: { formatter: function() {
+							var text = 'Titles of ';
+							if (this.key == '?') {
+								text += 'unknown length';
+							} else {
+								text += 'length ' + this.key;
+							}
+							text += ': ';
+							if (this.y == 0) {
+								text += 'none!';
+							} else {
+								text += this.y;
+							}
+							return text; } },
+						series: [ {
+							name: 'lengths',
+							data: <?php echo json_encode(array_map(function($length) use ($user) {
+								return [$length, $this->favLengths[$user->getID()]->getGroupSize($length)]; },
+							$this->favLengths[$user->getID()]->getGroupsKeys(Distribution::IGNORE_NULL_KEY | Distribution::IGNORE_EMPTY_GROUPS))) ?>,
+							point: { events: { click: function(e) {
+								toggleMoreWrappers($('.lengths .wrapper-more'), {'sender': 'length', 'length': this.name});
+							} } }
+						} ],
+						plotOptions: { pie: { size: '100%', dataLabels: { enabled: false }, showInLegend: true } }
+					});
+				});
+			</script>
+		<?php endif ?>
+	</div>
+</div>
+<?php }); ?>
+
+
+
+<?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section creators">
 	<h2>
 		<?php if ($this->am == AMModel::TYPE_MANGA): ?>

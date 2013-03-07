@@ -520,7 +520,11 @@ class StatsController extends AbstractController {
 
 
 	public function favsAction() {
-		MediaHelper::addMedia([MediaHelper::HIGHCHARTS, MediaHelper::TABLESORTER]);
+		MediaHelper::addMedia([
+			MediaHelper::HIGHCHARTS,
+			MediaHelper::TABLESORTER,
+			MediaHelper::INFOBOX,
+		]);
 
 		foreach ($this->view->users as $user) {
 			$filter = UserListFilters::getNonPlanned();
@@ -530,21 +534,33 @@ class StatsController extends AbstractController {
 			$favGenres = new GenreDistribution();
 			$favYears = new YearDistribution();
 			$favDecades = new DecadeDistribution();
+			$favLengths = new LengthDistribution();
 			foreach ($entries as $entry) {
 				$favCreators->addEntry($entry);
 				$favGenres->addEntry($entry);
 				$favYears->addEntry($entry);
 				$favDecades->addEntry($entry);
+				if ($entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE) {
+					$favLengths->addEntry($entry);
+				}
 			}
 			$favDecades->addEmptyDecades();
 			$favCreators->finalize();
 			$favGenres->finalize();
 			$favYears->finalize();
 			$favDecades->finalize();
+			$favLengths->finalize();
 			$this->view->favCreators[$user->getID()] = $favCreators;
 			$this->view->favGenres[$user->getID()] = $favGenres;
 			$this->view->favYears[$user->getID()] = $favYears;
 			$this->view->favDecades[$user->getID()] = $favDecades;
+			$this->view->favLengths[$user->getID()] = $favLengths;
+
+			$this->view->lengthScores[$user->getID()] = [];
+			foreach ($favLengths->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
+				$subEntries = $favLengths->getGroupEntries($key);
+				$this->view->lengthScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
+			}
 
 			$this->view->yearScores[$user->getID()] = [];
 			foreach ($favYears->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {

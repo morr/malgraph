@@ -214,10 +214,12 @@ abstract class Distribution {
 	const IGNORE_EMPTY_GROUPS = 2;
 
 	public function __construct(array $entries = []) {
-		foreach ($entries as $entry) {
-			$this->addEntry($entry);
+		if (!empty($entries)) {
+			foreach ($entries as $entry) {
+				$this->addEntry($entry);
+			}
+			$this->finalize();
 		}
-		$this->finalize();
 	}
 
 	public abstract function addEntry(UserListEntry $entry);
@@ -452,9 +454,18 @@ class StatusDistribution extends Distribution {
 
 class LengthDistribution extends Distribution {
 	protected function sortGroups() {
-		ksort($this->keys, SORT_NUMERIC);
-		ksort($this->groups, SORT_NUMERIC);
-		ksort($this->entries, SORT_NUMERIC);
+		$f = function($a, $b) {
+			if ($b == '?') {
+				return -1;
+			} elseif ($a == '?') {
+				return 1;
+			} else {
+				return intval($a) - intval($b);
+			}
+		};
+		uksort($this->keys, $f);
+		uksort($this->groups, $f);
+		uksort($this->entries, $f);
 	}
 
 	public function getNullGroupKey() {
@@ -501,7 +512,7 @@ class LengthDistribution extends Distribution {
 			}
 		}
 
-		$this->addToGroup($group, $entry);
+		$this->addToGroup((string)$group, $entry);
 	}
 }
 

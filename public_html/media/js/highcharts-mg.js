@@ -13,7 +13,7 @@ Highcharts.theme = {
 	},
 
 	title: false,
-	legend: false,
+	legend: { enabled: false },
 
 	xAxis: {
 		gridLineWidth: 1,
