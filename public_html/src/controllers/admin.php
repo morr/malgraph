@@ -101,6 +101,23 @@ class AdminController extends AbstractController {
 
 
 
+	public function resetGlobalsAction() {
+		$host = ChibiConfig::getInstance()->sql->host;
+		$user = ChibiConfig::getInstance()->sql->user;
+		$pass = ChibiConfig::getInstance()->sql->password;
+		$db = ChibiConfig::getInstance()->sql->database;
+		$table = ChibiConfig::getInstance()->misc->globalsTable;
+		$conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass);
+
+		$sql = 'DROP TABLE ' . $table;
+		$q = $conn->prepare($sql);
+		$q->execute();
+
+		$this->success('Table removed ' . $conn->errorInfo()[2]);
+	}
+
+
+
 	public function amAction() {
 		if (empty($_GET['am-id'])) {
 			$this->error('ID cannot be empty.');
@@ -182,4 +199,3 @@ class AdminController extends AbstractController {
 		}
 	}
 }
-?>

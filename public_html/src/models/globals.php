@@ -172,7 +172,7 @@ class GlobalsModel extends AbstractModel {
 		$conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass);
 		self::$conn = $conn;
 
-		$sql = 'CREATE TABLE IF NOT EXISTS ' . $table . ' (`id` INT NOT NULL, `data` BLOB NOT NULL, PRIMARY KEY (`id`))';
+		$sql = 'CREATE TABLE IF NOT EXISTS ' . $table . ' (`id` INT NOT NULL, `data` MEDIUMBLOB NOT NULL, PRIMARY KEY (`id`))';
 		$q = $conn->prepare($sql);
 		$q->execute();
 
