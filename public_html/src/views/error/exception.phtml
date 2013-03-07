@@ -1,5 +1,7 @@
 <h1>Serious error</h1>
-<p>If you see this, please mail chrupky@gmail.com with following information:</p>
+<p>If you see this, please mail <a href="mailto:chrupky@gmail.com">chrupky@gmail.com</a> with information below.<br>
+Also, please use "MALgraph" as the subject and include your MAL nickname. Thank you!</p>
+<hr>
 <p><?php echo $this->exception->getMessage() ?> at <?php echo $this->exception->getFile() ?>:<?php echo $this->exception->getLine() ?></p>
 <ul>
 	<?php for ($k = 0, $i = 0; $i < count($this->backtrace); $i ++, $k ++): ?>
