@@ -37,5 +37,5 @@ class AnimeGenreEntry extends AMGenreEntry {
 }
 
 class MangaGenreEntry extends AMGenreEntry {
-	use AnimeModelDecorator;
+	use MangaModelDecorator;
 }
