@@ -220,22 +220,28 @@
 			<ul class="infobox">
 				<li>
 					<div>
+						<?php $scores = array_map(function($entries) { return UserListService::getMeanScore($entries); }, $this->lengthDistribution[$user->getID()]->getGroupsEntries()) ?>
+						<?php $key = array_search(max($scores), $scores) ?>
 						<?php if ($this->am == AMModel::TYPE_ANIME): ?>
-							<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textEpisodes(str_replace('-', '&nbsp;to&nbsp;', $this->lengthDistribution[$user->getID()]->getLargestGroupKey()))) ?>
+							<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textEpisodes(str_replace('-', '&nbsp;to&nbsp;', $key))) ?>
 						<?php elseif ($this->am == AMModel::TYPE_MANGA): ?>
-							<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textChapters(str_replace('-', '&nbsp;to&nbsp;', $this->lengthDistribution[$user->getID()]->getLargestGroupKey()))) ?>
+							<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textChapters(str_replace('-', '&nbsp;to&nbsp;', $key))) ?>
 						<?php endif ?>
-						<span class="prefix">Most common</span>
-						<span class="subject"><?php echo $num ?></span>
-						<span class="suffix"><?php echo $txt ?></span>
+						<span class="prefix">Highest mean</span>
+						<span class="subject"><?php printf('%.2f', $scores[$key]) ?></span>
 					</div>
 				</li>
 
 				<li>
 					<div>
+						<?php if ($this->am == AMModel::TYPE_ANIME): ?>
+							<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textEpisodes($key)) ?>
+						<?php elseif ($this->am == AMModel::TYPE_MANGA): ?>
+							<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textChapters($key)) ?>
+						<?php endif ?>
 						<span class="prefix">Which is</span>
-						<span class="subject"><?php echo $this->lengthDistribution[$user->getID()]->getLargestGroupSize() ?></span>
-						<span class="suffix">titles</span>
+						<span class="subject"><?php echo $num ?></span>
+						<span class="suffix"><?php echo $txt ?></span>
 					</div>
 				</li>
 			</ul>
@@ -259,20 +265,20 @@
 						yAxis: { title: { text: 'Mean score', margin: 15 } },
 						tooltip: { formatter: function() {
 							var text;
-							if (this.x == '-') {
-								text = 'Mean score for titles of unknown length: ' + Math.round(this.y * 100) / 100.0;
+							if (this.x == '?') {
+								text = 'Mean score for titles of unknown length: ';
 							} else {
 								text = 'Mean score for titles of length ' + this.x + ': ';
-								if (this.y > 0) {
-									text += this.y.toFixed(2);
-								} else {
-									text += 'unrated!';
-								}
+							}
+							if (this.y > 0) {
+								text += this.y.toFixed(2);
+							} else {
+								text += 'unrated!';
 							}
 							return text;
 						} },
 						series: [ {
-							data: <?php echo json_encode(array_map(function($entries) { return UserListService::getMeanScore($entries); }, array_values($this->lengthDistribution[$user->getID()]->getGroupsEntries()))) ?>,
+							data: <?php echo json_encode(array_values($scores)) ?>,
 							point: { events: { click: function(e) {
 								toggleMoreWrappers($('.score-length-dist .wrapper-more'), {'sender': 'score-length', 'length': this.category});
 							} } }

@@ -100,9 +100,22 @@
 			<ul class="infobox">
 				<li>
 					<div>
-						<span class="prefix">Sweet spot</span>
-						<span class="subject"><?php printf('%s', $tmp = $this->favLengths[$user->getID()]->getLargestGroupKey()) ?></span>
-						<span class="suffix"><?php echo $this->am == AMModel::TYPE_ANIME ? 'episode' : 'chapter'; echo intval($tmp) > 1 ? 's' : '' ?></span>
+						<?php if ($this->am == AMModel::TYPE_ANIME): ?>
+							<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textEpisodes(str_replace('-', '&nbsp;to&nbsp;', $this->favLengths[$user->getID()]->getLargestGroupKey()))) ?>
+						<?php elseif ($this->am == AMModel::TYPE_MANGA): ?>
+							<?php list($num, $txt) = explode(' ', ChibiRegistry::getHelper('mg')->textChapters(str_replace('-', '&nbsp;to&nbsp;', $this->favLengths[$user->getID()]->getLargestGroupKey()))) ?>
+						<?php endif ?>
+						<span class="prefix">Most common</span>
+						<span class="subject"><?php echo $num ?></span>
+						<span class="suffix"><?php echo $txt ?></span>
+					</div>
+				</li>
+
+				<li>
+					<div>
+						<span class="prefix">Which is</span>
+						<span class="subject"><?php echo $this->favLengths[$user->getID()]->getLargestGroupSize() ?></span>
+						<span class="suffix">titles</span>
 					</div>
 				</li>
 			</ul>
@@ -127,17 +140,16 @@
 						},
 						yAxis: { title: { text: 'Mean score' } },
 						tooltip: { formatter: function() {
-							var text = 'Titles of ';
+							var text;
 							if (this.key == '?') {
-								text += 'unknown length';
+								text = 'Titles of unknown length: ';
 							} else {
-								text += 'length ' + this.key;
+								text = 'Titles of length ' + this.key + ': ';
 							}
-							text += ': ';
-							if (this.y == 0) {
-								text += 'none!';
-							} else {
+							if (this.y > 0) {
 								text += this.y;
+							} else {
+								text += 'none!';
 							}
 							return text; } },
 						series: [ {
@@ -149,7 +161,12 @@
 								toggleMoreWrappers($('.lengths .wrapper-more'), {'sender': 'length', 'length': this.name});
 							} } }
 						} ],
-						plotOptions: { pie: { size: '100%', dataLabels: { enabled: false }, showInLegend: true } }
+						plotOptions: { pie: {
+							point: { events: { legendItemClick: function() { return false; } } },
+							dataLabels: { enabled: false },
+							showInLegend: true,
+							size: '100%',
+						} }
 					});
 				});
 			</script>
