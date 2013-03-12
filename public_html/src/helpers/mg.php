@@ -5,22 +5,25 @@ class MGHelper extends ChibiHelper {
 	public static $descSuffix = ' on MALgraph, an online tool that extends your MyAnimeList profile.'; //suffix for <meta> description tag
 
 	public static function lockFile($path, $action = LOCK_EX) {
-		$db = ChibiRegistry::getHelper('database');
-		$table = ChibiConfig::getInstance()->sql->table;
-		switch ($action) {
-			case LOCK_SH:
-				return true;
-				#$query = 'LOCK TABLES `' . $table . '` READ;';
-				#break;
-			case LOCK_EX:
-				$query = 'LOCK TABLES `' . $table . '` WRITE;';
-				break;
-			case LOCK_UN:
-				$query = 'UNLOCK TABLES;';
-				break;
+		if ($action == LOCK_SH) {
+			return true;
 		}
-		$db->query($query);
-		$err = $db->lastError();
+
+		$host = ChibiConfig::getInstance()->sql->host;
+		$user = ChibiConfig::getInstance()->sql->user;
+		$pass = ChibiConfig::getInstance()->sql->password;
+		$db = ChibiConfig::getInstance()->sql->database;
+		$table = ChibiConfig::getInstance()->misc->globalsTable;
+		$conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass);
+
+		switch ($action) {
+			case LOCK_EX: $sql = 'LOCK TABLES `' . $table . '` WRITE'; break;
+			case LOCK_UN: $sql = 'UNLOCK TABLES ' . $table; break;
+		}
+		$q = $conn->prepare($sql);
+		$q->execute();
+
+		$err = $conn->errorInfo()[2];
 		if ($err) {
 			throw new Exception($err);
 		}
@@ -29,9 +32,16 @@ class MGHelper extends ChibiHelper {
 
 	public function init() {
 		register_shutdown_function(function() {
-			$table = ChibiConfig::getInstance()->sql->table;
-			$db = ChibiRegistry::getHelper('database');
-			$db->query('UNLOCK TABLES ' . $table);
+			$host = ChibiConfig::getInstance()->sql->host;
+			$user = ChibiConfig::getInstance()->sql->user;
+			$pass = ChibiConfig::getInstance()->sql->password;
+			$db = ChibiConfig::getInstance()->sql->database;
+			$table = ChibiConfig::getInstance()->misc->globalsTable;
+			$conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass);
+
+			$sql = 'UNLOCK TABLES ' . $table;
+			$q = $conn->prepare($sql);
+			$q->execute();
 		});
 	}
 
