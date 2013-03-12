@@ -105,9 +105,7 @@ class UserEntry extends AbstractModelEntry {
 		AMModel::TYPE_MANGA => false
 	];
 	private $friends = [];
-	private $friendCount = 0;
 	private $clubs = [];
-	private $clubCount = 0;
 
 	private static $runtimeIDCounter = 1;
 	private $runtimeID;
@@ -260,28 +258,6 @@ class UserEntry extends AbstractModelEntry {
 	public function resetClubs() {
 		$this->clubs = [];
 
-	}
-
-	public function setFriendCount($count) {
-		$this->friendCount = $count;
-	}
-
-	public function setClubCount($count) {
-		$this->clubCount = $count;
-	}
-
-	public function getFriendCount() {
-		if (!$this->friendCount) {
-			return count($this->getFriends());
-		}
-		return $this->friendCount;
-	}
-
-	public function getClubCount() {
-		if (!$this->clubCount) {
-			return count($this->getClubs());
-		}
-		return $this->clubCount;
 	}
 
 	public function getID() {

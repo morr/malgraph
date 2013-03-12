@@ -188,7 +188,7 @@
 
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section friends">
-	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'friends (' . $user->getFriendCount() . ')') ?></h2>
+	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'friends') ?></h2>
 	<div class="section-body">
 		<?php if ($user->isAnonymous()): ?>
 			<p>This user wanted to be anonymous, so their friends aren&rsquo;t shown.</p>
@@ -208,12 +208,6 @@
 				<?php endforeach ?>
 			</ul>
 			<div class="clear"></div>
-			<?php if (!$user->isAnonymous() and $user->getFriendCount() != count($user->getFriends())): ?>
-				<a class="more" target="_blank" href="http://myanimelist.net/friends.php?id=<?php echo $user->getID() ?>">
-					<i class="icon-pop-out"></i>
-					(more&hellip;)
-				</a>
-			<?php endif ?>
 		<?php endif ?>
 	</div>
 </div>
@@ -223,7 +217,7 @@
 
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section clubs">
-	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'clubs (' . $user->getClubCount()  . ')') ?></h2>
+	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'clubs') ?></h2>
 	<div class="section-body">
 		<?php if ($user->isAnonymous()): ?>
 			<p>Neither will we tell you their clubs.</p>
@@ -243,12 +237,6 @@
 				<?php endforeach ?>
 			</ul>
 			<div class="clear"></div>
-			<?php if (!$user->isAnonymous() and $user->getClubCount() != count($user->getClubs())): ?>
-				<a class="more" target="_blank" href="http://myanimelist.net/showclubs.php?id=<?php echo $user->getID() ?>">
-					<i class="icon-pop-out"></i>
-					(more&hellip;)
-				</a>
-			<?php endif ?>
 		<?php endif ?>
 	</div>
 </div>

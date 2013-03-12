@@ -20,6 +20,8 @@ class UserModel extends AbstractModel {
 	const URL_MANGA2 = 'http://myanimelist.net/mangalist/{user}&status=3';
 	const URL_PROFILE = 'http://myanimelist.net/profile/{user}';
 	const URL_HISTORY = 'http://myanimelist.net/history/{user}';
+	const URL_CLUBS = 'http://myanimelist.net/profile/{user}/clubs';
+	const URL_FRIENDS = 'http://myanimelist.net/profile/{user}/friends';
 
 	public function __construct() {
 		$this->folder = ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->userCacheDir;
@@ -164,32 +166,38 @@ class UserModel extends AbstractModel {
 			case 'Male': $userData->setGender(UserData::GENDER_MALE); break;
 		}
 
+		list(, $contents) = $documents[self::URL_CLUBS];
+		$doc = new DOMDocument;
+		$doc->preserveWhiteSpace = false;
+		ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
+		$doc->loadHTML($contents);
+		ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
+		$xpath = new DOMXPath($doc);
+
 		$userEntry->resetClubs();
-		$node = $xpath->query('//div[@class = \'spaceit_pad\'][contains(text(), \'Total Clubs\')]')->item(0);
-		if (!empty($node)) {
-			$clubCount = intval(substr($node->nodeValue, 13));
-			$userEntry->setClubCount($clubCount);
-			$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'/club\')]');
-			foreach ($q as $node) {
-				$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($node->getAttribute('href'));
-				$club = new UserClubEntry();
-				$club->setID(intval($url['query']['cid']));
-				$club->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
-				$userEntry->addClub($club);
-			}
+		$q = $xpath->query('//ol/li/a[contains(@href, \'/club\')]');
+		foreach ($q as $node) {
+			$url = ChibiRegistry::getInstance()->getHelper('mg')->parseURL($node->getAttribute('href'));
+			$club = new UserClubEntry();
+			$club->setID(intval($url['query']['cid']));
+			$club->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+			$userEntry->addClub($club);
 		}
 
+		list(, $contents) = $documents[self::URL_FRIENDS];
+		$doc = new DOMDocument;
+		$doc->preserveWhiteSpace = false;
+		ChibiRegistry::getInstance()->getHelper('mg')->suppressErrors();
+		$doc->loadHTML($contents);
+		ChibiRegistry::getInstance()->getHelper('mg')->restoreErrors();
+		$xpath = new DOMXPath($doc);
+
 		$userEntry->resetFriends();
-		$node = $xpath->query('//div[@class = \'spaceit_pad\'][contains(text(), \'Total Friends\')]')->item(0);
-		if (!empty($node)) {
-			$friendCount = intval(substr($node->nodeValue, 15));
-			$userEntry->setFriendCount($friendCount);
-			$q = $xpath->query('//td[@class = \'profile_leftcell\']//a[contains(@href, \'profile\')]');
-			foreach ($q as $node) {
-				$friend = new UserFriendEntry();
-				$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
-				$userEntry->addFriend($friend);
-			}
+		$q = $xpath->query('//a[contains(@href, \'profile\')]/strong');
+		foreach ($q as $node) {
+			$friend = new UserFriendEntry();
+			$friend->setName(ChibiRegistry::getInstance()->getHelper('mg')->fixText($node->nodeValue));
+			$userEntry->addFriend($friend);
 		}
 	}
 
@@ -302,6 +310,8 @@ class UserModel extends AbstractModel {
 		$urls[self::URL_MANGA2] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_MANGA2, ['user' => $userEntry->getUserName()]);
 		$urls[self::URL_PROFILE] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_PROFILE, ['user' => $userEntry->getUserName()]);
 		$urls[self::URL_HISTORY] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_HISTORY, ['user' => $userEntry->getUserName()]);
+		$urls[self::URL_CLUBS] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_CLUBS, ['user' => $userEntry->getUserName()]);
+		$urls[self::URL_FRIENDS] = ChibiRegistry::getInstance()->getHelper('mg')->replaceTokens(self::URL_FRIENDS, ['user' => $userEntry->getUserName()]);
 
 		$documents = ChibiRegistry::getInstance()->getHelper('mg')->downloadMulti($urls);
 		foreach ($documents as $type => $result) {
