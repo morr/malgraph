@@ -188,7 +188,7 @@
 
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section friends">
-	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'friends') ?></h2>
+	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'friends (' . (count($user->getFriends()) < 100 ? count($user->getFriends()) : '100+') . ')') ?></h2>
 	<div class="section-body">
 		<?php if ($user->isAnonymous()): ?>
 			<p>This user wanted to be anonymous, so their friends aren&rsquo;t shown.</p>
@@ -217,7 +217,7 @@
 
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section clubs">
-	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'clubs') ?></h2>
+	<h2><?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'clubs (' . count($user->getClubs()) . ')') ?></h2>
 	<div class="section-body">
 		<?php if ($user->isAnonymous()): ?>
 			<p>Neither will we tell you their clubs.</p>
