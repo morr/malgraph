@@ -106,11 +106,15 @@
 
 	$('tr td.score').each(function() { $(this).attr('data-sorter', $(this).attr('data-score1')); });
 	var quot = $('<div/>').html('&rsquo;').text();
-	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') > $(this).attr('data-score2') && $(this).attr('data-score2') > 0; }).each(function() { $(this).addClass('higher-score').attr('data-tooltip', 'Rated lower (' + $(this).attr('data-score2') + ')|by the other user.'); });
-	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') > $(this).attr('data-score2') && $(this).attr('data-score2') == 0; }).each(function() { $(this).addClass('no-score').attr('data-tooltip', 'Not rated by the other user.'); });
-	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') < $(this).attr('data-score2') && $(this).attr('data-score1') > 0; }).each(function() { $(this).addClass('lower-score').attr('data-tooltip', 'Rated higher (' + $(this).attr('data-score2') + ')|by the other user.'); });
-	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') < $(this).attr('data-score2') && $(this).attr('data-score1') == 0; }).each(function() { $(this).addClass('no-score').attr('data-tooltip', 'Not rated by this user.'); });
-	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') == $(this).attr('data-score2') && $(this).attr('data-score1') > 0; }).each(function() { $(this).addClass('same-score').attr('data-tooltip', 'Rated with the same score.'); });
-	ununiqueRows.find('td.score').filter(function(i) { return $(this).attr('data-score1') == $(this).attr('data-score2') && $(this).attr('data-score1') == 0; }).each(function() { $(this).addClass('no-score').attr('data-tooltip', 'Neither side rated this title.'); });
+	ununiqueRows.find('td.score').each(function() {
+		var score1 = parseInt($(this).attr('data-score1'));
+		var score2 = parseInt($(this).attr('data-score2'));
+		if (score1 > score2 && score2 > 0) { $(this).addClass('higher-score').attr('data-tooltip', 'Rated lower (' + $(this).attr('data-score2') + ')|by the other user.'); }
+		else if (score1 > score2 && score2 == 0) { $(this).addClass('no-score').attr('data-tooltip', 'Not rated by the other user.'); }
+		else if (score1 < score2 && score1 > 0) { $(this).addClass('lower-score').attr('data-tooltip', 'Rated higher (' + $(this).attr('data-score2') + ')|by the other user.'); }
+		else if (score1 < score2 && score1 == 0) { $(this).addClass('no-score').attr('data-tooltip', 'Not rated by this user.'); }
+		else if (score1 == score2 && score1 > 0) { $(this).addClass('same-score').attr('data-tooltip', 'Rated with the same score.'); }
+		else if (score1 == score2 && score1 == 0) { $(this).addClass('no-score').attr('data-tooltip', 'Neither side rated this title.'); }
+	});
 	uniqueRows.find('td.score').attr('data-tooltip', 'This title is unique to this user.');
 </script>
