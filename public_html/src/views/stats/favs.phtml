@@ -89,8 +89,13 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section lengths">
 	<h2>
-		<i data-tooltip="Colorful pie chart that shows|how many titles fall in a given|length threshold.|(Movies are not counted.)" class="icon-tooltip"></i>
-		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, ($this->am == AMModel::TYPE_ANIME ? 'episode' : 'chapter') . ' count chart') ?>
+		<?php if ($this->am == AMModel::TYPE_ANIME): ?>
+			<i data-tooltip="Colorful pie chart that shows|how many titles fall in a given|length threshold.|(Movies are not counted.)" class="icon-tooltip"></i>
+			<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'episode count chart') ?>
+		<?php else: ?>
+			<i data-tooltip="Colorful pie chart that shows|how many titles fall in a given|length threshold." class="icon-tooltip"></i>
+			<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'chapter count chart') ?>
+		<?php endif ?>
 	</h2>
 	<div class="section-body">
 
