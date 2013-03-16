@@ -102,6 +102,11 @@ class AdminController extends AbstractController {
 
 
 	public function resetGlobalsAction() {
+		$modelUsers = new UserModel();
+		foreach ($modelUsers->getKeys() as $key) {
+			$modelUsers->delete($key);
+		}
+
 		$host = ChibiConfig::getInstance()->sql->host;
 		$user = ChibiConfig::getInstance()->sql->user;
 		$pass = ChibiConfig::getInstance()->sql->password;
