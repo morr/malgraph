@@ -108,7 +108,13 @@ class AjaxController extends AbstractController {
 			case self::SENDER_LENGTH:
 				$length = $this->inputHelper->getStringSafe('length');
 				$filter1 = UserListFilters::getNonPlanned();
-				$entries = $list->getEntries($filter1);
+				if ($this->view->sender == self::SENDER_LENGTH) {
+					$filter2 = function($entry) { return $entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE; };
+					$filter = UserListFilters::combine($filter1, $filter2);
+				} else {
+					$filter = $filter1;
+				}
+				$entries = $list->getEntries($filter);
 				$lengthDistribution = new LengthDistribution($entries);
 				$entries = $lengthDistribution->getGroupEntries($length);
 				$this->view->length = $length;
