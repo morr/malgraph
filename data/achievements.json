@@ -198,6 +198,8 @@
 				1841,  #Dai Mahou Touge Omake
 				1221,  #Demashitaa! Powerpuff Girls Z
 				660,   #Denshin Mamotte Shugogetten
+				16419, #Dokidoki! Precure
+				17357, #Dokidoki! Precure Movie
 				2259,  #Dr. Rin ni Kiitemite!
 				812,   #Earth Maiden Arjuna
 				1930,  #Eiga Futari wa Precure Max Heart
@@ -334,6 +336,7 @@
 				3112,  #Papillon Rose
 				10549, #Precure All Stars GoGo Dream Live!
 				12221, #Precure All Stars New Stage: Mirai no Tomodachi
+				16442, #Precure All Stars New Stage 2: Kokoro no Tomodachi
 				11569, #Precure All-Stars DX the Dance Live: Miracle Dance Stage e Youkoso
 				10736, #Precure kara Minna e no Ouen Movie
 				100,   #Pretear
@@ -385,6 +388,7 @@
 				7082,  #Shugo Chara! Party!
 				5262,  #Shugo Chara!! Doki
 				12191, #Smile Precure!
+				15307, #Smile Precure! Movie: Ehon no Naka wa Minna Chiguhagu!
 				1642,  #Sugar Sugar Rune
 				9893,  #Suite Precure
 				2066,  #Super Doll Licca-chan
@@ -556,6 +560,7 @@
 				4312,  #Hokuto no Ken: Toki-den
 				3027,  #Hokuto no Ken: Yuria-den
 				5291,  #Hokuto no Ken: Zero Kenshiro Den
+				16774, #Inferno Cop
 				666,   #JoJo's Bizarre Adventure
 				665,   #JoJo's Bizarre Adventure (2000)
 				14719, #Jojo's Bizarre Adventure (2012)
@@ -637,7 +642,7 @@
 				9591,  #Code Geass: Hangyaku no Lelouch R2: Flash Specials
 				10534, #Doraemon: Nobita and the New Steel Troops - Angel Wings
 				2665,  #Doraemon: Nobita and the Platoon of Iron Men
-				#72,    #Full Metal Panic Fumoffu
+				72,    #Full Metal Panic Fumoffu
 				1015,  #Full Metal Panic! The Second Raid OVA
 				10050, #Macross Frontier Music Clip Shuu: Nyankuri
 				4939,  #Macross Fufonfia
@@ -703,8 +708,8 @@
 				5900,  #Jean Valjean Monogatari
 				3110,  #Kaze no Naka no Shoujo: Kinpatsu no Jeanie
 				8436,  #Ketsudan
-				#4262,  #Koihime†Musou
-				#5305,  #Koihime†Musou OVA
+				4262,  #Koihime†Musou
+				5305,  #Koihime†Musou OVA
 				4898,  #Kuroshitsuji
 				6707,  #Kuroshitsuji II
 				9136,  #Kuroshitsuji II Specials
@@ -729,11 +734,11 @@
 				839,   #Samurai Spirits 2
 				6057,  #Sasuke
 				3038,  #Senya Ichiya Monogatari
-				#6112,  #Shin Koihime†Musou
-				#7774,  #Shin Koihime†Musou OVA
-				#8635,  #Shin Koihime†Musou: Live Revolution
-				#8057,  #Shin Koihime†Musou: Otome Tairan
-				#10297, #Shin Koihime†Musou: Otome Tairan OVA
+				6112,  #Shin Koihime†Musou
+				7774,  #Shin Koihime†Musou OVA
+				8635,  #Shin Koihime†Musou: Live Revolution
+				8057,  #Shin Koihime†Musou: Otome Tairan
+				10297, #Shin Koihime†Musou: Otome Tairan OVA
 				173,   #Tactics
 				1452,  #The Samurai
 				8961,  #Tono to Issho: Ippunkan Gekijou
