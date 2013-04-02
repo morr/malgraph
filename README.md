@@ -19,6 +19,7 @@
 
 #### List
 * all your anime or manga, sorted by score by default
+* use filters to quickly search for titles you're interested in
 * when in compare mode, see **titles you share with the other person**
 
 #### Ratings
@@ -27,7 +28,7 @@
 * check if you waste most of your time watching crappy series
 * total time spent watching/reading and **average time in minutes per day**
 * export your rating distribution as a **live image**, build **custom color theme**
-* see your sweet spot for episode count or highest rated chapter count ranges
+* see your highest rated episode/chapter count ranges
 
 #### Activity
 * a visual representation of your watching/reading history from last 21 days
@@ -39,6 +40,7 @@
 
 #### Favorites
 * favorite decades **and years** - were series from 2008 better than 2003? 80s worse than now?
+* episode/chapter count distribution, showing your sweet spot for series length
 * favorite anime studios and manga authors, with counters, mean score and total time
 * list of genres you seem to like (action+comedy anyone?)
 
@@ -65,7 +67,7 @@
 
 
 ## License
-MALgraph is licensed under [CC-BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/).
+MALgraph is licensed under [The MIT License](http://opensource.org/licenses/MIT).
 
 ## Other things worth mentioning
 This is the third version of Mg. The first one only showed the rating distribution, while its successor was a lot richer in content, but everything was presented in one overwhelming cluster of data. Mg3 has everything split into tabs, with more features and less distracting things, like humongous formulas shown in tooltips.
