@@ -161,6 +161,14 @@ class GlobalsModel extends AbstractModel {
 	}
 
 	private static $handle = null;
+	private static $writing = false;
+	private static function setWriting($writing) {
+		if ($writing != self::$writing) {
+			self::$writing = $writing;
+			self::$handle = null;
+		}
+	}
+
 	private static function getFileHandle() {
 		if (self::$handle !== null) {
 			return self::$handle;
@@ -170,7 +178,7 @@ class GlobalsModel extends AbstractModel {
 		if (!$handle) {
 			return null;
 		}
-		if (!flock($handle, LOCK_EX)) {
+		if (!flock($handle, self::$writing ? LOCK_EX : LOCK_SH)) {
 			fclose($handle);
 			throw new LockException();
 		}
@@ -221,14 +229,18 @@ class GlobalsModel extends AbstractModel {
 	}
 
 	public static function addUser(UserEntry $user) {
+		self::setWriting(true);
 		$data = self::getData();
 		$data->addUser($user);
 		self::putData($data);
+		self::setWriting(false);
 	}
 
 	public static function delUser(UserEntry $user) {
+		self::setWriting(true);
 		$data = self::getData();
 		$data->delUser($user);
 		self::putData($data);
+		self::setWriting(false);
 	}
 }
