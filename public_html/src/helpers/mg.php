@@ -4,47 +4,6 @@ class LockException extends Exception { }
 class MGHelper extends ChibiHelper {
 	public static $descSuffix = ' on MALgraph, an online tool that extends your MyAnimeList profile.'; //suffix for <meta> description tag
 
-	public static function lockFile($path, $action = LOCK_EX) {
-		if ($action == LOCK_SH) {
-			return true;
-		}
-
-		$host = ChibiConfig::getInstance()->sql->host;
-		$user = ChibiConfig::getInstance()->sql->user;
-		$pass = ChibiConfig::getInstance()->sql->password;
-		$db = ChibiConfig::getInstance()->sql->database;
-		$table = ChibiConfig::getInstance()->misc->globalsTable;
-		$conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass);
-
-		switch ($action) {
-			case LOCK_EX: $sql = 'LOCK TABLES `' . $table . '` WRITE'; break;
-			case LOCK_UN: $sql = 'UNLOCK TABLES ' . $table; break;
-		}
-		$q = $conn->prepare($sql);
-		$q->execute();
-
-		$err = $conn->errorInfo()[2];
-		if ($err) {
-			throw new Exception($err);
-		}
-		return true;
-	}
-
-	public function init() {
-		register_shutdown_function(function() {
-			$host = ChibiConfig::getInstance()->sql->host;
-			$user = ChibiConfig::getInstance()->sql->user;
-			$pass = ChibiConfig::getInstance()->sql->password;
-			$db = ChibiConfig::getInstance()->sql->database;
-			$table = ChibiConfig::getInstance()->misc->globalsTable;
-			$conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass);
-
-			$sql = 'UNLOCK TABLES ' . $table;
-			$q = $conn->prepare($sql);
-			$q->execute();
-		});
-	}
-
 	public function log($message) {
 		$ip = null;
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {

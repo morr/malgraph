@@ -15,12 +15,11 @@ class GlobalMangaData extends GlobalAMData {
 
 abstract class GlobalAMData {
 	protected $scoreDistribution = null;
-	protected $dbSize = null;
+	protected $dbSize = 0;
 
 	public function __construct() {
 		$this->scoreDistribution = new ScoreDistribution();
 		$this->scoreDistribution->disableEntries();
-		$this->dbSize = 0;
 	}
 
 	public function getDBSize() {
@@ -61,8 +60,8 @@ abstract class GlobalAMData {
 
 class GlobalData extends AbstractModelEntry {
 	private $amData;
-	private $userCount;
 	private $usersCF;
+	private $allUsers = [];
 
 	public function __construct() {
 		$this->amData = [
@@ -73,11 +72,10 @@ class GlobalData extends AbstractModelEntry {
 			AMModel::TYPE_ANIME => [],
 			AMModel::TYPE_MANGA => [],
 		];
-		$this->userCount = 0;
 	}
 
 	public function getUserCount() {
-		return $this->userCount;
+		return count($this->allUsers);
 	}
 
 	public function isFresh() {
@@ -107,6 +105,11 @@ class GlobalData extends AbstractModelEntry {
 			return;
 		}
 
+		if (isset($this->allUsers[$user->getUserName()])) {
+			return;
+		}
+		$this->allUsers[$user->getUserName()] = true;
+
 		foreach (AMModel::getTypes() as $type) {
 			$distro = $user->getList($type)->getScoreDistributionForCF();
 			//filter out uninteresting sources
@@ -114,7 +117,6 @@ class GlobalData extends AbstractModelEntry {
 				$this->usersCF[$type] []= $user->getUserName();
 			}
 		}
-		$this->userCount ++;
 		foreach (AMModel::getTypes() as $type) {
 			$this->getAMData($type)->addUser($user);
 		}
@@ -127,11 +129,15 @@ class GlobalData extends AbstractModelEntry {
 			return;
 		}
 
+		if (!isset($this->allUsers[$user->getUserName()])) {
+			return;
+		}
+		unset($this->allUsers[$user->getUserName()]);
+
 		foreach (AMModel::getTypes() as $type) {
 			$name = $user->getUserName();
 			$this->usersCF[$type] = array_filter($this->usersCF[$type], function($subName) use ($name) { return $subName != $name; });
 		}
-		$this->userCount --;
 		foreach (AMModel::getTypes() as $type) {
 			$this->getAMData($type)->delUser($user);
 		}
@@ -154,6 +160,58 @@ class GlobalsModel extends AbstractModel {
 		return $globalData;
 	}
 
+	private static $handle = null;
+	private static function getFileHandle() {
+		if (self::$handle !== null) {
+			return self::$handle;
+		}
+		$path = ChibiConfig::getInstance()->misc->globalsCacheDir;
+		$handle = fopen($path, 'c+b');
+		if (!$handle) {
+			return null;
+		}
+		if (!flock($handle, LOCK_EX)) {
+			fclose($handle);
+			throw new LockException();
+		}
+		self::$handle = $handle;
+		return $handle;
+	}
+
+	public function __construct() {
+		register_shutdown_function(function() {
+			$handle = self::$handle;//getFileHandle();
+			if ($handle !== null) {
+				flock($handle, LOCK_UN);
+				fclose($handle);
+				self::$handle = null;
+			}
+		});
+	}
+
+	public function getCached($key) {
+		$handle = self::getFileHandle();
+		if ($handle !== null) {
+			fseek($handle, 0, SEEK_END);
+			$fileSize = ftell($handle);
+			fseek($handle, 0, SEEK_SET);
+			if ($fileSize > 0) {
+				$data = fread($handle, $fileSize);
+				return unserialize(gzuncompress($data));
+			}
+		}
+		return null;
+	}
+
+	public function put($key, $data) {
+		$data = gzcompress(serialize($data));
+		$handle = self::getFileHandle();
+		fseek($handle, 0, SEEK_SET);
+		ftruncate($handle, 0);
+		fwrite($handle, $data);
+		return true;
+	}
+
 	public static function getData() {
 		return (new self())->get(null);
 	}
@@ -162,80 +220,15 @@ class GlobalsModel extends AbstractModel {
 		return (new self())->put(null, $data);
 	}
 
-	private static $conn = null;
-	private static function specialRead() {
-		$host = ChibiConfig::getInstance()->sql->host;
-		$user = ChibiConfig::getInstance()->sql->user;
-		$pass = ChibiConfig::getInstance()->sql->password;
-		$db = ChibiConfig::getInstance()->sql->database;
-		$table = ChibiConfig::getInstance()->misc->globalsTable;
-		$conn = new PDO('mysql:host=' . $host . ';dbname=' . $db, $user, $pass);
-		self::$conn = $conn;
-
-		$sql = 'CREATE TABLE IF NOT EXISTS ' . $table . ' (`id` INT NOT NULL, `data` MEDIUMBLOB NOT NULL, PRIMARY KEY (`id`))';
-		$q = $conn->prepare($sql);
-		$q->execute();
-
-		$sql = 'LOCK TABLES ' . $table . ' WRITE';
-		$q = $conn->prepare($sql);
-		$q->execute();
-
-		$sql = 'SELECT * FROM ' . $table;
-		$q = $conn->prepare($sql);
-		$q->execute();
-		$q->bindColumn(1, $id);
-		$q->bindColumn(2, $data);
-		$row = $q->fetch(PDO::FETCH_BOUND);
-
-		if ($row and $data) {
-			$return = unserialize(gzuncompress($data));
-		} else {
-			$return = (new self())->getReal(null);
-
-			$id = 1;
-			$data = gzcompress(serialize($return));
-			$sql = 'INSERT INTO ' . $table . '(id,data) VALUES(?,?)';
-			$q = $conn->prepare($sql);
-			$q->bindParam(1, $id);
-			$q->bindParam(2, $data);
-			$q->execute();
-		}
-		return $return;
-	}
-
-	public function getCached($key) {
-		$return = self::specialRead();
-		self::$conn = null;
-		return $return;
-	}
-
-	private static function specialPut($return) {
-		$conn = self::$conn;
-		$table = ChibiConfig::getInstance()->misc->globalsTable;
-
-		$data = gzcompress(serialize($return));
-		$sql = 'UPDATE ' . $table . ' SET data=?';
-		$q = $conn->prepare($sql);
-		$q->bindParam(1, $data);
-		$q->execute();
-
-		$sql = 'UNLOCK TABLES';
-		$q = $conn->prepare($sql);
-		$q->execute();
-
-		self::$conn = null;
-		return true;
-	}
-
 	public static function addUser(UserEntry $user) {
-		$data = self::specialRead();
+		$data = self::getData();
 		$data->addUser($user);
-		self::specialPut($data);
+		self::putData($data);
 	}
 
 	public static function delUser(UserEntry $user) {
-		$data = self::specialRead();
+		$data = self::getData();
 		$data->delUser($user);
-		self::specialPut($data);
+		self::putData($data);
 	}
 }

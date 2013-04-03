@@ -100,13 +100,18 @@ abstract class AbstractModel implements CachableModel {
 
 	public function getCached($key) {
 		$path = $this->keyToPath($key);
-		if (!file_exists($path)) {
+		ChibiRegistry::getHelper('mg')->suppressErrors();
+		$f = fopen($path, 'rb');
+		ChibiRegistry::getHelper('mg')->restoreErrors();
+		if (!$f) {
 			return null;
 		}
-		if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_SH)) {
+		if (flock($f, LOCK_SH)) {
 			$contents = file_get_contents($path);
-			ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
+			flock($f, LOCK_UN);
+			fclose($f);
 		} else {
+			fclose($f);
 			throw new LockException();
 		}
 		$data = unserialize(gzuncompress($contents));
@@ -133,10 +138,16 @@ abstract class AbstractModel implements CachableModel {
 	public function put($key, $data) {
 		$path = $this->keyToPath($key);
 		$contents = gzcompress(serialize($data));
-		if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_EX)) {
-			$return = file_put_contents($path, $contents);
-			ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
+		$f = fopen($path, 'cb');
+		if (!$f) {
+			throw new LockException();
+		}
+		if (flock($f, LOCK_EX)) {
+			$return = fwrite($f, $contents);
+			flock($f, LOCK_UN);
+			fclose($f);
 		} else {
+			fclose($f);
 			throw new LockException();
 		}
 		return $return;

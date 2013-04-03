@@ -1,5 +1,5 @@
 <?php
-require_once 'src/controllers/abstract.php';
+require_once 'abstract.php';
 class ErrorController extends AbstractController {
 	public function phpAction() {
 		$backtrace = debug_backtrace();

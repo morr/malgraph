@@ -10,11 +10,18 @@ class AnonService {
 		self::$lookupTableFile = ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->anonLookupFile;
 		if (file_exists(self::$lookupTableFile)) {
 			$path = self::$lookupTableFile;
-			if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_SH)) {
-				$contents = file_get_contents($path);
-				ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
+			$f = fopen($path, 'rb');
+			if (!$f) {
+				$contents = '[]';
 			} else {
-				throw new LockException();
+				if (flock($f, LOCK_SH)) {
+					$contents = file_get_contents($path);
+					flock($f, LOCK_UN);
+					fclose($f);
+				} else {
+					fclose($f);
+					throw new LockException();
+				}
 			}
 			self::$lookupTable = json_decode($contents, true);
 		}
@@ -44,10 +51,16 @@ class AnonService {
 		}
 		$path = self::$lookupTableFile;
 		$contents = json_encode(self::$lookupTable);
-		if (ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_EX)) {
-			file_put_contents($path, $contents);
-			ChibiRegistry::getHelper('mg')->lockFile($path, LOCK_UN);
+		$f = fopen($path, 'cb');
+		if (!$f) {
+			throw new LockException();
+		}
+		if (flock($f, LOCK_EX)) {
+			fwrite($f, $contents);
+			flock($f, LOCK_UN);
+			fclose($f);
 		} else {
+			fclose($f);
 			throw new LockException();
 		}
 	}
