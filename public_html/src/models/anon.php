@@ -20,7 +20,7 @@ class AnonService {
 					fclose($f);
 				} else {
 					fclose($f);
-					throw new LockException();
+					throw new LockException($path);
 				}
 			}
 			self::$lookupTable = json_decode($contents, true);
@@ -53,7 +53,7 @@ class AnonService {
 		$contents = json_encode(self::$lookupTable);
 		$f = fopen($path, 'cb');
 		if (!$f) {
-			throw new LockException();
+			throw new LockException($path);
 		}
 		if (flock($f, LOCK_EX)) {
 			fwrite($f, $contents);

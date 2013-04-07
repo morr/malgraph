@@ -112,7 +112,7 @@ abstract class AbstractModel implements CachableModel {
 			fclose($f);
 		} else {
 			fclose($f);
-			throw new LockException();
+			throw new LockException($path);
 		}
 		$data = unserialize(gzuncompress($contents));
 		return $data;
@@ -140,7 +140,7 @@ abstract class AbstractModel implements CachableModel {
 		$contents = gzcompress(serialize($data));
 		$f = fopen($path, 'cb');
 		if (!$f) {
-			throw new LockException();
+			throw new LockException($path);
 		}
 		if (flock($f, LOCK_EX)) {
 			$return = fwrite($f, $contents);
@@ -148,7 +148,7 @@ abstract class AbstractModel implements CachableModel {
 			fclose($f);
 		} else {
 			fclose($f);
-			throw new LockException();
+			throw new LockException($path);
 		}
 		return $return;
 	}

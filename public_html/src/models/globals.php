@@ -180,7 +180,7 @@ class GlobalsModel extends AbstractModel {
 		}
 		if (!flock($handle, self::$writing ? LOCK_EX : LOCK_SH)) {
 			fclose($handle);
-			throw new LockException();
+			throw new LockException($path);
 		}
 		self::$handle = $handle;
 		return $handle;

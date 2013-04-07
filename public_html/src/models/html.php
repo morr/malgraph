@@ -57,7 +57,7 @@ class HTMLCacheModel extends AbstractModel {
 		$path = json_encode($key);
 		$path = strtolower($path);
 		$path = gzcompress($path);
-		$path = bin2hex($path);
+		$path = md5($path) . sha1($path);
 		$path = str_replace('//', '/', $this->folder . '/' . $path . $this->suffix);
 		return $path;
 	}
