@@ -19,7 +19,7 @@ class HTMLCacheModel extends AbstractModel {
 		$modelCache = new self();
 		$u = strtolower($userName);
 		foreach ($modelCache->getKeys() as $key) {
-			if (in_array($u, explode(',', strtolower($key['u'])))) {
+			if (strpos($key, $u) !== false) {
 				$modelCache->delete($key);
 			}
 		}
@@ -36,28 +36,22 @@ class HTMLCacheModel extends AbstractModel {
 		$this->folder = ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->htmlCacheDir;
 	}
 
-	public function getKeys() {
-		$keys = parent::getKeys();
-		$keysFinal = [];
-		foreach ($keys as $key) {
-			$keysFinal []= $this->pathToKey($key);
-		}
-		return $keysFinal;
-	}
-
-	public function pathToKey($path) {
-		$key = str_replace($this->suffix, '', basename($path));
-		$key = hex2bin($key);
-		$key = gzuncompress($key);
-		$key = json_decode($key, true);
-		return $key;
-	}
-
 	public function keyToPath($key) {
-		$path = json_encode($key);
-		$path = strtolower($path);
-		$path = gzcompress($path);
-		$path = md5($path) . sha1($path);
+		if (!is_array($key) and preg_match('/^[0-9a-f]{72}_/i', $key))
+		{
+			$path = $key;
+		}
+		else
+		{
+			$path = json_encode($key);
+			$path = strtolower($path);
+			$path = gzcompress($path);
+			$path = md5($path) . sha1($path);
+			if (isset($key['u']))
+			{
+				$path .= '_' . $key['u'];
+			}
+		}
 		$path = str_replace('//', '/', $this->folder . '/' . $path . $this->suffix);
 		return $path;
 	}
