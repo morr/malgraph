@@ -85,7 +85,7 @@
 						<?php foreach (ChibiRegistry::getView()->users as $i => $user): ?>
 							<div class="user-pic-wrapper user<?php echo $user->getRuntimeID() ?>">
 								<div class="user-pic">
-									<a class="waitable" href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile') ?>">
+									<a class="waitable" href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile', [], $user->getLinkableName()) ?>">
 									<?php if ($user->isAnonymous() or $user->getUserData()->getProfilePictureURL() == null): ?>
 										<img class="profile unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
 									<?php else: ?>
