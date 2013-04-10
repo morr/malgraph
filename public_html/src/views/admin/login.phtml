@@ -1,4 +1,6 @@
-<form action="" method="post">
+<form action="<?php echo UrlHelper::url('/a/login') ?>" method="post">
+	<input type="text" name="user" value="admin" style="display: none">
+
 	<div class="control-group">
 		<label for="password">Password:</label>
 		<input type="password" name="password">
