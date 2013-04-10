@@ -85,7 +85,7 @@
 						<?php foreach (ChibiRegistry::getView()->users as $i => $user): ?>
 							<div class="user-pic-wrapper user<?php echo $user->getRuntimeID() ?>">
 								<div class="user-pic">
-									<a href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile') ?>">
+									<a class="waitable" href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile') ?>">
 									<?php if ($user->isAnonymous() or $user->getUserData()->getProfilePictureURL() == null): ?>
 										<img class="profile unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
 									<?php else: ?>
@@ -101,7 +101,7 @@
 							</div>
 
 							<?php if ($i == 1 and count(ChibiRegistry::getView()->users) > 1): ?>
-								<a data-tooltip="Swap profiles" id="switcher" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [end(ChibiRegistry::getView()->userNames), reset(ChibiRegistry::getView()->userNames)]) ?>">
+								<a class="waitable" data-tooltip="Swap profiles" id="switcher" href="<?php echo ChibiRegistry::getHelper('mg')->constructUrl(null, null, [], [end(ChibiRegistry::getView()->userNames), reset(ChibiRegistry::getView()->userNames)]) ?>">
 									<i class="icon-switch"></i>
 								</a>
 							<?php endif ?>
