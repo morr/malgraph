@@ -94,7 +94,7 @@
 									</a>
 								</div>
 								<p class="user-nick">
-									<a href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile') ?>">
+									<a class="waitable" href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile', [], $user->getLinkableName()) ?>">
 										<?php echo $user->getPublicName() ?>
 									</a>
 								</p>
