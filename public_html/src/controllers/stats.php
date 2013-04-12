@@ -20,7 +20,7 @@ class StatsController extends AbstractController {
 			}
 		}
 		//make users unique
-		$userNames = array_unique($userNames);
+		$userNames = array_unique(array_map('strtolower', $userNames));
 		$this->view->userNames = $userNames;
 
 		//load anime-manga switch

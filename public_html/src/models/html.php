@@ -49,7 +49,7 @@ class HTMLCacheModel extends AbstractModel {
 			$path = md5($path) . sha1($path);
 			if (isset($key['u']))
 			{
-				$path .= '_' . $key['u'];
+				$path .= '_' . strtolower($key['u']);
 			}
 		}
 		$path = str_replace('//', '/', $this->folder . '/' . $path . $this->suffix);
