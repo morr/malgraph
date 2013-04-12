@@ -127,8 +127,18 @@ class AdminController extends AbstractController {
 		if (empty($_GET['am-id'])) {
 			$this->error('ID cannot be empty.');
 		}
-		$ids = $_GET['am-id'];
-		$ids = explode(',', $ids);
+		$ids = [];
+		foreach (explode(',', $_GET['am-id']) as $tmp) {
+			$id = trim($tmp);
+			if (preg_match('/^(\d+)(\.\.|-)(\d+)$/', $id, $matches)) {
+				$id1 = $matches[1];
+				$id2 = $matches[3];
+				$ids = array_merge($ids, range($id1, $id2));
+			} else {
+				$ids []= $id;
+			}
+		}
+		$ids = array_unique($ids);
 		if (empty($_GET['am-model'])) {
 			throw new Exception('Undefined model.');
 		} else {
