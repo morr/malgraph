@@ -173,7 +173,7 @@ class GlobalsModel extends AbstractModel {
 		if (self::$handle !== null) {
 			return self::$handle;
 		}
-		$path = ChibiConfig::getInstance()->misc->globalsCacheDir;
+		$path = ChibiConfig::getInstance()->misc->globalsFile;
 		$handle = fopen($path, 'c+b');
 		if (!$handle) {
 			return null;
