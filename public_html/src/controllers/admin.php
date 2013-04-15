@@ -101,6 +101,17 @@ class AdminController extends AbstractController {
 
 
 
+	public function removeUserCacheAction() {
+		$model = new UserModel();
+		$k = 0;
+		foreach ($model->getKeys() as $key) {
+			$k += $model->delete($key);
+		}
+		$this->success($k . ' user cache file(s) removed');
+	}
+
+
+
 	public function resetGlobalsAction() {
 		$path = ChibiConfig::getInstance()->misc->globalsFile;
 		if (!unlink($path)) {
