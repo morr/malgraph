@@ -28,26 +28,25 @@ class AnonService {
 	}
 
 	public static function getByAnonName($anonName) {
-		if (!isset(self::$lookupTable['a2u'][$anonName])) {
+		if (!isset(self::$lookupTable['a2u'][strtolower($anonName)])) {
 			return null;
 		}
-		return self::$lookupTable['a2u'][$anonName];
+		return self::$lookupTable['a2u'][strtolower($anonName)];
 	}
 
 	public static function getByUserName($userName) {
-		if (!isset(self::$lookupTable['u2a'][$userName])) {
+		if (!isset(self::$lookupTable['u2a'][strtolower($userName)])) {
 			return null;
 		}
-		return self::$lookupTable['u2a'][$userName];
+		return self::$lookupTable['u2a'][strtolower($userName)];
 	}
 
 	public static function setPair($userName, $anonName) {
 		if ($anonName === null) {
-			unset(self::$lookupTable['u2a'][$userName]);
-			unset(self::$lookupTable['a2u'][$anonName]);
+			unset(self::$lookupTable['u2a'][strtolower($userName)]);
 		} else {
-			self::$lookupTable['u2a'][$userName] = $anonName;
-			self::$lookupTable['a2u'][$anonName] = $userName;
+			self::$lookupTable['u2a'][strtolower($userName)] = strtolower($anonName);
+			self::$lookupTable['a2u'][strtolower($anonName)] = strtolower($userName);
 		}
 		$path = self::$lookupTableFile;
 		$contents = json_encode(self::$lookupTable);

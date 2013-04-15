@@ -144,7 +144,7 @@ class UserEntry extends AbstractModelEntry {
 		$anonName = AnonService::getByUserName($this->getUserName());
 		if ($anonName === null) {
 			do {
-				$alpha = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+				$alpha = '0123456789abcdefghijklmnopqrstuvwxyz';
 				$anonName = '=';
 				foreach (range(1, 8) as $k) {
 					$anonName .= $alpha{mt_rand() % strlen($alpha)};
