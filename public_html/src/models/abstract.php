@@ -143,6 +143,7 @@ abstract class AbstractModel implements CachableModel {
 			throw new LockException($path);
 		}
 		if (flock($f, LOCK_EX)) {
+			ftruncate($f, 0);
 			$return = fwrite($f, $contents);
 			flock($f, LOCK_UN);
 			fclose($f);

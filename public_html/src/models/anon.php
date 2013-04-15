@@ -55,6 +55,7 @@ class AnonService {
 			throw new LockException($path);
 		}
 		if (flock($f, LOCK_EX)) {
+			ftruncate($f, 0);
 			fwrite($f, $contents);
 			flock($f, LOCK_UN);
 			fclose($f);
