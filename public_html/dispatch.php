@@ -1,7 +1,7 @@
 <?php
 ini_set('memory_limit', '120M');
 
-require 'lib/routers/basic.php';
+require '../externals/chibi/lib/routers/basic.php';
 if (file_exists('../conf')) {
 	ChibiConfig::load('../conf');
 }
