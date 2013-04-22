@@ -268,7 +268,7 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section genres">
 	<h2>
-		<i data-tooltip="Top genres and demographics,|sorted by count on your <?php echo $this->mgHelper->textAM() ?> list." class="icon-tooltip"></i>
+		<i data-tooltip="Top genres and demographics,|sorted by count on your <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list." class="icon-tooltip"></i>
 		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, 'favorite genres') ?>
 	</h2>
 	<div class="section-body">
@@ -295,7 +295,7 @@
 						<tr>
 							<td class="ord"><?php echo $i ++ ?></td>
 							<td class="title">
-								<a target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>.php?genre%5b%5d=<?php echo $genre->getID() ?>">
+								<a target="_blank" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>.php?genre%5b%5d=<?php echo $genre->getID() ?>">
 									<i class="icon-pop-out"></i>
 								</a>
 								&nbsp;

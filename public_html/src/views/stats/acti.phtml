@@ -77,14 +77,14 @@
 	</h2>
 	<div class="section-body">
 		<?php if (empty($this->monthPeriods[$user->getID()])): ?>
-			<p>No <?php echo $this->mgHelper->textAM() ?> you've completed has its completion date specified.<br>
+			<p>No <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> you've completed has its completion date specified.<br>
 			This graph won&rsquo;t work without this data.</p>
 		<?php elseif (count($this->monthPeriods[$user->getID()]) == 1): ?>
 			<?php $p = array_keys($this->monthPeriods[$user->getID()])[0] ?>
 			<?php if ($p == '?'): ?>
 				<p>No information was found about long-term completion date of your titles.</p>
 			<?php else: ?>
-				<p>You completed <?php echo $this->mgHelper->textAM() ?> from only period and that is <?php echo array_keys($this->monthPeriods[$user->getID()])[0] ?>, so a graph isn&rsquo;t needed.</p>
+				<p>You completed <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> from only period and that is <?php echo array_keys($this->monthPeriods[$user->getID()])[0] ?>, so a graph isn&rsquo;t needed.</p>
 			<?php endif ?>
 		<?php else: ?>
 			<div class="wrapper wrapper-target">

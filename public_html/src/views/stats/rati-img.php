@@ -136,7 +136,7 @@ foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
 	$tc[TEXT_TITLE] = array
 	(
 		'font' => $fontPath,
-		'text' => ucfirst($this->mgHelper->textAM($am)),
+		'text' => ucfirst(ChibiRegistry::getHelper('mg')->textAM($am)),
 		'color' => $this->colors[COLOR_TITLE],
 		'size' => 10.5,
 		'shiftX' => 0,
@@ -335,5 +335,4 @@ if ($this->imageType == IMAGE_TYPE_ANIME or $this->imageType == IMAGE_TYPE_MANGA
 		imagecopy($img, $iconImage, $x, $y, 0, 0, imagesx($iconImage), imagesy($iconImage));
 	}
 }
-
 imagepng($img);

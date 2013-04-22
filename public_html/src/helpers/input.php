@@ -1,5 +1,5 @@
 <?php
-class InputHelper extends ChibiHelper {
+class InputHelper {
 	private static $allowPOST = true;
 	private static $allowGET = true;
 	private static $allowCookie = false;

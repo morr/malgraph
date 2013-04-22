@@ -1,14 +1,14 @@
 <?php
-require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/controllers/abstract.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
-class StatsController extends AbstractController {
+class StatsController extends ChibiController {
 	public function init() {
-		parent::init();
-		$this->sessionHelper->close();
+		ChibiRegistry::getHelper('session')->close();
 
 		//no user specified
-		$userNames = $this->inputHelper->getStringSafe('u');
+		$userNames = ChibiRegistry::getHelper('input')->getStringSafe('u');
 		if (empty($userNames)) {
 			throw new Exception('User name not specified.');
 		}
@@ -21,41 +21,41 @@ class StatsController extends AbstractController {
 		}
 		//make users unique
 		$userNames = array_unique(array_map('strtolower', $userNames));
-		$this->view->userNames = $userNames;
+		ChibiRegistry::getView()->userNames = $userNames;
 
 		//load anime-manga switch
-		$am = $this->inputHelper->get('am');
+		$am = ChibiRegistry::getHelper('input')->get('am');
 		if ($am != AMModel::TYPE_MANGA) {
 			$am = AMModel::TYPE_ANIME;
 		}
-		$this->view->am = $am;
+		ChibiRegistry::getView()->am = $am;
 
-		if (count($this->view->userNames) > 2) {
+		if (count(ChibiRegistry::getView()->userNames) > 2) {
 			throw new Exception('Sorry. We haven\'t implemented this.');
 		}
 
 		//try to load requested users
 		$anons = [];
 		$modelUsers = new UserModel();
-		$this->view->users = [];
-		foreach ($this->view->userNames as $userName) {
+		ChibiRegistry::getView()->users = [];
+		foreach (ChibiRegistry::getView()->userNames as $userName) {
 			try {
 				$userEntry = $modelUsers->get($userName, AbstractModel::CACHE_POLICY_FORCE_CACHE);
 			} catch (InvalidEntryException $e) {
-				$this->sessionHelper->restore();
+				ChibiRegistry::getHelper('session')->restore();
 				$_SESSION['wrong-user'] = $userName;
-				$this->forward($this->mgHelper->constructUrl('index', 'wrong-user'));
+				$this->forward(ChibiRegistry::getHelper('mg')->constructUrl('index', 'wrong-user'));
 				return;
 			} catch (DownloadException $e) {
-				$this->forward($this->mgHelper->constructUrl('index', 'net-down'));
+				$this->forward(ChibiRegistry::getHelper('mg')->constructUrl('index', 'net-down'));
 				return;
 			}
 			if ($userEntry->getUserData()->isBlocked()) {
-				$this->sessionHelper->restore();
+				ChibiRegistry::getHelper('session')->restore();
 				$_SESSION['wrong-user'] = $userName;
-				$this->forward($this->mgHelper->constructUrl('index', 'blocked-user'));
+				$this->forward(ChibiRegistry::getHelper('mg')->constructUrl('index', 'blocked-user'));
 			}
-			$this->view->users []= $userEntry;
+			ChibiRegistry::getView()->users []= $userEntry;
 		}
 
 		//set meta
@@ -80,31 +80,31 @@ class StatsController extends AbstractController {
 			'misc' => ['{nick}&rsquo;s {am} misc stats', 'Comparison of {nicks_and}&rsquo;s {am} misc stats'],
 		];
 		$tokens = [
-			'nick' => $this->view->users[0]->getPublicName(),
-			'nicks_amp' => implode(' & ', array_map(function($user) { return $user->getPublicName(); }, $this->view->users)),
-			'nicks_and' => implode(' and ', array_map(function($user) { return $user->getPublicName(); }, $this->view->users)),
-			'am' => $this->mgHelper->textAM()
+			'nick' => ChibiRegistry::getView()->users[0]->getPublicName(),
+			'nicks_amp' => implode(' & ', array_map(function($user) { return $user->getPublicName(); }, ChibiRegistry::getView()->users)),
+			'nicks_and' => implode(' and ', array_map(function($user) { return $user->getPublicName(); }, ChibiRegistry::getView()->users)),
+			'am' => ChibiRegistry::getHelper('mg')->textAM()
 		];
 
-		if (isset($titles[$this->view->actionName])) {
+		if (isset($titles[ChibiRegistry::getView()->actionName])) {
 			$title = 'MALgraph - ';
 			$description = '';
-			if (count($this->view->users) > 1) {
-				$title .= $titles[$this->view->actionName][1];
-				$description .= $descriptions[$this->view->actionName][1];
+			if (count(ChibiRegistry::getView()->users) > 1) {
+				$title .= $titles[ChibiRegistry::getView()->actionName][1];
+				$description .= $descriptions[ChibiRegistry::getView()->actionName][1];
 			} else {
-				$title .= $titles[$this->view->actionName][0];
-				$description .= $descriptions[$this->view->actionName][0];
+				$title .= $titles[ChibiRegistry::getView()->actionName][0];
+				$description .= $descriptions[ChibiRegistry::getView()->actionName][0];
 			}
-			$title = $this->mgHelper->replaceTokens($title, $tokens);
-			$description = $this->mgHelper->replaceTokens($description, $tokens);
+			$title = ChibiRegistry::getHelper('mg')->replaceTokens($title, $tokens);
+			$description = ChibiRegistry::getHelper('mg')->replaceTokens($description, $tokens);
 
-			HeadHelper::setTitle($title);
-			HeadHelper::setDescription($description);
-			HeadHelper::addKeywords(['profile', 'list', 'achievements', 'ratings', 'activity', 'favorites', 'suggestions', 'recommendations']);
-			foreach ($this->view->userNames as $userName) {
+			ChibiRegistry::getHelper('head')->setTitle($title);
+			ChibiRegistry::getHelper('head')->setDescription($description);
+			ChibiRegistry::getHelper('head')->addKeywords(['profile', 'list', 'achievements', 'ratings', 'activity', 'favorites', 'suggestions', 'recommendations']);
+			foreach (ChibiRegistry::getView()->userNames as $userName) {
 				if ($userName{0} != '=') {
-					HeadHelper::addKeywords([$userName]);
+					ChibiRegistry::getHelper('head')->addKeywords([$userName]);
 				}
 			}
 		}
@@ -112,10 +112,11 @@ class StatsController extends AbstractController {
 
 
 	public function profileAction() {
+		$this->init();
 		MediaHelper::addMedia([MediaHelper::TABLESORTER]);
-		$this->view->profileInfo = [];
+		ChibiRegistry::getView()->profileInfo = [];
 
-		foreach ($this->view->users as $u) {
+		foreach (ChibiRegistry::getView()->users as $u) {
 			$info = [];
 			foreach (AMModel::getTypes() as $type) {
 				$info[$type] = new StdClass;
@@ -148,23 +149,25 @@ class StatsController extends AbstractController {
 				$info[$type]->epsMismatched = UserListService::getMismatchedEntries($entriesNonPlanned);
 				$info[$type]->franchises = UserListService::getFranchises($entriesNonPlanned);
 			}
-			$this->view->profileInfo[$u->getRuntimeID()] = $info;
+			ChibiRegistry::getView()->profileInfo[$u->getRuntimeID()] = $info;
 
 		}
 		require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/globals.php';
-		$this->view->globalInfo = GlobalsModel::getData();
+		ChibiRegistry::getView()->globalInfo = GlobalsModel::getData();
 
 	}
 
 
 
 	public function listAction() {
+		$this->init();
 		MediaHelper::addMedia([MediaHelper::TABLESORTER]);
 	}
 
 
 
 	public function achiAction() {
+		$this->init();
 		$achList = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile);
 
 		$imgFiles = scandir(ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/media/img/ach');
@@ -177,12 +180,12 @@ class StatsController extends AbstractController {
 			throw new Exception('Invalid threshold: ' . $ach['threshold']);
 		};
 
-		foreach ($this->view->users as $i => $u) {
-			$entriesCompleted = $u->getList($this->view->am)->getEntries(UserListFilters::getCompleted());
-			$entriesNonPlanned = $u->getList($this->view->am)->getEntries(UserListFilters::getNonPlanned());
+		foreach (ChibiRegistry::getView()->users as $i => $u) {
+			$entriesCompleted = $u->getList(ChibiRegistry::getView()->am)->getEntries(UserListFilters::getCompleted());
+			$entriesNonPlanned = $u->getList(ChibiRegistry::getView()->am)->getEntries(UserListFilters::getNonPlanned());
 			$achievements = [];
 
-			foreach ($achList[$this->view->am] as $group => $groupData) {
+			foreach ($achList[ChibiRegistry::getView()->am] as $group => $groupData) {
 				//get subject and entries basing on requirement type
 				$subject = null;
 				$entriesOwned = null;
@@ -261,23 +264,24 @@ class StatsController extends AbstractController {
 				}
 			}
 
-			$this->view->achievements[$u->getID()] = $achievements;
+			ChibiRegistry::getView()->achievements[$u->getID()] = $achievements;
 		}
 	}
 
 
 
 	public function ratiAction() {
+		$this->init();
 		MediaHelper::addMedia([MediaHelper::HIGHCHARTS,
 			MediaHelper::POPUPS,
 			MediaHelper::INFOBOX,
 			MediaHelper::FARBTASTIC
 		]);
 
-		$this->view->scoreDistribution = [];
-		foreach ($this->view->users as $userEntry) {
+		ChibiRegistry::getView()->scoreDistribution = [];
+		foreach (ChibiRegistry::getView()->users as $userEntry) {
 			$filter = UserListFilters::getNonPlanned();
-			$entries = $userEntry->getList($this->view->am)->getEntries($filter);
+			$entries = $userEntry->getList(ChibiRegistry::getView()->am)->getEntries($filter);
 
 			$scoreDistribution = new ScoreDistribution();
 			$scoreDurationDistribution = new ScoreDurationDistribution();
@@ -294,9 +298,9 @@ class StatsController extends AbstractController {
 			$scoreDurationDistribution->finalize();
 			$lengthDistribution->finalize();
 
-			$this->view->scoreDistribution[$userEntry->getID()] = $scoreDistribution;
-			$this->view->scoreDurationDistribution[$userEntry->getID()] = $scoreDurationDistribution;
-			$this->view->lengthDistribution[$userEntry->getID()] = $lengthDistribution;
+			ChibiRegistry::getView()->scoreDistribution[$userEntry->getID()] = $scoreDistribution;
+			ChibiRegistry::getView()->scoreDurationDistribution[$userEntry->getID()] = $scoreDurationDistribution;
+			ChibiRegistry::getView()->lengthDistribution[$userEntry->getID()] = $lengthDistribution;
 
 			//add some random information
 			list($year, $month, $day) = explode('-', $userEntry->getUserData()->getJoinDate());
@@ -318,23 +322,24 @@ class StatsController extends AbstractController {
 					}
 				}
 			}
-			$this->view->earliestTimeKnown[$userEntry->getID()] = $earliest;
-			$this->view->meanTime[$userEntry->getID()] = $totalTime / max(1, (time() - $earliest) / (24. * 3600.0));
+			ChibiRegistry::getView()->earliestTimeKnown[$userEntry->getID()] = $earliest;
+			ChibiRegistry::getView()->meanTime[$userEntry->getID()] = $totalTime / max(1, (time() - $earliest) / (24. * 3600.0));
 		}
 	}
 
 
 
 	public function ratiImgAction() {
+		$this->init();
 		//prepare info for view
-		if (count($this->view->users) > 1) {
+		if (count(ChibiRegistry::getView()->users) > 1) {
 			throw new Exception('Only one user is supported here');
 		}
-		$user = $this->view->users[0];
+		$user = ChibiRegistry::getView()->users[0];
 		foreach (array(AMModel::TYPE_ANIME, AMModel::TYPE_MANGA) as $am) {
 			$filter = UserListFilters::getNonPlanned();
 			$entries = $user->getList($am)->getEntries($filter);
-			$this->view->scoreDistribution[$am] = new ScoreDistribution($entries);
+			ChibiRegistry::getView()->scoreDistribution[$am] = new ScoreDistribution($entries);
 		}
 
 		//define some handy constants
@@ -354,16 +359,16 @@ class StatsController extends AbstractController {
 		define('COLOR_LOGO', 9);
 
 		//get input data from GET
-		$this->view->user = reset($this->view->users);
+		ChibiRegistry::getView()->user = reset(ChibiRegistry::getView()->users);
 		if (!empty($_GET['type'])) {
 			switch ($_GET['type']) {
-				case '2': $this->view->imageType = IMAGE_TYPE_MANGA; break;
-				case '3': $this->view->imageType = IMAGE_TYPE_ANIME_MANGA; break;
-				default: $this->view->imageType = IMAGE_TYPE_ANIME; break;
+				case '2': ChibiRegistry::getView()->imageType = IMAGE_TYPE_MANGA; break;
+				case '3': ChibiRegistry::getView()->imageType = IMAGE_TYPE_ANIME_MANGA; break;
+				default: ChibiRegistry::getView()->imageType = IMAGE_TYPE_ANIME; break;
 			}
 		}
 
-		$this->view->colors = [
+		ChibiRegistry::getView()->colors = [
 			COLOR_BARS_1 =>       array('a' => 0x00, 'r' => 0xa4, 'g' => 0xc0, 'b' => 0xf4),
 			COLOR_BARS_2 =>       array('a' => 0x00, 'r' => 0x13, 'g' => 0x45, 'b' => 0x9a),
 			COLOR_BAR_GUIDES_1 => array('a' => 0xee, 'r' => 0xa4, 'g' => 0xc0, 'b' => 0xf4),
@@ -401,23 +406,24 @@ class StatsController extends AbstractController {
 					$a = 0;
 					list($r, $g, $b) = $value;
 				}
-				$this->view->colors[$key] = array('a' => $a, 'r' => $r, 'g' => $g, 'b' => $b);
+				ChibiRegistry::getView()->colors[$key] = array('a' => $a, 'r' => $r, 'g' => $g, 'b' => $b);
 			}
 		}
 
-		if (empty($this->view->colors[COLOR_BACKGROUND2])) {
-			$this->view->colors[COLOR_BACKGROUND2] = $this->view->colors[COLOR_BACKGROUND];
+		if (empty(ChibiRegistry::getView()->colors[COLOR_BACKGROUND2])) {
+			ChibiRegistry::getView()->colors[COLOR_BACKGROUND2] = ChibiRegistry::getView()->colors[COLOR_BACKGROUND];
 		}
-		if (empty($this->view->colors[COLOR_LOGO])) {
-			$this->view->colors[COLOR_LOGO] = $this->view->colors[COLOR_TITLE];
+		if (empty(ChibiRegistry::getView()->colors[COLOR_LOGO])) {
+			ChibiRegistry::getView()->colors[COLOR_LOGO] = ChibiRegistry::getView()->colors[COLOR_TITLE];
 		}
 
 		//finally render image
 		ChibiConfig::getInstance()->chibi->runtime->layoutName = null;
+		ChibiConfig::getInstance()->chibi->basic->prettyOutput = false;
 		header('Content-type: image/png');
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
-		$this->view->render();
+		echo ChibiRegistry::getView()->renderView();
 
 		//refresh user data AFTER rendering image
 		//because this is an image, we don't send ajax refresh requests
@@ -433,9 +439,10 @@ class StatsController extends AbstractController {
 
 
 	public function actiAction() {
+		$this->init();
 		MediaHelper::addMedia([MediaHelper::HIGHCHARTS, MediaHelper::INFOBOX]);
 
-		foreach ($this->view->users as $i => $u) {
+		foreach (ChibiRegistry::getView()->users as $i => $u) {
 			//count completed within month periods
 			$monthPeriod = false;
 			$monthPeriodMin = false;
@@ -443,7 +450,7 @@ class StatsController extends AbstractController {
 			$monthPeriods = [];
 
 			$filter = UserListFilters::getCompleted();
-			$entries = $u->getList($this->view->am)->getEntries($filter);
+			$entries = $u->getList(ChibiRegistry::getView()->am)->getEntries($filter);
 			foreach ($entries as $e) {
 				$monthPeriod = UserListService::getMonthPeriod($e);
 				if (!isset($monthPeriods[$monthPeriod])) {
@@ -504,31 +511,32 @@ class StatsController extends AbstractController {
 			$dayPeriodTitles = [];
 			for ($daysBack = 21; $daysBack >= 0; $daysBack --) {
 				$dayPeriod = [];
-				foreach ($u->getHistory($this->view->am)->getEntriesByDaysAgo($daysBack) as $entry) {
+				foreach ($u->getHistory(ChibiRegistry::getView()->am)->getEntriesByDaysAgo($daysBack) as $entry) {
 					$dayPeriod []= $entry;
 					$dayPeriodTitles[$entry->getID()] = $entry;
 				}
 				$dayPeriods[$daysBack] = $dayPeriod;
 			}
 
-			$this->view->monthPeriods[$u->getID()] = $monthPeriods;
-			$this->view->dayPeriods[$u->getID()] = $dayPeriods;
-			$this->view->dayPeriodTitles[$u->getID()] = $dayPeriodTitles;
+			ChibiRegistry::getView()->monthPeriods[$u->getID()] = $monthPeriods;
+			ChibiRegistry::getView()->dayPeriods[$u->getID()] = $dayPeriods;
+			ChibiRegistry::getView()->dayPeriodTitles[$u->getID()] = $dayPeriodTitles;
 		}
 	}
 
 
 
 	public function favsAction() {
+		$this->init();
 		MediaHelper::addMedia([
 			MediaHelper::HIGHCHARTS,
 			MediaHelper::TABLESORTER,
 			MediaHelper::INFOBOX,
 		]);
 
-		foreach ($this->view->users as $user) {
+		foreach (ChibiRegistry::getView()->users as $user) {
 			$filter = UserListFilters::getNonPlanned();
-			$entries = $user->getList($this->view->am)->getEntries($filter);
+			$entries = $user->getList(ChibiRegistry::getView()->am)->getEntries($filter);
 
 			$favCreators = new CreatorDistribution();
 			$favGenres = new GenreDistribution();
@@ -550,69 +558,70 @@ class StatsController extends AbstractController {
 			$favYears->finalize();
 			$favDecades->finalize();
 			$favLengths->finalize();
-			$this->view->favCreators[$user->getID()] = $favCreators;
-			$this->view->favGenres[$user->getID()] = $favGenres;
-			$this->view->favYears[$user->getID()] = $favYears;
-			$this->view->favDecades[$user->getID()] = $favDecades;
-			$this->view->favLengths[$user->getID()] = $favLengths;
+			ChibiRegistry::getView()->favCreators[$user->getID()] = $favCreators;
+			ChibiRegistry::getView()->favGenres[$user->getID()] = $favGenres;
+			ChibiRegistry::getView()->favYears[$user->getID()] = $favYears;
+			ChibiRegistry::getView()->favDecades[$user->getID()] = $favDecades;
+			ChibiRegistry::getView()->favLengths[$user->getID()] = $favLengths;
 
-			$this->view->lengthScores[$user->getID()] = [];
+			ChibiRegistry::getView()->lengthScores[$user->getID()] = [];
 			foreach ($favLengths->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $favLengths->getGroupEntries($key);
-				$this->view->lengthScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
+				ChibiRegistry::getView()->lengthScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
 
-			$this->view->yearScores[$user->getID()] = [];
+			ChibiRegistry::getView()->yearScores[$user->getID()] = [];
 			foreach ($favYears->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $favYears->getGroupEntries($key);
-				$this->view->yearScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
+				ChibiRegistry::getView()->yearScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
 
-			$this->view->decadeScores[$user->getID()] = [];
+			ChibiRegistry::getView()->decadeScores[$user->getID()] = [];
 			foreach ($favDecades->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $favDecades->getGroupEntries($key);
-				$this->view->decadeScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
+				ChibiRegistry::getView()->decadeScores[$user->getID()][$key] = UserListService::getMeanScore($subEntries);
 			}
 
-			$this->view->creatorScores[$user->getID()] = [];
-			$this->view->creatorValues[$user->getID()] = [];
-			$this->view->creatorTimeSpent[$user->getID()] = [];
+			ChibiRegistry::getView()->creatorScores[$user->getID()] = [];
+			ChibiRegistry::getView()->creatorValues[$user->getID()] = [];
+			ChibiRegistry::getView()->creatorTimeSpent[$user->getID()] = [];
 			foreach ($favCreators->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $favCreators->getGroupEntries($key);
-				$this->view->creatorScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
-				$this->view->creatorTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
+				ChibiRegistry::getView()->creatorScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
+				ChibiRegistry::getView()->creatorTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
-			$this->view->creatorValues[$user->getID()] = UserListService::evaluateDistribution($favCreators);
+			ChibiRegistry::getView()->creatorValues[$user->getID()] = UserListService::evaluateDistribution($favCreators);
 
-			$this->view->genreScores[$user->getID()] = [];
-			$this->view->genreValues[$user->getID()] = [];
-			$this->view->genreTimeSpent[$user->getID()] = [];
+			ChibiRegistry::getView()->genreScores[$user->getID()] = [];
+			ChibiRegistry::getView()->genreValues[$user->getID()] = [];
+			ChibiRegistry::getView()->genreTimeSpent[$user->getID()] = [];
 			foreach ($favGenres->getGroupsKeys(Distribution::IGNORE_NULL_KEY) as $key) {
 				$subEntries = $favGenres->getGroupEntries($key);
-				$this->view->genreScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
-				$this->view->genreTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
+				ChibiRegistry::getView()->genreScores[$user->getID()][$key->getID()] = UserListService::getMeanScore($subEntries);
+				ChibiRegistry::getView()->genreTimeSpent[$user->getID()][$key->getID()] = UserListService::getTimeSpent($subEntries);
 			}
-			$this->view->genreValues[$user->getID()] = UserListService::evaluateDistribution($favGenres);
+			ChibiRegistry::getView()->genreValues[$user->getID()] = UserListService::evaluateDistribution($favGenres);
 		}
 	}
 
 
 
 	public function sugAction() {
-		$this->view->recsStatic = [];
-		$this->view->recs = [];
+		$this->init();
+		ChibiRegistry::getView()->recsStatic = [];
+		ChibiRegistry::getView()->recs = [];
 
 		#ChibiRegistry::getHelper('benchmark')->benchmark('init');
 		//get list of source users
 		$goal = 50;
-		$coolUsers = GlobalsModel::getData()->getCoolUsersForCF($this->view->am);
+		$coolUsers = GlobalsModel::getData()->getCoolUsersForCF(ChibiRegistry::getView()->am);
 		shuffle($coolUsers);
 		$coolUsers = array_slice($coolUsers, 0, $goal);
 		$modelUsers = new UserModel();
 		$selUsers = [];
 		foreach ($coolUsers as $id) {
 			$u2 = $modelUsers->get($id, AbstractModel::CACHE_POLICY_FORCE_CACHE);
-			$list2 = $u2->getList($this->view->am);
+			$list2 = $u2->getList(ChibiRegistry::getView()->am);
 			$selUser = new StdClass;
 			$selUser->user = $u2;
 			$selUser->list = $list2;
@@ -622,23 +631,23 @@ class StatsController extends AbstractController {
 		#ChibiRegistry::getHelper('benchmark')->benchmark('got users');
 
 
-		foreach ($this->view->users as $u) {
+		foreach (ChibiRegistry::getView()->users as $u) {
 			$filter = UserListFilters::getCompleted();
-			$entries = $u->getList($this->view->am)->getEntries($filter);
+			$entries = $u->getList(ChibiRegistry::getView()->am)->getEntries($filter);
 
 			$recsStatic = count($entries) <= 20;
-			$modelAM = AMModel::factory($this->view->am);
+			$modelAM = AMModel::factory(ChibiRegistry::getView()->am);
 			$finalAM = [];
 
 			#ChibiRegistry::getHelper('benchmark')->benchmark('init ' . $u->getUserName());
 			if ($recsStatic) {
-				$this->view->recsStatic[$u->getID()] = true;
+				ChibiRegistry::getView()->recsStatic[$u->getID()] = true;
 
 			//dynamic recommendations...
 			} else {
-				$this->view->recsStatic[$u->getID()] = false;
+				ChibiRegistry::getView()->recsStatic[$u->getID()] = false;
 
-				$list = $u->getList($this->view->am);
+				$list = $u->getList(ChibiRegistry::getView()->am);
 				$meanScore = UserListService::getMeanScore($entries);
 
 				//get titles that are worth checking out
@@ -699,8 +708,8 @@ class StatsController extends AbstractController {
 
 			//always append at the end shuffled static recommendations
 			$staticRecs = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->staticRecsDefFile);
-			shuffle($staticRecs[$this->view->am]);
-			$finalAM = array_merge($finalAM, $staticRecs[$this->view->am]);
+			shuffle($staticRecs[ChibiRegistry::getView()->am]);
+			$finalAM = array_merge($finalAM, $staticRecs[ChibiRegistry::getView()->am]);
 			#ChibiRegistry::getHelper('benchmark')->benchmark('added static recs');
 
 			//now, compute final recommendations
@@ -716,7 +725,7 @@ class StatsController extends AbstractController {
 					if ($franchiseEntry->getStatus() == AMEntry::STATUS_NOT_YET_PUBLISHED) {
 						continue;
 					}
-					$userEntry = $u->getList($this->view->am)->getEntryByID($franchiseEntry->getID());
+					$userEntry = $u->getList(ChibiRegistry::getView()->am)->getEntryByID($franchiseEntry->getID());
 					if (!$userEntry) {
 						$amEntry = $franchiseEntry;
 						$nonPlannedRecs ++;
@@ -741,14 +750,14 @@ class StatsController extends AbstractController {
 			}
 			#ChibiRegistry::getHelper('benchmark')->benchmark('computed final recs');
 
-			$this->sessionHelper->restore();
-			$this->view->recs[$u->getID()] = $recs;
+			ChibiRegistry::getHelper('session')->restore();
+			ChibiRegistry::getView()->recs[$u->getID()] = $recs;
 		}
 
-		$this->view->relations = [];
-		foreach ($this->view->users as $u) {
+		ChibiRegistry::getView()->relations = [];
+		foreach (ChibiRegistry::getView()->users as $u) {
 			$filter = UserListFilters::getNonPlanned();
-			$entries = $u->getList($this->view->am)->getEntries($filter);
+			$entries = $u->getList(ChibiRegistry::getView()->am)->getEntries($filter);
 			$relations = UserListService::getFranchises($entries, null);
 			//remove ids user has seen
 			foreach ($relations as $franchise) {
@@ -769,7 +778,7 @@ class StatsController extends AbstractController {
 			}
 			uasort($relations, function($a, $b) { return $b->meanScore > $a->meanScore; });
 
-			$this->view->relations[$u->getID()] = $relations;
+			ChibiRegistry::getView()->relations[$u->getID()] = $relations;
 		}
 	}
 }

@@ -1,6 +1,5 @@
 <?php
-require_once 'src/controllers/abstract.php';
-class AdminController extends AbstractController {
+class AdminController extends ChibiController {
 	public $message;
 
 	private function loggedIn() {
@@ -31,8 +30,8 @@ class AdminController extends AbstractController {
 	public function init() {
 		parent::init();
 
-		if (!$this->loggedIn() and $this->view->actionName != 'login') {
-			$this->forward(UrlHelper::url('/a/login'));
+		if (!$this->loggedIn() and ChibiRegistry::getView()->actionName != 'login') {
+			$this->forward(ChibiRegistry::getHelper('url')->url('/a/login'));
 		}
 	}
 
@@ -49,10 +48,10 @@ class AdminController extends AbstractController {
 		$this->logIn($entered);
 		if ($this->loggedIn()) {
 			//setcookie('password', $entered, time() + 3600 * 24 * 30, '/');
-			$this->forward(UrlHelper::url('/a/index'));
+			$this->forward(ChibiRegistry::getHelper('url')->url('/a/index'));
 			$this->mgHelper->log('Correct password');
 		} else {
-			$this->view->entered = $entered;
+			ChibiRegistry::getView()->entered = $entered;
 			$this->mgHelper->log('Wrong password: ' . $entered);
 		}
 	}
@@ -60,15 +59,15 @@ class AdminController extends AbstractController {
 	public function logoutAction() {
 		//setcookie('password', '', time() - 3600, '/');
 		$this->logOut();
-		$this->forward(UrlHelper::url(''));
+		$this->forward(ChibiRegistry::getHelper('url')->url(''));
 	}
 
 
 
 	public function indexAction() {
 		if (!empty($_SESSION['message'])) {
-			$this->view->messageType = $_SESSION['message-type'];
-			$this->view->message = $_SESSION['message'];
+			ChibiRegistry::getView()->messageType = $_SESSION['message-type'];
+			ChibiRegistry::getView()->message = $_SESSION['message'];
 			unset($_SESSION['message']);
 		}
 	}
@@ -77,14 +76,14 @@ class AdminController extends AbstractController {
 	private function error($message) {
 		$_SESSION['message-type'] = 'error';
 		$_SESSION['message'] = $message;
-		$this->forward(UrlHelper::url('a/index'));
+		$this->forward(ChibiRegistry::getHelper('url')->url('a/index'));
 		exit;
 	}
 
 	private function success($message) {
 		$_SESSION['message-type'] = 'success';
 		$_SESSION['message'] = $message;
-		$this->forward(UrlHelper::url('a/index'));
+		$this->forward(ChibiRegistry::getHelper('url')->url('a/index'));
 		exit;
 	}
 

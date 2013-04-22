@@ -1,5 +1,5 @@
 <?php
-class SessionHelper extends ChibiHelper {
+class SessionHelper {
 	private static $stopped = false;
 	private static $oldData = [];
 	private static $oldId = '';

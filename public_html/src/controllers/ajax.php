@@ -1,8 +1,7 @@
 <?php
-require_once 'src/controllers/abstract.php';
-require_once 'src/models/user/listservice.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
-class AjaxController extends AbstractController {
+class AjaxController extends ChibiController {
 	const SENDER_SCORE = 'score';
 	const SENDER_SCORE_TIME = 'score-time';
 	const SENDER_SCORE_LENGTH = 'score-length';
@@ -47,14 +46,14 @@ class AjaxController extends AbstractController {
 		if (empty($userName)) {
 			throw new Exception('User name not specified.');
 		}
-		$this->view->userName = $userName;
+		ChibiRegistry::getView()->userName = $userName;
 
 		//load anime-manga switch
 		$am = $this->inputHelper->get('am');
 		if ($am != AMModel::TYPE_MANGA) {
 			$am = AMModel::TYPE_ANIME;
 		}
-		$this->view->am = $am;
+		ChibiRegistry::getView()->am = $am;
 
 		$modelUsers = new UserModel();
 		try {
@@ -64,7 +63,7 @@ class AjaxController extends AbstractController {
 		} catch (DownloadException $e) {
 			throw new Exception('Network down');
 		}
-		$this->view->user = $userEntry;
+		ChibiRegistry::getView()->user = $userEntry;
 
 		if ($userEntry->getUserData()->isBlocked()) {
 			throw new Exception('User is blocked');
@@ -74,7 +73,7 @@ class AjaxController extends AbstractController {
 		if (!in_array($sender, self::getSenders())) {
 			$sender = self::SENDER_UNKNOWN;
 		}
-		$this->view->sender = $sender;
+		ChibiRegistry::getView()->sender = $sender;
 	}
 
 
@@ -82,17 +81,17 @@ class AjaxController extends AbstractController {
 
 	public function ajaxAction() {
 		$filter = null;
-		$list = $this->view->user->getList($this->view->am);
+		$list = ChibiRegistry::getView()->user->getList(ChibiRegistry::getView()->am);
 		$sort = true;
 
-		switch ($this->view->sender) {
+		switch (ChibiRegistry::getView()->sender) {
 			case self::SENDER_SCORE:
 				$score = $this->inputHelper->getInt('score');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getScore($score);
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->score = $score;
-				$this->view->entries = $list->getEntries($filter);
+				ChibiRegistry::getView()->score = $score;
+				ChibiRegistry::getView()->entries = $list->getEntries($filter);
 				break;
 
 			case self::SENDER_SCORE_TIME:
@@ -100,15 +99,15 @@ class AjaxController extends AbstractController {
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getScore($score);
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->score = $score;
-				$this->view->entries = $list->getEntries($filter);
+				ChibiRegistry::getView()->score = $score;
+				ChibiRegistry::getView()->entries = $list->getEntries($filter);
 				break;
 
 			case self::SENDER_SCORE_LENGTH:
 			case self::SENDER_LENGTH:
 				$length = $this->inputHelper->getStringSafe('length');
 				$filter1 = UserListFilters::getNonPlanned();
-				if ($this->view->sender == self::SENDER_LENGTH) {
+				if (ChibiRegistry::getView()->sender == self::SENDER_LENGTH) {
 					$filter2 = function($entry) { return $entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE; };
 					$filter = UserListFilters::combine($filter1, $filter2);
 				} else {
@@ -117,9 +116,9 @@ class AjaxController extends AbstractController {
 				$entries = $list->getEntries($filter);
 				$lengthDistribution = new LengthDistribution($entries);
 				$entries = $lengthDistribution->getGroupEntries($length);
-				$this->view->length = $length;
-				$this->view->entries = $entries;
-				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
+				ChibiRegistry::getView()->length = $length;
+				ChibiRegistry::getView()->entries = $entries;
+				ChibiRegistry::getView()->meanScore = UserListService::getMeanScore(ChibiRegistry::getView()->entries);
 				break;
 
 			case self::SENDER_YEAR:
@@ -129,9 +128,9 @@ class AjaxController extends AbstractController {
 					return AMService::getAiredYear($entry->getAMEntry()) == $year;
 				};
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->year = $year;
-				$this->view->entries = $list->getEntries($filter);
-				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
+				ChibiRegistry::getView()->year = $year;
+				ChibiRegistry::getView()->entries = $list->getEntries($filter);
+				ChibiRegistry::getView()->meanScore = UserListService::getMeanScore(ChibiRegistry::getView()->entries);
 				break;
 
 			case self::SENDER_DECADE:
@@ -141,9 +140,9 @@ class AjaxController extends AbstractController {
 					return AMService::getAiredDecade($entry->getAMEntry()) == $decade;
 				};
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->decade = $decade;
-				$this->view->entries = $list->getEntries($filter);
-				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
+				ChibiRegistry::getView()->decade = $decade;
+				ChibiRegistry::getView()->entries = $list->getEntries($filter);
+				ChibiRegistry::getView()->meanScore = UserListService::getMeanScore(ChibiRegistry::getView()->entries);
 				break;
 
 			case self::SENDER_SUB_TYPE:
@@ -151,9 +150,9 @@ class AjaxController extends AbstractController {
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getSubType($subType);
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->subType = $subType;
-				$this->view->entries = $list->getEntries($filter);
-				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
+				ChibiRegistry::getView()->subType = $subType;
+				ChibiRegistry::getView()->entries = $list->getEntries($filter);
+				ChibiRegistry::getView()->meanScore = UserListService::getMeanScore(ChibiRegistry::getView()->entries);
 				break;
 
 			case self::SENDER_CREATOR:
@@ -161,23 +160,23 @@ class AjaxController extends AbstractController {
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getCreator($creator);
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->entries = $list->getEntries($filter);
-				if (!empty($this->view->entries)) {
-					foreach (reset($this->view->entries)->getAMEntry()->getCreators() as $creatorEntry) {
+				ChibiRegistry::getView()->entries = $list->getEntries($filter);
+				if (!empty(ChibiRegistry::getView()->entries)) {
+					foreach (reset(ChibiRegistry::getView()->entries)->getAMEntry()->getCreators() as $creatorEntry) {
 						if ($creatorEntry->getID() == $creator) {
-							$this->view->creator = $creatorEntry;
+							ChibiRegistry::getView()->creator = $creatorEntry;
 						}
 					}
 				} else {
 					foreach ($list->getAMModel()->getKeys() as $key) {
 						foreach ($list->getAMModel()->get($key, AbstractModel::CACHE_POLICY_FORCE_CACHE)->getCreators() as $creatorEntry) {
 							if ($creatorEntry->getID() == $creator) {
-								$this->view->creator = $creatorEntry;
+								ChibiRegistry::getView()->creator = $creatorEntry;
 							}
 						}
 					}
 				}
-				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
+				ChibiRegistry::getView()->meanScore = UserListService::getMeanScore(ChibiRegistry::getView()->entries);
 				break;
 
 			case self::SENDER_GENRE:
@@ -185,29 +184,29 @@ class AjaxController extends AbstractController {
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getGenre($genre);
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->entries = $list->getEntries($filter);
-				if (!empty($this->view->entries)) {
-					foreach (reset($this->view->entries)->getAMEntry()->getGenres() as $genreEntry) {
+				ChibiRegistry::getView()->entries = $list->getEntries($filter);
+				if (!empty(ChibiRegistry::getView()->entries)) {
+					foreach (reset(ChibiRegistry::getView()->entries)->getAMEntry()->getGenres() as $genreEntry) {
 						if ($genreEntry->getID() == $genre) {
-							$this->view->genre = $genreEntry;
+							ChibiRegistry::getView()->genre = $genreEntry;
 						}
 					}
 				} else {
 					foreach ($list->getAMModel()->getKeys() as $key) {
 						foreach ($list->getAMModel()->get($key, AbstractModel::CACHE_POLICY_FORCE_CACHE)->getGenres() as $genreEntry) {
 							if ($genreEntry->getID() == $genre) {
-								$this->view->genre = $genreEntry;
+								ChibiRegistry::getView()->genre = $genreEntry;
 							}
 						}
 					}
 				}
-				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
+				ChibiRegistry::getView()->meanScore = UserListService::getMeanScore(ChibiRegistry::getView()->entries);
 				break;
 
 			case self::SENDER_DAILY_ACTIVITY:
 				$daysAgo = $this->inputHelper->getInt('days-ago');
-				$this->view->daysAgo = $daysAgo;
-				$this->view->entries = $this->view->user->getHistory($this->view->am)->getEntriesByDaysAgo($daysAgo);
+				ChibiRegistry::getView()->daysAgo = $daysAgo;
+				ChibiRegistry::getView()->entries = ChibiRegistry::getView()->user->getHistory(ChibiRegistry::getView()->am)->getEntriesByDaysAgo($daysAgo);
 				$sort = false;
 				break;
 
@@ -218,27 +217,27 @@ class AjaxController extends AbstractController {
 					return UserListService::getMonthPeriod($e) == $monthPeriod;
 				};
 				$filter = UserListFilters::combine($filter1, $filter2);
-				$this->view->monthPeriod = $monthPeriod;
-				$this->view->entries = $list->getEntries($filter);
-				$this->view->meanScore = UserListService::getMeanScore($this->view->entries);
+				ChibiRegistry::getView()->monthPeriod = $monthPeriod;
+				ChibiRegistry::getView()->entries = $list->getEntries($filter);
+				ChibiRegistry::getView()->meanScore = UserListService::getMeanScore(ChibiRegistry::getView()->entries);
 				break;
 
 			case self::SENDER_FRANCHISES:
 				$filter = UserListFilters::getNonPlanned();
 				$entries = $list->getEntries($filter);
-				$this->view->entries = UserListService::getFranchises($entries);
+				ChibiRegistry::getView()->entries = UserListService::getFranchises($entries);
 				$sort = false;
 				break;
 
 			case self::SENDER_MISMATCHED_EPS:
 				$filter = UserListFilters::getNonPlanned();
 				$entries = $list->getEntries($filter);
-				$this->view->entries = UserListService::getMismatchedEntries($entries);
+				ChibiRegistry::getView()->entries = UserListService::getMismatchedEntries($entries);
 				break;
 		}
 
 		if ($sort) {
-			uasort($this->view->entries, UserListSorters::getByTitle());
+			uasort(ChibiRegistry::getView()->entries, UserListSorters::getByTitle());
 		}
 	}
 }

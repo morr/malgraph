@@ -1,7 +1,7 @@
 <?php
 class LockException extends Exception { }
 
-class MGHelper extends ChibiHelper {
+class MGHelper {
 	public static $descSuffix = ' on MALgraph, an online tool that extends your MyAnimeList profile.'; //suffix for <meta> description tag
 
 	public function log($message) {

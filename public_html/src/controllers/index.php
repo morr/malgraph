@@ -1,47 +1,46 @@
 <?php
-require_once 'src/controllers/abstract.php';
-require_once 'src/models/user/listservice.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
-class IndexController extends AbstractController {
+class IndexController extends ChibiController {
 	public function indexAction() {
-		HeadHelper::addKeywords(['myanimelist', 'mal', 'rating', 'favorites', 'score']);
-		$this->view->userName = null;
+		ChibiRegistry::getHelper('head')->addKeywords(['myanimelist', 'mal', 'rating', 'favorites', 'score']);
+		ChibiRegistry::getView()->userName = null;
 	}
 
 	public function wrongUserAction() {
-		HeadHelper::setTitle('MALgraph - error: user not found');
-		$this->view->userName = $this->inputHelper->getStringSafe('u');
+		ChibiRegistry::getHelper('head')->setTitle('MALgraph - error: user not found');
+		ChibiRegistry::getView()->userName = ChibiRegistry::getHelper('input')->getStringSafe('u');
 	}
 
 	public function blockedUserAction() {
-		HeadHelper::setTitle('MALgraph - error: user blocked');
-		$this->view->userName = $this->inputHelper->getStringSafe('u');
+		ChibiRegistry::getHelper('head')->setTitle('MALgraph - error: user blocked');
+		ChibiRegistry::getView()->userName = ChibiRegistry::getHelper('input')->getStringSafe('u');
 	}
 
 	public function aboutAction() {
-		HeadHelper::setTitle('MALgraph - about');
+		ChibiRegistry::getHelper('head')->setTitle('MALgraph - about');
 	}
 
 	public function privacyAction() {
-		HeadHelper::setTitle('MALgraph - privacy policy');
+		ChibiRegistry::getHelper('head')->setTitle('MALgraph - privacy policy');
 	}
 
 	public function netDownAction() {
-		HeadHelper::setTitle('MALgraph - network error');
+		ChibiRegistry::getHelper('head')->setTitle('MALgraph - network error');
 	}
 
 	public function wrongQueryAction() {
-		HeadHelper::setTitle('MALgraph - error: wrong query');
+		ChibiRegistry::getHelper('head')->setTitle('MALgraph - error: wrong query');
 	}
 
 
 
 	public function searchAction() {
-		$action = $this->inputHelper->get('action-name');
-		$userNames = $this->inputHelper->getStringSafe('user-names');
-		$am = $this->inputHelper->getStringSafe('am');
+		$action = ChibiRegistry::getHelper('input')->get('action-name');
+		$userNames = ChibiRegistry::getHelper('input')->getStringSafe('user-names');
+		$am = ChibiRegistry::getHelper('input')->getStringSafe('am');
 
-		if ($this->inputHelper->get('submit') == 'compare') {
+		if (ChibiRegistry::getHelper('input')->get('submit') == 'compare') {
 			$userNames = [reset($userNames), end($userNames)];
 			if (strpos(end($userNames), ',') !== false) {
 				$userNames = array_slice(explode(',', end($userNames)), -2);
@@ -56,12 +55,12 @@ class IndexController extends AbstractController {
 		foreach ($userNames as &$userName) {
 			$userName = trim($userName);
 			if (!preg_match('/^=?[-_0-9A-Za-z]{2,16}$/', $userName)) {
-				$this->forward($this->mgHelper->constructUrl('index', 'wrong-query?' . $userName));
+				$this->forward(ChibiRegistry::getHelper('mg')->constructUrl('index', 'wrong-query?' . $userName));
 				return;
 			}
 		}
 
-		$this->forward($this->mgHelper->constructUrl('stats', $action, [], $userNames, $am));
+		$this->forward(ChibiRegistry::getHelper('mg')->constructUrl('stats', $action, [], $userNames, $am));
 	}
 
 
@@ -84,8 +83,8 @@ class IndexController extends AbstractController {
 		ChibiConfig::getInstance()->chibi->runtime->layoutName = null;
 
 		//confirm hash
-		if ($_SESSION['unique-hash'] != $this->inputHelper->getStringSafe('unique-hash')) {
-			echo 'invalid hash. (expected: ' . $_SESSION['unique-hash'] . ', got ' . $this->inputHelper->getStringSafe('unique-hash') . ')';
+		if ($_SESSION['unique-hash'] != ChibiRegistry::getHelper('input')->getStringSafe('unique-hash')) {
+			echo 'invalid hash. (expected: ' . $_SESSION['unique-hash'] . ', got ' . ChibiRegistry::getHelper('input')->getStringSafe('unique-hash') . ')';
 			return;
 		}
 		unset ($_SESSION['unique-hash']);
@@ -93,7 +92,7 @@ class IndexController extends AbstractController {
 		//discard session information to speed up things
 		$this->sessionHelper->close();
 
-		$key = $this->inputHelper->getStringSafe('user-name');
+		$key = ChibiRegistry::getHelper('input')->getStringSafe('user-name');
 		if (is_array($key)) {
 			$key = reset($key);
 		}
@@ -115,10 +114,10 @@ class IndexController extends AbstractController {
 
 	public function globalsAction() {
 		MediaHelper::addMedia([MediaHelper::HIGHCHARTS, MediaHelper::INFOBOX]);
-		HeadHelper::setTitle('MALgraph - global stats');
-		HeadHelper::setDescription('Global community statistics' . MGHelper::$descSuffix);
+		ChibiRegistry::getHelper('head')->setTitle('MALgraph - global stats');
+		ChibiRegistry::getHelper('head')->setDescription('Global community statistics' . MGHelper::$descSuffix);
 
 		require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/globals.php';
-		$this->view->globals = GlobalsModel::getData();
+		ChibiRegistry::getView()->globals = GlobalsModel::getData();
 	}
 }

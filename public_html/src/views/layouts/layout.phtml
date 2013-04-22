@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta property="og:title" content="<?php echo HeadHelper::getTitle() ?>">
 	<meta property="og:description" content="<?php echo HeadHelper::getDescription() ?>">
-	<meta property="og:image" content="<?php echo UrlHelper::url('media/img/logo3.png') ?>">
+	<meta property="og:image" content="<?php echo ChibiRegistry::getHelper('url')->url('media/img/logo3.png') ?>">
 	<meta property="og:url" content="<?php echo ChibiRegistry::getHelper('mg')->currentUrl() ?>">
 	<meta property="og:site_name" content="MALgraph" />
 </head>
@@ -87,9 +87,9 @@
 								<div class="user-pic">
 									<a class="waitable" href="<?php echo ChibiRegistry::GetHelper('mg')->constructUrl('stats', 'profile', [], $user->getLinkableName()) ?>">
 									<?php if ($user->isAnonymous() or $user->getUserData()->getProfilePictureURL() == null): ?>
-										<img class="profile unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
+										<img class="profile unavailable" alt="No profile picture" src="<?php echo ChibiRegistry::getHelper('url')->url('media/img/pixel.gif') ?>">
 									<?php else: ?>
-										<img class="profile" alt="<?php echo $user->getPublicName() ?>&rsquo;s profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>" style="background-image: url('<?php echo $user->getUserData()->getProfilePictureURL() ?>')">
+										<img class="profile" alt="<?php echo $user->getPublicName() ?>&rsquo;s profile picture" src="<?php echo ChibiRegistry::getHelper('url')->url('media/img/pixel.gif') ?>" style="background-image: url('<?php echo $user->getUserData()->getProfilePictureURL() ?>')">
 									<?php endif ?>
 									</a>
 								</div>
@@ -205,9 +205,9 @@
 					echo '</div>';
 				} ?>
 
-				<?php echo ChibiRegistry::getView()->render() ?>
+				<?php echo $this->renderView() ?>
 			<?php else: ?>
-				<?php echo ChibiRegistry::getView()->render() ?>
+				<?php echo $this->renderView() ?>
 			<?php endif ?>
 		</div>
 

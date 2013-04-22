@@ -16,16 +16,16 @@
 <?php iterateUsers(function($user, $otherUser) { ?>
 <div class="section list">
 	<h2>
-		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, $this->mgHelper->textAM() . ' list') ?>
+		<?php echo ChibiRegistry::getHelper('mg')->headerLink($user, ChibiRegistry::getHelper('mg')->textAM() . ' list') ?>
 		<span class="filter-hint">&nbsp;(<span class="filter-hint-shown"></span> of <span class="filter-hint-total"></span>)</span>
 	</h2>
 	<?php $showUnique = ((count($this->users) > 1) and (!$otherUser->getList($this->am)->isPrivate())) ?>
 	<div class="section-body">
 		<?php if (count($user->getList($this->am)->getEntries()) == 0): ?>
-			<p>Sadly, <?php echo $user->getPublicName() ?>&rsquo;s <?php echo $this->mgHelper->textAM() ?> list is empty.<br>
+			<p>Sadly, <?php echo $user->getPublicName() ?>&rsquo;s <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list is empty.<br>
 			If this is your list, add (and rate) something and come back in 24 hours.</p>
 		<?php elseif ($user->getList($this->am)->isPrivate()): ?>
-			<p>Sadly, <?php echo $this->mgHelper->textAM() ?> list of this user is private.</p><p>If this is your list, you can <a target="_blank" href="http://myanimelist.net/editprofile.php?go=listpreferences">click here</a> and change your privacy settings to make it visible.</p>
+			<p>Sadly, <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list of this user is private.</p><p>If this is your list, you can <a target="_blank" href="http://myanimelist.net/editprofile.php?go=listpreferences">click here</a> and change your privacy settings to make it visible.</p>
 		<?php else: ?>
 
 			<table class="tablesorter">
@@ -95,7 +95,7 @@
 			UserListEntry::STATUS_ONHOLD => [3, 'hourglass'],
 			UserListEntry::STATUS_COMPLETED => [2, 'tick']];
 		foreach ($icons as $status => $info): ?>
-		$('.status-<?php echo $status ?>').attr({'data-tooltip': '<?php echo $this->mgHelper->textStatus($status) ?>', 'data-sorter': <?php echo $info[0] ?>}).append($('<i class="icon-<?php echo $info[1] ?>"/>'));
+		$('.status-<?php echo $status ?>').attr({'data-tooltip': '<?php echo ChibiRegistry::getHelper('mg')->textStatus($status) ?>', 'data-sorter': <?php echo $info[0] ?>}).append($('<i class="icon-<?php echo $info[1] ?>"/>'));
 	<?php endforeach ?>
 
 	var uniqueRows = $('tr.unique');

@@ -56,7 +56,7 @@
 						<div class="wrapper-more singular">
 						<div class="wrapper-more-wrapper">
 							<a class="close"><i class="icon-close"></i></a>
-							<a class="img" target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $rec->amEntry->getID() ?>">
+							<a class="img" target="_blank" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $rec->amEntry->getID() ?>">
 								<?php if (!$rec->amEntry->getPictureURL()): ?>
 									<img class="unavailable" alt="No profile picture" src="<?php echo UrlHelper::url('media/img/pixel.gif') ?>">
 								<?php else: ?>
@@ -192,7 +192,7 @@
 		<?php if (empty($this->relations[$user->getID()])): ?>
 			<p>Yay! No missing relations!</p>
 		<?php elseif ($user->getList($this->am)->isPrivate()): ?>
-			<p>Since <?php echo $user->getPublicName() ?>&rsquo;s <?php echo $this->mgHelper->textAM() ?> list is marked as private, we can&rsquo;t reveal its content by showing suggestions.<br>
+			<p>Since <?php echo $user->getPublicName() ?>&rsquo;s <?php echo ChibiRegistry::getHelper('mg')->textAM() ?> list is marked as private, we can&rsquo;t reveal its content by showing suggestions.<br>
 			If this is your list, click <a target="_blank" href="http://myanimelist.net/editprofile.php?go=listpreferences">here</a> to change privacy settings.</p>
 		<?php else: ?>
 
@@ -210,7 +210,7 @@
 								<ul>
 								<?php foreach ($franchise->ownEntries as $entry): ?>
 									<li data-id="<?php echo $entry->getID() ?>">
-										<a target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
+										<a target="_blank" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $entry->getID() ?>">
 											<?php echo htmlspecialchars($entry->getAMEntry()->getTitle()) ?>
 										</a>
 									</li>
@@ -224,7 +224,7 @@
 											<?php continue ?>
 										<?php else: ?>
 											<li data-id="<?php echo $entry->getID() ?>">
-												<a target="_blank" href="http://myanimelist.net/<?php echo $this->mgHelper->textAM() ?>/<?php echo $entry->getID() ?>">
+												<a target="_blank" href="http://myanimelist.net/<?php echo ChibiRegistry::getHelper('mg')->textAM() ?>/<?php echo $entry->getID() ?>">
 													<?php echo htmlspecialchars($entry->getTitle()) ?>
 												</a>
 											</li>

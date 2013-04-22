@@ -1,5 +1,5 @@
 <?php
-class MediaHelper extends ChibiHelper {
+class MediaHelper {
 	const JSCROLLPANE = 0;
 	const CORE = 1;
 	const HIGHCHARTS = 2;
