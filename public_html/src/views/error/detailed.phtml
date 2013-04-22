@@ -9,14 +9,13 @@ Also, please use "MALgraph" as the subject and include your MAL nickname. Thank 
 		<li><?php
 			printf
 			(
-				'#%d %s%s%s(%s) called at [%s:%d]',
+				'#%d %s%s(%s) called at [%s:%d]',
 				$k,
-				@$b['class'],
-				@$b['type'],
+				empty($b['type']) ? '' : $b['class'] . $b['type'],
 				$b['function'],
 				'...', //join(', ', array_map(function($x) { return @json_encode($x); }, empty($b['args']) ? array() : $b['args'])),
 				empty($b['file']) ? '[anonymous function]' : $b['file'],
-				@$b['line']
+				isset($b['line']) ? $b['line'] : null
 			);
 		?></li>
 	<?php endfor ?>
