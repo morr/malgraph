@@ -1,4 +1,6 @@
 <?php
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/am.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
 class AjaxController extends ChibiController {
@@ -36,20 +38,19 @@ class AjaxController extends ChibiController {
 		];
 	}
 
-	public function init() {
-		parent::init();
+	public function __construct() {
 		ChibiConfig::getInstance()->chibi->runtime->layoutName = 'ajax';
-		$this->sessionHelper->close();
+		ChibiRegistry::getHelper('session')->close();
 
 		//no user specified
-		$userName = $this->inputHelper->getStringSafe('u');
+		$userName = ChibiRegistry::getHelper('input')->getStringSafe('u');
 		if (empty($userName)) {
 			throw new Exception('User name not specified.');
 		}
 		ChibiRegistry::getView()->userName = $userName;
 
 		//load anime-manga switch
-		$am = $this->inputHelper->get('am');
+		$am = ChibiRegistry::getHelper('input')->get('am');
 		if ($am != AMModel::TYPE_MANGA) {
 			$am = AMModel::TYPE_ANIME;
 		}
@@ -86,7 +87,7 @@ class AjaxController extends ChibiController {
 
 		switch (ChibiRegistry::getView()->sender) {
 			case self::SENDER_SCORE:
-				$score = $this->inputHelper->getInt('score');
+				$score = ChibiRegistry::getHelper('input')->getInt('score');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getScore($score);
 				$filter = UserListFilters::combine($filter1, $filter2);
@@ -95,7 +96,7 @@ class AjaxController extends ChibiController {
 				break;
 
 			case self::SENDER_SCORE_TIME:
-				$score = $this->inputHelper->getInt('score');
+				$score = ChibiRegistry::getHelper('input')->getInt('score');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getScore($score);
 				$filter = UserListFilters::combine($filter1, $filter2);
@@ -105,7 +106,7 @@ class AjaxController extends ChibiController {
 
 			case self::SENDER_SCORE_LENGTH:
 			case self::SENDER_LENGTH:
-				$length = $this->inputHelper->getStringSafe('length');
+				$length = ChibiRegistry::getHelper('input')->getStringSafe('length');
 				$filter1 = UserListFilters::getNonPlanned();
 				if (ChibiRegistry::getView()->sender == self::SENDER_LENGTH) {
 					$filter2 = function($entry) { return $entry->getAMEntry()->getSubType() != AnimeEntry::SUBTYPE_MOVIE; };
@@ -122,7 +123,7 @@ class AjaxController extends ChibiController {
 				break;
 
 			case self::SENDER_YEAR:
-				$year = $this->inputHelper->getInt('year');
+				$year = ChibiRegistry::getHelper('input')->getInt('year');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = function(UserListEntry $entry) use ($year) {
 					return AMService::getAiredYear($entry->getAMEntry()) == $year;
@@ -134,7 +135,7 @@ class AjaxController extends ChibiController {
 				break;
 
 			case self::SENDER_DECADE:
-				$decade = $this->inputHelper->getInt('decade');
+				$decade = ChibiRegistry::getHelper('input')->getInt('decade');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = function(UserListEntry $entry) use ($decade) {
 					return AMService::getAiredDecade($entry->getAMEntry()) == $decade;
@@ -146,7 +147,7 @@ class AjaxController extends ChibiController {
 				break;
 
 			case self::SENDER_SUB_TYPE:
-				$subType = $this->inputHelper->getStringSafe('sub-type');
+				$subType = ChibiRegistry::getHelper('input')->getStringSafe('sub-type');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getSubType($subType);
 				$filter = UserListFilters::combine($filter1, $filter2);
@@ -156,7 +157,7 @@ class AjaxController extends ChibiController {
 				break;
 
 			case self::SENDER_CREATOR:
-				$creator = $this->inputHelper->getInt('creator');
+				$creator = ChibiRegistry::getHelper('input')->getInt('creator');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getCreator($creator);
 				$filter = UserListFilters::combine($filter1, $filter2);
@@ -180,7 +181,7 @@ class AjaxController extends ChibiController {
 				break;
 
 			case self::SENDER_GENRE:
-				$genre = $this->inputHelper->getInt('genre');
+				$genre = ChibiRegistry::getHelper('input')->getInt('genre');
 				$filter1 = UserListFilters::getNonPlanned();
 				$filter2 = UserListFilters::getGenre($genre);
 				$filter = UserListFilters::combine($filter1, $filter2);
@@ -204,14 +205,14 @@ class AjaxController extends ChibiController {
 				break;
 
 			case self::SENDER_DAILY_ACTIVITY:
-				$daysAgo = $this->inputHelper->getInt('days-ago');
+				$daysAgo = ChibiRegistry::getHelper('input')->getInt('days-ago');
 				ChibiRegistry::getView()->daysAgo = $daysAgo;
 				ChibiRegistry::getView()->entries = ChibiRegistry::getView()->user->getHistory(ChibiRegistry::getView()->am)->getEntriesByDaysAgo($daysAgo);
 				$sort = false;
 				break;
 
 			case self::SENDER_MONTHLY_ACTIVITY:
-				$monthPeriod = $this->inputHelper->getStringSafe('month');
+				$monthPeriod = ChibiRegistry::getHelper('input')->getStringSafe('month');
 				$filter1 = UserListFilters::getCompleted();
 				$filter2 = function(UserListEntry $e) use ($monthPeriod) {
 					return UserListService::getMonthPeriod($e) == $monthPeriod;
