@@ -14,12 +14,22 @@ if (file_exists('../conf/local.ini')) {
 
 class Bootstrap extends ChibiBootstrap
 {
+	public function __construct()
+	{
+		$this->setNames();
+	}
+
+	public function setNames()
+	{
+		ChibiRegistry::getView()->controllerName = ChibiConfig::getInstance()->chibi->runtime->controllerName;
+		ChibiRegistry::getView()->actionName = ChibiConfig::getInstance()->chibi->runtime->actionName;
+
+	}
+
 	public function beforeWork()
 	{
 		require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
-
-		ChibiRegistry::getView()->controllerName = ChibiConfig::getInstance()->chibi->runtime->controllerName;
-		ChibiRegistry::getView()->actionName = ChibiConfig::getInstance()->chibi->runtime->actionName;
+		$this->setNames();
 
 		//basic settings
 		ChibiRegistry::getHelper('head')->setTitle('MALgraph');

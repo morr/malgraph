@@ -4,7 +4,7 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
 class StatsController extends ChibiController {
-	public function init() {
+	public function __construct() {
 		ChibiRegistry::getHelper('session')->close();
 
 		//no user specified
@@ -112,7 +112,6 @@ class StatsController extends ChibiController {
 
 
 	public function profileAction() {
-		$this->init();
 		MediaHelper::addMedia([MediaHelper::TABLESORTER]);
 		ChibiRegistry::getView()->profileInfo = [];
 
@@ -160,14 +159,12 @@ class StatsController extends ChibiController {
 
 
 	public function listAction() {
-		$this->init();
 		MediaHelper::addMedia([MediaHelper::TABLESORTER]);
 	}
 
 
 
 	public function achiAction() {
-		$this->init();
 		$achList = ChibiRegistry::getHelper('mg')->loadJSON(ChibiConfig::getInstance()->chibi->runtime->rootFolder . DIRECTORY_SEPARATOR . ChibiConfig::getInstance()->misc->achDefFile);
 
 		$imgFiles = scandir(ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/media/img/ach');
@@ -271,7 +268,6 @@ class StatsController extends ChibiController {
 
 
 	public function ratiAction() {
-		$this->init();
 		MediaHelper::addMedia([MediaHelper::HIGHCHARTS,
 			MediaHelper::POPUPS,
 			MediaHelper::INFOBOX,
@@ -330,7 +326,6 @@ class StatsController extends ChibiController {
 
 
 	public function ratiImgAction() {
-		$this->init();
 		//prepare info for view
 		if (count(ChibiRegistry::getView()->users) > 1) {
 			throw new Exception('Only one user is supported here');
@@ -439,7 +434,6 @@ class StatsController extends ChibiController {
 
 
 	public function actiAction() {
-		$this->init();
 		MediaHelper::addMedia([MediaHelper::HIGHCHARTS, MediaHelper::INFOBOX]);
 
 		foreach (ChibiRegistry::getView()->users as $i => $u) {
@@ -527,7 +521,6 @@ class StatsController extends ChibiController {
 
 
 	public function favsAction() {
-		$this->init();
 		MediaHelper::addMedia([
 			MediaHelper::HIGHCHARTS,
 			MediaHelper::TABLESORTER,
@@ -607,7 +600,6 @@ class StatsController extends ChibiController {
 
 
 	public function sugAction() {
-		$this->init();
 		ChibiRegistry::getView()->recsStatic = [];
 		ChibiRegistry::getView()->recs = [];
 
