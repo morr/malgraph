@@ -361,7 +361,7 @@ class MGHelper {
 		} else {
 			$url = '';
 		}
-		return UrlHelper::htmlUrl($url, $get);
+		return ChibiRegistry::getHelper('url')->htmlUrl($url, $get);
 	}
 
 
