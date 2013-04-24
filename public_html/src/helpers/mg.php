@@ -1,4 +1,6 @@
 <?php
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
+
 class LockException extends Exception { }
 
 class MGHelper {

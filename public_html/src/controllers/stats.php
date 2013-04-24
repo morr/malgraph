@@ -4,7 +4,7 @@ require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/mode
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
 
 class StatsController extends ChibiController {
-	public function __construct() {
+	public function beforeWork() {
 		ChibiRegistry::getHelper('session')->close();
 
 		//no user specified

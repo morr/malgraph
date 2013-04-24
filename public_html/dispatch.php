@@ -17,26 +17,23 @@ class Bootstrap extends ChibiBootstrap
 	public function __construct()
 	{
 		$this->setNames();
-	}
-
-	public function setNames()
-	{
-		ChibiRegistry::getView()->controllerName = ChibiConfig::getInstance()->chibi->runtime->controllerName;
-		ChibiRegistry::getView()->actionName = ChibiConfig::getInstance()->chibi->runtime->actionName;
-
-	}
-
-	public function beforeWork()
-	{
-		require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
-		$this->setNames();
-
 		//basic settings
 		ChibiRegistry::getHelper('head')->setTitle('MALgraph');
 		ChibiRegistry::getHelper('head')->setKeywords(['malgraph', 'anime', 'manga', 'statistics', 'stats']);
 		ChibiRegistry::getHelper('head')->setDescription('MALgraph - an extension of your MyAnimeList profile. Check your rating distribution, get anime or manga recommendations, and compare numerous stats with other kawaii Japanese otaku.');
 		ChibiRegistry::getHelper('head')->setFavicon(ChibiRegistry::getHelper('url')->url('media/img/favicon.png'));
 
+	}
+
+	public function setNames()
+	{
+		ChibiRegistry::getView()->controllerName = ChibiConfig::getInstance()->chibi->runtime->controllerName;
+		ChibiRegistry::getView()->actionName = ChibiConfig::getInstance()->chibi->runtime->actionName;
+	}
+
+	public function beforeWork()
+	{
+		$this->setNames();
 		ChibiRegistry::getHelper('media')->addMedia([MediaHelper::CORE, MediaHelper::JSCROLLPANE]);
 		if (file_exists($p = 'media/css/'. ChibiRegistry::getView()->controllerName . '.css')) { ChibiRegistry::getHelper('head')->addStylesheet(ChibiRegistry::getHelper('url')->url($p)); }
 		if (file_exists($p = 'media/js/' . ChibiRegistry::getView()->controllerName . '.js')) { ChibiRegistry::getHelper('head')->addScript(ChibiRegistry::getHelper('url')->url($p)); }
