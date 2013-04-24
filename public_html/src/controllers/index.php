@@ -1,5 +1,6 @@
 <?php
 require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user/listservice.php';
+require_once ChibiConfig::getInstance()->chibi->runtime->rootFolder . '/src/models/user.php';
 
 class IndexController extends ChibiController {
 	public function indexAction() {
@@ -90,7 +91,7 @@ class IndexController extends ChibiController {
 		unset ($_SESSION['unique-hash']);
 
 		//discard session information to speed up things
-		$this->sessionHelper->close();
+		ChibiRegistry::getHelper('session')->close();
 
 		$key = ChibiRegistry::getHelper('input')->getStringSafe('user-name');
 		if (is_array($key)) {
