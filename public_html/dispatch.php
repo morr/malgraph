@@ -5,7 +5,8 @@ if (!session_id()) {
 	session_start();
 }
 
-require 'lib/router.php';
+require_once 'lib/router.php';
+require_once 'lib/config.php';
 ChibiConfig::load('lib/base.ini');
 ChibiConfig::load('../conf/malgraph.ini');
 if (file_exists('../conf/local.ini')) {
