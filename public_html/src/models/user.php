@@ -76,16 +76,21 @@ class UserModel extends AbstractModel {
 					$entry->setScore(intval($node->nodeValue));
 				}
 
-				$malStatus = $xpath->query('my_status', $root)->item(0)->nodeValue;
-				$status = UserListEntry::STATUS_UNKNOWN;
-				switch ($malStatus) {
-					case UserListEntry::STATUS_MAL_DROPPED: $status = UserListEntry::STATUS_DROPPED; break;
-					case UserListEntry::STATUS_MAL_ONHOLD: $status = UserListEntry::STATUS_ONHOLD; break;
-					case UserListEntry::STATUS_MAL_COMPLETING: $status = UserListEntry::STATUS_COMPLETING; break;
-					case UserListEntry::STATUS_MAL_COMPLETED: $status = UserListEntry::STATUS_COMPLETED; break;
-					case UserListEntry::STATUS_MAL_PLANNED: $status = UserListEntry::STATUS_PLANNED; break;
+				$node = $xpath->query('my_status', $root)->item(0);
+				if (!empty($node))
+				{
+					$malStatus = $node->nodeValue;
+					$status = UserListEntry::STATUS_UNKNOWN;
+					switch ($malStatus) {
+						case UserListEntry::STATUS_MAL_DROPPED: $status = UserListEntry::STATUS_DROPPED; break;
+						case UserListEntry::STATUS_MAL_ONHOLD: $status = UserListEntry::STATUS_ONHOLD; break;
+						case UserListEntry::STATUS_MAL_COMPLETING: $status = UserListEntry::STATUS_COMPLETING; break;
+						case UserListEntry::STATUS_MAL_COMPLETED: $status = UserListEntry::STATUS_COMPLETED; break;
+						case UserListEntry::STATUS_MAL_PLANNED: $status = UserListEntry::STATUS_PLANNED; break;
+					}
+					$entry->setStatus($status);
 				}
-				$entry->setStatus($status);
+
 				$entry->setStartDate(ChibiRegistry::getInstance()->getHelper('mg')->fixDate($xpath->query('my_start_date', $root)->item(0)->nodeValue));
 				$entry->setFinishDate(ChibiRegistry::getInstance()->getHelper('mg')->fixDate($xpath->query('my_finish_date', $root)->item(0)->nodeValue));
 
