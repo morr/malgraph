@@ -37,7 +37,7 @@ class HTMLCacheModel extends AbstractModel {
 	}
 
 	public function keyToPath($key) {
-		if (!is_array($key) and preg_match('/^[0-9a-f]{72}_/i', $key))
+		if (!is_array($key) and preg_match('/^[0-9a-f]{72}/i', $key))
 		{
 			$path = $key;
 		}
