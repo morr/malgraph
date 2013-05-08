@@ -1,7 +1,8 @@
 <?php
 ini_set('memory_limit', '120M');
 date_default_timezone_set('UTC');
-if (!session_id()) {
+if (!session_id())
+{
 	session_start();
 }
 
@@ -9,7 +10,8 @@ require_once 'lib/router.php';
 require_once 'lib/config.php';
 ChibiConfig::load('lib/base.ini');
 ChibiConfig::load('../conf/malgraph.ini');
-if (file_exists('../conf/local.ini')) {
+if (file_exists('../conf/local.ini'))
+{
 	ChibiConfig::load('../conf/local.ini');
 }
 
@@ -49,8 +51,11 @@ ChibiRegistry::set('router', $router);
 
 require_once 'src/models/html.php';
 //if it's stats controller, try load it from cache
-if (isset($_GET['u'])) {
+if (isset($_GET['u']))
+{
 	echo (new HTMLCacheModel())->get($_GET)->getContents();
-} else {
+}
+else
+{
 	$router->handleRequest($request);
 }
