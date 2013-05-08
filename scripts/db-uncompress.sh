@@ -1,4 +1,4 @@
 #!/bin/bash
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 cd "$dir/.."
-unzip -q data.zip
+unzip -q -o data.zip
