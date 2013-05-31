@@ -29,9 +29,7 @@ class AdminController extends ChibiController {
 
 
 
-	public function init() {
-		parent::init();
-
+	public function beforeWork() {
 		if (!$this->loggedIn() and ChibiRegistry::getView()->actionName != 'login') {
 			$this->forward(ChibiRegistry::getHelper('url')->url('/a/login'));
 		}
@@ -51,10 +49,10 @@ class AdminController extends ChibiController {
 		if ($this->loggedIn()) {
 			//setcookie('password', $entered, time() + 3600 * 24 * 30, '/');
 			$this->forward(ChibiRegistry::getHelper('url')->url('/a/index'));
-			$this->mgHelper->log('Correct password');
+			ChibiRegistry::getHelper('mg')->log('Correct password');
 		} else {
 			ChibiRegistry::getView()->entered = $entered;
-			$this->mgHelper->log('Wrong password: ' . $entered);
+			ChibiRegistry::getHelper('mg')->log('Wrong password: ' . $entered);
 		}
 	}
 
